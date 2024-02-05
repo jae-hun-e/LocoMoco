@@ -5,6 +5,7 @@
   "singleQuote": true,
   "endOfLine": "lf",
   "singleAttributePerLine": true,
+  "jsxBracketSameLine": true,
   "trailingComma": "all",
   "arrowParens": "always",
   "embeddedLanguageFormatting" : "auto",
