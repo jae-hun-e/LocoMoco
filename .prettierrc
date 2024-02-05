@@ -1,0 +1,23 @@
+{
+  "semi": true,
+  "printWidth": 100,
+  "tabWidth": 2,
+  "singleQuote": true,
+  "endOfLine": "lf",
+  "singleAttributePerLine": true,
+  "jsxBracketSameLine": true,
+  "trailingComma": "all",
+  "arrowParens": "always",
+  "embeddedLanguageFormatting" : "auto",
+  "importOrder": [
+    "^react",
+    "<THIRD_PARTY_MODULES>",
+    "^@/components/(.)$",
+    "^@/hooks/(.)$",
+    "^@/(.)$",
+    "^[./]"
+  ],
+  "importOrderSortSpecifiers": true,
+
+  "plugins": ["@trivago/prettier-plugin-sort-imports","prettier-plugin-tailwindcss"]
+}
