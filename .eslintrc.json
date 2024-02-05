@@ -1,3 +1,47 @@
 {
-  "extends": "next/core-web-vitals"
+  "root": true,
+  "env": { "browser": true, "es2021": true, "node": true },
+  "extends": [
+    "next/core-web-vitals",
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "parser": "typescript-eslint/parser"
+  },
+  "rules": {
+    "react/function-component-definition": [
+      "error",
+      {
+        "namedComponents": "arrow-function",
+        "unnamedComponents": "arrow-function"
+      }
+    ],
+    "@typescript-eslint/naming-convention": [
+      "error",
+      {
+        "format": ["camelCase", "UPPER_CASE", "PascalCase"],
+        "selector": "variable",
+        "leadingUnderscore": "allow"
+      },
+      {
+        "format": ["camelCase", "PascalCase"],
+        "selector": "function"
+      },
+      {
+        "format": ["PascalCase"],
+        "selector": "interface"
+      },
+      {
+        "format": ["PascalCase"],
+        "selector": "typeAlias"
+      }
+    ],
+    "import/newline-after-import": ["error", { "count": 1 }],
+    "padding-line-between-statements": [
+      "error",
+      { "blankLine": "always", "prev": "const", "next": "return" }
+    ]
+  }
 }
