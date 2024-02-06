@@ -1,6 +1,9 @@
+import { ReactNode } from 'react';
+import Navbar from '@/app/_components/NavBar';
+import { cn } from '@/libs/utils';
+import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -12,11 +15,14 @@ export const metadata: Metadata = {
 const RootLayout = ({
   children,
 }: Readonly<{
-  children: React.ReactNode;
+  children: ReactNode;
 }>) => {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={cn(inter.className, 'relative min-h-screen')}>
+        {children}
+        <Navbar />
+      </body>
     </html>
   );
 };
