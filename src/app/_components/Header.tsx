@@ -1,3 +1,4 @@
+import ThemeToggle from '@/app/_components/ThemeToggle';
 import { AlignJustifyIcon, ChevronLeftIcon } from 'lucide-react';
 
 const Header = () => {
@@ -6,6 +7,7 @@ const Header = () => {
       <ChevronLeftIcon />
       <div>LocoMoco</div>
       <AlignJustifyIcon />
+      <ThemeToggle />
     </div>
   );
 };
