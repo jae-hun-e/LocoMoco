@@ -1,5 +1,10 @@
 import type { Config } from 'tailwindcss';
 
+const pxToRem = (px: number, base = 16) => `${px / base}rem`;
+const range = (start: number, end: number) => {
+  return Array.from({ length: end - start + 1 }, (_, index) => index + start);
+};
+
 const config = {
   darkMode: ['class'],
   content: [
@@ -18,6 +23,15 @@ const config = {
       },
     },
     extend: {
+      spacing: {
+        ...range(1, 1400).reduce(
+          (accumulate, px) => {
+            accumulate[`${px}pxr`] = pxToRem(px);
+            return accumulate;
+          },
+          {} as Record<string, string>,
+        ),
+      },
       colors: {
         border: 'hsl(var(--border))',
         input: 'hsl(var(--input))',
