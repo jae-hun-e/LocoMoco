@@ -20,12 +20,15 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <Provider>
-        <body className={cn(inter.className, 'relative min-h-svh')}>
+      <body
+        className={cn(inter.className, 'relative min-h-svh')}
+        suppressHydrationWarning
+      >
+        <Provider>
           <main className={`min-h-[calc(100svh-3.125rem)]`}>{children}</main>
           <Navbar />
-        </body>
-      </Provider>
+        </Provider>
+      </body>
     </html>
   );
 };
