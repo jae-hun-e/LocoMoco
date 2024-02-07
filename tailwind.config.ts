@@ -76,6 +76,13 @@ const config = {
         'layer-8': 'hsl(var(--layer8))',
         'layer-9': 'hsl(var(--layer9))',
         'layer-10': 'hsl(var(--layer10))',
+
+        'main-1': '#58C694',
+        'main-2': '#85D5B1',
+        'main-3': '#A4E0C5',
+        'main-4': '#C2EAD8',
+        'main-5': '#F0FAF5',
+        hover: '39A776',
       },
       borderRadius: {
         lg: 'var(--radius)',
