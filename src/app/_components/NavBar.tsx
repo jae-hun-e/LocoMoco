@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Navbar = () => {
   return (
-    <div className="fixed bottom-0 z-10 flex h-40pxr w-full items-center justify-around bg-layer-1">
+    <div className="fixed bottom-0 z-10 flex h-50pxr w-full items-center justify-around bg-layer-1">
       <Link href={routes.chat}>
         <MessageCircleIcon />
       </Link>

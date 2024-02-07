@@ -20,7 +20,7 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className={cn(inter.className, 'relative min-h-screen')}>
-        {children}
+        <main className="min-h-[calc(100vh-50px)]">{children}</main>
         <Navbar />
       </body>
     </html>
