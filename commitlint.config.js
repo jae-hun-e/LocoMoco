@@ -10,6 +10,7 @@ module.exports = {
       'always',
       ['init', 'feat', 'fix', 'refactor', 'style', 'chore', 'remove', 'docs', 'modify'],
     ],
+    'subject-case': [0],
     'subject-empty': [2, 'never'], // subject 생략 불가
   },
 };

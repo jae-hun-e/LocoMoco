@@ -33,6 +33,17 @@
     --ring: 222.2 84% 4.9%;
 
     --radius: 0.5rem;
+
+    --layer1: 0 0 100%;
+    --layer2: 0 0 96%;
+    --layer3: 0 0 93%;
+    --layer4: 0 0 88%;
+    --layer5: 0 0 74%;
+    --layer6: 0 0 46%;
+    --layer7: 0 0 38%;
+    --layer8: 0 0 26%;
+    --layer9: 0 0 13%;
+    --layer10: 0 0 0%;
   }
 
   .dark {
@@ -63,6 +74,21 @@
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
     --ring: 212.7 26.8% 83.9%;
+
+    --layer10: 0 0 100%;
+    --layer9: 0 0 96%;
+    --layer8: 0 0 93%;
+    --layer7: 0 0 88%;
+    --layer6: 0 0 74%;
+    --layer5: 0 0 46%;
+    --layer4: 0 0 38%;
+    --layer3: 0 0 26%;
+    --layer2: 0 0 13%;
+    --layer1: 0 0 0%;
+  }
+
+  * {
+    transition: background-color 200ms ease;
   }
 }
 
