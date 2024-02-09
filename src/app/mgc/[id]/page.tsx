@@ -85,9 +85,7 @@ const dummyData: MGCDetail = {
 // TODO: mgc생성과 공통 컴포넌트 빼기 [24/02/09]
 // TODO: font size, weight 기준값 회의로 정한 후 수정 -> 16,14,12,10 [24/02/09]
 // TODO: api연결 후 주석 제거 [24/02/09]
-const MGCDetail = ({ id }: { id: string }) => {
-  console.log(id);
-
+const MGCDetail = () => {
   const { register, handleSubmit, resetField } = useForm<InquiryReq>();
   const [like, setLike] = useState<boolean>(false);
 
