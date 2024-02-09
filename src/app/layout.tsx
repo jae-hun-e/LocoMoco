@@ -20,7 +20,9 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body className={cn(inter.className, 'relative min-h-screen')}>
-        <main className="min-h-[calc(100vh-50px)]">{children}</main>
+        <main className="scrollbar-hidden max-h-[calc(100vh-50px)] min-h-[calc(100vh-50px)] overflow-y-auto px-20pxr scrollbar-hide">
+          {children}
+        </main>
         <Navbar />
       </body>
     </html>
