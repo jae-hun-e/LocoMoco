@@ -97,6 +97,7 @@ const MGCDetail = ({ id }: { id: string }) => {
     { title: '현재 신분', value: dummyData.job },
     { title: '원하는 연력대', value: dummyData.ageRange },
   ];
+
   const onSubmit = (data: InquiryReq) => {
     const req = { ...data, author: '111' };
     console.log(req);
@@ -177,6 +178,7 @@ const MGCDetail = ({ id }: { id: string }) => {
         <div className="mb-10pxr">
           <p>{dummyData?.content || '내용 없음'}</p>
           <div className="mb-10pxr mt-30pxr h-150pxr w-full bg-layer-5">지도</div>
+          {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/09]*/}
           <div className="text-xs">장소: {dummyData.location}</div>
         </div>
 
@@ -251,32 +253,33 @@ const MGCDetail = ({ id }: { id: string }) => {
       </div>
 
       {/* 참가 */}
-      <div className="fixed w-[calc(100%-2.5rem)]">
-        <div className="mb-10pxr flex h-40pxr items-center gap-18pxr">
-          <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-white">
-            <p>참여하기</p>
-            <p>(2/{dummyData.maxParticipantsCount})</p>
-          </button>
+      {/*TODO: 고정해 말아? [24/02/09]*/}
+      {/*<div className="fixed  w-[calc(100%-2.5rem)] ">*/}
+      <div className="mb-10pxr flex h-40pxr items-center gap-18pxr">
+        <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-white">
+          <p>참여하기</p>
+          <p>(2/{dummyData.maxParticipantsCount})</p>
+        </button>
 
-          <button
-            className="flex flex-col items-center"
-            onClick={handleLike}
-          >
-            <HeartIcon
-              size={20}
-              strokeWidth={2}
-              color={like ? 'red' : 'black'}
-              fill={like ? 'red' : 'white'}
-            />
-            <p className="text-[10px]">{dummyData.like}</p>
-          </button>
-        </div>
-
-        <div className="flex justify-center text-[10px]">
-          <b>{format(dummyData.MGCApplicationDeadline, 'M월 d일 h시')}</b>
-          <p>까지만 신청 할 수 있어요!</p>
-        </div>
+        <button
+          className="flex flex-col items-center"
+          onClick={handleLike}
+        >
+          <HeartIcon
+            size={20}
+            strokeWidth={2}
+            color={like ? 'red' : 'black'}
+            fill={like ? 'red' : 'white'}
+          />
+          <p className="text-[10px]">{dummyData.like}</p>
+        </button>
       </div>
+
+      <div className="flex justify-center text-[10px]">
+        <b>{format(dummyData.MGCApplicationDeadline, 'M월 d일 h시')}</b>
+        <p>까지만 신청 할 수 있어요!</p>
+      </div>
+      {/*</div>*/}
     </div>
   );
 };
