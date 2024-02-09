@@ -254,7 +254,7 @@ const MGCDetail = () => {
       {/*TODO: 고정해 말아? [24/02/09]*/}
       {/*<div className="fixed  w-[calc(100%-2.5rem)] ">*/}
       <div className="mb-10pxr flex h-40pxr items-center gap-18pxr">
-        <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-white">
+        <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-white hover:bg-hover">
           <p>참여하기</p>
           <p>(2/{dummyData.maxParticipantsCount})</p>
         </button>
