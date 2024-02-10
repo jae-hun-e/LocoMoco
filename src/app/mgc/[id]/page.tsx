@@ -1,49 +1,14 @@
 import React from 'react';
+import MGCDetail from '@/app/mgc/[id]/_components/MGCDetail';
 import { ChevronLeftIcon } from 'lucide-react';
 
-const MGCDetail = () => {
+const MGCDetailPage = ({ params }: { params: { id: string } }) => {
   return (
     <div>
       <ChevronLeftIcon />
-      MGCDetail
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div> <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
-      <div>MGCDetail</div>
+      <MGCDetail id={params.id} />
     </div>
   );
 };
 
-export default MGCDetail;
+export default MGCDetailPage;

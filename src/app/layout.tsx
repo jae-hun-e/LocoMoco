@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import Navbar from '@/app/_components/NavBar';
+import Provider from '@/app/_components/Provider';
 import { cn } from '@/libs/utils';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
@@ -20,14 +21,19 @@ const RootLayout = ({
 }>) => {
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'relative min-h-screen')}>
+      <body
+        className={cn(inter.className, 'relative min-h-svh')}
+        suppressHydrationWarning
+      >
         <Script
           type="text/javascript"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}
           strategy="beforeInteractive"
         ></Script>
-        <main className="min-h-[calc(100vh-50px)]">{children}</main>
-        <Navbar />
+        <Provider>
+          <main className={`min-h-[calc(100svh-3.125rem)]`}>{children}</main>
+          <Navbar />
+        </Provider>
       </body>
     </html>
   );
