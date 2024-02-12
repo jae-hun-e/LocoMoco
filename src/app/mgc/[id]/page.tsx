@@ -6,28 +6,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 import { format, formatDistance, subDays } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { HeartIcon } from 'lucide-react';
 import Image from 'next/image';
-
-const MGSTypes = {
-  ThunderMGC: 'ThunderMGC',
-  LocationConfirmed: 'LocationConfirmed',
-  LocationNotConfirmed: 'LocationNotConfirmed',
-} as const;
-
-const LanguageTypes = {
-  JAVA: 'JAVA',
-  JAVASCRIPT: 'JAVASCRIPT',
-  PYTHON: 'PYTHON',
-} as const;
-
-const StudyTypes = {
-  web: 'web',
-  FE: 'FE',
-  BE: 'BE',
-} as const;
 
 interface MGCDetail {
   author: string;
@@ -37,7 +20,7 @@ interface MGCDetail {
   MGCApplicationDeadline: Date;
   maxParticipantsCount?: number;
 
-  MGSType?: keyof typeof MGSTypes;
+  MGSType?: keyof typeof MGCTypes;
   languageTypes?: (keyof typeof LanguageTypes)[];
   studyTypes?: (keyof typeof StudyTypes)[];
   job?: string[];
@@ -71,7 +54,7 @@ const dummyData: MGCDetail = {
   MGCApplicationDeadline: subDays(new Date(), 3),
   maxParticipantsCount: 5,
 
-  MGSType: MGSTypes.LocationConfirmed,
+  MGSType: MGCTypes.LocationConfirmed,
   languageTypes: [LanguageTypes.JAVA, LanguageTypes.JAVASCRIPT],
   studyTypes: [StudyTypes.web],
   ageRange: [10],
@@ -93,11 +76,12 @@ const MGCDetail = () => {
     { title: '개발 언어', value: dummyData.languageTypes },
     { title: '공부 분야', value: dummyData.studyTypes },
     { title: '현재 신분', value: dummyData.job },
-    { title: '원하는 연력대', value: dummyData.ageRange },
+    { title: '원하는 연령대', value: dummyData.ageRange },
   ];
 
   const onSubmit = (data: InquiryReq) => {
     const req = { ...data, author: '111' };
+    // TODO: api 연결 시 콘솔제거 [24/02/12]
     console.log(req);
 
     resetField('content');
@@ -219,7 +203,7 @@ const MGCDetail = () => {
           />
         </form>
 
-        {dummyData.inquiries?.map((inquiry, idx) => (
+        {dummyData.inquiries?.map(({ author, content, createdAt }, idx) => (
           <div
             key={idx}
             className="flex gap-11pxr text-xs"
@@ -240,11 +224,9 @@ const MGCDetail = () => {
             </Avatar>
 
             <div className="flex flex-col gap-3pxr">
-              <p>{inquiry.author}</p>
-              <p className="text-6pxr font-extralight">
-                {format(inquiry.createdAt, 'M월 d일 h시')}
-              </p>
-              <p>{inquiry.content}</p>
+              <p>{author}</p>
+              <p className="text-6pxr font-extralight">{format(createdAt, 'M월 d일 h시')}</p>
+              <p>{content}</p>
             </div>
           </div>
         ))}
