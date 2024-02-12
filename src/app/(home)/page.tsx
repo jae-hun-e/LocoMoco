@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { Input } from '@/components/ui/input';
 import { SearchFilterForm } from '@/types/searchFilterForm';
+import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
 import Filter from '../_components/filter/Filter';
 import BottomSheet from './_components/BottomSheet';
@@ -94,11 +94,21 @@ const Home = () => {
     <div className="relative">
       <section className="flex w-full flex-col items-center">
         <div className="w-[90%] pt-20pxr">
-          <Input
-            className="block h-50pxr w-full border-layer-4"
-            type="text"
-            placeholder="장소를 입력해 주세요."
-          />
+          <div
+            id="input-wrap"
+            className="flex h-50pxr flex-row items-center rounded-lg border"
+          >
+            <Search
+              width={20}
+              height={20}
+              color="gray"
+              className="m-10pxr"
+            />
+            <input
+              placeholder="장소를 입력해 주세요."
+              className="h-10 w-full text-sm focus:outline-none"
+            />
+          </div>
           <Filter onSubmit={handleSubmit} />
         </div>
       </section>
