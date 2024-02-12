@@ -64,7 +64,7 @@ const Home = () => {
     },
   ];
 
-  const onSubmit = (data: SearchFilterForm) => {
+  const handleSubmit = (data: SearchFilterForm) => {
     const { language, mgc, study } = data;
 
     const filtedDatas = DUMMYDATAS.filter((data) => {
@@ -99,7 +99,7 @@ const Home = () => {
             type="text"
             placeholder="장소를 입력해 주세요."
           />
-          <Filter onSubmit={onSubmit} />
+          <Filter onSubmit={handleSubmit} />
         </div>
       </section>
       <div
