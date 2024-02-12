@@ -3,7 +3,8 @@
 import { useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { SearchFilterForm } from '@/types/searchFilterForm';
-import Filter from './_components/filter/Filter';
+import Filter from '../_components/filter/Filter';
+import BottomSheet from './_components/BottomSheet';
 
 const Home = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -89,8 +90,8 @@ const Home = () => {
   }, []);
 
   return (
-    <>
-      <div className="flex w-full flex-col items-center">
+    <div className="relative">
+      <section className="flex w-full flex-col items-center">
         <div className="w-[90%] pt-20pxr">
           <Input
             className="block h-50pxr w-full border-layer-4	"
@@ -99,12 +100,15 @@ const Home = () => {
           />
           <Filter onSubmit={onSubmit} />
         </div>
-      </div>
+      </section>
       <div
         ref={mapRef}
         className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
       ></div>
-    </>
+      <div className="absolute bottom-0 z-10 w-full rounded-t-xl bg-layer-2">
+        <BottomSheet />
+      </div>
+    </div>
   );
 };
 
