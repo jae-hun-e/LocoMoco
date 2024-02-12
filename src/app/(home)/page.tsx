@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import { Input } from '@/components/ui/input';
 import { SearchFilterForm } from '@/types/searchFilterForm';
+import CreateBtn from '../_components/CreateBtn';
 import Filter from '../_components/filter/Filter';
 import BottomSheet from './_components/BottomSheet';
 
@@ -94,8 +95,8 @@ const Home = () => {
       <section className="flex w-full flex-col items-center">
         <div className="w-[90%] pt-20pxr">
           <Input
-            className="block h-50pxr w-full border-layer-4	"
-            type="email"
+            className="block h-50pxr w-full border-layer-4"
+            type="text"
             placeholder="장소를 입력해 주세요."
           />
           <Filter onSubmit={onSubmit} />
@@ -105,6 +106,10 @@ const Home = () => {
         ref={mapRef}
         className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
       ></div>
+      <div className="absolute bottom-0 right-24pxr z-30">
+        <CreateBtn />
+      </div>
+
       <div className="absolute bottom-0 z-10 w-full rounded-t-xl bg-layer-2">
         <BottomSheet />
       </div>
