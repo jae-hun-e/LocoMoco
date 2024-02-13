@@ -9,7 +9,7 @@ const Tag = ({
   children: ReactNode;
   theme?: 'green' | 'gray';
 }>) => {
-  const css = `mr-10pxr h-22pxr text-sm font-normal ${theme === 'gray' ? '' : 'bg-main-5 text-main-1 hover:bg-main-4'}`;
+  const css = `mr-10pxr h-22pxr text-sm font-normal cursor-pointer ${theme === 'gray' ? '' : 'bg-main-5 text-main-1 hover:bg-main-4'}`;
 
   return <Badge className={css}>{children}</Badge>;
 };
