@@ -150,7 +150,7 @@ const MGCDetail = () => {
                     {value.map((language) => (
                       <Badge
                         key={language}
-                        className="bg-layer-3 font-light text-main-2"
+                        className="bg-layer-3 font-extralight text-main-2"
                       >
                         {language}
                       </Badge>
@@ -263,33 +263,32 @@ const MGCDetail = () => {
       </div>
 
       {/* 참가 */}
-      {/*TODO: 고정해 말아? [24/02/09]*/}
-      {/*<div className="fixed  w-[calc(100%-2.5rem)] ">*/}
-      <div className="mb-10pxr flex h-40pxr items-center gap-18pxr">
-        <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-white hover:bg-hover">
-          <p>참여하기</p>
-          <p>(2/{dummyData.maxParticipantsCount})</p>
-        </button>
+      <div className="fixed bottom-0 z-20 w-[calc(100%-2.5rem)] bg-layer-1">
+        <div className="my-10pxr flex h-40pxr items-center gap-18pxr">
+          <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-layer-1 hover:bg-hover">
+            <p>참여하기</p>
+            <p>(2/{dummyData.maxParticipantsCount})</p>
+          </button>
 
-        <button
-          className="flex flex-col items-center"
-          onClick={handleLike}
-        >
-          <HeartIcon
-            size={20}
-            strokeWidth={2}
-            color={like ? 'red' : 'black'}
-            fill={like ? 'red' : 'white'}
-          />
-          <p className="text-xs">{dummyData.like}</p>
-        </button>
-      </div>
+          <button
+            className="flex flex-col items-center"
+            onClick={handleLike}
+          >
+            <HeartIcon
+              size={20}
+              strokeWidth={2}
+              color={like ? 'red' : 'black'}
+              fill={like ? 'red' : 'white'}
+            />
+            <p className="text-xs">{dummyData.like}</p>
+          </button>
+        </div>
 
-      <div className="flex justify-center text-xs">
-        <b>{format(dummyData.MGCApplicationDeadline, 'M월 d일 h시')}</b>
-        <p>까지만 신청 할 수 있어요!</p>
+        <div className="flex justify-center text-xs">
+          <b>{format(dummyData.MGCApplicationDeadline, 'M월 d일 h시')}</b>
+          <p>까지만 신청 할 수 있어요!</p>
+        </div>
       </div>
-      {/*</div>*/}
     </div>
   );
 };
