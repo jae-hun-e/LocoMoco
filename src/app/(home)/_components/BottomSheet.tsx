@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { ReactElement } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 // TODO: 시간 남으면 직접 구현 [24/02/12]
 // TODO: 회의 후에 네브와 바텀시트를 함께 보일지 수정 [24/02/12]
-const BottomSheet = () => {
+const BottomSheet = ({ children }: { children: ReactElement }) => {
   return (
     <Sheet>
       <SheetTrigger asChild>
@@ -19,32 +19,7 @@ const BottomSheet = () => {
           <div className="mx-auto h-1 w-40pxr rounded-full bg-layer-4" />
         </div>
         <div className="overflow-y-auto">
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
-          <li>테스트</li>
+          {children}
           <div className="h-50pxr" />
         </div>
       </SheetContent>

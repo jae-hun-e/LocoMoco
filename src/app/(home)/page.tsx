@@ -121,7 +121,36 @@ const Home = () => {
       </div>
 
       <div className="absolute bottom-0 z-10 w-full rounded-t-xl bg-layer-2">
-        <BottomSheet />
+        <BottomSheet>
+          <>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+            <li>테스트</li>
+          </>
+        </BottomSheet>
       </div>
     </div>
   );
