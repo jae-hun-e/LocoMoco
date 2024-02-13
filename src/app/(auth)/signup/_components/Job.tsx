@@ -1,5 +1,5 @@
-import Radio from '@/components/Radio';
-import RadioGroup from '@/components/RadioGroup';
+import Radio from '@/app/_components/Radio';
+import RadioGroup from '@/app/_components/RadioGroup';
 
 interface Props {
   job: string;
