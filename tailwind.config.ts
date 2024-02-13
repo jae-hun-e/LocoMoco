@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import plugin from 'tailwindcss/plugin';
 
 const pxToRem = (px: number, base = 16) => `${px / base}rem`;
 const range = (start: number, end: number) => {
@@ -24,7 +25,7 @@ const config = {
     },
     extend: {
       spacing: {
-        ...range(1, 1400).reduce(
+        ...range(1, 600).reduce(
           (accumulate, px) => {
             accumulate[`${px}pxr`] = pxToRem(px);
             return accumulate;
@@ -82,7 +83,7 @@ const config = {
         'main-3': '#A4E0C5',
         'main-4': '#C2EAD8',
         'main-5': '#F0FAF5',
-        hover: '39A776',
+        hover: '#39A776',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -105,7 +106,20 @@ const config = {
       },
     },
   },
-  plugins: [require('tailwindcss-animate')],
+  plugins: [
+    require('tailwindcss-animate'),
+    plugin(function ({ addUtilities }) {
+      addUtilities({
+        '.scrollbar-hide': {
+          'scrollbar-width': 'none',
+          '-ms-overflow-style': 'none',
+          '&::-webkit-scrollbar': {
+            display: 'none',
+          },
+        },
+      });
+    }),
+  ],
 } satisfies Config;
 
 export default config;
