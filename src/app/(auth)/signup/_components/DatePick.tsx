@@ -11,9 +11,7 @@ const DatePick = ({ setDaySelected }: Props) => {
       <div className="relative flex h-10 items-center gap-1 rounded-md border p-2">
         <input
           type="date"
-          onChange={(e) => {
-            setDaySelected(e.target.value);
-          }}
+          onChange={(e) => setDaySelected(e.target.value)}
         />
       </div>
     </div>

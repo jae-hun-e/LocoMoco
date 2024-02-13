@@ -5,7 +5,8 @@ interface Props {
   gender: string;
   setGender: (gender: string) => void;
 }
-const Sex = ({ gender, setGender }: Props) => {
+
+const Gender = ({ gender, setGender }: Props) => {
   return (
     <RadioGroup label="성별">
       <Radio
@@ -25,4 +26,4 @@ const Sex = ({ gender, setGender }: Props) => {
     </RadioGroup>
   );
 };
-export default Sex;
+export default Gender;

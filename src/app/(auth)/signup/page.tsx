@@ -3,13 +3,15 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import DatePick from './_components/DatePick';
+import Gender from './_components/Gender';
 import Job from './_components/Job';
 import NickName from './_components/Nickname';
-import Sex from './_components/Sex';
+
+// import Sex from './_components/Gender';
 
 const Signup = () => {
   const [nickname, setNickname] = useState('');
-  const [daySelected, setDaySelected] = useState<string>('');
+  const [daySelected, setDaySelected] = useState('');
   const [gender, setGender] = useState('male');
   const [job, setJob] = useState('worker');
 
@@ -23,7 +25,7 @@ const Signup = () => {
       <h2 className="w-full text-center text-xl font-bold">회원가입</h2>
       <NickName setNickname={setNickname} />
       <DatePick setDaySelected={setDaySelected} />
-      <Sex
+      <Gender
         gender={gender}
         setGender={setGender}
       />

@@ -5,6 +5,7 @@ interface Props {
   job: string;
   setJob: (job: string) => void;
 }
+
 const Job = ({ job, setJob }: Props) => {
   return (
     <RadioGroup label="직업">
