@@ -27,16 +27,9 @@ interface MGCListItemPropsType {
 }
 
 const MGCListItem = ({ data }: MGCListItemPropsType) => {
-  // const handleMGCItemClick = () => {
-  //   console.log('haha');
-  //   // console.log(`${data._id}를 클릭했습니다!`);
-  // };
-
+  // 핸들러 추가
   return (
-    <li
-      // onClick={handleMGCItemClick}
-      className="flex w-full flex-col gap-4pxr py-22pxr"
-    >
+    <li className="flex w-full flex-col gap-4pxr py-22pxr">
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className="mr-10pxr font-bold">
