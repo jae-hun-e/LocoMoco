@@ -17,6 +17,7 @@ interface MGCDetail {
   title: string;
   location: string;
   MGCDate: Date;
+  MGCTime: Date[];
   MGCApplicationDeadline: Date;
   maxParticipantsCount?: number;
 
@@ -29,6 +30,7 @@ interface MGCDetail {
 
   like: number;
   hits: number;
+  joinUsers: string[];
   inquiries?: InquiryRes[];
 }
 
@@ -51,6 +53,7 @@ const dummyData: MGCDetail = {
   title: '모각코 모집합니다!',
   location: '서울시 강남구',
   MGCDate: new Date(),
+  MGCTime: [new Date(2024, 2, 17, 14, 30), new Date(2024, 2, 17, 18, 30)],
   MGCApplicationDeadline: subDays(new Date(), 3),
   maxParticipantsCount: 5,
 
@@ -62,6 +65,7 @@ const dummyData: MGCDetail = {
 
   like: 10,
   hits: 123,
+  joinUsers: ['개발뉴비', '개발신입'],
   inquiries: [dummyInquiry],
 };
 
@@ -127,7 +131,10 @@ const MGCDetail = () => {
         <p className="my-20pxr text-lg font-bold">{dummyData.title}</p>
         <div className="mb-10pxr">
           <p>날짜: {format(dummyData.MGCApplicationDeadline, 'yyyy. MM. dd')}</p>
-          <p>시간: {format(dummyData.MGCApplicationDeadline, 'hh:mm ~ hh:mm')}</p>
+          <p>
+            시간:
+            {dummyData.MGCTime.map((time) => format(time, ' HH:mm')).join(' ~ ')}
+          </p>
         </div>
 
         <div className="mb-30pxr">
@@ -164,9 +171,32 @@ const MGCDetail = () => {
           <div className="text-sm">장소: {dummyData.location}</div>
         </div>
 
-        <div className="mb-10pxr">
+        <div className="mb-10pxr mt-14pxr">
           <p>현재 참여자</p>
-          <p>어케보여줄까요??</p>
+          <div className="mt-10pxr flex gap-11pxr">
+            {dummyData.joinUsers.map((user, idx) => (
+              <div
+                key={idx}
+                className="flex flex-col items-center justify-center"
+              >
+                <Avatar className="h-32pxr w-32pxr rounded-full ">
+                  <AvatarImage
+                    src="https://github.com/shadcn.png"
+                    alt="@shadcn"
+                  />
+                  <AvatarFallback>
+                    <Image
+                      src={'/oh.png'}
+                      alt={'cn'}
+                      width={32}
+                      height={32}
+                    />
+                  </AvatarFallback>
+                </Avatar>
+                <p className="text-sm">{user}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
