@@ -13,28 +13,31 @@ import { HeartIcon } from 'lucide-react';
 import Image from 'next/image';
 
 interface MGCDetail {
-  author: string;
-  title: string;
-  location: string;
-  MGCDate: Date;
-  MGCTime: Date[];
-  MGCApplicationDeadline: Date;
-  maxParticipantsCount?: number;
+  _id: string; // 모각코id
+  author: string; // 작성자Id
+  title: string; // 제목
+  location: string; // 장소
+  MGCDate: Date; // 모각코 날
+  MGCTime: Date[]; // 하는 시간: [시작, 끝]
+  MGCApplicationDeadline: Date; // 신청 마감일
+  maxParticipantsCount?: number; // 신청 가능 인원
 
-  MGSType?: keyof typeof MGCTypes;
-  languageTypes?: (keyof typeof LanguageTypes)[];
-  studyTypes?: (keyof typeof StudyTypes)[];
-  job?: string[];
-  ageRange?: number[];
-  content?: string;
+  // TODO: BE에게 카테고리 받으면 수정 [24/02/13]
+  MGSType?: keyof typeof MGCTypes; // 모각코 타입
+  languageTypes?: (keyof typeof LanguageTypes)[]; // 언어
+  studyTypes?: (keyof typeof StudyTypes)[]; // 공부 분야
+  job?: string[]; // 직업
+  ageRange?: number[]; // 연령대
+  content?: string; // 내용
 
-  like: number;
-  hits: number;
-  joinUsers: string[];
+  like: number; // 좋아요 수
+  hits: number; // 조회수 수
+  joinUsers: string[]; // 참여자Id
   inquiries?: InquiryRes[];
 }
 
 interface InquiryReq {
+  _id: string;
   author: string;
   content: string;
 }
@@ -43,12 +46,14 @@ interface InquiryRes extends InquiryReq {
 }
 
 const dummyInquiry: InquiryRes = {
+  _id: '1',
   author: '개발뉴비',
   content: '개발 2일찬데 ㄱㄴ?',
   createdAt: new Date(),
 };
 
 const dummyData: MGCDetail = {
+  _id: '1',
   author: '작성자 정보', // user id
   title: '모각코 모집합니다!',
   location: '서울시 강남구',
