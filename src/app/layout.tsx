@@ -25,7 +25,9 @@ const RootLayout = ({
         suppressHydrationWarning
       >
         <Provider>
-          <main className={`h-[calc(100svh-3.125rem)]`}>{children}</main>
+          <main className="h-[calc(100vh-50px)] overflow-y-auto px-20pxr scrollbar-hide">
+            {children}
+          </main>
           <Navbar />
         </Provider>
       </body>
