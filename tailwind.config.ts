@@ -82,7 +82,7 @@ const config = {
         'main-3': '#A4E0C5',
         'main-4': '#C2EAD8',
         'main-5': '#F0FAF5',
-        hover: '39A776',
+        hover: '#39A776',
       },
       borderRadius: {
         lg: 'var(--radius)',
