@@ -90,6 +90,15 @@
   * {
     transition: background-color 200ms ease;
   }
+
+  #sheet-content {
+    transform: translate3d(0px, -3.125rem, 0px);
+  }
+
+  /* TODO: bottom sheet 직접 구현 후 제거해야함 [24.02.13] */
+  body {
+    pointer-events: auto !important;
+  }
 }
 
 @layer base {
