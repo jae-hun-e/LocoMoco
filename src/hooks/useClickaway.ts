@@ -10,7 +10,10 @@ const useClickAway = (handler: (e: MouseEvent | TouchEvent) => void) => {
     if (!element) return;
 
     const handleEvent = (e: MouseEvent | TouchEvent) => {
-      !element.contains(e.target as Node) && handler(e);
+      if (!(e.target instanceof Node)) return;
+      if (element.contains(e.target)) return;
+
+      handler(e);
     };
 
     for (const eventName of events) {
