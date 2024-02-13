@@ -7,10 +7,31 @@ import { Form } from '@/components/ui/form';
 import { SearchFilterForm } from '@/types/searchFilterForm';
 import TypeCheckList from './TypeCheckList';
 
+const MGCType = {
+  all: '전체',
+  ThunderMGC: '번개',
+  LocationConfirmed: '장소확정',
+  LocationNotConfirmed: '장소미정',
+} as const;
+
+const languageType = {
+  all: '전체',
+  JAVASCRIPT: 'JAVASCRIPT',
+  JAVA: 'JAVA',
+  PYTHON: 'PYTHON',
+} as const;
+
+const studyType = {
+  all: '전체',
+  web: 'web',
+  FE: 'FE',
+  BE: 'BE',
+} as const;
+
 const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => void }) => {
-  const MGCTypes = ['전체', '장소확정', '장소미정', '번개'];
-  const languageTypes = ['전체', 'JAVASCRIPT', 'JAVA', 'PYTHON'];
-  const studyTypes = ['전체', 'web', 'FE', 'BE'];
+  const MGCTypes = Object.values(MGCType);
+  const languageTypes = Object.values(languageType);
+  const studyTypes = Object.values(studyType);
 
   const form = useForm<SearchFilterForm>({
     defaultValues: {
