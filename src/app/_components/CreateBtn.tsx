@@ -23,7 +23,7 @@ const CreateBtn = () => {
       }}
     >
       <PopoverTrigger asChild>
-        <Button className="h-50pxr w-50pxr rounded-full bg-main-1 hover:bg-[#39A776]">
+        <Button className="h-50pxr w-50pxr rounded-full bg-main-1 hover:bg-hover">
           <Plus
             className={`lucide lucide-plus ${isCreateBtnOpen ? 'rotate-45' : 'rotate-0'} transition`}
           />
