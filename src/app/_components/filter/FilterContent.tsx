@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SearchFilterForm } from '@/types/searchFilterForm';
@@ -50,6 +51,7 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="space-y-8"
+          id="filter-checkList-content"
         >
           <div className="flex h-120pxr flex-row justify-between pt-10pxr">
             <TypeCheckList
@@ -68,12 +70,17 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
               type="study"
             />
           </div>
-          <Button
-            type="submit"
-            className="float-right h-25pxr w-50pxr"
+          <AccordionTrigger
+            id="close-accordion"
+            className=" flex h-25pxr w-50pxr"
           >
-            적용
-          </Button>
+            <Button
+              type="submit"
+              className="h-25pxr w-50pxr"
+            >
+              적용
+            </Button>
+          </AccordionTrigger>
         </form>
       </Form>
     </div>

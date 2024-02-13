@@ -16,10 +16,7 @@ const Filter = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => void }) =>
           value="item-1"
           className="w-full"
         >
-          <AccordionTrigger
-            id="qwe"
-            className="p-0 hover:no-underline"
-          >
+          <AccordionTrigger className="p-0 hover:no-underline">
             <div className="flex w-full flex-row justify-between gap-1.5">
               <span>모각코 종류</span>
               <span>개발 언어</span>

@@ -99,6 +99,16 @@
   body {
     pointer-events: auto !important;
   }
+
+  #close-accordion > svg {
+    display: none;
+  }
+
+  #filter-checkList-content > h3 {
+    float: right;
+    width: 50px;
+    margin-top: 1rem;
+  }
 }
 
 @layer base {
