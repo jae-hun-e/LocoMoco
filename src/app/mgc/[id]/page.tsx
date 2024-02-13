@@ -17,8 +17,9 @@ interface MGCDetail {
   author: string; // 작성자Id
   title: string; // 제목
   location: string; // 장소
-  MGCDate: Date; // 모각코 날
-  MGCTime: Date[]; // 하는 시간: [시작, 끝]
+
+  MGCStartTime: Date; // 시작 시간
+  MGCEndTime: Date; // 끝나는 시간
   MGCApplicationDeadline: Date; // 신청 마감일
   maxParticipantsCount?: number; // 신청 가능 인원
 
@@ -57,8 +58,8 @@ const dummyData: MGCDetail = {
   author: '작성자 정보', // user id
   title: '모각코 모집합니다!',
   location: '서울시 강남구',
-  MGCDate: new Date(),
-  MGCTime: [new Date(2024, 2, 17, 14, 30), new Date(2024, 2, 17, 18, 30)],
+  MGCStartTime: new Date(2024, 2, 17, 14, 30),
+  MGCEndTime: new Date(2024, 2, 17, 18, 30),
   MGCApplicationDeadline: subDays(new Date(), 3),
   maxParticipantsCount: 5,
 
@@ -135,10 +136,10 @@ const MGCDetail = () => {
       <div>
         <p className="my-20pxr text-lg font-bold">{dummyData.title}</p>
         <div className="mb-10pxr">
-          <p>날짜: {format(dummyData.MGCApplicationDeadline, 'yyyy. MM. dd')}</p>
+          <p>날짜: {format(dummyData.MGCStartTime, 'yyyy. MM. dd')}</p>
           <p>
-            시간:
-            {dummyData.MGCTime.map((time) => format(time, ' HH:mm')).join(' ~ ')}
+            시간: {format(dummyData.MGCStartTime, ' HH:mm')} ~
+            {format(dummyData.MGCEndTime, 'HH:mm')}
           </p>
         </div>
 
@@ -149,7 +150,7 @@ const MGCDetail = () => {
                 key={title}
                 className="flex gap-10pxr"
               >
-                <p className="w-80pxr">{title}</p>
+                <p className="w-100pxr">{title}</p>
                 {value ? (
                   <div className="flex gap-10pxr">
                     {value.map((language) => (
