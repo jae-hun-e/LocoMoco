@@ -12,7 +12,7 @@ const Signin = () => {
       <div className="mb-5 text-3xl font-bold">LocoMoco</div>
       <Button
         onClick={handleGithubLogin}
-        className="gap-1 bg-[#68CB9F]"
+        className="gap-1 bg-main-1 hover:bg-hover"
       >
         <Image
           src={'github.svg'}
@@ -25,7 +25,7 @@ const Signin = () => {
       </Button>
       <Button
         onClick={handleKakaoLogin}
-        className="gap-1 bg-[#68CB9F]"
+        className="gap-1 bg-main-1 hover:bg-hover"
       >
         <Image
           src={'kakaotalk.svg'}
