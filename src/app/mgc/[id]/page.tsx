@@ -93,7 +93,7 @@ const MGCDetail = () => {
   return (
     <div>
       {/* 작성자 정보*/}
-      <div className="my-10pxr flex gap-11pxr text-xs">
+      <div className="my-10pxr flex gap-11pxr">
         <Avatar className="h-32pxr w-32pxr rounded-full ">
           <AvatarImage
             src="https://github.com/shadcn.png"
@@ -112,7 +112,7 @@ const MGCDetail = () => {
         <div className="flex flex-col gap-3pxr">
           <p>{dummyData.author}</p>
 
-          <p className="text-6pxr font-extralight">
+          <p className="font-extralight">
             {formatDistance(subDays(new Date(), 3), new Date(), { addSuffix: true, locale: ko })} ·
             조회 {dummyData.hits}
           </p>
@@ -123,8 +123,8 @@ const MGCDetail = () => {
 
       {/* TODO: 협의 후 모각코 생성쪽에서 공통 컴포넌트로 빼기 [24/02/09]*/}
       {/* 모각코 정보*/}
-      <div className="text-sm">
-        <p className="my-20pxr text-base font-bold">{dummyData.title}</p>
+      <div>
+        <p className="my-20pxr text-lg font-bold">{dummyData.title}</p>
         <div className="mb-10pxr">
           <p>날짜: {format(dummyData.MGCApplicationDeadline, 'yyyy. MM. dd')}</p>
           <p>시간: {format(dummyData.MGCApplicationDeadline, 'hh:mm ~ hh:mm')}</p>
@@ -161,7 +161,7 @@ const MGCDetail = () => {
           <p>{dummyData?.content || '내용 없음'}</p>
           <div className="mb-10pxr mt-30pxr h-150pxr w-full bg-layer-5">지도</div>
           {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/09]*/}
-          <div className="text-xs">장소: {dummyData.location}</div>
+          <div className="text-sm">장소: {dummyData.location}</div>
         </div>
 
         <div className="mb-10pxr">
@@ -206,7 +206,7 @@ const MGCDetail = () => {
         {dummyData.inquiries?.map(({ author, content, createdAt }, idx) => (
           <div
             key={idx}
-            className="flex gap-11pxr text-xs"
+            className="flex gap-11pxr text-sm"
           >
             <Avatar className="h-32pxr w-32pxr rounded-full ">
               <AvatarImage
@@ -225,7 +225,7 @@ const MGCDetail = () => {
 
             <div className="flex flex-col gap-3pxr">
               <p>{author}</p>
-              <p className="text-6pxr font-extralight">{format(createdAt, 'M월 d일 h시')}</p>
+              <p className="text-xs font-extralight">{format(createdAt, 'M월 d일 h시')}</p>
               <p>{content}</p>
             </div>
           </div>
@@ -251,11 +251,11 @@ const MGCDetail = () => {
             color={like ? 'red' : 'black'}
             fill={like ? 'red' : 'white'}
           />
-          <p className="text-[10px]">{dummyData.like}</p>
+          <p className="text-xs">{dummyData.like}</p>
         </button>
       </div>
 
-      <div className="flex justify-center text-[10px]">
+      <div className="flex justify-center text-xs">
         <b>{format(dummyData.MGCApplicationDeadline, 'M월 d일 h시')}</b>
         <p>까지만 신청 할 수 있어요!</p>
       </div>
