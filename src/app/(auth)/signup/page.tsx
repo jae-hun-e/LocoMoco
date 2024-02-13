@@ -2,16 +2,16 @@
 
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import DatePick from './components/DatePick';
-import Job from './components/Job';
-import NickName from './components/Nickname';
-import Sex from './components/Sex';
+import DatePick from './_components/DatePick';
+import Job from './_components/Job';
+import NickName from './_components/Nickname';
+import Sex from './_components/Sex';
 
 const Signup = () => {
   const [nickname, setNickname] = useState('');
   const [daySelected, setDaySelected] = useState<string>('');
-  const [gender, setGender] = useState('남');
-  const [job, setJob] = useState('현직자');
+  const [gender, setGender] = useState('male');
+  const [job, setJob] = useState('worker');
 
   const handleSubmit = () => {
     console.log(nickname, daySelected, gender, job);
