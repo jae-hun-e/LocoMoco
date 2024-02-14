@@ -1,6 +1,5 @@
 'use client';
 
-import React from 'react';
 import Tag from '@/app/_components/Tag';
 import { formatDistance } from 'date-fns';
 import { ko } from 'date-fns/locale';
