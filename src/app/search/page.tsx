@@ -36,7 +36,7 @@ const dummyData: MGCSummary[] = [
     createAt: new Date('2024-02-14T00:24:00'),
     hits: 10,
     likeCount: 20,
-    tag: ['코딩테스트', 'javascript', 'FE', 'BE'],
+    tag: ['코딩테스트', '개발이야기', 'javascript', ' python', 'C++', 'FE', 'BE'],
     currentParticipantsCount: 1,
     maxParticipantsCount: 5,
     MGCType: MGCTypes.ThunderMGC,

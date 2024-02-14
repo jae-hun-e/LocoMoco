@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 import Tag from '@/app/_components/Tag';
 import { formatDistance } from 'date-fns';
@@ -27,9 +29,15 @@ interface MGCListItemPropsType {
 }
 
 const MGCListItem = ({ data }: MGCListItemPropsType) => {
-  // 핸들러 추가
+  const handleMGCItemClick = () => {
+    console.log(data._id);
+  };
+
   return (
-    <li className="flex w-full flex-col gap-4pxr py-22pxr">
+    <li
+      onClick={handleMGCItemClick}
+      className="flex w-full flex-col gap-3pxr py-22pxr"
+    >
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className="mr-10pxr font-bold">
@@ -55,7 +63,7 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
         <span className="mx-1">·</span>조회
         {data.hits}
       </div>
-      <div>
+      <div className="leading-7">
         {data.tag.map((tagItem, idx) => (
           <Tag key={idx}>{tagItem}</Tag>
           // Todo: 바뀐 데이터 형식에 따라 변경 필요 [2024/02/13]
