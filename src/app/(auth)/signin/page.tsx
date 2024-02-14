@@ -19,7 +19,6 @@ const Signin = () => {
           width={30}
           height={30}
         />
-
         <span className="text-white">깃허브로 로그인</span>
       </button>
       <button
@@ -32,7 +31,7 @@ const Signin = () => {
           width={30}
           height={30}
         />
-        <span className="">카카오로 로그인</span>
+        <span>카카오로 로그인</span>
       </button>
     </section>
   );

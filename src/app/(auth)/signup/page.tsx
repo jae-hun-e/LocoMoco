@@ -7,8 +7,6 @@ import Gender from './_components/Gender';
 import Job from './_components/Job';
 import NickName from './_components/Nickname';
 
-// import Sex from './_components/Gender';
-
 const Signup = () => {
   const [nickname, setNickname] = useState('');
   const [daySelected, setDaySelected] = useState('');
