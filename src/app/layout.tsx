@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Navbar from '@/app/_components/NavBar';
 import Provider from '@/app/_components/Provider';
+import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/libs/utils';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
@@ -35,6 +36,7 @@ const RootLayout = ({
             {children}
           </main>
           <Navbar />
+          <Toaster />
         </Provider>
       </body>
     </html>

@@ -1,16 +1,14 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
 import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 import { SearchFilterForm } from '@/types/searchFilterForm';
 import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
 import Filter from '../_components/filter/Filter';
 import BottomSheet from './_components/BottomSheet';
+import Map from './_components/Map';
 
 const Home = () => {
-  const mapRef = useRef<HTMLDivElement>(null);
-
   const DUMMYDATAS = [
     {
       title: '장소미정/BE/자바',
@@ -49,7 +47,6 @@ const Home = () => {
 
   const handleSubmit = (data: SearchFilterForm) => {
     const { language, mgc, study } = data;
-
     const filtedDatas = DUMMYDATAS.filter((data) => {
       const isMGC = mgc.length === 0 || mgc.includes(data.MGSType);
       const isLanguage = data.languageTypes.filter((x) => language.includes(x)).length;
@@ -60,18 +57,6 @@ const Home = () => {
 
     console.log(filtedDatas);
   };
-
-  useEffect(() => {
-    window.kakao.maps.load(function () {
-      if (mapRef.current != null) {
-        const mapOption = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
-        };
-        new window.kakao.maps.Map(mapRef.current, mapOption);
-      }
-    });
-  }, []);
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
@@ -95,14 +80,10 @@ const Home = () => {
           <Filter onSubmit={handleSubmit} />
         </div>
       </section>
-      <div
-        ref={mapRef}
-        className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
-      ></div>
+      <Map />
       <div className="absolute bottom-0 right-24pxr z-30">
         <CreateBtn />
       </div>
-
       <div className="absolute bottom-0 z-10 w-full rounded-t-xl bg-layer-2">
         <BottomSheet>
           <>
