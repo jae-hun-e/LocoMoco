@@ -44,11 +44,7 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
             {data.title}
           </span>
           <span className="flex items-center">
-            {data.MGCType === MGCTypes.LocationNotConfirmed ? (
-              <Tag theme="gray">장소 미정</Tag>
-            ) : (
-              ''
-            )}
+            {data.MGCType === MGCTypes.LocationNotConfirmed && <Tag theme="gray">장소 미정</Tag>}
           </span>
         </div>
         <span className="font-bold text-main-1">
