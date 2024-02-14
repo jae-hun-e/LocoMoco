@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 import { SearchFilterForm } from '@/types/searchFilterForm';
 import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
@@ -9,24 +10,6 @@ import BottomSheet from './_components/BottomSheet';
 
 const Home = () => {
   const mapRef = useRef<HTMLDivElement>(null);
-
-  const MGCTypes = {
-    ThunderMGC: '번개',
-    LocationConfirmed: '장소확정',
-    LocationNotConfirmed: '장소미정',
-  } as const;
-
-  const LanguageTypes = {
-    JAVA: 'JAVA',
-    JAVASCRIPT: 'JAVASCRIPT',
-    PYTHON: 'PYTHON',
-  } as const;
-
-  const StudyTypes = {
-    web: 'web',
-    FE: 'FE',
-    BE: 'BE',
-  } as const;
 
   const DUMMYDATAS = [
     {
@@ -91,7 +74,7 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="relative">
+    <div className="relative -left-20pxr w-[100vw]">
       <section className="flex w-full flex-col items-center">
         <div className="w-[90%] pt-20pxr">
           <div
