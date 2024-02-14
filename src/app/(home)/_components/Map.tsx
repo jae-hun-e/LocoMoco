@@ -77,6 +77,9 @@ const Map = ({ MGCData }: { MGCData: MGCSummary[] }) => {
         };
 
         const createdMap = new window.kakao.maps.Map(mapRef.current, mapOption);
+        // TODO: 커스텀 컨트롤러 사용할지 논의 후 변경 [24.02.14]
+        const zoomControl = new kakao.maps.ZoomControl();
+        createdMap.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);
         setMap(createdMap);
         renderMarker(createdMap);
       }
