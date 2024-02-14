@@ -1,15 +1,29 @@
-import ThemeToggle from '@/app/_components/ThemeToggle';
-import { AlignJustifyIcon, ChevronLeftIcon } from 'lucide-react';
+import { ReactNode } from 'react';
+import { ChevronLeftIcon, MenuIcon, MoreVerticalIcon } from 'lucide-react';
 
-const Header = () => {
-  return (
-    <div className="flex h-14 w-full items-center justify-around">
-      <ChevronLeftIcon />
-      <div>LocoMoco</div>
-      <AlignJustifyIcon />
-      <ThemeToggle />
-    </div>
-  );
+const HeaderContainer = ({
+  children,
+}: Readonly<{
+  children: ReactNode;
+}>) => {
+  return <header className="flex h-14 w-full items-center justify-around">{children}</header>;
 };
+
+const Back = () => {
+  return <ChevronLeftIcon />;
+};
+
+const Logo = () => <div>LocoMoco</div>;
+
+const Menu = () => <MenuIcon />;
+
+const Option = () => <MoreVerticalIcon />;
+
+const Header = Object.assign(HeaderContainer, {
+  Back,
+  Logo,
+  Menu,
+  Option,
+});
 
 export default Header;
