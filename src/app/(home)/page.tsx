@@ -1,6 +1,9 @@
 'use client';
 
+import { useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
+import { MGCSummary } from '@/types/MGCSummary';
 import { SearchFilterForm } from '@/types/searchFilterForm';
 import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
@@ -8,54 +11,73 @@ import Filter from '../_components/filter/Filter';
 import BottomSheet from './_components/BottomSheet';
 import Map from './_components/Map';
 
+const DUMMYDATAS = [
+  {
+    title: '장소미정/BE/자바',
+    location: [] as number[],
+    createdAt: '2023-02-12',
+    likeCount: 3,
+    studyTypes: [StudyTypes.BE],
+    languageTypes: [LanguageTypes.JAVA],
+    currentParticipantsCount: 2,
+    maxParticipantsCount: 3,
+    MGSType: MGCTypes.LocationNotConfirmed,
+  },
+  {
+    title: '장소확정/FE/자스',
+    location: [35.165763, 128.688634],
+    createdAt: '2023-02-12',
+    likeCount: 3,
+    studyTypes: [StudyTypes.FE],
+    languageTypes: [LanguageTypes.JAVASCRIPT],
+    currentParticipantsCount: 2,
+    maxParticipantsCount: 3,
+    MGSType: MGCTypes.LocationConfirmed,
+  },
+  {
+    title: '번개/BE/파이썬',
+    location: [35.166368, 128.689718],
+    createdAt: '2023-02-12',
+    likeCount: 3,
+    studyTypes: [StudyTypes.BE],
+    languageTypes: [LanguageTypes.PYTHON],
+    currentParticipantsCount: 2,
+    maxParticipantsCount: 3,
+    MGSType: MGCTypes.ThunderMGC,
+  },
+  {
+    title: '번개/BE/파이썬2',
+    location: [35.166, 128.689718],
+    createdAt: '2023-02-12',
+    likeCount: 3,
+    studyTypes: [StudyTypes.BE],
+    languageTypes: [LanguageTypes.PYTHON],
+    currentParticipantsCount: 2,
+    maxParticipantsCount: 3,
+    MGSType: MGCTypes.ThunderMGC,
+  },
+];
+
 const Home = () => {
-  const DUMMYDATAS = [
-    {
-      title: '장소미정/BE/자바',
-      location: [],
-      createdAt: '2023-02-12',
-      likeCount: 3,
-      studyTypes: [StudyTypes.BE],
-      languageTypes: [LanguageTypes.JAVA],
-      currentParticipantsCount: 2,
-      maxParticipantsCount: 3,
-      MGSType: MGCTypes.LocationNotConfirmed,
-    },
-    {
-      title: '장소확정/FE/자스',
-      location: [],
-      createdAt: '2023-02-12',
-      likeCount: 3,
-      studyTypes: [StudyTypes.FE],
-      languageTypes: [LanguageTypes.JAVASCRIPT],
-      currentParticipantsCount: 2,
-      maxParticipantsCount: 3,
-      MGSType: MGCTypes.LocationConfirmed,
-    },
-    {
-      title: '번개/BE/파이썬',
-      location: [],
-      createdAt: '2023-02-12',
-      likeCount: 3,
-      studyTypes: [StudyTypes.BE],
-      languageTypes: [LanguageTypes.PYTHON],
-      currentParticipantsCount: 2,
-      maxParticipantsCount: 3,
-      MGSType: MGCTypes.ThunderMGC,
-    },
-  ];
+  const [MGCData, setMGCData] = useState<MGCSummary[]>(DUMMYDATAS);
 
   const handleSubmit = (data: SearchFilterForm) => {
     const { language, mgc, study } = data;
     const filtedDatas = DUMMYDATAS.filter((data) => {
-      const isMGC = mgc.length === 0 || mgc.includes(data.MGSType);
+      const isMGC = mgc.includes(data.MGSType);
       const isLanguage = data.languageTypes.filter((x) => language.includes(x)).length;
       const isStudy = data.studyTypes.filter((x) => study.includes(x)).length;
 
       return isMGC && isLanguage && isStudy;
     });
 
-    console.log(filtedDatas);
+    if (filtedDatas.length === 0) {
+      toast({
+        description: '해당하는 조건의 모각코가 없습니다.',
+      });
+    }
+
+    setMGCData(filtedDatas);
   };
 
   return (
@@ -80,7 +102,7 @@ const Home = () => {
           <Filter onSubmit={handleSubmit} />
         </div>
       </section>
-      <Map />
+      <Map MGCData={MGCData} />
       <div className="absolute bottom-0 right-24pxr z-30">
         <CreateBtn />
       </div>
