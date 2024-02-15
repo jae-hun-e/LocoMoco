@@ -18,9 +18,7 @@ const MGCApplyArea = ({ maxParticipantsCount = 1, endTime, like }: Props) => {
 
   return (
     <section className="fixed bottom-0 z-50 w-[calc(100%-2.5rem)] bg-layer-1">
-      <div className="my-10pxr flex h-40pxr items-center gap-18pxr">
-        <MainStyleButton content={`참여하기 (2/${maxParticipantsCount})`} />
-
+      <MainStyleButton content={`참여하기 (2/${maxParticipantsCount})`}>
         <button
           className="flex flex-col items-center"
           onClick={handleLike}
@@ -33,7 +31,7 @@ const MGCApplyArea = ({ maxParticipantsCount = 1, endTime, like }: Props) => {
           />
           <p className="text-xs">{like}</p>
         </button>
-      </div>
+      </MainStyleButton>
 
       <div className="flex justify-center text-xs">
         <b>{format(endTime, 'M월 d일 h시')}</b>
