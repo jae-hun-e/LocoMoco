@@ -53,12 +53,12 @@ interface MGCDetail {
   inquiries?: InquiryRes[];
 }
 
-interface InquiryReq {
+export interface InquiryReq {
   _id: string;
   author: string;
   content: string;
 }
-interface InquiryRes extends InquiryReq {
+export interface InquiryRes extends InquiryReq {
   createdAt: Date;
 }
 

@@ -1,9 +1,9 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
-import { InquiryReq, InquiryRes } from '@/app/mgc/[id]/page';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
+import { InquiryReq, InquiryRes } from '@/constants/mgcDummyData';
 import { format } from 'date-fns';
 import Image from 'next/image';
 
