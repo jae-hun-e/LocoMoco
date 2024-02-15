@@ -1,14 +1,9 @@
 'use client';
 
 import Tag from '@/app/_components/Tag';
+import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 import { formatDistance } from 'date-fns';
 import { ko } from 'date-fns/locale';
-
-export const MGCTypes = {
-  ThunderMGC: 'ThunderMGC',
-  LocationConfirmed: 'LocationConfirmed',
-  LocationNotConfirmed: 'LocationNotConfirmed',
-} as const;
 
 export interface MGCSummary {
   _id: number;
@@ -17,10 +12,13 @@ export interface MGCSummary {
   createAt: Date;
   hits: number; // 조회 수
   likeCount: number;
-  tag: string[];
+  // Todo: 바뀐 데이터 형식에 따라 변경 필요 [2024/02/13]
+  category?: undefined;
   currentParticipantsCount: number;
   maxParticipantsCount: number;
-  MGCType: keyof typeof MGCTypes;
+  MGCType?: keyof typeof MGCTypes;
+  languageTypes?: (keyof typeof LanguageTypes)[];
+  studyTypes?: (keyof typeof StudyTypes)[];
 }
 
 interface MGCListItemPropsType {
@@ -30,6 +28,10 @@ interface MGCListItemPropsType {
 const MGCListItem = ({ data }: MGCListItemPropsType) => {
   const handleMGCItemClick = () => {
     console.log(data._id);
+  };
+
+  const TagsUI = (types: string[] | undefined) => {
+    return types && types.map((tagItem, idx) => <Tag key={idx}>{tagItem}</Tag>);
   };
 
   return (
@@ -59,10 +61,8 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
         {data.hits}
       </div>
       <div className="leading-7">
-        {data.tag.map((tagItem, idx) => (
-          <Tag key={idx}>{tagItem}</Tag>
-          // Todo: 바뀐 데이터 형식에 따라 변경 필요 [2024/02/13]
-        ))}
+        {TagsUI(data.languageTypes)}
+        {TagsUI(data.studyTypes)}
       </div>
     </li>
   );

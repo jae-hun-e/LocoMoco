@@ -1,7 +1,8 @@
 'use client';
 
 import MGCList from '@/app/_components/MGCList/MGCList';
-import { MGCSummary, MGCTypes } from '@/app/_components/MGCList/MGCListItem';
+import { MGCSummary } from '@/app/_components/MGCList/MGCListItem';
+import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 import { Search } from 'lucide-react';
 
 const dummyData: MGCSummary[] = [
@@ -12,10 +13,11 @@ const dummyData: MGCSummary[] = [
     createAt: new Date('1995-12-17T03:24:00'),
     hits: 3,
     likeCount: 30,
-    tag: ['코딩테스트', 'javascript', 'FE'],
     currentParticipantsCount: 2,
     maxParticipantsCount: 8,
     MGCType: MGCTypes.LocationNotConfirmed,
+    languageTypes: [LanguageTypes.JAVA],
+    studyTypes: [StudyTypes.BE],
   },
   {
     _id: 2,
@@ -24,10 +26,11 @@ const dummyData: MGCSummary[] = [
     createAt: new Date('2023-12-17T03:24:00'),
     hits: 3,
     likeCount: 30,
-    tag: ['면접', 'JAVA', 'BE'],
     currentParticipantsCount: 2,
     maxParticipantsCount: 3,
     MGCType: MGCTypes.LocationConfirmed,
+    languageTypes: [LanguageTypes.JAVA, LanguageTypes.JAVASCRIPT],
+    studyTypes: [StudyTypes.BE, StudyTypes.FE, StudyTypes.web],
   },
   {
     _id: 3,
@@ -36,10 +39,18 @@ const dummyData: MGCSummary[] = [
     createAt: new Date('2024-02-14T00:24:00'),
     hits: 10,
     likeCount: 20,
-    tag: ['코딩테스트', '개발이야기', 'javascript', ' python', 'C++', 'FE', 'BE'],
     currentParticipantsCount: 1,
     maxParticipantsCount: 5,
     MGCType: MGCTypes.ThunderMGC,
+    languageTypes: [LanguageTypes.JAVA, LanguageTypes.JAVASCRIPT, LanguageTypes.PYTHON],
+    studyTypes: [
+      StudyTypes.BE,
+      StudyTypes.FE,
+      StudyTypes.web,
+      StudyTypes.BE,
+      StudyTypes.FE,
+      StudyTypes.web,
+    ],
   },
 ];
 
