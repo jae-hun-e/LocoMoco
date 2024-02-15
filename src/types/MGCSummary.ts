@@ -1,6 +1,7 @@
 import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 
 export interface MGCSummary {
+  id: number;
   title: string;
   location: number[];
   createdAt: string;
