@@ -6,16 +6,25 @@ import { cn } from '@/libs/utils';
 const Tag = ({
   children,
   theme,
+  onClick,
 }: Readonly<{
   children: ReactNode;
   theme?: 'green' | 'gray';
+  onClick?: () => void;
 }>) => {
   const css = cn(
     'mr-10pxr h-22pxr text-sm font-normal cursor-pointer',
     `${theme === 'gray' ? 'bg-layer-7 text-layer-1 hover:bg-layer-9' : 'bg-main-5 text-main-1 hover:bg-main-4'}`,
   );
 
-  return <Badge className={css}>{children}</Badge>;
+  return (
+    <Badge
+      className={css}
+      onClick={onClick}
+    >
+      {children}
+    </Badge>
+  );
 };
 
 export default Tag;

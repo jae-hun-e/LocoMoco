@@ -1,30 +1,73 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import OptionFields from '@/app/create/_components/OptionFields';
+import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+
+export interface MGCCreateForm {
+  title: string;
+  location: string;
+  date: Date;
+  startTime: string;
+  endTime: string;
+  deadLine: Date;
+  maxParticipants: number;
+
+  devLanguage?: string[];
+  studyField?: string[];
+  job?: string;
+  ageRange?: string[];
+  content?: string;
+}
 
 const CreateMGC = () => {
-  const [daySelected, setDaySelected] = useState('');
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    formState: { errors, isValid },
+    watch,
+    trigger,
+  } = useForm<MGCCreateForm>({
+    mode: 'onTouched',
+    defaultValues: {
+      title: '',
+      location: '',
+      maxParticipants: 10,
+    },
+  });
 
-  console.log(daySelected);
+  const handleCreateMGC = (data: MGCCreateForm) => {
+    console.log('data', data);
+  };
+
   return (
-    <section>
-      <Label className="flex items-center">
-        <Input placeholder="모각코 제목을 입력해주세요" />
-      </Label>
+    <form className="flex flex-col gap-10">
+      <RequiredFields
+        register={register}
+        errors={errors}
+        setValue={setValue}
+        trigger={trigger}
+        watch={watch}
+      />
 
-      <Label className="flex items-center">
-        <p className="w-150pxr">* 날짜 </p>
-        <Input
-          type="date"
-          onChange={(e) => setDaySelected(e.target.value)}
+      <OptionFields
+        register={register}
+        setValue={setValue}
+        getValues={getValues}
+        trigger={trigger}
+      />
+
+      <div className={'fixed bottom-0 z-50 w-[calc(100%-2.5rem)]'}>
+        <MainStyleButton
+          content="완료"
+          disabled={!isValid}
+          onClick={handleSubmit(handleCreateMGC)}
         />
-      </Label>
-
-      <MainStyleButton content="완료" />
-    </section>
+      </div>
+    </form>
   );
 };
 

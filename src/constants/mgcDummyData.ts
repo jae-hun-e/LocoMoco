@@ -61,3 +61,21 @@ interface InquiryReq {
 interface InquiryRes extends InquiryReq {
   createdAt: Date;
 }
+
+export const devLanguageList = [
+  { id: 1, value: 'all', label: '상관없음' },
+  { id: 2, value: 'next.js', label: 'Next.js' },
+  { id: 3, value: 'sveltekit', label: 'SvelteKit' },
+  { id: 4, value: 'nuxt.js', label: 'Nuxt.js' },
+  { id: 5, value: 'remix', label: 'Remix' },
+  { id: 6, value: 'astro', label: 'Astro' },
+];
+
+export const studyFieldList = [
+  { id: 1, value: 'all', label: '상관없음' },
+  { id: 2, value: 'fe', label: 'FE' },
+  { id: 3, value: 'be', label: 'BE' },
+  { id: 4, value: 'web', label: 'WEB' },
+  { id: 5, value: 'app', label: 'APP' },
+  { id: 6, value: 'ai', label: 'AI' },
+];
