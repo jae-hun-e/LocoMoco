@@ -25,12 +25,14 @@ const Map = () => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        const options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
-        };
+        if (mapRef.current != null) {
+          const options = {
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3,
+          };
 
-        new window.kakao.maps.Map(mapRef.current, options);
+          new window.kakao.maps.Map(mapRef.current, options);
+        }
       });
     };
 
