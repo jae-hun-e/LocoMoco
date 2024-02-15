@@ -8,7 +8,19 @@ module.exports = {
       // 아래의 type 만 사용 가능
       2,
       'always',
-      ['init', 'feat', 'fix', 'refactor', 'style', 'chore', 'remove', 'docs', 'modify', 'merge'],
+      [
+        'init',
+        'feat',
+        'fix',
+        'refactor',
+        'style',
+        'chore',
+        'remove',
+        'docs',
+        'modify',
+        'merge',
+        'bug',
+      ],
     ],
     'subject-case': [0],
     'subject-empty': [2, 'never'], // subject 생략 불가
