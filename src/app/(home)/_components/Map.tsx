@@ -22,7 +22,7 @@ const Map = () => {
       <div
         ref={mapRef}
         className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
-      ></div>
+      />
     </div>
   );
 };
