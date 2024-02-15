@@ -1,3 +1,5 @@
+'use client';
+
 import React, { ReactElement } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
