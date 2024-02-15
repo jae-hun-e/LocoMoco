@@ -1,6 +1,6 @@
 'use client';
 
-import { Badge } from '@/components/ui/badge';
+import Tag from '@/app/_components/Tag';
 import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
 import { format } from 'date-fns';
 
@@ -50,16 +50,11 @@ const MGCInfo = (props: Props) => {
               {value ? (
                 <div className="flex gap-10pxr">
                   {value.map((language) => (
-                    <Badge
-                      key={language}
-                      className="bg-layer-3 font-extralight text-main-2"
-                    >
-                      {language}
-                    </Badge>
+                    <Tag key={language}>{language}</Tag>
                   ))}
                 </div>
               ) : (
-                <Badge className="bg-layer-3 font-extralight text-main-2">상관없음</Badge>
+                <Tag>상관없음</Tag>
               )}
             </div>
           ))}
