@@ -2,12 +2,12 @@
 
 import { useEffect, useRef } from 'react';
 
-declare global {
-  interface Window {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    kakao: any;
-  }
-}
+// declare global {
+//   interface Window {
+//     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+//     kakao: any;
+//   }
+// }
 
 const Map = () => {
   const mapRef = useRef<HTMLDivElement>(null);
@@ -24,25 +24,27 @@ const Map = () => {
     });
   }, []);
 
-  // useEffect(() => {
-  //   const kakaoMapScript = document.createElement('script');
-  //   kakaoMapScript.async = false;
-  //   kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`;
-  //   document.head.appendChild(kakaoMapScript);
-  //
-  //   const onLoadKakaoAPI = () => {
-  //     window.kakao.maps.load(() => {
-  //       const options = {
-  //         center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-  //         level: 3,
-  //       };
-  //
-  //       new window.kakao.maps.Map(mapRef.current, options);
-  //     });
-  //   };
-  //
-  //   kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
-  // }, []);
+  useEffect(() => {
+    const kakaoMapScript = document.createElement('script');
+    kakaoMapScript.async = false;
+    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=bf972ec55af655b8d50cd16ef64fa8c0&autoload=false`;
+    document.head.appendChild(kakaoMapScript);
+
+    const onLoadKakaoAPI = () => {
+      window.kakao.maps.load(() => {
+        if (mapRef.current != null) {
+          const options = {
+            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+            level: 3,
+          };
+
+          new window.kakao.maps.Map(mapRef.current, options);
+        }
+      });
+    };
+
+    kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
+  }, []);
 
   return (
     <div>
