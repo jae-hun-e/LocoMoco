@@ -2,6 +2,13 @@
 
 import { useEffect, useRef } from 'react';
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    kakao: any;
+  }
+}
+
 const Map = () => {
   const mapRef = useRef<HTMLDivElement>(null);
 
@@ -25,14 +32,12 @@ const Map = () => {
 
     const onLoadKakaoAPI = () => {
       window.kakao.maps.load(() => {
-        if (mapRef.current != null) {
-          const options = {
-            center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-            level: 3,
-          };
+        const options = {
+          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+          level: 3,
+        };
 
-          new window.kakao.maps.Map(mapRef.current, options);
-        }
+        new window.kakao.maps.Map(mapRef.current, options);
       });
     };
 
