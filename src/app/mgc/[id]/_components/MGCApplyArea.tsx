@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import MainStyleButton from '@/components/MainStyleButton';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
 
@@ -16,12 +17,9 @@ const MGCApplyArea = ({ maxParticipantsCount = 1, endTime, like }: Props) => {
   };
 
   return (
-    <div className="fixed bottom-0 z-50 w-[calc(100%-2.5rem)] bg-layer-1">
+    <section className="fixed bottom-0 z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <div className="my-10pxr flex h-40pxr items-center gap-18pxr">
-        <button className="flex h-full flex-grow items-center justify-center rounded-xl bg-main-1 text-layer-1 hover:bg-hover">
-          <p>참여하기</p>
-          <p>(2/{maxParticipantsCount})</p>
-        </button>
+        <MainStyleButton content={`참여하기 (2/${maxParticipantsCount})`} />
 
         <button
           className="flex flex-col items-center"
@@ -41,7 +39,7 @@ const MGCApplyArea = ({ maxParticipantsCount = 1, endTime, like }: Props) => {
         <b>{format(endTime, 'M월 d일 h시')}</b>
         <p>까지만 신청 할 수 있어요!</p>
       </div>
-    </div>
+    </section>
   );
 };
 
