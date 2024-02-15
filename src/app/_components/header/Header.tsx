@@ -8,7 +8,7 @@ interface Props {
 
 const HeaderContainer = ({ children }: Props) => {
   return (
-    <header className="flex h-14 w-full items-center justify-between">
+    <header className="sticky top-0 z-50 flex h-14 w-full items-center justify-between bg-layer-1">
       <HeaderLeft />
       {children}
     </header>
