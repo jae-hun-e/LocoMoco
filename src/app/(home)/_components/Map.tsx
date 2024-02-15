@@ -37,7 +37,7 @@ const Map = () => {
     };
 
     kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
-  }, []);
+  }, [mapRef]);
 
   return (
     <div>
