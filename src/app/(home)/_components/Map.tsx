@@ -7,7 +7,12 @@ interface MakerInfo {
   data: MGCSummary;
 }
 
-const Map = ({ MGCData }: { MGCData: MGCSummary[] }) => {
+interface MapProps {
+  MGCData: MGCSummary[];
+  openSheetUpdate: (markerList: MGCSummary[]) => void;
+}
+
+const Map = ({ MGCData, openSheetUpdate }: MapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
@@ -29,6 +34,10 @@ const Map = ({ MGCData }: { MGCData: MGCSummary[] }) => {
         image: markerImage,
       });
 
+      kakao.maps.event.addListener(marker, 'click', () => {
+        openSheetUpdate([mgc]);
+      });
+
       const newMarkerInfo = { data: mgc, marker: marker };
 
       markersInfo.push(newMarkerInfo);
@@ -42,6 +51,19 @@ const Map = ({ MGCData }: { MGCData: MGCSummary[] }) => {
       const markersInfo = setMarker();
 
       clusterer.addMarkers(markersInfo.map((markerInfo) => markerInfo.marker));
+
+      kakao.maps.event.addListener(clusterer, 'clusterclick', (cluster: kakao.maps.Cluster) => {
+        const clusterMarkers = cluster.getMarkers();
+        const markerList = [];
+
+        for (const clusterMarker of clusterMarkers) {
+          markerList.push(
+            markersInfo.filter((markerInfo) => markerInfo.marker === clusterMarker)[0].data,
+          );
+        }
+
+        openSheetUpdate(markerList);
+      });
     },
     [MGCData],
   );
@@ -85,7 +107,6 @@ const Map = ({ MGCData }: { MGCData: MGCSummary[] }) => {
         };
 
         const createdMap = new window.kakao.maps.Map(mapRef.current, mapOption);
-
         // TODO: 커스텀 컨트롤러 사용할지 논의 후 변경 [24.02.14]
         const zoomControl = new kakao.maps.ZoomControl();
         createdMap.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);

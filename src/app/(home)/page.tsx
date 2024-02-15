@@ -100,6 +100,8 @@ const DUMMYDATAS = [
 
 const Home = () => {
   const [MGCData, setMGCData] = useState<MGCSummary[]>(DUMMYDATAS);
+  const [MGCDataList, setMGCDataList] = useState<MGCSummary[]>(DUMMYDATAS);
+  const [open, setOpen] = useState(false);
 
   const handleSubmit = (data: SearchFilterForm) => {
     const { language, mgc, study } = data;
@@ -118,6 +120,11 @@ const Home = () => {
     }
 
     setMGCData(filtedDatas);
+  };
+
+  const openSheetUpdate = (mapData: MGCSummary[]) => {
+    setMGCDataList(mapData);
+    setOpen(true);
   };
 
   return (
@@ -142,14 +149,20 @@ const Home = () => {
           <Filter onSubmit={handleSubmit} />
         </div>
       </section>
-      <Map MGCData={MGCData} />
+      <Map
+        MGCData={MGCData}
+        openSheetUpdate={openSheetUpdate}
+      />
       <div className="absolute bottom-0 right-24pxr z-30">
         <CreateBtn />
       </div>
       <div className="absolute bottom-0 z-10 w-full rounded-t-xl bg-layer-2">
-        <BottomSheet>
+        <BottomSheet
+          open={open}
+          setOpen={setOpen}
+        >
           <>
-            {MGCData.map((data) => (
+            {MGCDataList.map((data) => (
               <li key={data.id}>{data.title}</li>
             ))}
           </>
