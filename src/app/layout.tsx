@@ -5,6 +5,7 @@ import { cn } from '@/libs/utils';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import Script from 'next/script';
 
 // import Script from 'next/script';
 
@@ -26,11 +27,11 @@ const RootLayout = ({
         className={cn(inter.className, 'relative min-h-svh')}
         suppressHydrationWarning
       >
-        {/*<Script*/}
-        {/*  type="text/javascript"*/}
-        {/*  src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}*/}
-        {/*  strategy="beforeInteractive"*/}
-        {/*></Script>*/}
+        <Script
+          type="text/javascript"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}
+          strategy="beforeInteractive"
+        ></Script>
         <Provider>
           <main className="h-[calc(100vh-50px)] overflow-y-auto px-20pxr scrollbar-hide">
             {children}

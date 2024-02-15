@@ -25,24 +25,13 @@ const Map = () => {
   // }, []);
 
   useEffect(() => {
-    const kakaoMapScript = document.createElement('script');
-    kakaoMapScript.async = false;
-    kakaoMapScript.src = `//dapi.kakao.com/v2/maps/sdk.js?appkey=bf972ec55af655b8d50cd16ef64fa8c0&autoload=false`;
-    document.head.appendChild(kakaoMapScript);
-
-    const onLoadKakaoAPI = () => {
-      window.kakao.maps.load(() => {
-        const options = {
-          center: new window.kakao.maps.LatLng(33.450701, 126.570667),
-          level: 3,
-        };
-        console.log('동작하나?', mapRef.current);
-
-        new window.kakao.maps.Map(mapRef.current, options);
-      });
-    };
-
-    kakaoMapScript.addEventListener('load', onLoadKakaoAPI);
+    window.kakao.maps.load(() => {
+      const options = {
+        center: new window.kakao.maps.LatLng(33.450701, 126.570667),
+        level: 3,
+      };
+      new window.kakao.maps.Map(mapRef.current, options);
+    });
   }, []);
 
   return (
