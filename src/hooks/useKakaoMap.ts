@@ -95,6 +95,16 @@ const useKakaoMap = (
     [createMarker, map],
   );
 
+  const changeCenter = useCallback(
+    (latitude: number, longitude: number) => {
+      if (map && kakao.maps.LatLng) {
+        const movePosition = new kakao.maps.LatLng(latitude, longitude);
+        map.setCenter(movePosition);
+      }
+    },
+    [map],
+  );
+
   useEffect(() => {
     window.kakao.maps.load(function () {
       if (mapRef.current != null) {
@@ -125,6 +135,7 @@ const useKakaoMap = (
 
   return {
     setCurrentLocation,
+    changeCenter,
     mapRef,
   };
 };

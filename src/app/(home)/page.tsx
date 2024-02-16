@@ -19,12 +19,12 @@ const Home = () => {
     setOpen(true);
   };
 
-  const { mapRef, setCurrentLocation } = useKakaoMap(mapMGCData, openSheetUpdate);
+  const { mapRef, changeCenter, setCurrentLocation } = useKakaoMap(mapMGCData, openSheetUpdate);
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
       <section className="flex w-full flex-col items-center">
-        <SearchBarFilter />
+        <SearchBarFilter changeCenter={changeCenter} />
       </section>
       <Map
         setCurrentLocation={setCurrentLocation}
