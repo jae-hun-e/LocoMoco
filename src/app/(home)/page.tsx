@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import useKakaoMap from '@/hooks/useKakaoMap';
 import useMapMGCDataStore, { DUMMYDATAS } from '@/store/useMapMGCDataStore';
 import { MGCSummary } from '@/types/MGCSummary';
 import CreateBtn from '../_components/CreateBtn';
@@ -11,7 +12,6 @@ import SearchBarFilter from './_components/SearchBarFilter';
 const Home = () => {
   const [MGCDataList, setMGCDataList] = useState<MGCSummary[]>(DUMMYDATAS);
   const [open, setOpen] = useState(false);
-
   const { mapMGCData } = useMapMGCDataStore();
 
   const openSheetUpdate = (mapData: MGCSummary[]) => {
@@ -19,14 +19,16 @@ const Home = () => {
     setOpen(true);
   };
 
+  const { mapRef, setCurrentLocation } = useKakaoMap(mapMGCData, openSheetUpdate);
+
   return (
     <div className="relative -left-20pxr w-[100vw]">
       <section className="flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
       <Map
-        MGCData={mapMGCData}
-        openSheetUpdate={openSheetUpdate}
+        setCurrentLocation={setCurrentLocation}
+        ref={mapRef}
       />
       <div className="absolute bottom-0 right-24pxr z-30">
         <CreateBtn />
