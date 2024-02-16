@@ -13,8 +13,8 @@ const useKakaoMap = (
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
+  const [createPositionMarker, setCreatePositionMarker] = useState<kakao.maps.Marker>();
 
-  console.log('mapMGCData', mapMGCData);
   const setMarker = () => {
     const markersInfo = [] as MakerInfo[];
     // TODO: 임시 아이콘 추후에 변경해야함 [24.02.14]
@@ -67,7 +67,7 @@ const useKakaoMap = (
   );
 
   const createMarker = useCallback(
-    (movePosition: kakao.maps.LatLng) => {
+    (movePosition: kakao.maps.LatLng, draggble?: boolean, none?: boolean) => {
       // TODO: 임시 현재위치 아이콘 추후에 변경해야함 [24.02.14]
       const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
       const imageSize = new kakao.maps.Size(64, 69);
@@ -79,7 +79,16 @@ const useKakaoMap = (
         image: markerImage,
       });
 
-      marker.setMap(map!);
+      marker.setMap(none ? null : map!);
+
+      marker.setDraggable(draggble!);
+
+      kakao.maps.event.addListener(marker, 'click', () => {
+        // TODO: 모달 컴포넌트 생성되면 모달 컴포넌트 연결 [24.02.17]
+        console.log('번개 모각코 생성할 좌표', marker.getPosition());
+      });
+
+      return marker;
     },
     [map],
   );
@@ -127,11 +136,57 @@ const useKakaoMap = (
         });
 
         setMap(createdMap);
+
+        setCreatePositionMarker(createMarker(mapOption.center, true, true));
         setClusterer(clusterer);
         renderMarker(clusterer);
       }
     });
   }, [renderMarker, mapRef]);
+
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseDown = useCallback(
+    (e: kakao.maps.event.MouseEvent, createPositionMarker: kakao.maps.Marker) => {
+      // 마우스 다운 이벤트 발생 시 타이머를 설정합니다.
+      timerRef.current = setTimeout(() => {
+        const latLng = e.latLng;
+        const movePosition = new kakao.maps.LatLng(latLng.getLat(), latLng.getLng());
+
+        if (createPositionMarker && map) {
+          createPositionMarker.setPosition(movePosition);
+          createPositionMarker.setMap(map);
+        }
+      }, 1500);
+    },
+    [map],
+  );
+
+  const handleMouseUp = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  };
+
+  useEffect(() => {
+    if (map) {
+      kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) =>
+        handleMouseDown(e, createPositionMarker!),
+      );
+      kakao.maps.event.addListener(map, 'mouseup', () => handleMouseUp);
+      kakao.maps.event.addListener(map, 'touchend', () => handleMouseUp);
+    }
+
+    return () => {
+      if (map) {
+        kakao.maps.event.removeListener(map, 'click', handleMouseDown);
+        kakao.maps.event.removeListener(map, 'mouseup', () => handleMouseUp);
+        kakao.maps.event.removeListener(map, 'touchend', () => handleMouseUp);
+      }
+
+      clearTimeout(timerRef.current!);
+    };
+  }, [handleMouseDown, map, createPositionMarker]);
 
   return {
     setCurrentLocation,
