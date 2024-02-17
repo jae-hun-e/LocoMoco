@@ -16,7 +16,7 @@ export interface MGCSummary {
   category?: undefined;
   currentParticipantsCount: number;
   maxParticipantsCount: number;
-  MGCType?: keyof typeof MGCTypes;
+  MGCType?: (typeof MGCTypes)[keyof typeof MGCTypes];
   languageTypes?: (keyof typeof LanguageTypes)[];
   studyTypes?: (keyof typeof StudyTypes)[];
 }

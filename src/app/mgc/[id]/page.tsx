@@ -24,7 +24,7 @@ interface MGCDetail {
   maxParticipantsCount?: number; // 신청 가능 인원
 
   // TODO: BE에게 카테고리 받으면 수정 [24/02/13]
-  MGSType?: keyof typeof MGCTypes; // 모각코 타입
+  MGSType?: (typeof MGCTypes)[keyof typeof MGCTypes]; // 모각코 타입
   languageTypes?: (keyof typeof LanguageTypes)[]; // 언어
   studyTypes?: (keyof typeof StudyTypes)[]; // 공부 분야
   job?: string[]; // 직업
