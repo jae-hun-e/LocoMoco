@@ -1,15 +1,31 @@
-import React, { useId } from 'react';
+import { ChangeEvent, useId, useState } from 'react';
+import { UseFormWatch } from 'react-hook-form';
 import { MGCCreateForm } from '@/app/create/page';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 interface Props {
+  watch: UseFormWatch<MGCCreateForm>;
   onChangeInput: (key: keyof MGCCreateForm, value: string) => void;
   startErrormessage: string | undefined;
   endErrormessage: string | undefined;
 }
-const MGCTime = ({ onChangeInput, startErrormessage, endErrormessage }: Props) => {
+
+const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: Props) => {
   const startId = useId();
+  const [errorMessage, setErrorMessage] = useState(endErrormessage);
+
+  const handelEndTimeValidation = (e: ChangeEvent<HTMLInputElement>) => {
+    const startTime = new Date();
+    const endTime = new Date();
+    const [hours1, minutes1] = watch('startTime').split(':');
+    startTime.setHours(parseInt(hours1, 10), parseInt(minutes1, 10));
+    const [hours2, minutes2] = e.currentTarget.value.split(':');
+    endTime.setHours(parseInt(hours2, 10), parseInt(minutes2, 10));
+
+    if (startTime > endTime) setErrorMessage('시작시간보다 빠를 수 없습니다.');
+    else onChangeInput('endTime', e.currentTarget.value);
+  };
 
   return (
     <section className="flex items-center text-sm font-medium">
@@ -26,6 +42,7 @@ const MGCTime = ({ onChangeInput, startErrormessage, endErrormessage }: Props) =
             <Input
               id={startId}
               type="time"
+              step="600"
               onChange={(e) => onChangeInput('startTime', e.currentTarget.value)}
             />
             {startErrormessage && (
@@ -38,10 +55,11 @@ const MGCTime = ({ onChangeInput, startErrormessage, endErrormessage }: Props) =
           <div className="relative flex w-full">
             <Input
               type="time"
-              onChange={(e) => onChangeInput('endTime', e.currentTarget.value)}
+              step="600"
+              onChange={handelEndTimeValidation}
             />
-            {endErrormessage && (
-              <span className="absolute -bottom-5 text-xs text-red-1">{endErrormessage}</span>
+            {errorMessage && (
+              <span className="absolute top-11 text-xs text-red-1">{errorMessage}</span>
             )}
           </div>
         </Label>

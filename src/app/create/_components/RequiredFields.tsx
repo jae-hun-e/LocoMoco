@@ -68,6 +68,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
         onChangeInput={handleMGCTime}
         startErrormessage={errors.startTime?.message}
         endErrormessage={errors.endTime?.message}
+        watch={watch}
       />
 
       <MGCDate
