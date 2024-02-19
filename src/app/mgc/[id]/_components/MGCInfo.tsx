@@ -18,10 +18,17 @@ interface Props {
   content?: string;
 }
 
-const MGCInfo = (props: Props) => {
-  const { title, location, startTime, endTime, languageTypes, job, ageRange, studyTypes, content } =
-    props;
-
+const MGCInfo = ({
+  title,
+  location,
+  startTime,
+  endTime,
+  languageTypes,
+  job,
+  ageRange,
+  studyTypes,
+  content,
+}: Props) => {
   const optionsMapping = [
     { title: '개발 언어', value: languageTypes },
     { title: '공부 분야', value: studyTypes },
