@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import {
   UseFormGetValues,
   UseFormRegister,
@@ -40,6 +41,7 @@ const ageRangeList = [
 ];
 
 const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
+  const uniqueId = useId();
   const handleMultiSelect = (field: keyof MGCCreateForm, selected: string) => {
     if (selected === 'all') {
       setValue(field, []);
@@ -80,7 +82,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
         >
           <Label
             className="w-100pxr flex-shrink-0"
-            htmlFor={title}
+            htmlFor={`${uniqueId}-${title}`}
           >
             {title}
           </Label>
@@ -99,6 +101,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
             </div>
 
             <Combobox
+              id={`${uniqueId}-${title}`}
               dropdownList={list}
               defaultValue="상관없음"
               placeholder={`${title}를 검색해주세요`}

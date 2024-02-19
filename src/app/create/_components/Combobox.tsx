@@ -14,13 +14,14 @@ import { cn } from '@/libs/utils';
 import { Check, ChevronsUpDown } from 'lucide-react';
 
 interface Props {
+  id?: string;
   dropdownList: { value: string; label: string; id: number }[];
   defaultValue: string;
   placeholder: string;
   onSelected: (selectedValue: string) => void;
 }
 
-const Combobox = ({ defaultValue, dropdownList, placeholder, onSelected }: Props) => {
+const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: Props) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
@@ -37,6 +38,7 @@ const Combobox = ({ defaultValue, dropdownList, placeholder, onSelected }: Props
     >
       <PopoverTrigger asChild>
         <Button
+          id={id ?? ''}
           variant="outline"
           role="combobox"
           aria-expanded={open}
