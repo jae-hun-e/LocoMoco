@@ -1,3 +1,4 @@
+import { useId } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/libs/utils';
 
@@ -8,6 +9,8 @@ interface Props {
   className?: string;
 }
 const CheckboxGroup = ({ checkBoxList, className, onSelected, onDeselected }: Props) => {
+  const uniqueId = useId();
+
   return (
     <div className={cn('flex flex-wrap justify-between', className)}>
       {checkBoxList.map(({ id, value }) => (
@@ -16,11 +19,11 @@ const CheckboxGroup = ({ checkBoxList, className, onSelected, onDeselected }: Pr
           className="flex items-center gap-1"
         >
           <Checkbox
-            id={value}
+            id={`${uniqueId}-${value}`}
             onCheckedChange={(checked) => (checked ? onSelected(value) : onDeselected(value))}
           />
           <label
-            htmlFor={value}
+            htmlFor={`${uniqueId}-${value}`}
             className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
           >
             {value}
