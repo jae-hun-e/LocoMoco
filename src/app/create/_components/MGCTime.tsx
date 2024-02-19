@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import { MGCCreateForm } from '@/app/create/page';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -9,20 +9,22 @@ interface Props {
   endErrormessage: string | undefined;
 }
 const MGCTime = ({ onChangeInput, startErrormessage, endErrormessage }: Props) => {
+  const startId = useId();
+
   return (
     <section className="flex items-center text-sm font-medium">
       <Label
         className="w-100pxr flex-shrink-0"
-        htmlFor="startTime"
+        htmlFor={startId}
       >
         * 모각코 시간
       </Label>
-      <div className="flex grow flex-wrap justify-start gap-2">
+      <div className="flex grow flex-wrap justify-start gap-4">
         <Label className="flex items-center">
           <p className="w-30pxr flex-shrink-0 text-xs">시작</p>
           <div className="relative flex w-full">
             <Input
-              id="startTime"
+              id={startId}
               type="time"
               onChange={(e) => onChangeInput('startTime', e.currentTarget.value)}
             />
