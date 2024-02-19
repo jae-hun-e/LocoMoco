@@ -62,7 +62,7 @@ const MGCInfo = (props: Props) => {
       </div>
 
       <div className="mb-10pxr">
-        <p>{content || '내용 없음'}</p>
+        <p>{content ?? '내용 없음'}</p>
         <div className="mb-10pxr mt-30pxr h-150pxr w-full bg-layer-5">지도</div>
         {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/09]*/}
         <div className="text-sm">장소: {location}</div>
