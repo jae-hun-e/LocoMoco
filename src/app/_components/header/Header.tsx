@@ -8,10 +8,13 @@ interface Props {
 
 const HeaderContainer = ({ children }: Props) => {
   return (
-    <header className="sticky top-0 z-50 flex h-14 w-full items-center justify-between bg-layer-1">
-      <HeaderLeft />
-      {children}
-    </header>
+    <>
+      <header className="fixed top-0 z-50 flex h-14 w-full items-center justify-between bg-layer-1">
+        <HeaderLeft />
+        {children}
+      </header>
+      <div className="mb-14" />
+    </>
   );
 };
 
