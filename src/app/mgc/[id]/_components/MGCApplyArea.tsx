@@ -11,7 +11,7 @@ interface Props {
   like: number;
 }
 const MGCApplyArea = ({ maxParticipantsCount = 1, endTime, like }: Props) => {
-  const [isLike, setLike] = useState<boolean>(false);
+  const [isLike, setLike] = useState(false);
   const handleLike = () => {
     setLike(!isLike);
   };
