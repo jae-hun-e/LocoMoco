@@ -22,7 +22,7 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body
-        className={cn(inter.className, 'relative min-h-svh')}
+        className={cn(inter.className, 'relative h-screen')}
         suppressHydrationWarning
       >
         <Script
@@ -31,8 +31,9 @@ const RootLayout = ({
           strategy="beforeInteractive"
         />
         <Provider>
-          <main className="h-[calc(100vh-50px)] overflow-y-auto px-20pxr scrollbar-hide">
-            {children}
+          <main className="h-[calc(100vh-50px)]">
+            <div className="overflow-y-auto px-20pxr scrollbar-hide">{children}</div>
+            <div className="mb-50pxr" />
           </main>
           <Navbar />
         </Provider>
