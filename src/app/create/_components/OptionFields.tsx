@@ -19,27 +19,33 @@ interface Props {
   getValues: UseFormGetValues<MGCCreateForm>;
   trigger: UseFormTrigger<MGCCreateForm>;
 }
+
+interface ComboBoxMappingProps {
+  title: string;
+  list: { id: number; value: string; label: string }[];
+  field: 'devLanguage' | 'studyField';
+}
+
+const comboBoxMapping: ComboBoxMappingProps[] = [
+  { title: '개발언어', list: devLanguageList, field: 'devLanguage' },
+  { title: '공부분야', list: studyFieldList, field: 'studyField' },
+];
+
+const jobList = ['취준생', '현직자', '기타'];
+const ageRangeList = [
+  { id: 1, value: '10대' },
+  { id: 2, value: '20대' },
+  { id: 3, value: '30대' },
+  { id: 4, value: '40대 이상' },
+];
+
 const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
-  interface ComboBoxMappingProps {
-    title: string;
-    list: { id: number; value: string; label: string }[];
-    field: 'devLanguage' | 'studyField';
-  }
-
-  const comboBoxMapping: ComboBoxMappingProps[] = [
-    { title: '개발언어', list: devLanguageList, field: 'devLanguage' },
-    { title: '공부분야', list: studyFieldList, field: 'studyField' },
-  ];
-
-  const jobList = ['취준생', '현직자', '기타'];
-  const ageRangeList = [
-    { id: 1, value: '10대' },
-    { id: 2, value: '20대' },
-    { id: 3, value: '30대' },
-    { id: 4, value: '40대 이상' },
-  ];
-
   const handleMultiSelect = (field: keyof MGCCreateForm, selected: string) => {
+    if (selected === 'all') {
+      setValue(field, []);
+      trigger(field);
+      return;
+    }
     const selectedList = getValues(field) as string[] | undefined;
 
     setValue(
@@ -84,14 +90,15 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                 <Tag
                   key={selected}
                   onClick={() => handleMultiDeselect(field, selected)}
+                  className="inline-flex items-center gap-1"
                 >
-                  {selected}
+                  <p>{selected}</p>
+                  <p className="text-red-1">x</p>
                 </Tag>
               ))}
             </div>
 
             <Combobox
-              id={title}
               dropdownList={list}
               defaultValue="상관없음"
               placeholder={`${title}를 검색해주세요`}

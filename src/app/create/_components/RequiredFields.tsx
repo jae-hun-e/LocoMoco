@@ -46,7 +46,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     <>
       {/*필수 값 - 장소, 날짜/시간, 신청 종류시간, 신청기한 */}
       {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/15]*/}
-      <section className="mb-10pxr mt-30pxr h-150pxr w-full bg-layer-5">지도</section>
+      <section className="mb-10pxr h-150pxr w-full bg-layer-5">지도</section>
 
       <section className={labelVariants()}>
         <input
@@ -55,7 +55,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
           type="text"
           className="h-10 w-full border-b-2 border-layer-3 bg-transparent text-lg font-bold focus:outline-none focus:ring-0"
         />
-        {errors.title && <span className="text-xs text-red-600">{errors.title.message}</span>}
+        {errors.title && <span className="text-xs text-red-1">{errors.title.message}</span>}
       </section>
 
       <MGCDate
@@ -93,7 +93,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
               })}
             />
             {errors.maxParticipants && (
-              <span className="absolute -bottom-4 text-xs text-red-600">
+              <span className="absolute -bottom-5 text-xs text-red-1">
                 {errors.maxParticipants.message}
               </span>
             )}

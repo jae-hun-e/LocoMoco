@@ -29,7 +29,7 @@ const MGCTime = ({ onChangeInput, startErrormessage, endErrormessage }: Props) =
               onChange={(e) => onChangeInput('startTime', e.currentTarget.value)}
             />
             {startErrormessage && (
-              <span className="absolute -bottom-4 text-xs text-red-600">{startErrormessage}</span>
+              <span className="absolute -bottom-5 text-xs text-red-1">{startErrormessage}</span>
             )}
           </div>
         </Label>
@@ -41,7 +41,7 @@ const MGCTime = ({ onChangeInput, startErrormessage, endErrormessage }: Props) =
               onChange={(e) => onChangeInput('endTime', e.currentTarget.value)}
             />
             {endErrormessage && (
-              <span className="absolute -bottom-4 text-xs text-red-600">{endErrormessage}</span>
+              <span className="absolute -bottom-5 text-xs text-red-1">{endErrormessage}</span>
             )}
           </div>
         </Label>

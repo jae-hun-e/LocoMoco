@@ -22,7 +22,7 @@ const MGCDate = ({ title, onSelectedDay, endDate, errorMessages }: Props) => {
             endDate={endDate}
           />
           {errorMessages && (
-            <span className="absolute -bottom-4 text-xs text-red-600">{errorMessages}</span>
+            <span className="absolute -bottom-5 text-xs text-red-1">{errorMessages}</span>
           )}
         </div>
       </Label>
