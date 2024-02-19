@@ -88,13 +88,13 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
           </Label>
           <div className="w-full">
             <div className="mb-2">
-              {getValues(field)?.map((selected) => (
+              {getValues(field)?.map((selectedField) => (
                 <Tag
-                  key={selected}
-                  onClick={() => handleMultiDeselect(field, selected)}
+                  key={selectedField}
+                  onClick={() => handleMultiDeselect(field, selectedField)}
                   className="inline-flex items-center gap-1"
                 >
-                  <p>{selected}</p>
+                  <p>{selectedField}</p>
                   <p className="text-red-1">x</p>
                 </Tag>
               ))}
