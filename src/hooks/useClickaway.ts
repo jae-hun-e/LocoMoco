@@ -2,8 +2,8 @@ import { useEffect, useRef } from 'react';
 
 const events = ['mousedown', 'touchstart'] as const;
 
-const useClickAway = (handler: (e: MouseEvent | TouchEvent) => void) => {
-  const ref = useRef<HTMLElement>(null);
+const useClickAway = <T extends HTMLElement>(handler: (e: MouseEvent | TouchEvent) => void) => {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
     const element = ref.current;

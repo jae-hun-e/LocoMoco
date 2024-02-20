@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
+import useClickAway from '@/hooks/useClickaway';
 import { Search } from 'lucide-react';
 import AddressList from './AddressList';
 
@@ -14,27 +15,21 @@ const SearchBarFilter = ({
 
   const { data: address } = useAddress(keyword);
 
-  const handleWindowClick = (e: MouseEvent) => {
-    if (e.target && e.target instanceof HTMLElement) {
-      if (!e.target.closest('#input-container')) {
-        setShow(false);
-      }
-    }
+  const handleClickAway = () => {
+    setShow(false);
   };
+
+  const clickAwayRef = useClickAway<HTMLDivElement>(handleClickAway);
 
   const handleAddressClick = (data: Address) => {
     changeCenter(Number(data.latitude), Number(data.longitude));
     setShow(false);
   };
 
-  useEffect(() => {
-    window.addEventListener('click', (e) => handleWindowClick(e));
-    return () => window.removeEventListener('click', handleWindowClick);
-  });
-
   return (
     <div className="w-[90%] pt-20pxr">
       <div
+        ref={clickAwayRef}
         id="input-container"
         className="relative"
       >
