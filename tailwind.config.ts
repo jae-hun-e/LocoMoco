@@ -26,7 +26,7 @@ const config = {
     },
     extend: {
       fontFamily: {
-        sans: ['var(--pretendard)', ...fontFamily.sans], // <--------- 👈
+        sans: ['var(--pretendard)', ...fontFamily.sans],
       },
       spacing: {
         ...range(1, 600).reduce(
