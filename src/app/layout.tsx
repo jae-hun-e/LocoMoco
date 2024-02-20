@@ -8,7 +8,7 @@ import localFont from 'next/font/local';
 import Script from 'next/script';
 
 const pretendard = localFont({
-  src: 'assets/font/PretendardVariable.ttf',
+  src: '../../public/font/PretendardVariable.ttf',
   variable: '--pretendard',
   display: 'swap',
 });
