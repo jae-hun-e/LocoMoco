@@ -139,8 +139,8 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
       </section>
 
       <section>
-        <Label className=" w-100pxr flex-shrink-0">원하는 연령대</Label>
         <CheckboxGroup
+          title={'원하는 연령대'}
           checkBoxList={ageRangeList}
           className="mt-4"
           onSelected={(selected) => handleMultiSelect('ageRange', selected)}
