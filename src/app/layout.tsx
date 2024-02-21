@@ -33,10 +33,13 @@ const RootLayout = ({
           type="text/javascript"
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}
           strategy="beforeInteractive"
-        ></Script>
+        />
         <Provider>
-          <main className="h-[calc(100vh-50px)] overflow-y-auto px-20pxr scrollbar-hide">
-            {children}
+          <main className="h-[calc(100vh-50px)]">
+            <div className="overflow-y-auto px-20pxr scrollbar-hide">
+              {children}
+              <div className="mb-50pxr" />
+            </div>
           </main>
           <Navbar />
         </Provider>
