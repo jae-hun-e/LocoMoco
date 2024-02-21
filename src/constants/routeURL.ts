@@ -2,8 +2,14 @@ export const routes = {
   home: '/',
   create: '/create',
   chat: '/chat',
-  mypage: '/mypage',
   search: '/search',
+  mypage: '/mypage',
+  likeMGC: '/mypage/likeMGC',
+  currentJoinMGC: '/mypage/currentJoinMGC',
+  endJoinMGC: '/mypage/endJoinMGC',
+  receivedReview: '/mypage/receivedReview',
+  sentReview: '/mypage/sentReview',
+  reportList: '/mypage/reportList',
 } as const;
 
 // TODO: 헤더에 필요한 타이틀 url과 맵핑[24/02/14]
