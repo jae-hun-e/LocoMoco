@@ -16,7 +16,7 @@ const BottomSheet = ({ children, open, setOpen }: BottomSheetProps) => {
       onOpenChange={(open) => setOpen(open)}
     >
       <SheetTrigger asChild>
-        <div className="w-100pxr w-full cursor-pointer rounded-t-xl bg-layer-1 py-3">
+        <div className="w-full cursor-pointer rounded-t-xl bg-layer-1 py-3">
           <div className="mx-auto h-1 w-40pxr rounded-full bg-layer-4" />
         </div>
       </SheetTrigger>
