@@ -21,6 +21,7 @@ const ThunderModal = () => {
     title?: string;
     location: string;
   };
+
   const {
     register,
     handleSubmit,
@@ -47,7 +48,7 @@ const ThunderModal = () => {
           </CardHeader>
           <CardContent className="flex-col">
             <div className="mb-5pxr font-bold">끝나는 시간</div>
-            <ul className="mb-15pxr grid w-full grid-cols-3 gap-x-8 gap-y-2">
+            <ul className="mb-15pxr grid w-full grid-cols-3 gap-x-4 gap-y-2">
               {endTimeList.map((item) => (
                 <li
                   key={item}
@@ -62,7 +63,7 @@ const ThunderModal = () => {
                   />
                   <label
                     htmlFor={`radio-${item}`}
-                    className="inline-block flex h-30pxr w-84pxr cursor-pointer items-center justify-center rounded-sm border border-layer-5 text-layer-6 hover:bg-gray-100 hover:text-gray-600 peer-checked:border-blue-600 peer-checked:text-blue-600"
+                    className="inline-block flex h-30pxr w-74pxr cursor-pointer items-center justify-center rounded-sm border border-layer-5 text-layer-6 hover:bg-layer-2 hover:text-gray-600 peer-checked:border-main-1 peer-checked:text-main-1"
                   >
                     +{item}시간
                   </label>
@@ -72,7 +73,6 @@ const ThunderModal = () => {
 
             <input
               className="mb-10pxr w-full p-4pxr"
-              // defaultValue="test"
               {...register('title')}
               placeholder="글 제목을 입력해주세요"
             />
@@ -81,16 +81,22 @@ const ThunderModal = () => {
               {...register('location', { required: true })}
               placeholder="장소를 입력해주세요"
             />
-            {errors.location && <span>This field is required</span>}
+            {errors.location && <span className="text-sm text-red-1">장소를 입력해야 합니다.</span>}
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
               onClick={closeModal}
               variant="outline"
+              className="border-1pxr w-120pxr border-solid border-main-1 text-main-1 hover:border-hover hover:bg-white hover:text-hover"
             >
               취소
             </Button>
-            <Button type="submit">생성</Button>
+            <Button
+              type="submit"
+              className="w-120pxr bg-main-1 hover:bg-hover"
+            >
+              생성
+            </Button>
           </CardFooter>
         </form>
       </Modal>

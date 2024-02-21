@@ -16,7 +16,7 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         >
           <Card
             onClick={(e) => e.stopPropagation()}
-            className="z-100 relative w-350pxr rounded-lg opacity-100 shadow"
+            className="z-100 relative w-310pxr rounded-lg opacity-100 shadow"
           >
             {children}
           </Card>
