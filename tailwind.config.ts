@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 import plugin from 'tailwindcss/plugin';
 
 const pxToRem = (px: number, base = 16) => `${px / base}rem`;
@@ -24,6 +25,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--pretendard)', ...fontFamily.sans],
+      },
       spacing: {
         ...range(1, 600).reduce(
           (accumulate, px) => {
