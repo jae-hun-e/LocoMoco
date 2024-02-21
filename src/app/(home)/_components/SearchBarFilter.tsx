@@ -52,7 +52,7 @@ const SearchBarFilter = ({
         </div>
         {show && (
           <AddressList
-            address={address ?? []}
+            address={address}
             onClick={handleAddressClick}
           />
         )}
