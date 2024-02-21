@@ -6,10 +6,12 @@ interface MakerInfo {
   data: MGCSummary;
 }
 
-const useKakaoMap = (
-  mapMGCData: MGCSummary[],
-  openSheetUpdate: (markerList: MGCSummary[]) => void,
-) => {
+interface KakaoMapProps {
+  mapMGCData: MGCSummary[];
+  openSheetUpdate: (markerList: MGCSummary[]) => void;
+}
+
+const useKakaoMap = ({ mapMGCData, openSheetUpdate }: KakaoMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();

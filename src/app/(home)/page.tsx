@@ -19,7 +19,7 @@ const Home = () => {
     setOpen(true);
   };
 
-  const { mapRef, changeCenter, setCurrentLocation } = useKakaoMap(mapMGCData, openSheetUpdate);
+  const { mapRef, changeCenter, setCurrentLocation } = useKakaoMap({ mapMGCData, openSheetUpdate });
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
