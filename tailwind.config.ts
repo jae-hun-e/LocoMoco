@@ -1,4 +1,5 @@
 import type { Config } from 'tailwindcss';
+import { fontFamily } from 'tailwindcss/defaultTheme';
 import plugin from 'tailwindcss/plugin';
 
 const pxToRem = (px: number, base = 16) => `${px / base}rem`;
@@ -24,6 +25,9 @@ const config = {
       },
     },
     extend: {
+      fontFamily: {
+        sans: ['var(--pretendard)', ...fontFamily.sans],
+      },
       spacing: {
         ...range(1, 600).reduce(
           (accumulate, px) => {
@@ -84,6 +88,10 @@ const config = {
         'main-4': '#C2EAD8',
         'main-5': '#F0FAF5',
         hover: '#39A776',
+
+        'red-1': '#FF5A5A',
+        'red-2': '#FF7A7A',
+        'red-3': '#FF9A9A',
       },
       borderRadius: {
         lg: 'var(--radius)',
