@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import LocationSearch from '@/app/_components/LocationSearch';
 import Modal from '@/app/_components/Modal';
 import { Button } from '@/components/ui/button';
 import {
@@ -10,36 +11,48 @@ import {
 } from '@/components/ui/card';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 
+type ThunderInputs = {
+  endTime: string;
+  title?: string;
+  location: string;
+};
+
 const ThunderModal = () => {
-  const isOpen = useThunderModalStore((state) => state.isOpen);
-  const closeModal = useThunderModalStore((state) => state.closeModal);
-
   const endTimeList = ['1', '2', '3', '5', 'N'];
-
-  type Inputs = {
-    endTime: string;
-    title?: string;
-    location: string;
-  };
 
   const {
     register,
     handleSubmit,
-    // watch,
+    setValue,
+    reset,
+    trigger,
     formState: { errors },
-  } = useForm<Inputs>();
+  } = useForm<ThunderInputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const isOpen = useThunderModalStore((state) => state.isOpen);
+  const closeModal = useThunderModalStore((state) => state.closeModal);
 
+  const handleCloseModal = () => {
+    reset();
     closeModal();
+  };
+
+  const onSubmit: SubmitHandler<ThunderInputs> = (data) => {
+    const postData = {
+      startTime: new Date(),
+      endTime: data.endTime,
+      title: data.title,
+      location: data.location,
+    };
+    console.log(postData);
+    handleCloseModal();
   };
 
   return (
     <>
       <Modal
         isOpen={isOpen}
-        onClose={closeModal}
+        onClose={handleCloseModal}
       >
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardHeader>
@@ -48,7 +61,7 @@ const ThunderModal = () => {
           </CardHeader>
           <CardContent className="flex-col">
             <div className="mb-5pxr font-bold">끝나는 시간</div>
-            <ul className="mb-15pxr grid w-full grid-cols-3 gap-x-4 gap-y-2">
+            <ul className="grid w-full grid-cols-3 gap-x-4 gap-y-2">
               {endTimeList.map((item) => (
                 <li
                   key={item}
@@ -58,34 +71,43 @@ const ThunderModal = () => {
                     id={`radio-${item}`}
                     type="radio"
                     value={item}
-                    {...register('endTime')}
+                    {...register('endTime', { required: true })}
                     className="peer hidden"
                   />
                   <label
                     htmlFor={`radio-${item}`}
-                    className="inline-block flex h-30pxr w-74pxr cursor-pointer items-center justify-center rounded-sm border border-layer-5 text-layer-6 hover:bg-layer-2 hover:text-gray-600 peer-checked:border-main-1 peer-checked:text-main-1"
+                    className="inline-block flex h-30pxr w-74pxr cursor-pointer items-center justify-center rounded-sm border border-layer-5 text-sm text-layer-6 hover:bg-layer-2 hover:text-gray-600 peer-checked:border-main-1 peer-checked:text-main-1"
                   >
                     +{item}시간
                   </label>
                 </li>
               ))}
             </ul>
-
+            {errors.endTime && (
+              <span className="text-sm text-red-1">끝나는 시간을 선택해야 합니다.</span>
+            )}
+            <div className="mb-5pxr mt-15pxr font-bold">제목</div>
             <input
-              className="mb-10pxr w-full p-4pxr"
+              className="w-full rounded-lg border p-10pxr text-sm focus:outline-none"
               {...register('title')}
               placeholder="글 제목을 입력해주세요"
             />
+            <div className="mb-5pxr mt-15pxr font-bold">장소</div>
+            <LocationSearch
+              changeInput={(location) => {
+                setValue('location', location);
+                trigger('location');
+              }}
+            ></LocationSearch>
             <input
-              className="w-full p-4pxr"
+              className="hidden"
               {...register('location', { required: true })}
-              placeholder="장소를 입력해주세요"
             />
-            {errors.location && <span className="text-sm text-red-1">장소를 입력해야 합니다.</span>}
+            {errors.location && <span className="text-sm text-red-1">장소를 선택해야 합니다.</span>}
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
-              onClick={closeModal}
+              onClick={handleCloseModal}
               variant="outline"
               className="border-1pxr w-120pxr border-solid border-main-1 text-main-1 hover:border-hover hover:bg-white hover:text-hover"
             >
