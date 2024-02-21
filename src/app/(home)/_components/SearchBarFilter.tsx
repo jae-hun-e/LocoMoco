@@ -50,12 +50,12 @@ const SearchBarFilter = ({
             className="h-10 w-full text-sm focus:outline-none"
           />
         </div>
-        {show ? (
+        {show && (
           <AddressList
             address={address ?? []}
             onClick={handleAddressClick}
           />
-        ) : null}
+        )}
       </div>
 
       <Filter />
