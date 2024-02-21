@@ -1,5 +1,4 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardFooter } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 interface ModalProps {
   isOpen: boolean;
@@ -17,18 +16,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
         >
           <Card
             onClick={(e) => e.stopPropagation()}
-            className="z-100 relative w-350pxr rounded-lg opacity-100 shadow "
+            className="z-100 relative w-350pxr rounded-lg opacity-100 shadow"
           >
             {children}
-            <CardFooter className="flex justify-between">
-              <Button
-                onClick={onClose}
-                variant="outline"
-              >
-                취소
-              </Button>
-              <Button>생성</Button>
-            </CardFooter>
           </Card>
         </div>
       )}
