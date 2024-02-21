@@ -1,6 +1,7 @@
 import { ReactNode } from 'react';
 import Navbar from '@/app/_components/NavBar';
 import Provider from '@/app/_components/Provider';
+import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/libs/utils';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
@@ -31,7 +32,7 @@ const RootLayout = ({
       >
         <Script
           type="text/javascript"
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=clusterer`}
           strategy="beforeInteractive"
         />
         <Provider>
@@ -42,6 +43,7 @@ const RootLayout = ({
             </div>
           </main>
           <Navbar />
+          <Toaster />
         </Provider>
       </body>
     </html>

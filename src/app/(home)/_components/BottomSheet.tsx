@@ -1,13 +1,22 @@
-import React, { ReactElement } from 'react';
+import React, { ReactNode } from 'react';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+
+interface BottomSheetProps {
+  children: ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
+}
 
 // TODO: 시간 남으면 직접 구현 [24/02/12]
 // TODO: 회의 후에 네브와 바텀시트를 함께 보일지 수정 [24/02/12]
-const BottomSheet = ({ children }: { children: ReactElement }) => {
+const BottomSheet = ({ children, open, setOpen }: BottomSheetProps) => {
   return (
-    <Sheet>
+    <Sheet
+      open={open}
+      onOpenChange={(open) => setOpen(open)}
+    >
       <SheetTrigger asChild>
-        <div className="w-100pxr w-full cursor-pointer rounded-t-xl bg-layer-1 py-3">
+        <div className="w-full cursor-pointer rounded-t-xl bg-layer-1 py-3">
           <div className="mx-auto h-1 w-40pxr rounded-full bg-layer-4" />
         </div>
       </SheetTrigger>
