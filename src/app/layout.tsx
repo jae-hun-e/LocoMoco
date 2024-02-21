@@ -1,13 +1,18 @@
 import { ReactNode } from 'react';
 import Navbar from '@/app/_components/NavBar';
 import Provider from '@/app/_components/Provider';
+import { Toaster } from '@/components/ui/toaster';
 import { cn } from '@/libs/utils';
 import '@/styles/globals.css';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import localFont from 'next/font/local';
 import Script from 'next/script';
 
-const inter = Inter({ subsets: ['latin'] });
+const pretendard = localFont({
+  src: '../../public/font/PretendardVariable.ttf',
+  variable: '--pretendard',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -22,12 +27,12 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body
-        className={cn(inter.className, 'relative h-svh')}
+        className={cn(pretendard.className, 'relative min-h-svh')}
         suppressHydrationWarning
       >
         <Script
           type="text/javascript"
-          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false`}
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=clusterer`}
           strategy="beforeInteractive"
         />
         <Provider>
@@ -38,6 +43,7 @@ const RootLayout = ({
             </div>
           </main>
           <Navbar />
+          <Toaster />
         </Provider>
       </body>
     </html>

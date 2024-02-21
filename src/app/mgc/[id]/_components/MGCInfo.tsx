@@ -10,7 +10,7 @@ interface Props {
   startTime: Date;
   endTime: Date;
 
-  MGCType?: keyof typeof MGCTypes;
+  MGCType?: (typeof MGCTypes)[keyof typeof MGCTypes];
   languageTypes?: (keyof typeof LanguageTypes)[];
   studyTypes?: (keyof typeof StudyTypes)[];
   job?: string[];
