@@ -1,11 +1,11 @@
 import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
-import { MGCSummary } from '@/types/MGCSummary';
+import { MGCDetail } from '@/types/MGCList';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 interface MapMGCDataStore {
-  mapMGCData: MGCSummary[];
-  setMapMGCData: (newMapMGCData: MGCSummary[]) => void;
+  mapMGCData: MGCDetail[];
+  setMapMGCData: (newMapMGCData: MGCDetail[]) => void;
 }
 
 export const DUMMYDATAS = [
@@ -98,8 +98,8 @@ export const DUMMYDATAS = [
 export const useMapMGCDataStore = create<MapMGCDataStore>()(
   devtools(
     (set) => ({
-      mapMGCData: DUMMYDATAS,
-      setMapMGCData: (newMapMGCDatas: MGCSummary[]) => set({ mapMGCData: newMapMGCDatas }),
+      mapMGCData: [],
+      setMapMGCData: (newMapMGCDatas: MGCDetail[]) => set({ mapMGCData: newMapMGCDatas }),
     }),
     {
       name: 'current-mapData',

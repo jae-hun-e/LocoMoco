@@ -1,14 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { MGCSummary } from '@/types/MGCSummary';
+import { MGCDetail } from '@/types/MGCList';
 
 interface MakerInfo {
   marker: kakao.maps.Marker;
-  data: MGCSummary;
+  data: MGCDetail;
 }
 
 interface KakaoMapProps {
-  mapMGCData: MGCSummary[];
-  openSheetUpdate: (markerList: MGCSummary[]) => void;
+  mapMGCData: MGCDetail[];
+  openSheetUpdate: (markerList: MGCDetail[]) => void;
 }
 
 const useKakaoMap = ({ mapMGCData, openSheetUpdate }: KakaoMapProps) => {
@@ -27,10 +27,10 @@ const useKakaoMap = ({ mapMGCData, openSheetUpdate }: KakaoMapProps) => {
     clusterer?.clear();
 
     for (const mgc of mapMGCData) {
-      if (mgc.location.length === 0) continue;
+      if (!mgc.location.latitude && mgc.location.longitude) continue;
 
       const marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(mgc.location[0], mgc.location[1]),
+        position: new kakao.maps.LatLng(mgc.location.latitude, mgc.location.longitude),
         image: markerImage,
       });
 
