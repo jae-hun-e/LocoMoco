@@ -10,3 +10,7 @@ interface TestType {
 export const testQuery = async (id: number) => {
   return await client.get<TestType>({ url: `/posts/${id}` });
 };
+
+export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
+  return await client.get({ url: `/category?type=${type}` });
+};
