@@ -44,8 +44,11 @@ const ageRangeList = [
 
 const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
   const queryClient = useQueryClient();
+
+  // todo: 카테고리로 옵션값 처리하기 [24/02/22]
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
   console.log('category', categoryList);
+
   const uniqueId = useId();
   const handleMultiSelect = (field: keyof MGCCreateForm, selected: string) => {
     if (selected === 'all') {
