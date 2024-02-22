@@ -1,7 +1,7 @@
 'use client';
 
 import { ReactNode } from 'react';
-import { getCategory } from '@/apis/mgc/queryFn';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
@@ -19,11 +19,7 @@ const Provider = ({
     },
   });
 
-  (async () =>
-    await queryClient.prefetchQuery({
-      queryKey: ['category'],
-      queryFn: () => getCategory({ type: 'MOGAKKO' }),
-    }))();
+  (async () => await queryClient.prefetchQuery(getCategoryOptions()))();
 
   return (
     <QueryClientProvider client={queryClient}>

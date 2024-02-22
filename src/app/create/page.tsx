@@ -7,18 +7,26 @@ import MainStyleButton from '@/components/MainStyleButton';
 
 export interface MGCCreateForm {
   title: string;
-  location: string;
+  location: {
+    address: string;
+    latitude: number;
+    longitude: number;
+    city: string;
+  };
   date: Date;
   startTime: string;
   endTime: string;
   deadLine: Date;
   maxParticipants: number;
 
+  content?: string;
+
+  tags?: number[];
+
   devLanguage?: string[];
   studyField?: string[];
   job?: string;
   ageRange?: string[];
-  content?: string;
 }
 
 const CreateMGC = () => {
@@ -34,7 +42,13 @@ const CreateMGC = () => {
     mode: 'onTouched',
     defaultValues: {
       title: '',
-      location: '',
+      // TODO : 위치 넘겨 받기 || 현재 위치 받아오기
+      location: {
+        address: '',
+        latitude: 0,
+        longitude: 0,
+        city: '',
+      },
       maxParticipants: 10,
     },
   });

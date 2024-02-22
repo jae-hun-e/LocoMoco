@@ -13,6 +13,8 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
 import { devLanguageList, studyFieldList } from '@/constants/mgcDummyData';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
   register: UseFormRegister<MGCCreateForm>;
@@ -41,6 +43,9 @@ const ageRangeList = [
 ];
 
 const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+  console.log('category', categoryList);
   const uniqueId = useId();
   const handleMultiSelect = (field: keyof MGCCreateForm, selected: string) => {
     if (selected === 'all') {
