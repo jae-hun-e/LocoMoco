@@ -148,7 +148,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
         />
       </section>
 
-      <section>
+      <section className="mb-2">
         <Label htmlFor="content">
           <p className="mb-4">모각코 내용</p>
           <Textarea

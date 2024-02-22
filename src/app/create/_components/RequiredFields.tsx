@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   FieldErrors,
   UseFormRegister,
@@ -46,7 +45,10 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     <>
       {/*필수 값 - 장소, 날짜/시간, 신청 종류시간, 신청기한 */}
       {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/15]*/}
-      <section className="mb-10pxr h-150pxr w-full bg-layer-5">지도</section>
+      <section
+        className="mb-10pxr h-150pxr w-full bg-layer-5"
+        // ref={mapRef}
+      />
 
       <section className={labelVariants()}>
         <input
