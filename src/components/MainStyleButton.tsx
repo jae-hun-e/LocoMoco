@@ -3,15 +3,16 @@ import { cn } from '@/libs/utils';
 
 interface Props {
   content: string;
+  layout?: string;
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
   readonly children?: ReactNode;
 }
-const MainStyleButton = ({ content, className, children, onClick, disabled }: Props) => {
+const MainStyleButton = ({ layout, content, className, children, onClick, disabled }: Props) => {
   return (
     <div
-      className="my-10pxr flex h-40pxr items-center gap-18pxr"
+      className={cn('my-10pxr flex h-40pxr items-center gap-18pxr', layout)}
       onClick={onClick}
     >
       <button

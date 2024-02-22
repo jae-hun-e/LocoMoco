@@ -7,9 +7,12 @@ export const routes = {
   likeMGC: '/mypage/likeMGC',
   currentJoinMGC: '/mypage/currentJoinMGC',
   endJoinMGC: '/mypage/endJoinMGC',
-  receivedReview: '/mypage/receivedReview',
-  sentReview: '/mypage/sentReview',
+  receivedReviews: '/mypage/receivedReviews',
+  sendReviews: '/mypage/sendReviews',
   reportList: '/mypage/reportList',
+  blackList: '/mypage/blackList',
+  logout: '/mypage/logout',
+  withdrawal: '/mypage/withdrawal',
 } as const;
 
 // TODO: 헤더에 필요한 타이틀 url과 맵핑[24/02/14]

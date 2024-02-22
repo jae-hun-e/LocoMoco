@@ -5,6 +5,7 @@ interface UserInfo {
   birth: string;
   gender: boolean;
   job: string;
+  temperature: number;
 
   likeMGC?: string[];
   currentJoinMGC?: string[];
@@ -24,6 +25,7 @@ export const userInfoDummy: UserInfo = {
   birth: '1997-07-22',
   gender: true,
   job: '취준생',
+  temperature: 36.5,
 
   likeMGC: ['7', '8', '9'],
   currentJoinMGC: ['1', '2', '3'],
