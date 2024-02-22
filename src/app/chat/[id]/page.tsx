@@ -1,23 +1,26 @@
 'use client';
 
-import { useEffect } from 'react';
+import { Fragment, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { Stomp } from '@stomp/stompjs';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
-import SockJS from 'sockjs-client';
 
 const chatData = [
   { username: 'me', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
   {
     username: 'm1',
     profileImg: '/oh.png',
-    message: 'hif',
+    message: 'hifdsfnskjflajsdfljasdfjlasjdflasjdfljadslfjlasjdflsdajf',
     createdAt: new Date(),
   },
   { username: 'm2', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'me', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
+  {
+    username: 'me',
+    profileImg: '/oh.png',
+    message: 'hidjfgljfdslfjdkfjdkjflsj\n\ndfldksjflsdjlfkjdslfkjsdfsdfsdfdsf',
+    createdAt: new Date(),
+  },
   { username: 'm1', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
   { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
   { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
@@ -39,30 +42,36 @@ const chatData = [
 
 const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
   id;
-  useEffect(() => {
-    // Todo: 백엔드와 채팅기능 만들기
-    const connect = () => {
-      const client = Stomp.over(() => {
-        return new SockJS('http://221.145.70.98:48090/api/v1/stomp/chat');
-      });
-      // client.connectHeaders = {
-      //   Authorization: axios.defaults.headers.common.Authorization,
-      // };
-      client.activate(); // 클라이언트 활성화
-      console.log('client connected');
+  const [message, setMessage] = useState('');
 
-      client.onConnect = () => {
-        console.log('success');
-        // subscribe(client, 0, null);
-      };
-      return client;
-    };
-    connect();
-  }, []);
+  const handleLineFeed = (msg: string) =>
+    msg.split('\n').map((line, idx) => {
+      const sliced = [];
+      if (line.length > 40) {
+        while (line.length > 40) {
+          sliced.push(line.slice(0, 40));
+          line = line.slice(40);
+        }
+        sliced.push(line);
+        return sliced.map((line, idx) => (
+          <Fragment key={idx}>
+            {line}
+            <br />
+          </Fragment>
+        ));
+      } else {
+        return (
+          <Fragment key={idx}>
+            {line}
+            <br />
+          </Fragment>
+        );
+      }
+    });
 
   return (
     <section className="flex flex-col">
-      <div className="flex h-[calc(100vh-200px)] flex-col gap-1 overflow-y-scroll">
+      <div className="flex h-[calc(100vh-288px)] flex-col gap-1">
         {chatData.map(({ username, profileImg, message, createdAt }, idx) => {
           const notMe = username !== 'me';
           const commonBorder = 'rounded-bl-lg rounded-br-lg';
@@ -80,6 +89,7 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
                     alt="good"
                     width={30}
                     height={30}
+                    priority
                   />
                 )}
                 <p>{notMe && username}</p>
@@ -92,7 +102,7 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
                       : `${commonBorder} rounded-tl-lg bg-hover text-white`
                   } p-2`}
                 >
-                  {message}
+                  {handleLineFeed(message)}
                 </p>
                 <p className="self-end text-xs text-slate-500">
                   {format(createdAt, 'HH:mm', { locale: ko })}
@@ -102,10 +112,13 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
           );
         })}
       </div>
-      <div className="flex h-150pxr flex-col ">
-        <textarea className="h-80pxr resize-none border-2 border-solid" />
-        <div className="flex justify-between">
-          <Button>Photo</Button>
+      <div className="fixed bottom-50pxr z-50 flex w-[calc(100%-2.5rem)] flex-col justify-between bg-layer-1">
+        <textarea
+          onChange={(e) => setMessage(e.target.value)}
+          className="h-80pxr resize-none border-2 border-solid"
+        />
+        <div className="flex justify-end gap-4">
+          <Button onClick={() => console.log(message)}>Photo</Button>
           <Button>Send</Button>
         </div>
       </div>
