@@ -5,7 +5,7 @@ import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
-const Provider = ({
+const Provider = async ({
   children,
 }: Readonly<{
   children: ReactNode;
@@ -19,7 +19,7 @@ const Provider = ({
     },
   });
 
-  (async () => await queryClient.prefetchQuery(getCategoryOptions()))();
+  await queryClient.prefetchQuery(getCategoryOptions());
 
   return (
     <QueryClientProvider client={queryClient}>
