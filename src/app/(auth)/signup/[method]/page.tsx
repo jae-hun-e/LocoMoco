@@ -51,7 +51,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
         const typeRes = res as ResponseType;
         const token = typeRes.tokenResponseDto.access_token;
         const { userId } = typeRes.userInfoDto;
-        sessionStorage.setItem('userId', userId.toString());
+        localStorage.setItem('userId', userId.toString());
         sessionStorage.setItem(`${method}_token`, token);
       });
     };
