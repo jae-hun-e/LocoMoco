@@ -22,8 +22,8 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
   const requiredFields: { field: keyof MGCCreateForm; message: string }[] = [
     { field: 'title', message: '제목을 입력해주세요.' },
     { field: 'date', message: '모각코 날짜를 선택해주세요.' },
-    { field: 'startTime', message: '시작시간을 선택해주세요.' },
-    { field: 'endTime', message: '종료시간을 선택해주세요.' },
+    { field: 'startTime', message: '시간을 선택해주세요.' },
+    { field: 'endTime', message: '시간을 선택해주세요.' },
     { field: 'deadLine', message: '신청 마감일을 선택해주세요.' },
     { field: 'maxParticipants', message: '참여 인원을 입력해주세요.' },
   ];
@@ -67,7 +67,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
       />
 
       <MGCTime
-        onChangeInput={handleMGCTime}
+        onChangeInput={(selectedTime) => handleMGCTime('endTime', selectedTime)}
         startErrormessage={errors.startTime?.message}
         endErrormessage={errors.endTime?.message}
         watch={watch}

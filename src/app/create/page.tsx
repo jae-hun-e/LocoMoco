@@ -30,6 +30,7 @@ export interface MGCCreateForm {
   ageRange?: string[];
 }
 
+// TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = () => {
   const {
     register,
@@ -45,10 +46,10 @@ const CreateMGC = () => {
       title: '',
       // TODO : 위치 넘겨 받기 || 현재 위치 받아오기
       location: {
-        address: '',
-        latitude: 0,
-        longitude: 0,
-        city: '',
+        address: '경기도 부천시 소사로 114번길 5',
+        latitude: 31.4295839,
+        longitude: 123.123456789,
+        city: '서초동',
       },
       maxParticipants: 10,
     },
