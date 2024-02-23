@@ -5,6 +5,12 @@ interface Props {
   setJob: (job: string) => void;
 }
 
+const job = [
+  { value: 'developer', label: '현직자' },
+  { value: 'job_seeker', label: '취준생' },
+  { value: 'etc', label: '기타' },
+];
+
 const Job = ({ setJob }: Props) => {
   return (
     <div className="flex flex-col gap-1">
@@ -14,27 +20,18 @@ const Job = ({ setJob }: Props) => {
         defaultValue="developer"
         onValueChange={(job) => setJob(job)}
       >
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            value="developer"
-            id="developer"
-          />
-          <Label htmlFor="worker">현직자</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            value="job_seeker"
-            id="job_seeker"
-          />
-          <Label htmlFor="ready">취준생</Label>
-        </div>
-        <div className="flex items-center space-x-2">
-          <RadioGroupItem
-            value="etc"
-            id="etc"
-          />
-          <Label htmlFor="etc">기타</Label>
-        </div>
+        {job.map(({ value, label }) => (
+          <div
+            className="flex items-center space-x-2"
+            key={value}
+          >
+            <RadioGroupItem
+              value={value}
+              id={value}
+            />
+            <Label htmlFor={value}>{label}</Label>
+          </div>
+        ))}
       </RadioGroup>
     </div>
   );
