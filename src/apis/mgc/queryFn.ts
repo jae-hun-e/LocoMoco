@@ -1,16 +1,5 @@
 import client from '@/apis/core';
 
-interface TestType {
-  body: string;
-  id: number;
-  title: string;
-  userId: number;
-}
-
-export const testQuery = async (id: number) => {
-  return await client.get<TestType>({ url: `/posts/${id}` });
-};
-
 interface Category {
   data: {
     category_id: number;
@@ -29,3 +18,23 @@ export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
 
   return data;
 };
+
+interface CreateMGCReq {
+  creatorId: number;
+  title: string;
+  location: {
+    address: string;
+    latitude: number;
+    longitude: number;
+    city: string;
+  };
+  startTime: string;
+  endTime: string;
+  deadline: string;
+  maxParticipants: number;
+  content?: string;
+  tags?: number[];
+}
+
+export const createMGC = async (createMGCReq: CreateMGCReq) =>
+  await client.put({ url: '/mogakko/map', data: createMGCReq });

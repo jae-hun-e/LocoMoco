@@ -2,6 +2,7 @@
 
 import { useForm } from 'react-hook-form';
 import { TagType } from '@/apis/mgc/queryFn';
+import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
@@ -51,6 +52,8 @@ const CreateMGC = () => {
     },
   });
 
+  const { createMGC } = useCreateMGC();
+
   const handleCreateMGC = ({
     title,
     date,
@@ -91,7 +94,8 @@ const CreateMGC = () => {
       content,
       tags,
     };
-    console.log('req', req);
+
+    createMGC(req);
   };
 
   return (
