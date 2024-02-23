@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { ComboboxType } from '@/app/create/page';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -18,16 +19,16 @@ interface Props {
   dropdownList: { tag_id: number; tag_name: string }[];
   defaultValue: string;
   placeholder: string;
-  onSelected: (selectedValue: string) => void;
+  onSelected: (selectedValue: ComboboxType) => void;
 }
 
 const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: Props) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const handleSelected = (currentValue: string) => {
+  const handleSelected = (currentValue: string, tag_id: number) => {
     setValue(currentValue === value ? currentValue : '');
-    onSelected(currentValue);
+    onSelected({ tag_id, tag_name: currentValue });
     setOpen(false);
   };
 
@@ -55,19 +56,16 @@ const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: P
           <CommandInput placeholder={placeholder} />
           <CommandEmpty>No dropdownItem found.</CommandEmpty>
           <CommandGroup>
-            {dropdownList.map((dropdownItem) => (
+            {dropdownList.map(({ tag_id, tag_name }) => (
               <CommandItem
-                key={dropdownItem.tag_id}
-                value={dropdownItem.tag_name}
-                onSelect={handleSelected}
+                key={tag_id}
+                value={tag_name}
+                onSelect={(currentValue) => handleSelected(currentValue, tag_id)}
               >
                 <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value === dropdownItem.tag_name ? 'opacity-100' : 'opacity-0',
-                  )}
+                  className={cn('mr-2 h-4 w-4', value === tag_name ? 'opacity-100' : 'opacity-0')}
                 />
-                {dropdownItem.tag_name}
+                {tag_name}
               </CommandItem>
             ))}
           </CommandGroup>

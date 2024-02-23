@@ -22,7 +22,12 @@ export interface MGCCreateForm {
 
   content?: string;
 
-  tags?: string[];
+  tags?: ComboboxType[];
+}
+
+export interface ComboboxType {
+  tag_id: number;
+  tag_name: string;
 }
 
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
@@ -51,7 +56,22 @@ const CreateMGC = () => {
   });
 
   const handleCreateMGC = (data: MGCCreateForm) => {
-    const { title, date, startTime, endTime, deadLine, maxParticipants, content } = data;
+    const {
+      title,
+      date,
+      startTime,
+      endTime,
+      deadLine,
+      maxParticipants,
+      content,
+      location,
+      ...rest
+    } = data;
+
+    // TODO: 위치 정보 받아오기 [24/02/23]
+    console.log('location', location);
+
+    const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
 
     const [newStartTime, newEndTime] = [startTime, endTime].map((time) => {
       const [h, m] = time.split(':').map(Number);
@@ -61,7 +81,7 @@ const CreateMGC = () => {
       return toKoreanTimeZone(newTime);
     });
 
-    const res = {
+    const req = {
       creatorId: 4,
       title,
       location: {
@@ -75,9 +95,9 @@ const CreateMGC = () => {
       deadline: toKoreanTimeZone(deadLine),
       maxParticipants,
       content,
-      tags: [1, 2, 3],
+      tags,
     };
-    console.log('res', res);
+    console.log('req', req);
   };
 
   return (

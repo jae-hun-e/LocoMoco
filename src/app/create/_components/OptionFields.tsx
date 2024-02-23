@@ -8,7 +8,7 @@ import {
 import Tag from '@/app/_components/Tag';
 import CheckboxGroup from '@/app/create/_components/CheckboxGroup';
 import Combobox from '@/app/create/_components/Combobox';
-import { MGCCreateForm } from '@/app/create/page';
+import { ComboboxType, MGCCreateForm } from '@/app/create/page';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,18 +27,18 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
-  const handleMultiSelect = (field: keyof MGCCreateForm, selected: string) => {
-    if (selected === 'all') {
+  const handleMultiSelect = (field: keyof MGCCreateForm, selected: ComboboxType) => {
+    if (selected.tag_name === 'all') {
       setValue(field, []);
       trigger(field);
       return;
     }
-    const selectedList = getValues(field) as string[] | undefined;
+    const selectedList = getValues(field) as ComboboxType[] | undefined;
 
     setValue(
       field,
       selectedList
-        ? selectedList.includes(selected)
+        ? selectedList.find(({ tag_name }) => tag_name === selected.tag_name)
           ? selectedList
           : [...selectedList, selected]
         : [selected],
@@ -47,13 +47,23 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
     trigger(field);
   };
 
-  const handleMultiDeselect = (field: keyof MGCCreateForm, deselected: string) => {
-    const selectedList = getValues(field) as string[] | undefined;
+  const handleMultiDeselect = (field: keyof MGCCreateForm, deselected: number) => {
+    const selectedList = getValues(field) as ComboboxType[] | undefined;
 
     if (!selectedList) return;
 
-    const updatedList = selectedList.filter((item) => item !== deselected);
+    const updatedList = selectedList.filter(({ tag_id }) => tag_id !== deselected);
     setValue(field, updatedList);
+    trigger(field);
+  };
+
+  const handleRadioSelect = (
+    field: keyof MGCCreateForm,
+    selected: string,
+    tags: ComboboxType[],
+  ) => {
+    const selectedTag = tags.filter(({ tag_name }) => tag_name === selected);
+    setValue(field, selectedTag);
     trigger(field);
   };
 
@@ -77,16 +87,18 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                 </Label>
                 <div className="w-full">
                   <div className="mb-2">
-                    {(getValues(categoryNameCopy) as string[])?.map((selectedField) => (
-                      <Tag
-                        key={selectedField}
-                        onClick={() => handleMultiDeselect(categoryNameCopy, selectedField)}
-                        className="inline-flex items-center gap-1"
-                      >
-                        <p>{selectedField}</p>
-                        <p className="text-red-1">x</p>
-                      </Tag>
-                    ))}
+                    {(getValues(categoryNameCopy) as ComboboxType[])?.map(
+                      ({ tag_id, tag_name }) => (
+                        <Tag
+                          key={tag_id}
+                          onClick={() => handleMultiDeselect(categoryNameCopy, tag_id)}
+                          className="inline-flex items-center gap-1"
+                        >
+                          <p>{tag_name}</p>
+                          <p className="text-red-1">x</p>
+                        </Tag>
+                      ),
+                    )}
                   </div>
 
                   <Combobox
@@ -119,7 +131,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                 <Label className="w-100pxr flex-shrink-0">현재신분</Label>
                 <RadioGroup
                   defaultValue="상관 없음"
-                  onValueChange={(value) => setValue(categoryNameCopy, value)}
+                  onValueChange={(value) => handleRadioSelect(categoryNameCopy, value, tags)}
                   className="mt-4 flex grow flex-wrap justify-around"
                 >
                   {tags.map(({ tag_name, tag_id }) => (

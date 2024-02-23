@@ -1,13 +1,14 @@
 import { useId } from 'react';
+import { ComboboxType } from '@/app/create/page';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/libs/utils';
 
 interface Props {
   title: string;
-  checkBoxList: { tag_id: number; tag_name: string }[];
-  onSelected: (checked: string) => void;
-  onDeselected: (checked: string) => void;
+  checkBoxList: ComboboxType[];
+  onSelected: (checked: ComboboxType) => void;
+  onDeselected: (checked: number) => void;
   className?: string;
 }
 
@@ -26,7 +27,7 @@ const CheckboxGroup = ({ title, checkBoxList, className, onSelected, onDeselecte
             <Checkbox
               id={`${uniqueId}-${tag_name}`}
               onCheckedChange={(checked) =>
-                checked ? onSelected(tag_name) : onDeselected(tag_name)
+                checked ? onSelected({ tag_id, tag_name }) : onDeselected(tag_id)
               }
             />
             <label
