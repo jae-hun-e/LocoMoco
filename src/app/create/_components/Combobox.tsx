@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { ComboboxType } from '@/app/create/page';
+import { TagType } from '@/apis/mgc/queryFn';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -19,7 +19,7 @@ interface Props {
   dropdownList: { tag_id: number; tag_name: string }[];
   defaultValue: string;
   placeholder: string;
-  onSelected: (selectedValue: ComboboxType) => void;
+  onSelected: (selectedValue: TagType) => void;
 }
 
 const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: Props) => {

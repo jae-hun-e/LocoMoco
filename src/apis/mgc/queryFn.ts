@@ -16,11 +16,13 @@ interface Category {
     category_id: number;
     category_name: string;
     input_type: 'COMBOBOX' | 'CHECKBOX' | 'RADIOGROUP';
-    tags: {
-      tag_id: number;
-      tag_name: string;
-    }[];
+    tags: TagType[];
   }[];
+}
+
+export interface TagType {
+  tag_id: number;
+  tag_name: string;
 }
 export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   const { data } = await client.get<Category>({ url: `/category?type=${type}` });

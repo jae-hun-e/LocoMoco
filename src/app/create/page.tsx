@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { TagType } from '@/apis/mgc/queryFn';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
@@ -22,12 +23,7 @@ export interface MGCCreateForm {
 
   content?: string;
 
-  tags?: ComboboxType[];
-}
-
-export interface ComboboxType {
-  tag_id: number;
-  tag_name: string;
+  tags?: TagType[];
 }
 
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
@@ -55,23 +51,19 @@ const CreateMGC = () => {
     },
   });
 
-  const handleCreateMGC = (data: MGCCreateForm) => {
-    const {
-      title,
-      date,
-      startTime,
-      endTime,
-      deadLine,
-      maxParticipants,
-      content,
-      location,
-      ...rest
-    } = data;
-
+  const handleCreateMGC = ({
+    title,
+    date,
+    startTime,
+    endTime,
+    deadLine,
+    maxParticipants,
+    content,
+    location,
+    ...rest
+  }: MGCCreateForm) => {
     // TODO: 위치 정보 받아오기 [24/02/23]
     console.log('location', location);
-
-    const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
 
     const [newStartTime, newEndTime] = [startTime, endTime].map((time) => {
       const [h, m] = time.split(':').map(Number);
@@ -80,6 +72,8 @@ const CreateMGC = () => {
       newTime.setMinutes(m);
       return toKoreanTimeZone(newTime);
     });
+
+    const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
 
     const req = {
       creatorId: 4,
@@ -93,7 +87,7 @@ const CreateMGC = () => {
       startTime: newStartTime,
       endTime: newEndTime,
       deadline: toKoreanTimeZone(deadLine),
-      maxParticipants,
+      maxParticipants: Number(maxParticipants),
       content,
       tags,
     };

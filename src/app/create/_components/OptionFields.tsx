@@ -5,10 +5,11 @@ import {
   UseFormSetValue,
   UseFormTrigger,
 } from 'react-hook-form';
+import { TagType } from '@/apis/mgc/queryFn';
 import Tag from '@/app/_components/Tag';
 import CheckboxGroup from '@/app/create/_components/CheckboxGroup';
 import Combobox from '@/app/create/_components/Combobox';
-import { ComboboxType, MGCCreateForm } from '@/app/create/page';
+import { MGCCreateForm } from '@/app/create/page';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';
@@ -27,13 +28,13 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
-  const handleMultiSelect = (field: keyof MGCCreateForm, selected: ComboboxType) => {
+  const handleMultiSelect = (field: keyof MGCCreateForm, selected: TagType) => {
     if (selected.tag_name === 'all') {
       setValue(field, []);
       trigger(field);
       return;
     }
-    const selectedList = getValues(field) as ComboboxType[] | undefined;
+    const selectedList = getValues(field) as TagType[] | undefined;
 
     setValue(
       field,
@@ -48,7 +49,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
   };
 
   const handleMultiDeselect = (field: keyof MGCCreateForm, deselected: number) => {
-    const selectedList = getValues(field) as ComboboxType[] | undefined;
+    const selectedList = getValues(field) as TagType[] | undefined;
 
     if (!selectedList) return;
 
@@ -57,11 +58,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
     trigger(field);
   };
 
-  const handleRadioSelect = (
-    field: keyof MGCCreateForm,
-    selected: string,
-    tags: ComboboxType[],
-  ) => {
+  const handleRadioSelect = (field: keyof MGCCreateForm, selected: string, tags: TagType[]) => {
     const selectedTag = tags.filter(({ tag_name }) => tag_name === selected);
     setValue(field, selectedTag);
     trigger(field);
@@ -87,18 +84,16 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                 </Label>
                 <div className="w-full">
                   <div className="mb-2">
-                    {(getValues(categoryNameCopy) as ComboboxType[])?.map(
-                      ({ tag_id, tag_name }) => (
-                        <Tag
-                          key={tag_id}
-                          onClick={() => handleMultiDeselect(categoryNameCopy, tag_id)}
-                          className="inline-flex items-center gap-1"
-                        >
-                          <p>{tag_name}</p>
-                          <p className="text-red-1">x</p>
-                        </Tag>
-                      ),
-                    )}
+                    {(getValues(categoryNameCopy) as TagType[])?.map(({ tag_id, tag_name }) => (
+                      <Tag
+                        key={tag_id}
+                        onClick={() => handleMultiDeselect(categoryNameCopy, tag_id)}
+                        className="inline-flex items-center gap-1"
+                      >
+                        <p>{tag_name}</p>
+                        <p className="text-red-1">x</p>
+                      </Tag>
+                    ))}
                   </div>
 
                   <Combobox

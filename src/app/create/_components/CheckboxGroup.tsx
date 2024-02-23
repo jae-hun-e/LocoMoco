@@ -1,13 +1,13 @@
 import { useId } from 'react';
-import { ComboboxType } from '@/app/create/page';
+import { TagType } from '@/apis/mgc/queryFn';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/libs/utils';
 
 interface Props {
   title: string;
-  checkBoxList: ComboboxType[];
-  onSelected: (checked: ComboboxType) => void;
+  checkBoxList: TagType[];
+  onSelected: (checked: TagType) => void;
   onDeselected: (checked: number) => void;
   className?: string;
 }
@@ -18,7 +18,7 @@ const CheckboxGroup = ({ title, checkBoxList, className, onSelected, onDeselecte
   return (
     <>
       <Label className=" w-100pxr flex-shrink-0">{title}</Label>
-      <div className={cn('flex flex-wrap justify-between', className)}>
+      <div className={cn('flex flex-wrap justify-around', className)}>
         {checkBoxList.map(({ tag_id, tag_name }) => (
           <div
             key={`${uniqueId}-${tag_id}`}
