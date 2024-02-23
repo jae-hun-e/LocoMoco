@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
-import { toKorenTimeZone } from '@/utils/toKorenTimeZone';
+import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
 export interface MGCCreateForm {
   title: string;
@@ -22,12 +22,7 @@ export interface MGCCreateForm {
 
   content?: string;
 
-  tags?: number[];
-
-  devLanguage?: string[];
-  studyField?: string[];
-  job?: string;
-  ageRange?: string[];
+  tags?: string[];
 }
 
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
@@ -63,7 +58,7 @@ const CreateMGC = () => {
       const newTime = new Date(date);
       newTime.setHours(h);
       newTime.setMinutes(m);
-      return toKorenTimeZone(newTime);
+      return toKoreanTimeZone(newTime);
     });
 
     const res = {
@@ -77,7 +72,7 @@ const CreateMGC = () => {
       },
       startTime: newStartTime,
       endTime: newEndTime,
-      deadline: toKorenTimeZone(deadLine),
+      deadline: toKoreanTimeZone(deadLine),
       maxParticipants,
       content,
       tags: [1, 2, 3],

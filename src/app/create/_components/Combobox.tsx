@@ -15,7 +15,7 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 
 interface Props {
   id?: string;
-  dropdownList: { value: string; label: string; id: number }[];
+  dropdownList: { tag_id: number; tag_name: string }[];
   defaultValue: string;
   placeholder: string;
   onSelected: (selectedValue: string) => void;
@@ -26,7 +26,7 @@ const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: P
   const [value, setValue] = useState('');
 
   const handleSelected = (currentValue: string) => {
-    setValue(currentValue === value ? '' : currentValue);
+    setValue(currentValue === value ? currentValue : '');
     onSelected(currentValue);
     setOpen(false);
   };
@@ -45,7 +45,7 @@ const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: P
           className="w-full justify-between"
         >
           {value
-            ? dropdownList.find((dropdownItem) => dropdownItem.value === value)?.label
+            ? dropdownList.find((dropdownItem) => dropdownItem.tag_name === value)?.tag_name
             : defaultValue}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -57,17 +57,17 @@ const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: P
           <CommandGroup>
             {dropdownList.map((dropdownItem) => (
               <CommandItem
-                key={dropdownItem.value}
-                value={dropdownItem.value}
+                key={dropdownItem.tag_id}
+                value={dropdownItem.tag_name}
                 onSelect={handleSelected}
               >
                 <Check
                   className={cn(
                     'mr-2 h-4 w-4',
-                    value === dropdownItem.value ? 'opacity-100' : 'opacity-0',
+                    value === dropdownItem.tag_name ? 'opacity-100' : 'opacity-0',
                   )}
                 />
-                {dropdownItem.label}
+                {dropdownItem.tag_name}
               </CommandItem>
             ))}
           </CommandGroup>
