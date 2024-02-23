@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import {
   FieldErrors,
   UseFormRegister,
@@ -27,9 +28,6 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     { field: 'deadLine', message: '신청 마감일을 선택해주세요.' },
     { field: 'maxParticipants', message: '참여 인원을 입력해주세요.' },
   ];
-  requiredFields.forEach(({ field, message }) => {
-    register(field, { required: message });
-  });
 
   const handleMGCDate = (field: keyof MGCCreateForm, selectedDay: Date) => {
     setValue(field, selectedDay);
@@ -40,6 +38,12 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     setValue(field, value);
     trigger(field);
   };
+
+  useEffect(() => {
+    requiredFields.forEach(({ field, message }) => {
+      register(field, { required: message });
+    });
+  }, []);
 
   return (
     <>
@@ -67,7 +71,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
       />
 
       <MGCTime
-        onChangeInput={(selectedTime) => handleMGCTime('endTime', selectedTime)}
+        onChangeInput={(field, selectedTime) => handleMGCTime(field, selectedTime)}
         startErrormessage={errors.startTime?.message}
         endErrormessage={errors.endTime?.message}
         watch={watch}
