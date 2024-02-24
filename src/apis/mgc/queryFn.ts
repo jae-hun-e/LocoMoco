@@ -26,6 +26,6 @@ export interface TagType {
 }
 export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   const { data } = await client.get<Category>({ url: `/category?type=${type}` });
-  console.log('data', data);
+
   return data;
 };

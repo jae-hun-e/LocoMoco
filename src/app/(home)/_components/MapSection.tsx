@@ -59,7 +59,7 @@ const MapSection = ({ data }: MGCListType) => {
           open={open}
           setOpen={setOpen}
         >
-          <MGCList data={MGCDataList ?? []} />
+          <MGCList data={MGCDataList} />
         </BottomSheet>
       </div>
     </>

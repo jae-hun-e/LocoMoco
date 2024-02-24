@@ -12,7 +12,7 @@ const Home = () => {
       <section className="flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
-      <MapSection data={data?.data ?? []} />
+      <MapSection data={data ?? []} />
     </div>
   );
 };
