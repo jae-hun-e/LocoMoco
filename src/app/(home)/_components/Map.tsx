@@ -1,5 +1,5 @@
 import { ForwardedRef, forwardRef, useCallback, useEffect, useRef } from 'react';
-import { toast } from '@/components/ui/use-toast';
+import useGeolocation from '@/hooks/useGeolocation';
 
 interface MapProps {
   setCurrentLocation: (a: number, b: number) => void;
@@ -12,25 +12,14 @@ const Map = forwardRef(
     { setCurrentLocation, map, createPositionMarker }: MapProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
-    const onSuccess = useCallback(
-      (location: { coords: { latitude: number; longitude: number } }) => {
-        setCurrentLocation(location.coords.latitude, location.coords.longitude);
-      },
-      [setCurrentLocation],
-    );
-
-    const onError = useCallback((message?: string) => {
-      toast({
-        description: message ?? '💡 위치정보를 허용하지 않으면 현재 위치가 표시되지 않습니다!',
-      });
-    }, []);
+    const location = useGeolocation();
 
     useEffect(() => {
-      if (!('geolocation' in navigator)) {
-        onError('gps 추적이 불가능합니다.');
+      if (location.loaded) {
+        const { lat, lng } = location.coordinates!;
+        setCurrentLocation(lat, lng);
       }
-      navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
-    }, [onError, onSuccess]);
+    });
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
