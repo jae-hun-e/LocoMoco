@@ -4,7 +4,7 @@ import client from '../core';
 
 export const mgcList = async (tags: number[]) => {
   return await client.get<MGCList>({
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/mogakko/map`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/mogakko/map`,
     params: { tags },
     paramsSerializer: (params) => {
       return qs.stringify(params, { arrayFormat: 'repeat' });
