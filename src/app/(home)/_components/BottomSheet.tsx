@@ -30,8 +30,8 @@ const BottomSheet = ({ children, open, setOpen }: BottomSheetProps) => {
           목록보기
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="main-bottom-sheet z-10 flex h-[70svh] flex-col gap-0 overflow-y-auto rounded-t-xl p-0 px-12pxr py-7pxr outline-none after:h-0">
-        <div className="overflow-y-auto">{children}</div>
+      <DrawerContent className="main-bottom-sheet z-10 flex h-[70svh] flex-col gap-0 overflow-y-auto rounded-t-xl p-0 outline-none">
+        <div className="overflow-y-auto px-20pxr pb-50pxr">{children}</div>
       </DrawerContent>
     </Drawer>
   );

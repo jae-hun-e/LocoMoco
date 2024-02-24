@@ -4,16 +4,16 @@ import MGCList from '@/app/_components/MGCList/MGCList';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useRenderMarkerByData from '@/hooks/useRenderMarkerByData';
 import useCenterPosition from '@/store/useCenterPosition';
-import { MGCDetail, MGCList as MGCListType } from '@/types/MGCList';
+import { MGCList as MGCListType, MGCSummary } from '@/types/MGCList';
 import BottomSheet from './BottomSheet';
 import Map from './Map';
 
 const MapSection = ({ data }: MGCListType) => {
-  const [MGCDataList, setMGCDataList] = useState<MGCDetail[]>([]);
+  const [MGCDataList, setMGCDataList] = useState<MGCSummary[]>([]);
   const [open, setOpen] = useState(false);
   const { centerPosition } = useCenterPosition();
 
-  const openSheetUpdate = (mapData: MGCDetail[]) => {
+  const openSheetUpdate = (mapData: MGCSummary[]) => {
     setMGCDataList(mapData);
     setOpen(true);
   };

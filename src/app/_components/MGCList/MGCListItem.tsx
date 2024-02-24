@@ -1,38 +1,44 @@
 'use client';
 
 import Tag from '@/app/_components/Tag';
-import { LanguageTypes, MGCTypes, StudyTypes } from '@/constants/types';
-import { formatDistance } from 'date-fns';
-import { ko } from 'date-fns/locale';
+import { MGCTypes } from '@/constants/types';
+import { MGCSummary } from '@/types/MGCList';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
+import { useQueryClient } from '@tanstack/react-query';
 
-export interface MGCSummary {
-  _id: number;
-  title: string;
-  location: string;
-  createAt: Date;
-  hits: number; // 조회 수
-  likeCount: number;
-  // Todo: 바뀐 데이터 형식에 따라 변경 필요 [2024/02/13]
-  category?: undefined;
-  currentParticipantsCount: number;
-  maxParticipantsCount: number;
-  MGCType?: (typeof MGCTypes)[keyof typeof MGCTypes];
-  languageTypes?: (keyof typeof LanguageTypes)[];
-  studyTypes?: (keyof typeof StudyTypes)[];
-}
+// import { formatDistance } from 'date-fns';
+// import { ko } from 'date-fns/locale';
 
 interface MGCListItemPropsType {
   data: MGCSummary;
 }
 
 const MGCListItem = ({ data }: MGCListItemPropsType) => {
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey)!;
+
+  const MGCTypeTag = categoryList[0].tags;
+  const tagInfo = [...categoryList[1].tags, ...categoryList[2].tags];
+
   const handleMGCItemClick = () => {
-    console.log(data._id);
+    console.log(data.id);
   };
 
-  const TagsUI = (types: string[] | undefined) => {
-    return types && types.map((tagItem, idx) => <Tag key={idx}>{tagItem}</Tag>);
+  const TagsUI = (tagIds: number[] | undefined) => {
+    return (
+      tagIds &&
+      tagIds.map((tagId) => {
+        const tag = tagInfo.find((tag) => tag.tag_id === tagId);
+
+        return <Tag key={tag?.tag_id}>{tag?.tag_name}</Tag>;
+      })
+    );
   };
+
+  const thunderMGCId = MGCTypeTag.find((MGCTag) => MGCTag.tag_name === MGCTypes.ThunderMGC)?.tag_id;
+  const LocationNotConfirmedId = MGCTypeTag.find(
+    (MGCTag) => MGCTag.tag_name === MGCTypes.LocationNotConfirmed,
+  )?.tag_id;
 
   return (
     <li
@@ -42,28 +48,26 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <span className="mr-10pxr font-bold">
-            {data.MGCType === MGCTypes.ThunderMGC ? '⚡️ ' : ''}
+            {data.tags.includes(thunderMGCId!) ? '⚡️ ' : ''}
             {data.title}
           </span>
           <span className="flex items-center">
-            {data.MGCType === MGCTypes.LocationNotConfirmed && <Tag theme="gray">장소 미정</Tag>}
+            {data.tags.includes(LocationNotConfirmedId!) && <Tag theme="gray">장소 미정</Tag>}
           </span>
         </div>
         <span className="font-bold text-main-1">
-          참가인원 {data.currentParticipantsCount}/{data.maxParticipantsCount}
+          참가인원 {data.curParticipants}/{data.maxParticipants}
         </span>
       </div>
       <div className="text-layer-5">
-        {data.location}
+        {data.location.address}
         <span className="mx-1">·</span>
-        {formatDistance(data.createAt, new Date(), { addSuffix: true, locale: ko })}
+        {/* TODO: 서버 데이터에 createdAt생기면 Date연산 하기 [24.02.24] */}
+        {/* {formatDistance(data.createAt, new Date(), { addSuffix: true, locale: ko })} */}
         <span className="mx-1">·</span>조회
-        {data.hits}
+        {data.views}
       </div>
-      <div className="leading-7">
-        {TagsUI(data.languageTypes)}
-        {TagsUI(data.studyTypes)}
-      </div>
+      <div className="leading-7">{TagsUI(data.tags)}</div>
     </li>
   );
 };
