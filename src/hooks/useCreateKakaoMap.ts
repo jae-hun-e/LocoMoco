@@ -1,6 +1,14 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-const useCreateKakaoMap = (showCurrentLocation: boolean) => {
+interface CreateKakaoMapProps {
+  showCurrentLocation: boolean;
+  isCustomlevelControl?: boolean;
+}
+
+const useCreateKakaoMap = ({
+  showCurrentLocation,
+  isCustomlevelControl = false,
+}: CreateKakaoMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
@@ -54,6 +62,22 @@ const useCreateKakaoMap = (showCurrentLocation: boolean) => {
     [map],
   );
 
+  const zoomIn = () => {
+    if (map) {
+      const level = map.getLevel();
+
+      map.setLevel(level - 1);
+    }
+  };
+
+  const zoomOut = () => {
+    if (map) {
+      const level = map.getLevel();
+
+      map.setLevel(level + 1);
+    }
+  };
+
   useEffect(() => {
     window.kakao.maps.load(function () {
       if (mapRef.current != null) {
@@ -65,8 +89,10 @@ const useCreateKakaoMap = (showCurrentLocation: boolean) => {
 
         const createdMap = new window.kakao.maps.Map(mapRef.current, mapOption);
         // TODO: 커스텀 컨트롤러 사용할지 논의 후 변경 [24.02.14]
-        const zoomControl = new kakao.maps.ZoomControl();
-        createdMap.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);
+        if (!isCustomlevelControl) {
+          const zoomControl = new kakao.maps.ZoomControl();
+          createdMap.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);
+        }
 
         const clusterer = new kakao.maps.MarkerClusterer({
           map: createdMap, // 마커들을 클러스터로 관리하고 표시할 지도 객체
@@ -93,6 +119,8 @@ const useCreateKakaoMap = (showCurrentLocation: boolean) => {
     createMarker,
     setCurrentLocation,
     changeCenter,
+    zoomIn,
+    zoomOut,
   };
 };
 
