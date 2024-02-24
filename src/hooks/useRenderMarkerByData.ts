@@ -1,14 +1,14 @@
 import { useCallback } from 'react';
-import { MGCDetail } from '@/types/MGCList';
+import { MGCSummary } from '@/types/MGCList';
 
 interface MakerInfo {
   marker: kakao.maps.Marker;
-  data: MGCDetail;
+  data: MGCSummary;
 }
 
-const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCDetail[]) => void) => {
+const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void) => {
   const setMarker = useCallback(
-    (mapMGCData: MGCDetail[], clusterer: kakao.maps.MarkerClusterer) => {
+    (mapMGCData: MGCSummary[], clusterer: kakao.maps.MarkerClusterer) => {
       console.log('setNarker', mapMGCData);
       const markersInfo = [] as MakerInfo[];
       // TODO: 임시 아이콘 추후에 변경해야함 [24.02.14]
@@ -41,7 +41,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCDetail[]) => void) 
     [openSheetUpdate],
   );
 
-  const renderMarker = (clusterer: kakao.maps.MarkerClusterer, mapMGCData: MGCDetail[]) => {
+  const renderMarker = (clusterer: kakao.maps.MarkerClusterer, mapMGCData: MGCSummary[]) => {
     const markersInfo = setMarker(mapMGCData, clusterer);
     console.log('markersInfo', markersInfo);
     clusterer.addMarkers(markersInfo.map((markerInfo) => markerInfo.marker));

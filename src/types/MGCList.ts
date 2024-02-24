@@ -1,8 +1,9 @@
 export interface MGCList {
-  data: MGCDetail[];
+  data: MGCSummary[];
 }
 
-export interface MGCDetail {
+export interface MGCSummary {
+  id: number;
   title: string;
   views: number;
   likeCount: number;
