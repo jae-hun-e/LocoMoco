@@ -68,10 +68,12 @@ const MyPage = () => {
           </div>
         </div>
 
-        <MainStyleButton
-          content="개인정보 수정하기"
-          layout="h-33pxr"
-        />
+        <Link href={routes.changeMyInfo}>
+          <MainStyleButton
+            content="개인정보 수정하기"
+            layout="h-33pxr"
+          />
+        </Link>
       </section>
 
       {/*나의 활동*/}

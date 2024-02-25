@@ -4,6 +4,7 @@ export const routes = {
   chat: '/chat',
   search: '/search',
   mypage: '/mypage',
+  changeMyInfo: '/mypage/change-my-info',
   likeMGC: '/mypage/like-mgc',
   currentJoinMGC: '/mypage/current-join-mgc',
   endJoinMGC: '/mypage/end-join-mgc',
