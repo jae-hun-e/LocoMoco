@@ -43,7 +43,7 @@ const MyPage = () => {
           <Avatar className="h-100pxr w-100pxr rounded-full">
             <AvatarImage
               src="https://github.com/shadcn.png"
-              alt="@shadcn"
+              alt="유저 이미지"
             />
             <AvatarFallback>
               <Image
