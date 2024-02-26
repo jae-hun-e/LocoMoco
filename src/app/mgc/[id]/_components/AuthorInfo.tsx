@@ -13,7 +13,7 @@ const AuthorInfo = ({ author, hits }: Props) => {
       <Avatar className="h-32pxr w-32pxr rounded-full ">
         <AvatarImage
           src="https://github.com/shadcn.png"
-          alt="@shadcn"
+          alt="모각코 작성자 이미지"
         />
         <AvatarFallback>
           <Image
