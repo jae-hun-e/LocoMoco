@@ -22,6 +22,10 @@ const ReviewContent = ({
     return rating < 3 ? 'bad' : 'good';
   };
 
+  const handleCheckedChange = (checked: boolean, id: number) => {
+    checked ? onSelected(id) : onDeselected(id);
+  };
+
   const goodCheckList = [
     { id: 1, content: '예시1' },
     { id: 2, content: '예시2' },
@@ -70,9 +74,7 @@ const ReviewContent = ({
             >
               <Checkbox
                 id={`checkList-${id}`}
-                onCheckedChange={(checked) => {
-                  checked ? onSelected(id) : onDeselected(id);
-                }}
+                onCheckedChange={(checked) => handleCheckedChange(checked as boolean, id)}
               />
               <label
                 htmlFor={`checkList-${id}`}
