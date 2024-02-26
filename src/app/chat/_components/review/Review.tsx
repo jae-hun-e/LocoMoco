@@ -137,30 +137,30 @@ const Review = () => {
           nickname={userInfo.nickname}
         />
         {selectedRating > 0 ? (
-          <ReviewContent
-            errors={errors}
-            onSelected={handleMultiSelect}
-            onDeselected={handleMultiDeselect}
-            register={register}
-            checkListTitle={checkListTitle[isGood(selectedRating)]}
-            addTextTitle={addTextTitle[isGood(selectedRating)]}
-            checkList={checkList[isGood(selectedRating)]}
-            guideText={guideText[isGood(selectedRating)]}
-          />
+          <>
+            <ReviewContent
+              errors={errors}
+              onSelected={handleMultiSelect}
+              onDeselected={handleMultiDeselect}
+              register={register}
+              checkListTitle={checkListTitle[isGood(selectedRating)]}
+              addTextTitle={addTextTitle[isGood(selectedRating)]}
+              checkList={checkList[isGood(selectedRating)]}
+              guideText={guideText[isGood(selectedRating)]}
+            />
+            <div className="fixed bottom-0 z-50 flex w-[calc(100vw-2.5rem)] justify-between gap-20pxr bg-white py-15pxr">
+              <Button
+                type="button"
+                onClick={handleCancelClick}
+                className="grow border border-main-1 bg-layer-1 text-main-1 hover:bg-white hover:font-bold"
+              >
+                취소
+              </Button>
+              <Button className="grow bg-main-1 hover:bg-hover hover:font-bold">생성</Button>
+            </div>
+          </>
         ) : null}
       </div>
-      {selectedRating > 0 ? (
-        <div className="fixed bottom-0 z-50 flex w-[calc(100vw-2.5rem)] justify-between gap-20pxr bg-white py-15pxr">
-          <Button
-            type="button"
-            onClick={handleCancelClick}
-            className="grow border border-main-1 bg-layer-1 text-main-1 hover:bg-white hover:font-bold"
-          >
-            취소
-          </Button>
-          <Button className="grow bg-main-1 hover:bg-hover hover:font-bold">생성</Button>
-        </div>
-      ) : null}
     </form>
   );
 };
