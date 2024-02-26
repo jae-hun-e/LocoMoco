@@ -1,4 +1,3 @@
-import React from 'react';
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
