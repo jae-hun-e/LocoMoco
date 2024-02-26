@@ -11,7 +11,7 @@ const StarList = ({ rating, fisrtNumber, color, onClick }: StarListProps) => {
   const getArrayFromCount = (count: number, fisrtNumber: number) => {
     const array = Array.from({ length: count }, (_, index) => index + fisrtNumber);
 
-    return count !== 0 ? array : [];
+    return array;
   };
 
   return (
