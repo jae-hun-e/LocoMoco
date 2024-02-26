@@ -25,11 +25,13 @@ const Review = () => {
     getValues,
     setValue,
     trigger,
+    reset,
   } = useForm<ReviewForm>();
 
   register('reviewOptions', { required: '하나 이상 선택해주세요.' });
 
   const handleCancelClick = () => {
+    reset();
     // TODO: 모달에 뿌려줄 컴포넌트가 list인지 판별하는 state변경을 해야함 [24.02.20]
   };
 
