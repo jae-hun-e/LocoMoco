@@ -19,7 +19,7 @@ const Map = forwardRef(
         const { lat, lng } = location.coordinates!;
         setCurrentLocation(lat, lng);
       }
-    });
+    }, [location.coordinates, location.loaded, setCurrentLocation]);
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
