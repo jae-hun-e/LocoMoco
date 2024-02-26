@@ -3,16 +3,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 import { ReviewForm } from './Review';
 
-interface CheckItem {
-  id: number;
-  content: string;
-}
-
 interface ReviewContentProps {
-  checkListTitle: string;
-  checkList: CheckItem[];
-  addTextTitle: string;
-  guideText: string;
+  selectedRating: number;
   register: UseFormRegister<ReviewForm>;
   onSelected: (selected: number) => void;
   onDeselected: (deselected: number) => void;
@@ -20,33 +12,70 @@ interface ReviewContentProps {
 }
 
 const ReviewContent = ({
-  checkListTitle,
-  checkList,
-  guideText,
-  addTextTitle,
+  selectedRating,
   register,
   onSelected,
   onDeselected,
   errors,
 }: ReviewContentProps) => {
+  const isGood = (rating: number) => {
+    return rating < 3 ? 'bad' : 'good';
+  };
+
+  const goodCheckList = [
+    { id: 1, content: '예시1' },
+    { id: 2, content: '예시2' },
+    { id: 3, content: '예시3' },
+    { id: 4, content: '예시4' },
+    { id: 5, content: '예시5' },
+  ];
+
+  const badCheckList = [
+    { id: 1, content: '별로 예시1' },
+    { id: 2, content: '별로 예시2' },
+    { id: 3, content: '별로 예시3' },
+    { id: 4, content: '별로 예시4' },
+    { id: 5, content: '별로 예시5' },
+  ];
+
+  const checkListTitle = {
+    good: '좋았나요',
+    bad: '별로였나요',
+  };
+
+  const checkList = {
+    good: goodCheckList,
+    bad: badCheckList,
+  };
+
+  const addTextTitle = {
+    good: '좋았던 후기를 상대방에게 알려주세요!',
+    bad: '아쉬웠던 점을 작성해주세요.',
+  };
+
+  const guideText = {
+    good: '남겨주신 후기는 상대방에게 전달돼요.',
+    bad: '비속어와 비방하는 문구는 신고대상이됩니다.',
+  };
+
   return (
     <>
       <section className="relative">
-        <p className="font-bold ">어떤 점이{checkListTitle}?</p>
+        <p className="font-bold ">어떤 점이{checkListTitle[isGood(selectedRating)]}?</p>
         <ul className="mt-13pxr flex flex-col gap-10pxr">
-          {checkList.map(({ content, id }) => (
+          {checkList[isGood(selectedRating)].map(({ content, id }) => (
             <li
               key={id}
               className="flex items-center space-x-2"
             >
               <Checkbox
-                id={`${checkList}-${id}`}
+                id={`checkList-${id}`}
                 onCheckedChange={(checked) => {
                   checked ? onSelected(id) : onDeselected(id);
                 }}
               />
               <label
-                htmlFor={`${checkList}-${id}`}
+                htmlFor={`checkList-${id}`}
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {content}
@@ -61,8 +90,8 @@ const ReviewContent = ({
         )}
       </section>
       <section className="relative">
-        <p className="font-bold ">{addTextTitle}</p>
-        <span className="text-xs text-layer-5">{guideText}</span>
+        <p className="font-bold ">{addTextTitle[isGood(selectedRating)]}</p>
+        <span className="text-xs text-layer-5">{guideText[isGood(selectedRating)]}</span>
         <Textarea
           {...register('reviewContent', {
             maxLength: { value: 300, message: '입력가능한 글자수는 300자입니다.' },

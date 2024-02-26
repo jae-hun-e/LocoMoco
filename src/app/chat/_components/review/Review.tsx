@@ -29,10 +29,6 @@ const Review = () => {
 
   register('reviewOptions', { required: '하나 이상 선택해주세요.' });
 
-  const isGood = (rating: number) => {
-    return rating < 3 ? 'bad' : 'good';
-  };
-
   const handleCancelClick = () => {
     // TODO: 모달에 뿌려줄 컴포넌트가 list인지 판별하는 state변경을 해야함 [24.02.20]
   };
@@ -49,42 +45,6 @@ const Review = () => {
     gender: '여자',
     job: '현직자',
     profileImg: 'https://cdn.pixabay.com/photo/2023/09/29/20/28/motocross-8284539_1280.jpg',
-  };
-
-  const goodCheckList = [
-    { id: 1, content: '예시1' },
-    { id: 2, content: '예시2' },
-    { id: 3, content: '예시3' },
-    { id: 4, content: '예시4' },
-    { id: 5, content: '예시5' },
-  ];
-
-  const badCheckList = [
-    { id: 1, content: '별로 예시1' },
-    { id: 2, content: '별로 예시2' },
-    { id: 3, content: '별로 예시3' },
-    { id: 4, content: '별로 예시4' },
-    { id: 5, content: '별로 예시5' },
-  ];
-
-  const checkListTitle = {
-    good: '좋았나요',
-    bad: '별로였나요',
-  };
-
-  const checkList = {
-    good: goodCheckList,
-    bad: badCheckList,
-  };
-
-  const addTextTitle = {
-    good: '좋았던 후기를 상대방에게 알려주세요!',
-    bad: '아쉬웠던 점을 작성해주세요.',
-  };
-
-  const guideText = {
-    good: '남겨주신 후기는 상대방에게 전달돼요.',
-    bad: '비속어와 비방하는 문구는 신고대상이됩니다.',
   };
 
   const handleRatingChange = (rating: number) => {
@@ -139,14 +99,11 @@ const Review = () => {
         {selectedRating > 0 ? (
           <>
             <ReviewContent
+              selectedRating={selectedRating}
               errors={errors}
               onSelected={handleMultiSelect}
               onDeselected={handleMultiDeselect}
               register={register}
-              checkListTitle={checkListTitle[isGood(selectedRating)]}
-              addTextTitle={addTextTitle[isGood(selectedRating)]}
-              checkList={checkList[isGood(selectedRating)]}
-              guideText={guideText[isGood(selectedRating)]}
             />
             <div className="fixed bottom-0 z-50 flex w-[calc(100vw-2.5rem)] justify-between gap-20pxr bg-white py-15pxr">
               <Button
