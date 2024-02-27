@@ -29,12 +29,11 @@ const ThunderModal = () => {
     formState: { errors },
   } = useForm<ThunderInputs>();
 
-  const isOpen = useThunderModalStore((state) => state.isOpen);
-  const closeModal = useThunderModalStore((state) => state.closeModal);
+  const { isOpen, toggleModal } = useThunderModalStore();
 
   const handleCloseModal = () => {
     reset();
-    closeModal();
+    toggleModal();
   };
 
   const onSubmit: SubmitHandler<ThunderInputs> = (data) => {
