@@ -1,16 +1,19 @@
 import React, { useState } from 'react';
+import ThunderModal from '@/app/(home)/_components/ThunderModal/ThunderModal';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useThunderModalStore } from '@/store/thunderModalStore';
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const CreateBtn = () => {
   const router = useRouter();
   const [isCreateBtnOpen, setIsCreateBtnOpen] = useState(false);
+  const { toggleModal } = useThunderModalStore();
 
   const handleCreateClick = (type: 'thunder' | 'normal') => {
     if (type === 'thunder') {
-      // TODO: 번개 생성 모달 켜지도록 수정하기 [24/02/12]
+      toggleModal();
     } else {
       router.push('/create');
     }
@@ -46,6 +49,7 @@ const CreateBtn = () => {
           </Button>
         </div>
       </PopoverContent>
+      <ThunderModal />
     </Popover>
   );
 };
