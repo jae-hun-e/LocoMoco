@@ -75,7 +75,7 @@ const ThunderModal = () => {
                   />
                   <label
                     htmlFor={`radio-${item}`}
-                    className="inline-block flex h-30pxr w-74pxr cursor-pointer items-center justify-center rounded-sm border border-layer-5 text-sm text-layer-6 hover:bg-layer-2 hover:text-gray-600 peer-checked:border-main-1 peer-checked:text-main-1"
+                    className="flex h-30pxr w-74pxr cursor-pointer items-center justify-center rounded-sm border border-layer-5 text-sm text-layer-6 hover:bg-layer-2 hover:text-gray-600 peer-checked:border-main-1 peer-checked:text-main-1"
                   >
                     +{item}시간
                   </label>
@@ -89,7 +89,7 @@ const ThunderModal = () => {
             <input
               className="w-full rounded-lg border p-10pxr text-sm focus:outline-none"
               {...register('title')}
-              placeholder="글 제목을 입력해주세요"
+              placeholder="글 제목을 입력해주세요 (선택)"
             />
             <div className="mb-5pxr mt-15pxr font-bold">장소</div>
             <LocationSearch
@@ -106,6 +106,7 @@ const ThunderModal = () => {
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
+              type="button"
               onClick={handleCloseModal}
               variant="outline"
               className="border-1pxr w-120pxr border-solid border-main-1 text-main-1 hover:border-hover hover:bg-white hover:text-hover"
