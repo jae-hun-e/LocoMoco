@@ -1,5 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
-import LocationSearch from '@/app/_components/LocationSearch';
+import LocationSearch from '@/app/(home)/_components/ThunderModal/LocationSearch';
 import Modal from '@/app/_components/Modal';
 import { Button } from '@/components/ui/button';
 import {
