@@ -5,10 +5,10 @@ import useClickAway from '@/hooks/useClickaway';
 import { Search } from 'lucide-react';
 
 interface LocationSearchInputProps {
-  changeInput: (location: string) => void;
+  onSelect: (location: string) => void;
 }
 
-const LocationSearchInput = ({ changeInput }: LocationSearchInputProps) => {
+const LocationSearchInput = ({ onSelect }: LocationSearchInputProps) => {
   const [keyword, setKeyword] = useState('');
   const [show, setShow] = useState(false);
 
@@ -22,7 +22,7 @@ const LocationSearchInput = ({ changeInput }: LocationSearchInputProps) => {
 
   const handleAddressClick = (data: Address) => {
     setKeyword(data.address_name);
-    changeInput(data.address_name);
+    onSelect(data.address_name);
     setShow(false);
   };
 

@@ -11,7 +11,7 @@ import {
 } from '@/components/ui/card';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 
-type ThunderInputs = {
+type ThunderFormData = {
   endTime: string;
   title?: string;
   location: string;
@@ -27,7 +27,14 @@ const ThunderModal = () => {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<ThunderInputs>();
+  } = useForm<ThunderFormData>({
+    mode: 'onSubmit',
+    defaultValues: {
+      endTime: '',
+      title: '',
+      location: '',
+    },
+  });
 
   const { isOpen, toggleModal } = useThunderModalStore();
 
@@ -36,15 +43,20 @@ const ThunderModal = () => {
     toggleModal();
   };
 
-  const onSubmit: SubmitHandler<ThunderInputs> = (data) => {
+  const onSubmit: SubmitHandler<ThunderFormData> = ({ endTime, title, location }) => {
     const postData = {
       startTime: new Date(),
-      endTime: data.endTime,
-      title: data.title,
-      location: data.location,
+      endTime: endTime,
+      title: title,
+      location: location,
     };
     console.log(postData);
     handleCloseModal();
+  };
+
+  const handleSelectLocation = (location: string) => {
+    setValue('location', location);
+    trigger('location');
   };
 
   return (
@@ -92,12 +104,7 @@ const ThunderModal = () => {
               placeholder="글 제목을 입력해주세요 (선택)"
             />
             <div className="mb-5pxr mt-15pxr font-bold">장소</div>
-            <LocationSearch
-              changeInput={(location) => {
-                setValue('location', location);
-                trigger('location');
-              }}
-            ></LocationSearch>
+            <LocationSearch onSelect={handleSelectLocation}></LocationSearch>
             <input
               className="hidden"
               {...register('location', { required: true })}
