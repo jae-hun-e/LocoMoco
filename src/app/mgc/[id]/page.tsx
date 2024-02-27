@@ -1,3 +1,6 @@
+'use client';
+
+import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
 import AuthorInfo from '@/app/mgc/[id]/_components/AuthorInfo';
 import Inquiry from '@/app/mgc/[id]/_components/Inquiry';
 import MGCApplyArea from '@/app/mgc/[id]/_components/MGCApplyArea';
@@ -7,25 +10,52 @@ import { Separator } from '@/components/ui/separator';
 import { dummyData } from '@/constants/mgcDummyData';
 
 // TODO: api연결 후 더미 제거 [24/02/15]
-const MGCDetail = () => {
-  const MGCInfoData = {
-    title: dummyData.title,
-    location: dummyData.location,
-    startTime: dummyData.startTime,
-    endTime: dummyData.endTime,
+const MGCDetail = ({ params }: { params: { id: number } }) => {
+  const { mgcDetail } = useGetMGCDetail(params.id);
+  console.log('mgcDetail', mgcDetail);
 
-    MGCType: dummyData.MGCType,
-    languageTypes: dummyData.languageTypes,
-    studyTypes: dummyData.studyTypes,
-    job: dummyData.job,
-    ageRange: dummyData.ageRange,
-    content: dummyData.content,
+  /*
+  const mgcData = {
+    creatorInfo: {
+      userId: 4,
+      nickname: 'nickname',
+    },
+    participants: [],
+    MogakkoInfo: {
+      mogakkoId: 2,
+      title: '모여서 각자 코딩',
+      content: '모각코 모여~',
+      startTime: '2024-02-22T01:23:14.381',
+      endTime: '2024-02-22T01:23:14.381',
+      deadline: '2024-02-22T01:23:14.381',
+      createdAt: '2024-02-22T10:23:18',
+      location: {
+        address: '경기도 부천시 소사로 114번길 5',
+        latitude: 31.4295839,
+        longitude: 123.123456789,
+        city: '소사본동',
+      },
+      maxParticipants: 4,
+      likeCount: 0,
+      tagIds: [1, 2, 3],
+    },
+  };
+  */
+
+  const MGCInfoData = {
+    title: mgcDetail.MogakkoInfo.title,
+    location: mgcDetail.MogakkoInfo.location,
+    startTime: mgcDetail.MogakkoInfo.startTime,
+    endTime: mgcDetail.MogakkoInfo.endTime,
+
+    content: mgcDetail.MogakkoInfo.content,
+    tagIds: mgcDetail.MogakkoInfo.tagIds,
   };
 
   return (
     <div>
       <AuthorInfo
-        author={dummyData.author}
+        author={mgcDetail.creatorInfo.nickname}
         hits={dummyData.hits}
       />
       <Separator className="my-15pxr" />

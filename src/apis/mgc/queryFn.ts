@@ -19,15 +19,16 @@ export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   return data;
 };
 
+export interface LocationInfo {
+  address: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+}
 interface CreateMGCReq {
   creatorId: number;
   title: string;
-  location: {
-    address: string;
-    latitude: number;
-    longitude: number;
-    city: string;
-  };
+  location: LocationInfo;
   startTime: string;
   endTime: string;
   deadline: string;
