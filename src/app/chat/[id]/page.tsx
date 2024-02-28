@@ -85,13 +85,12 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
           return (
             <Fragment key={idx}>
               {idx > 0 &&
-              format(chatData[idx - 1].createdAt, 'yyyy-MM-dd-E', { locale: ko }) !== createDate ? (
-                <div className="flex w-[60%] self-center rounded-3xl bg-main-5 text-center">
-                  <p className="flex w-full justify-center">{createDate}</p>
-                </div>
-              ) : (
-                ''
-              )}
+                format(chatData[idx - 1].createdAt, 'yyyy-MM-dd-E', { locale: ko }) !==
+                  createDate && (
+                  <div className="flex w-[60%] self-center rounded-3xl bg-main-5 text-center">
+                    <p className="flex w-full justify-center">{createDate}</p>
+                  </div>
+                )}
               <div
                 className={`flex w-full flex-col ${notMe ? 'items-start' : 'items-end'}`}
                 key={idx}
