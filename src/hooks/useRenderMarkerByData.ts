@@ -18,7 +18,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
       clusterer?.clear();
 
       for (const mgc of mapMGCData) {
-        if (!mgc.location.latitude && mgc.location.longitude) continue;
+        if (!(mgc.location.latitude && mgc.location.longitude)) continue;
 
         const marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(mgc.location.latitude, mgc.location.longitude),
