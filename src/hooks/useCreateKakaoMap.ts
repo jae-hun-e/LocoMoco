@@ -13,6 +13,7 @@ const useCreateKakaoMap = ({
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
   const [createPositionMarker, setCreatePositionMarker] = useState<kakao.maps.Marker>();
+  const [currentPositionMarker, setCurrentPositionMarker] = useState<kakao.maps.Marker>();
 
   const createMarker = useCallback(
     (movePosition: kakao.maps.LatLng, draggble?: boolean, none?: boolean) => {
@@ -43,14 +44,19 @@ const useCreateKakaoMap = ({
 
   const setCurrentLocation = useCallback(
     (latitude: number, longitude: number) => {
-      if (map && kakao.maps.LatLng) {
+      if (map && kakao.maps.LatLng && currentPositionMarker) {
         const movePosition = new kakao.maps.LatLng(latitude, longitude);
         map.setCenter(movePosition);
-        createMarker(movePosition);
+        currentPositionMarker.setPosition(movePosition);
+        currentPositionMarker.setMap(map);
       }
     },
-    [createMarker, map],
+    [currentPositionMarker, map],
   );
+
+  const removeMarker = () => {
+    currentPositionMarker?.setMap(null);
+  };
 
   const changeCenter = useCallback(
     (latitude: number, longitude: number) => {
@@ -105,11 +111,12 @@ const useCreateKakaoMap = ({
 
         if (showCurrentLocation) {
           setCreatePositionMarker(createMarker(mapOption.center, true, true));
+          setCurrentPositionMarker(createMarker(mapOption.center, false, true));
         }
         setClusterer(clusterer);
       }
     });
-  }, [showCurrentLocation]);
+  }, [isCustomlevelControl, showCurrentLocation]);
 
   return {
     clusterer,
@@ -119,6 +126,7 @@ const useCreateKakaoMap = ({
     createMarker,
     setCurrentLocation,
     changeCenter,
+    removeMarker,
     zoomIn,
     zoomOut,
   };

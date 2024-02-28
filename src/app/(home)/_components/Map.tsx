@@ -5,11 +5,12 @@ interface MapProps {
   setCurrentLocation: (a: number, b: number) => void;
   map?: kakao.maps.Map;
   createPositionMarker?: kakao.maps.Marker;
+  removeMarker: () => void;
 }
 
 const Map = forwardRef(
   (
-    { setCurrentLocation, map, createPositionMarker }: MapProps,
+    { setCurrentLocation, map, createPositionMarker, removeMarker }: MapProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
     const location = useGeolocation();
@@ -18,6 +19,8 @@ const Map = forwardRef(
       if (location.loaded) {
         const { lat, lng } = location.coordinates!;
         setCurrentLocation(lat, lng);
+      } else {
+        removeMarker();
       }
     }, [location.coordinates, location.loaded, setCurrentLocation]);
 

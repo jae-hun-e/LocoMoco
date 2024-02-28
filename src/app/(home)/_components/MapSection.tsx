@@ -24,8 +24,15 @@ const MapSection = ({ data }: MGCListType) => {
     }
   }, [data]);
 
-  const { clusterer, map, mapRef, createPositionMarker, setCurrentLocation, changeCenter } =
-    useCreateKakaoMap({ showCurrentLocation: true, isCustomlevelControl: false });
+  const {
+    clusterer,
+    map,
+    mapRef,
+    createPositionMarker,
+    setCurrentLocation,
+    changeCenter,
+    removeMarker,
+  } = useCreateKakaoMap({ showCurrentLocation: true, isCustomlevelControl: false });
   const renderMarker = useRenderMarkerByData(openSheetUpdate);
 
   useEffect(() => {
@@ -48,6 +55,7 @@ const MapSection = ({ data }: MGCListType) => {
         map={map}
         createPositionMarker={createPositionMarker}
         setCurrentLocation={setCurrentLocation}
+        removeMarker={removeMarker}
         ref={mapRef}
       />
 
