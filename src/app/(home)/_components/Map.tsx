@@ -5,9 +5,7 @@ import markerImg from '../../../../public/oh.png';
 
 interface MapProps {
   map?: kakao.maps.Map;
-  createdPositionCoordinates?: kakao.maps.Marker;
   removeMarker: (marker: kakao.maps.Marker) => void;
-  currentPositionMarker?: kakao.maps.Marker;
   movePosition: ({ marker, latitude, longitude }: MovePositionParams) => void;
   changeCenter: (latitude: number, longitude: number) => void;
   createMarker: ({
@@ -116,12 +114,10 @@ const Map = forwardRef(
     }, [handleMouseDown, map, createdPositionCoordinates]);
 
     return (
-      <>
-        <div
-          ref={mapRef}
-          className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
-        ></div>
-      </>
+      <div
+        ref={mapRef}
+        className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
+      ></div>
     );
   },
 );
