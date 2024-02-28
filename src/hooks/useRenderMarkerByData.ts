@@ -6,7 +6,7 @@ interface MakerInfo {
   data: MGCSummary;
 }
 
-const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void) => {
+const useRenderMarkerByData = (openBottomSheetAndUpdate: (mapData: MGCSummary[]) => void) => {
   const setMarker = useCallback(
     (mapMGCData: MGCSummary[], clusterer: kakao.maps.MarkerClusterer) => {
       const markersInfo: MakerInfo[] = [];
@@ -26,7 +26,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
         });
 
         kakao.maps.event.addListener(marker, 'click', () => {
-          openSheetUpdate([mgc]);
+          openBottomSheetAndUpdate([mgc]);
         });
 
         const newMarkerInfo = { data: mgc, marker: marker };
@@ -36,7 +36,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
 
       return markersInfo;
     },
-    [openSheetUpdate],
+    [openBottomSheetAndUpdate],
   );
 
   const renderMarker = (clusterer: kakao.maps.MarkerClusterer, mapMGCData: MGCSummary[]) => {
@@ -53,7 +53,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
         );
       }
 
-      openSheetUpdate(markerList);
+      openBottomSheetAndUpdate(markerList);
     });
   };
 

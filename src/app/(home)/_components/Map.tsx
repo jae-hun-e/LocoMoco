@@ -5,7 +5,7 @@ import markerImg from '../../../../public/oh.png';
 
 interface MapProps {
   map?: kakao.maps.Map;
-  createPositionMarker?: kakao.maps.Marker;
+  createdPositionCoordinates?: kakao.maps.Marker;
   removeMarker: (marker: kakao.maps.Marker) => void;
   currentPositionMarker?: kakao.maps.Marker;
   movePosition: ({ marker, latitude, longitude }: MovePositionParams) => void;
@@ -26,7 +26,8 @@ const Map = forwardRef(
     { map, removeMarker, movePosition, changeCenter, createMarker, isLoad }: MapProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
-    const [createPositionMarker, setCreatePositionMarker] = useState<kakao.maps.Marker>();
+    const [createdPositionCoordinates, setCreatedPositionCoordinates] =
+      useState<kakao.maps.Marker>();
     const [currentPositionMarker, setCurrentPositionMarker] = useState<kakao.maps.Marker>();
 
     const location = useGeolocation();
@@ -43,7 +44,7 @@ const Map = forwardRef(
 
     useEffect(() => {
       if (isLoad) {
-        setCreatePositionMarker(
+        setCreatedPositionCoordinates(
           createMarker({
             latitude: 35.1543440473172,
             longitude: 128.686892962301,
@@ -71,14 +72,14 @@ const Map = forwardRef(
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseDown = useCallback(
-      (e: kakao.maps.event.MouseEvent, createPositionMarker: kakao.maps.Marker) => {
+      (e: kakao.maps.event.MouseEvent, createdPositionCoordinates: kakao.maps.Marker) => {
         // 마우스 다운 이벤트 발생 시 타이머를 설정합니다.
         timerRef.current = setTimeout(() => {
           const latLng = e.latLng;
 
-          if (createPositionMarker && map) {
+          if (createdPositionCoordinates && map) {
             movePosition({
-              marker: createPositionMarker,
+              marker: createdPositionCoordinates,
               latitude: latLng.getLat(),
               longitude: latLng.getLng(),
             });
@@ -97,7 +98,7 @@ const Map = forwardRef(
     useEffect(() => {
       if (map) {
         kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) =>
-          handleMouseDown(e, createPositionMarker!),
+          handleMouseDown(e, createdPositionCoordinates!),
         );
         kakao.maps.event.addListener(map, 'mouseup', () => handleMouseUp);
         kakao.maps.event.addListener(map, 'touchend', () => handleMouseUp);
@@ -112,7 +113,7 @@ const Map = forwardRef(
 
         clearTimeout(timerRef.current!);
       };
-    }, [handleMouseDown, map, createPositionMarker]);
+    }, [handleMouseDown, map, createdPositionCoordinates]);
 
     return (
       <>
