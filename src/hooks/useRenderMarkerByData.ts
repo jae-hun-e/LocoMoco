@@ -9,7 +9,7 @@ interface MakerInfo {
 const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void) => {
   const setMarker = useCallback(
     (mapMGCData: MGCSummary[], clusterer: kakao.maps.MarkerClusterer) => {
-      const markersInfo = [] as MakerInfo[];
+      const markersInfo: MakerInfo[] = [];
       // TODO: 임시 아이콘 추후에 변경해야함 [24.02.14]
       const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
       const imageSize = new kakao.maps.Size(24, 35);
