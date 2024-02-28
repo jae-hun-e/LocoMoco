@@ -15,6 +15,7 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
   const startId = useId();
   const [errorMessage, setErrorMessage] = useState(endErrormessage);
 
+  // TODO: 유효성 체크 오류있음 [24/02/22]
   const handelEndTimeValidation = (e: ChangeEvent<HTMLInputElement>) => {
     const startTime = new Date();
     const endTime = new Date();
@@ -35,7 +36,7 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
       >
         * 모각코 시간
       </Label>
-      <div className="flex grow flex-wrap justify-start gap-4">
+      <div className="flex grow flex-wrap justify-start gap-5">
         <Label className="flex items-center">
           <p className="w-30pxr flex-shrink-0 text-xs">시작</p>
           <div className="relative flex w-full">
@@ -44,9 +45,10 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
               type="time"
               step="600"
               onChange={(e) => onChangeInput('startTime', e.currentTarget.value)}
+              className="w-100pxr text-xs"
             />
             {startErrormessage && (
-              <span className="absolute -bottom-5 text-xs text-red-1">{startErrormessage}</span>
+              <span className="absolute top-11 text-xs text-red-1">{startErrormessage}</span>
             )}
           </div>
         </Label>
@@ -57,6 +59,7 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
               type="time"
               step="600"
               onChange={handelEndTimeValidation}
+              className="w-100pxr text-xs"
             />
             {errorMessage && (
               <span className="absolute top-11 text-xs text-red-1">{errorMessage}</span>

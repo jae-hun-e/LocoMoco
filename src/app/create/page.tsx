@@ -1,26 +1,33 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import { TagType } from '@/apis/mgc/queryFn';
+import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
+import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
 export interface MGCCreateForm {
   title: string;
-  location: string;
+  location: {
+    address: string;
+    latitude: number;
+    longitude: number;
+    city: string;
+  };
   date: Date;
   startTime: string;
   endTime: string;
   deadLine: Date;
   maxParticipants: number;
 
-  devLanguage?: string[];
-  studyField?: string[];
-  job?: string;
-  ageRange?: string[];
   content?: string;
+
+  tags?: TagType[];
 }
 
+// TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = () => {
   const {
     register,
@@ -34,13 +41,61 @@ const CreateMGC = () => {
     mode: 'onTouched',
     defaultValues: {
       title: '',
-      location: '',
+      // TODO : 위치 넘겨 받기 || 현재 위치 받아오기
+      location: {
+        address: '경기도 부천시 소사로 114번길 5',
+        latitude: 31.4295839,
+        longitude: 123.123456789,
+        city: '서초동',
+      },
       maxParticipants: 10,
     },
   });
 
-  const handleCreateMGC = (data: MGCCreateForm) => {
-    console.log('data', data);
+  const { createMGC } = useCreateMGC();
+
+  const handleCreateMGC = ({
+    title,
+    date,
+    startTime,
+    endTime,
+    deadLine,
+    maxParticipants,
+    content,
+    location,
+    ...rest
+  }: MGCCreateForm) => {
+    // TODO: 위치 정보 받아오기 [24/02/23]
+    console.log('location', location);
+
+    const [newStartTime, newEndTime] = [startTime, endTime].map((time) => {
+      const [h, m] = time.split(':').map(Number);
+      const newTime = new Date(date);
+      newTime.setHours(h);
+      newTime.setMinutes(m);
+      return toKoreanTimeZone(newTime);
+    });
+
+    const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
+
+    const req = {
+      creatorId: 4,
+      title,
+      location: {
+        address: '경기도 부천시 소사로 114번길 5',
+        latitude: 31.4295839,
+        longitude: 123.123456789,
+        city: '소사본동',
+      },
+      startTime: newStartTime,
+      endTime: newEndTime,
+      deadline: toKoreanTimeZone(deadLine),
+      maxParticipants: Number(maxParticipants),
+      content,
+      tags,
+    };
+
+    createMGC(req);
   };
 
   return (

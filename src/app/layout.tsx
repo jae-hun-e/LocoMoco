@@ -45,6 +45,7 @@ const RootLayout = async ({
           <main className="h-[calc(100vh-50px)]">
             <div className="overflow-y-auto px-20pxr scrollbar-hide">
               <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
+
               <div className="mb-50pxr" />
             </div>
           </main>

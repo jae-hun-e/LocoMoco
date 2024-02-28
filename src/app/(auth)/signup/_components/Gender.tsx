@@ -1,29 +1,40 @@
-import Radio from '@/app/_components/Radio';
-import RadioGroup from '@/app/_components/RadioGroup';
+import { UseFormSetValue } from 'react-hook-form';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { SignupValue } from '../[method]/page';
 
 interface Props {
-  gender: string;
-  setGender: (gender: string) => void;
+  setGender: UseFormSetValue<SignupValue>;
 }
 
-const Gender = ({ gender, setGender }: Props) => {
+const gender = [
+  { value: 'male', label: '남' },
+  { value: 'female', label: '여' },
+];
+
+const Gender = ({ setGender }: Props) => {
   return (
-    <RadioGroup label="성별">
-      <Radio
-        selected={gender}
-        setSelected={setGender}
-        value="male"
+    <div className="flex flex-col gap-1">
+      <h2>성별</h2>
+      <RadioGroup
+        className="flex"
+        defaultValue="male"
+        onValueChange={(gender) => setGender('gender', gender)}
       >
-        남
-      </Radio>
-      <Radio
-        selected={gender}
-        setSelected={setGender}
-        value="female"
-      >
-        여
-      </Radio>
-    </RadioGroup>
+        {gender.map(({ value, label }) => (
+          <div
+            className="flex items-center space-x-2"
+            key={value}
+          >
+            <RadioGroupItem
+              value={value}
+              id={value}
+            />
+            <Label htmlFor={value}>{label}</Label>
+          </div>
+        ))}
+      </RadioGroup>
+    </div>
   );
 };
 export default Gender;
