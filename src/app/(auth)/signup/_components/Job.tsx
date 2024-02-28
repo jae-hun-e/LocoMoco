@@ -1,36 +1,41 @@
-import Radio from '@/app/_components/Radio';
-import RadioGroup from '@/app/_components/RadioGroup';
+import { UseFormSetValue } from 'react-hook-form';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { SignupValue } from '../[method]/page';
 
 interface Props {
-  job: string;
-  setJob: (job: string) => void;
+  setJob: UseFormSetValue<SignupValue>;
 }
 
-const Job = ({ job, setJob }: Props) => {
+const job = [
+  { value: 'developer', label: '현직자' },
+  { value: 'job_seeker', label: '취준생' },
+  { value: 'etc', label: '기타' },
+];
+
+const Job = ({ setJob }: Props) => {
   return (
-    <RadioGroup label="직업">
-      <Radio
-        selected={job}
-        setSelected={setJob}
-        value="worker"
+    <div className="flex flex-col gap-1">
+      <h2>직업</h2>
+      <RadioGroup
+        className="flex"
+        defaultValue="developer"
+        onValueChange={(job) => setJob('job', job)}
       >
-        현직자
-      </Radio>
-      <Radio
-        selected={job}
-        setSelected={setJob}
-        value="ready"
-      >
-        취준생
-      </Radio>
-      <Radio
-        selected={job}
-        setSelected={setJob}
-        value="etc"
-      >
-        기타
-      </Radio>
-    </RadioGroup>
+        {job.map(({ value, label }) => (
+          <div
+            className="flex items-center space-x-2"
+            key={value}
+          >
+            <RadioGroupItem
+              value={value}
+              id={value}
+            />
+            <Label htmlFor={value}>{label}</Label>
+          </div>
+        ))}
+      </RadioGroup>
+    </div>
   );
 };
 export default Job;

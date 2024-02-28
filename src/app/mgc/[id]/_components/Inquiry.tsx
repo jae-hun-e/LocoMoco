@@ -35,7 +35,7 @@ const Inquiry = ({ inquiries = [] }: Props) => {
         <Avatar className="h-32pxr w-32pxr rounded-full ">
           <AvatarImage
             src="https://github.com/shadcn.png"
-            alt="@shadcn"
+            alt="유저 이미지"
           />
           <AvatarFallback>
             <Image
@@ -60,7 +60,7 @@ const Inquiry = ({ inquiries = [] }: Props) => {
           <Avatar className="h-32pxr w-32pxr rounded-full">
             <AvatarImage
               src="https://github.com/shadcn.png"
-              alt="@shadcn"
+              alt="문의 작성자 이미지"
             />
             <AvatarFallback>
               <Image

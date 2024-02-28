@@ -7,37 +7,37 @@ import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 
 const chatData = [
-  { username: 'me', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
+  { username: 'me', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-28T11:38:30' },
   {
     username: 'm1',
     profileImg: '/oh.png',
     message: 'hifdsfnskjflajsdfljasdfjlasjdflasjdfljadslfjlasjdflsdajf',
-    createdAt: new Date(),
+    createdAt: '2024-02-28T11:38:30',
   },
-  { username: 'm2', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
+  { username: 'm2', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-28T11:38:30' },
   {
     username: 'me',
     profileImg: '/oh.png',
     message: 'hidjfgljfdslfjdkfjdkjflsj\n\ndfldksjflsdjlfkjdslfkjsdfsdfsdfdsf',
-    createdAt: new Date(),
+    createdAt: '2024-02-28T11:38:30',
   },
-  { username: 'm1', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: new Date() },
+  { username: 'm1', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-04T11:38:30' },
+  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-04T13:38:30' },
 ];
 
 const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
@@ -72,43 +72,58 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
   return (
     <section className="flex flex-col">
       <div className="flex h-[calc(100vh-288px)] flex-col gap-1">
+        <div className="flex w-[60%] self-center rounded-3xl bg-main-5 text-center">
+          <p className="flex w-full justify-center">
+            {format(chatData[0].createdAt, 'yyyy-MM-dd-E', { locale: ko })}
+          </p>
+        </div>
         {chatData.map(({ username, profileImg, message, createdAt }, idx) => {
           const notMe = username !== 'me';
           const commonBorder = 'rounded-bl-lg rounded-br-lg';
+          const createDate = format(createdAt, 'yyyy-MM-dd-E', { locale: ko });
 
           return (
-            <div
-              className={`flex w-full flex-col ${notMe ? 'items-start' : 'items-end'}`}
-              key={idx}
-            >
-              <div className="flex items-center gap-1">
-                {notMe && (
-                  <Image
-                    className="rounded-3xl"
-                    src={profileImg}
-                    alt="good"
-                    width={30}
-                    height={30}
-                    priority
-                  />
+            <Fragment key={idx}>
+              {idx > 0 &&
+                format(chatData[idx - 1].createdAt, 'yyyy-MM-dd-E', { locale: ko }) !==
+                  createDate && (
+                  <div className="flex w-[60%] self-center rounded-3xl bg-main-5 text-center">
+                    <p className="flex w-full justify-center">{createDate}</p>
+                  </div>
                 )}
-                <p>{notMe && username}</p>
+              <div
+                className={`flex w-full flex-col ${notMe ? 'items-start' : 'items-end'}`}
+                key={idx}
+              >
+                <div className="flex items-center gap-1">
+                  {notMe && (
+                    <Image
+                      className="rounded-3xl"
+                      src={profileImg}
+                      alt="profile image"
+                      width={30}
+                      height={30}
+                      priority
+                    />
+                  )}
+                  <p>{notMe && username}</p>
+                </div>
+                <div className={`flex gap-1 ${notMe ? '' : 'flex-row-reverse'}`}>
+                  <p
+                    className={`mt-1 border-t ${
+                      notMe
+                        ? `ml-8 ${commonBorder} rounded-tr-lg bg-main-4`
+                        : `${commonBorder} rounded-tl-lg bg-hover text-white`
+                    } p-2`}
+                  >
+                    {handleLineFeed(message)}
+                  </p>
+                  <p className="self-end text-xs text-slate-500">
+                    {format(createdAt, 'bHH:mm', { locale: ko })}
+                  </p>
+                </div>
               </div>
-              <div className={`flex ${notMe ? '' : 'flex-row-reverse'}`}>
-                <p
-                  className={`mt-1 border-t ${
-                    notMe
-                      ? `ml-8 ${commonBorder} rounded-tr-lg bg-main-4`
-                      : `${commonBorder} rounded-tl-lg bg-hover text-white`
-                  } p-2`}
-                >
-                  {handleLineFeed(message)}
-                </p>
-                <p className="self-end text-xs text-slate-500">
-                  {format(createdAt, 'HH:mm', { locale: ko })}
-                </p>
-              </div>
-            </div>
+            </Fragment>
           );
         })}
       </div>
