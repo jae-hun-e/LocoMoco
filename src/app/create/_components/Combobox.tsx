@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { TagType } from '@/apis/mgc/queryFn';
 import { Button } from '@/components/ui/button';
 import {
   Command,
@@ -15,19 +16,19 @@ import { Check, ChevronsUpDown } from 'lucide-react';
 
 interface Props {
   id?: string;
-  dropdownList: { value: string; label: string; id: number }[];
+  dropdownList: { tag_id: number; tag_name: string }[];
   defaultValue: string;
   placeholder: string;
-  onSelected: (selectedValue: string) => void;
+  onSelected: (selectedValue: TagType) => void;
 }
 
 const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: Props) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
 
-  const handleSelected = (currentValue: string) => {
-    setValue(currentValue === value ? '' : currentValue);
-    onSelected(currentValue);
+  const handleSelected = (currentValue: string, tag_id: number) => {
+    setValue(currentValue === value ? currentValue : '');
+    onSelected({ tag_id, tag_name: currentValue });
     setOpen(false);
   };
 
@@ -45,7 +46,7 @@ const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: P
           className="w-full justify-between"
         >
           {value
-            ? dropdownList.find((dropdownItem) => dropdownItem.value === value)?.label
+            ? dropdownList.find((dropdownItem) => dropdownItem.tag_name === value)?.tag_name
             : defaultValue}
           <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
         </Button>
@@ -55,19 +56,16 @@ const Combobox = ({ id, defaultValue, dropdownList, placeholder, onSelected }: P
           <CommandInput placeholder={placeholder} />
           <CommandEmpty>No dropdownItem found.</CommandEmpty>
           <CommandGroup>
-            {dropdownList.map((dropdownItem) => (
+            {dropdownList.map(({ tag_id, tag_name }) => (
               <CommandItem
-                key={dropdownItem.value}
-                value={dropdownItem.value}
-                onSelect={handleSelected}
+                key={tag_id}
+                value={tag_name}
+                onSelect={(currentValue) => handleSelected(currentValue, tag_id)}
               >
                 <Check
-                  className={cn(
-                    'mr-2 h-4 w-4',
-                    value === dropdownItem.value ? 'opacity-100' : 'opacity-0',
-                  )}
+                  className={cn('mr-2 h-4 w-4', value === tag_name ? 'opacity-100' : 'opacity-0')}
                 />
-                {dropdownItem.label}
+                {tag_name}
               </CommandItem>
             ))}
           </CommandGroup>

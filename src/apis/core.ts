@@ -1,10 +1,7 @@
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 
-// todo: bsaeURL은 추후 환경변수로 빼야함 [24/02/07]
-const BASE_URL = 'https://jsonplaceholder.typicode.com';
-
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: BASE_URL,
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
 });

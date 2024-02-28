@@ -1,36 +1,40 @@
 import { useId } from 'react';
+import { TagType } from '@/apis/mgc/queryFn';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { cn } from '@/libs/utils';
 
 interface Props {
   title: string;
-  checkBoxList: { id: number; value: string }[];
-  onSelected: (checked: string) => void;
-  onDeselected: (checked: string) => void;
+  checkBoxList: TagType[];
+  onSelected: (checked: TagType) => void;
+  onDeselected: (checked: number) => void;
   className?: string;
 }
+
 const CheckboxGroup = ({ title, checkBoxList, className, onSelected, onDeselected }: Props) => {
   const uniqueId = useId();
 
   return (
     <>
       <Label className=" w-100pxr flex-shrink-0">{title}</Label>
-      <div className={cn('flex flex-wrap justify-between', className)}>
-        {checkBoxList.map(({ id, value }) => (
+      <div className={cn('flex flex-wrap justify-around', className)}>
+        {checkBoxList.map(({ tag_id, tag_name }) => (
           <div
-            key={id}
+            key={`${uniqueId}-${tag_id}`}
             className="flex items-center gap-1"
           >
             <Checkbox
-              id={`${uniqueId}-${value}`}
-              onCheckedChange={(checked) => (checked ? onSelected(value) : onDeselected(value))}
+              id={`${uniqueId}-${tag_name}`}
+              onCheckedChange={(checked) =>
+                checked ? onSelected({ tag_id, tag_name }) : onDeselected(tag_id)
+              }
             />
             <label
-              htmlFor={`${uniqueId}-${value}`}
+              htmlFor={`${uniqueId}-${tag_name}`}
               className="text-xs font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              {value}
+              {tag_name}
             </label>
           </div>
         ))}
