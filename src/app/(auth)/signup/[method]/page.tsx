@@ -41,6 +41,7 @@ export interface SignupValue {
 }
 
 const Signup = ({ params: { method } }: { params: { method: string } }) => {
+  // Todo: 생년월일 달력, useQuery enabled, redirection url 변경 후 분기
   const {
     register,
     handleSubmit,
