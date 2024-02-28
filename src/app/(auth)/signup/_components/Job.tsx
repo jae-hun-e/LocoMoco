@@ -1,8 +1,10 @@
+import { UseFormSetValue } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { SignupValue } from '../[method]/page';
 
 interface Props {
-  setJob: (job: string) => void;
+  setJob: UseFormSetValue<SignupValue>;
 }
 
 const job = [
@@ -18,7 +20,7 @@ const Job = ({ setJob }: Props) => {
       <RadioGroup
         className="flex"
         defaultValue="developer"
-        onValueChange={(job) => setJob(job)}
+        onValueChange={(job) => setJob('job', job)}
       >
         {job.map(({ value, label }) => (
           <div

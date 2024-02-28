@@ -1,8 +1,10 @@
+import { UseFormSetValue } from 'react-hook-form';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { SignupValue } from '../[method]/page';
 
 interface Props {
-  setGender: (gender: string) => void;
+  setGender: UseFormSetValue<SignupValue>;
 }
 
 const gender = [
@@ -17,7 +19,7 @@ const Gender = ({ setGender }: Props) => {
       <RadioGroup
         className="flex"
         defaultValue="male"
-        onValueChange={(gender) => setGender(gender)}
+        onValueChange={(gender) => setGender('gender', gender)}
       >
         {gender.map(({ value, label }) => (
           <div

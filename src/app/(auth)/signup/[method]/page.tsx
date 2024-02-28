@@ -1,9 +1,10 @@
 'use client';
 
 import { useCallback, useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import client from '@/apis/core';
 import { Button } from '@/components/ui/button';
-import { redirect, useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import DatePick from '../_components/DatePick';
 import Gender from '../_components/Gender';
 import Job from '../_components/Job';
@@ -32,87 +33,101 @@ interface ResponseType {
   };
 }
 
+export interface SignupValue {
+  nickname: string;
+  birth: string;
+  gender: string;
+  job: string;
+}
+
 const Signup = ({ params: { method } }: { params: { method: string } }) => {
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    getValues,
+    trigger,
+    formState: { errors },
+  } = useForm<SignupValue>({
+    defaultValues: {
+      nickname: '',
+      birth: '',
+      gender: 'male',
+      job: 'developer',
+    },
+  });
+
   const [loading, setLoading] = useState(true);
-  const [nickname, setNickname] = useState('');
-  const [birth, setBirth] = useState('');
-  const [gender, setGender] = useState('male');
-  const [job, setJob] = useState('developer');
-  const [isEmpty, setIsEmpty] = useState([false, false]);
-  const [isValidNickname, setIsValidNickname] = useState(false);
-  const [isValidDate, setIsValidDate] = useState(false);
-  const [nicknameWarningText, setNicknameWarningText] = useState('');
-  const [dateWarningText, setDateWarningText] = useState('');
+  const [isDuplicated, setIsDuplicated] = useState(true);
+  const [duplicateWarning, setDuplicateWarning] = useState('');
+  const router = useRouter();
   const code = useSearchParams().get('code');
 
   useEffect(() => {
-    const register = () => {
-      client.get({ url: `users/login/${method}/callback?code=${code}` }).then((res) => {
-        const typeRes = res as ResponseType;
-        const token = typeRes.tokenResponseDto.access_token;
-        const { userId } = typeRes.userInfoDto;
-        localStorage.setItem('userId', userId.toString());
-        sessionStorage.setItem(`${method}_token`, token);
-      });
+    const login = () => {
+      client
+        .get<ResponseType>({ url: `users/login/${method}/callback?code=${code}` })
+        .then((res) => {
+          const token = res.tokenResponseDto.access_token;
+          const { userId, birth } = res.userInfoDto;
+          if (birth) {
+            localStorage.setItem('userId', userId.toString());
+            localStorage.setItem(`${method}_token`, token);
+            router.replace('/');
+            return;
+          }
+          sessionStorage.setItem('userId', userId.toString());
+          sessionStorage.setItem(`${method}_token`, token);
+        });
     };
-
-    if (localStorage.getItem(`${method}_token`)) redirect('/');
+    if (localStorage.getItem(`${method}_token`)) router.replace('/');
     else {
-      if (!sessionStorage.getItem(`${method}_token`)) register();
+      if (!sessionStorage.getItem(`${method}_token`)) login();
     }
     setLoading(false);
-  }, [code, method]);
+  }, [code, method, router]);
 
   useEffect(() => {
     const handleBeforeUnload = (e: BeforeUnloadEvent) => {
       e.preventDefault();
-      return (e.returnValue = '');
+      e.returnValue = '';
     };
     addEventListener('beforeunload', handleBeforeUnload, { capture: true });
     return () => removeEventListener('beforeunload', handleBeforeUnload);
   }, [method]);
 
-  const handleSubmit = useCallback(() => {
-    if (nickname === '' || birth === '') {
-      setIsEmpty([nickname === '', birth === '']);
-      setNicknameWarningText('닉네임을 입력해주세요');
-      setDateWarningText('생년월일을 입력해주세요');
-      return;
-    }
-
-    if (!isValidNickname) {
-      setIsValidNickname(false);
-      setNicknameWarningText('사용 불가능한 닉네임입니다');
-      return;
-    }
-
-    if (!isValidDate) {
-      setIsValidDate(false);
-      setDateWarningText('유효하지 않은 날짜입니다');
+  const onSubmit = useCallback(async () => {
+    const valid = await trigger();
+    if (!valid) return;
+    if (isDuplicated) {
+      alert('닉네임 중복체크를 해주세요');
       return;
     }
     const token = sessionStorage.getItem(`${method}_token`);
-    if (!token) return;
+    const userId = sessionStorage.getItem('userId');
+    if (!token || !userId) return;
     client
       .put({
-        url: `/users/init/${sessionStorage.getItem('userId')}`,
+        url: `/users/init/${userId}`,
         headers: {
           Authorization: `Bearer ${token}`,
         },
         data: {
-          nickname,
-          birth,
-          gender,
-          job,
+          nickname: getValues('nickname'),
+          birth: getValues('birth'),
+          gender: getValues('gender'),
+          job: getValues('job'),
         },
       })
       .then(() => {
         alert('회원가입 성공');
-        redirect('/');
+        localStorage.setItem(`${method}_token`, token);
+        localStorage.setItem('userId', userId);
+        sessionStorage.clear();
+        router.replace('/');
       })
       .catch((error) => alert(error));
-    localStorage.setItem(`${method}_token`, token);
-  }, [birth, gender, isValidDate, isValidNickname, job, method, nickname]);
+  }, [getValues, isDuplicated, method, router, trigger]);
 
   return (
     <section className="flex flex-col justify-center gap-8 p-6">
@@ -121,29 +136,29 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
           <h2 className="mt-8 w-full text-center text-xl font-bold">회원가입</h2>
           <div className="relative">
             <NickName
-              isEmpty={isEmpty}
-              setIsEmpty={setIsEmpty}
-              nickname={nickname}
-              setNickname={setNickname}
-              setIsValidNickname={setIsValidNickname}
-              setNicknameWarningText={setNicknameWarningText}
+              register={register}
+              getNickname={getValues}
+              setNickname={setValue}
+              trigger={trigger}
+              setIsDuplicated={setIsDuplicated}
+              setDuplicateWarning={setDuplicateWarning}
             />
-            <Warning good={!(isEmpty[0] || !isValidNickname)}>{nicknameWarningText}</Warning>
+            {errors.nickname && <Warning good={false}>닉네임을 입력해주세요</Warning>}
+            {!errors.nickname && <Warning good={!isDuplicated}>{duplicateWarning}</Warning>}
           </div>
           <div className="relative">
             <DatePick
-              isEmpty={isEmpty}
-              setIsEmpty={setIsEmpty}
-              setBirth={setBirth}
-              setIsValidDate={setIsValidDate}
-              setDateWarningText={setDateWarningText}
+              register={register}
+              getDate={getValues}
+              setDate={setValue}
+              trigger={trigger}
             />
-            <Warning good={!(isEmpty[1] || !isValidDate)}>{dateWarningText}</Warning>
+            <Warning good={!errors.birth}>{errors.birth && '올바른 날짜를 입력해주세요'}</Warning>
           </div>
-          <Gender setGender={setGender} />
-          <Job setJob={setJob} />
+          <Gender setGender={setValue} />
+          <Job setJob={setValue} />
           <Button
-            onClick={handleSubmit}
+            onClick={handleSubmit(onSubmit)}
             className="mt-4 bg-main-1"
           >
             완료

@@ -1,57 +1,62 @@
 import { ChangeEvent } from 'react';
+import {
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+  UseFormTrigger,
+} from 'react-hook-form';
 import client from '@/apis/core';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { SignupValue } from '../[method]/page';
 
 interface Props {
-  nickname: string;
-  isEmpty: Array<boolean>;
-  setNickname: (nickname: string) => void;
-  setIsEmpty: (isEmpty: Array<boolean>) => void;
-  setIsValidNickname: (isValidNickname: boolean) => void;
-  setNicknameWarningText: (nicknameWarningText: string) => void;
+  register: UseFormRegister<SignupValue>;
+  setNickname: UseFormSetValue<SignupValue>;
+  getNickname: UseFormGetValues<SignupValue>;
+  trigger: UseFormTrigger<SignupValue>;
+  setIsDuplicated: (isDuplicated: boolean) => void;
+  setDuplicateWarning: (text: string) => void;
 }
 
 const NickName = ({
-  nickname,
-  isEmpty,
+  register,
   setNickname,
-  setIsEmpty,
-  setIsValidNickname,
-  setNicknameWarningText,
+  getNickname,
+  trigger,
+  setIsDuplicated,
+  setDuplicateWarning,
 }: Props) => {
-  const handleNickname = (e: ChangeEvent<HTMLInputElement>) => {
-    setNickname(e.target.value);
-    setIsValidNickname(true);
-    setIsEmpty([false, isEmpty[1]]);
-    setNicknameWarningText('');
-  };
-
-  const checkDuplication = () => {
-    if (nickname === '') {
-      setNicknameWarningText('닉네임을 입력해주세요.');
-      setIsValidNickname(false);
-      return;
-    }
-    client.get({ url: `users/nickname/${nickname}/check` }).then((res) => {
+  const checkDuplication = async () => {
+    const valid = await trigger('nickname');
+    if (!valid) return;
+    client.get({ url: `users/nickname/${getNickname('nickname')}/check` }).then((res) => {
       if (!res) {
-        setNicknameWarningText('중복된 닉네임입니다.');
-        setIsValidNickname(false);
+        setDuplicateWarning('중복된 닉네임입니다.');
+        setIsDuplicated(true);
       } else {
-        setNicknameWarningText('사용가능한 닉네임입니다.');
-        setIsValidNickname(true);
+        setDuplicateWarning('사용가능한 닉네임입니다.');
+        setIsDuplicated(false);
       }
     });
   };
 
   return (
     <div className="flex flex-col gap-1">
-      <h3>닉네임</h3>
+      <h2>닉네임</h2>
       <div className="flex justify-between gap-1">
         <div className="flex w-full flex-col">
           <Input
             className="flex w-full"
-            onChange={handleNickname}
+            {...register('nickname', {
+              required: true,
+              min: 1,
+              onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                setNickname('nickname', e.target.value);
+                setDuplicateWarning('');
+                setIsDuplicated(true);
+              },
+            })}
             placeholder="닉네임을 입력해주세요."
           />
         </div>
