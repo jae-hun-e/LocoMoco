@@ -9,6 +9,9 @@ const axiosInstance: AxiosInstance = axios.create({
 // todo: token 관련 처리는 추후 추가해야함 [24/02/07]
 axiosInstance.interceptors.request.use(
   (config) => {
+    const token = localStorage.getItem('token');
+    if (token) config.headers['Authorization'] = `Bearer ${token}`;
+
     return config;
   },
   (error) => {
