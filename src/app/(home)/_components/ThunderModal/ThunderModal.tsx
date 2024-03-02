@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useCreateThunderMGC } from '@/apis/thunderMGC/useCreateThunderMGC';
 import LocationSearch from '@/app/(home)/_components/ThunderModal/LocationSearch';
 import Modal from '@/app/_components/Modal';
 import { Button } from '@/components/ui/button';
@@ -10,6 +11,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useThunderModalStore } from '@/store/thunderModalStore';
+import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
 type ThunderFormData = {
   endTime: string;
@@ -36,6 +38,8 @@ const ThunderModal = () => {
     },
   });
 
+  const { createThunderMGC } = useCreateThunderMGC();
+
   const { isOpen, toggleModal } = useThunderModalStore();
 
   const handleCloseModal = () => {
@@ -43,14 +47,30 @@ const ThunderModal = () => {
     toggleModal();
   };
 
-  const onSubmit: SubmitHandler<ThunderFormData> = ({ endTime, title, location }) => {
-    const postData = {
-      startTime: new Date(),
+  const onSubmit: SubmitHandler<ThunderFormData> = ({
+    endTime,
+    title,
+    location,
+  }: ThunderFormData) => {
+    const req = {
+      creatorId: 5,
+      title: '123',
+      location: {
+        address: '경기도 부천시 소사로 114번길 5',
+        latitude: 31.4295839,
+        longitude: 123.123456789,
+        city: location,
+      },
+      startTime: toKoreanTimeZone(new Date()),
       endTime: endTime,
-      title: title,
-      location: location,
+      deadline: toKoreanTimeZone(new Date()),
+      maxParticipants: 8,
+      content: title,
+      tags: [],
     };
-    console.log(postData);
+
+    console.log(req);
+    createThunderMGC(req);
     handleCloseModal();
   };
 
