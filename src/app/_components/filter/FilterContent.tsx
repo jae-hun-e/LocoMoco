@@ -9,25 +9,46 @@ import { SearchFilterForm } from '@/types/searchFilterForm';
 import TypeCheckList from './TypeCheckList';
 
 const MGCType = {
-  all: '전체',
-  ThunderMGC: '번개',
-  LocationConfirmed: '장소확정',
-  LocationNotConfirmed: '장소미정',
+  all: 1,
+  ThunderMGC: 2,
+  LocationConfirmed: 3,
+  LocationNotConfirmed: 4,
 } as const;
 
 const languageType = {
-  all: '전체',
-  JAVASCRIPT: 'JAVASCRIPT',
-  JAVA: 'JAVA',
-  PYTHON: 'PYTHON',
+  all: 1,
+  JAVASCRIPT: 5,
+  JAVA: 6,
+  PYTHON: 7,
 } as const;
 
 const studyType = {
-  all: '전체',
-  web: 'web',
-  FE: 'FE',
-  BE: 'BE',
+  all: 1,
+  web: 8,
+  FE: 9,
+  BE: 10,
 } as const;
+
+// const MGCType = {
+//   all: {id: 1, text: '전체'},
+//   ThunderMGC: {id: 1, text: '번개'},
+//   LocationConfirmed: {id: 1, text: '장소확정'},
+//   LocationNotConfirmed: {id: 1, text: '장소미정'},
+// } as const;
+
+// const languageType = {
+//   all: '전체',
+//   JAVASCRIPT: 'JAVASCRIPT',
+//   JAVA: 'JAVA',
+//   PYTHON: 'PYTHON',
+// } as const;
+
+// const studyType = {
+//   all: '전체',
+//   web: 'web',
+//   FE: 'FE',
+//   BE: 'BE',
+// } as const;
 
 const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => void }) => {
   const MGCTypes = Object.values(MGCType);

@@ -2,16 +2,14 @@ import React, { useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
 import useClickAway from '@/hooks/useClickaway';
+import useCenterPosition from '@/store/useCenterPosition';
 import { Search } from 'lucide-react';
 import AddressList from './AddressList';
 
-const SearchBarFilter = ({
-  changeCenter,
-}: {
-  changeCenter: (latitude: number, longitude: number) => void;
-}) => {
+const SearchBarFilter = () => {
   const [keyword, setKeyword] = useState('');
   const [show, setShow] = useState(false);
+  const { setCenterPosition } = useCenterPosition();
 
   const { data: address } = useAddress(keyword);
 
@@ -22,7 +20,7 @@ const SearchBarFilter = ({
   const clickAwayRef = useClickAway<HTMLDivElement>(handleClickAway);
 
   const handleAddressClick = (data: Address) => {
-    changeCenter(Number(data.latitude), Number(data.longitude));
+    setCenterPosition({ latitude: Number(data.latitude), longitude: Number(data.longitude) });
     setShow(false);
   };
 

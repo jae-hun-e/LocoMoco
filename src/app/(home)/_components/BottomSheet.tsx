@@ -1,5 +1,7 @@
 import React, { ReactNode } from 'react';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Button } from '@/components/ui/button';
+import { Drawer, DrawerContent, DrawerTrigger } from '@/components/ui/drawer';
+import { Menu } from 'lucide-react';
 
 interface BottomSheetProps {
   children: ReactNode;
@@ -11,26 +13,27 @@ interface BottomSheetProps {
 // TODO: 회의 후에 네브와 바텀시트를 함께 보일지 수정 [24/02/12]
 const BottomSheet = ({ children, open, setOpen }: BottomSheetProps) => {
   return (
-    <Sheet
+    <Drawer
       open={open}
       onOpenChange={(open) => setOpen(open)}
     >
-      <SheetTrigger asChild>
-        <div className="w-full cursor-pointer rounded-t-xl bg-layer-1 py-3">
-          <div className="mx-auto h-1 w-40pxr rounded-full bg-layer-4" />
-        </div>
-      </SheetTrigger>
-      <SheetContent
-        id="sheet-content"
-        side="bottom"
-        className="main-bottom-sheet z-10 flex h-[70svh] flex-col gap-0 overflow-y-auto rounded-t-xl p-0 outline-none"
+      <DrawerTrigger
+        asChild
+        className="flex justify-center"
       >
-        <div className="w-full py-3">
-          <div className="mx-auto h-1 w-40pxr rounded-full bg-layer-4" />
-        </div>
-        <div className="overflow-y-auto">{children}</div>
-      </SheetContent>
-    </Sheet>
+        <Button className="gap-3pxr rounded-full border border-solid border-layer-4 bg-white text-layer-7 hover:bg-white">
+          <Menu
+            width={16}
+            height={16}
+            stroke="#58C694"
+          />
+          목록보기
+        </Button>
+      </DrawerTrigger>
+      <DrawerContent className="main-bottom-sheet z-10 flex h-[70svh] flex-col gap-0 overflow-y-auto rounded-t-xl p-0 outline-none">
+        <div className="overflow-y-auto px-20pxr pb-50pxr scrollbar-hide">{children}</div>
+      </DrawerContent>
+    </Drawer>
   );
 };
 
