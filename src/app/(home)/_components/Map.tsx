@@ -50,8 +50,8 @@ const Map = forwardRef(
             none: true,
             markerSrc: markerImg.src,
             markerSize: {
-              width: 30,
-              height: 30,
+              width: 40,
+              height: 40,
             },
           }),
         );
@@ -70,21 +70,22 @@ const Map = forwardRef(
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseDown = useCallback(
-      (e: kakao.maps.event.MouseEvent, createdPositionCoordinates: kakao.maps.Marker) => {
-        // 마우스 다운 이벤트 발생 시 타이머를 설정합니다.
+      (e: kakao.maps.event.MouseEvent) => {
         timerRef.current = setTimeout(() => {
-          const latLng = e.latLng;
+          if (createdPositionCoordinates) {
+            const latLng = e.latLng;
 
-          if (createdPositionCoordinates && map) {
-            movePosition({
-              marker: createdPositionCoordinates,
-              latitude: latLng.getLat(),
-              longitude: latLng.getLng(),
-            });
+            if (createdPositionCoordinates && map) {
+              movePosition({
+                marker: createdPositionCoordinates,
+                latitude: latLng.getLat(),
+                longitude: latLng.getLng(),
+              });
+            }
           }
-        }, 1500);
+        }, 1000);
       },
-      [map, movePosition],
+      [map, movePosition, createdPositionCoordinates],
     );
 
     const handleMouseUp = () => {
@@ -93,28 +94,52 @@ const Map = forwardRef(
       }
     };
 
+    const handleTouchStart = useCallback(
+      (e: TouchEvent) => {
+        if (!(e.target instanceof SVGElement)) return;
+
+        if (map) {
+          timerRef.current = setTimeout(() => {
+            const mapProjection = map.getProjection();
+            const point = new kakao.maps.Point(e.touches[0].clientX, e.touches[0].clientY - 120);
+            const latLng = mapProjection.coordsFromContainerPoint(point);
+
+            if (createdPositionCoordinates && map) {
+              movePosition({
+                marker: createdPositionCoordinates,
+                latitude: latLng.getLat(),
+                longitude: latLng.getLng(),
+              });
+            }
+          }, 1000);
+        }
+      },
+      [createdPositionCoordinates, map, movePosition],
+    );
+
     useEffect(() => {
+      const mapContainer = document.getElementById('map')!;
+
       if (map) {
-        kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) =>
-          handleMouseDown(e, createdPositionCoordinates!),
-        );
-        kakao.maps.event.addListener(map, 'mouseup', () => handleMouseUp);
-        kakao.maps.event.addListener(map, 'touchend', () => handleMouseUp);
+        kakao.maps.event.addListener(map, 'mousedown', handleMouseDown);
+        kakao.maps.event.addListener(map, 'click', handleMouseUp);
+        kakao.maps.event.addListener(map, 'dragstart', handleMouseUp);
       }
+      mapContainer.addEventListener('touchstart', handleTouchStart);
 
       return () => {
         if (map) {
-          kakao.maps.event.removeListener(map, 'click', handleMouseDown);
-          kakao.maps.event.removeListener(map, 'mouseup', () => handleMouseUp);
-          kakao.maps.event.removeListener(map, 'touchend', () => handleMouseUp);
+          kakao.maps.event.removeListener(map, 'mousedown', handleMouseDown);
+          kakao.maps.event.removeListener(map, 'click', handleMouseUp);
+          kakao.maps.event.removeListener(map, 'dragstart', handleMouseUp);
         }
-
-        clearTimeout(timerRef.current!);
+        mapContainer.removeEventListener('touchstart', handleTouchStart);
       };
-    }, [handleMouseDown, map, createdPositionCoordinates]);
+    }, [handleMouseDown, handleTouchStart, map]);
 
     return (
       <div
+        id="map"
         ref={mapRef}
         className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
       ></div>

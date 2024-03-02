@@ -31,7 +31,12 @@ const useCreateKakaoMap = (isCustomlevelControl = false) => {
       const imageSrc =
         markerSrc ?? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
       const imageSize = new kakao.maps.Size(markerSize?.width ?? 64, markerSize?.height ?? 69);
-      const imageOption = { offset: new kakao.maps.Point(27, 69) };
+      const imageOption = {
+        offset: new kakao.maps.Point(
+          markerSize?.width ? markerSize?.width / 2 : 32,
+          markerSize?.height ? markerSize?.height / 2 : 69 / 2,
+        ),
+      };
 
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
       const marker = new kakao.maps.Marker({
@@ -98,7 +103,6 @@ const useCreateKakaoMap = (isCustomlevelControl = false) => {
         };
 
         const createdMap = new window.kakao.maps.Map(mapRef.current, mapOption);
-        // TODO: 커스텀 컨트롤러 사용할지 논의 후 변경 [24.02.14]
         if (!isCustomlevelControl) {
           const zoomControl = new kakao.maps.ZoomControl();
           createdMap.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);
