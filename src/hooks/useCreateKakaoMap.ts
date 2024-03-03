@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+interface CreateKakaoMapProps {
+  isCustomlevelControl: boolean;
+  handleMouseUp?: () => void;
+}
+
 export interface CreateMarkerParams {
   latitude: number;
   longitude: number;
@@ -18,7 +23,7 @@ export interface MovePositionParams {
   longitude: number;
 }
 
-const useCreateKakaoMap = (isCustomlevelControl = false) => {
+const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
@@ -50,6 +55,7 @@ const useCreateKakaoMap = (isCustomlevelControl = false) => {
 
       kakao.maps.event.addListener(marker, 'click', () => {
         // TODO: 모달 컴포넌트 생성되면 모달 컴포넌트 연결 [24.02.17]
+        handleMouseUp?.();
         console.log('번개 모각코 생성할 좌표', marker.getPosition());
       });
 

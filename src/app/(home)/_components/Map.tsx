@@ -1,4 +1,4 @@
-import { ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 import { CreateMarkerParams, MovePositionParams } from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
 import markerImg from '../../../../public/oh.png';
@@ -17,11 +17,22 @@ interface MapProps {
     markerSize,
   }: CreateMarkerParams) => kakao.maps.Marker;
   isLoad: boolean;
+  handleMouseUp: () => void;
+  timerRef: React.MutableRefObject<NodeJS.Timeout | null>;
 }
 
 const Map = forwardRef(
   (
-    { map, removeMarker, movePosition, changeCenter, createMarker, isLoad }: MapProps,
+    {
+      map,
+      removeMarker,
+      movePosition,
+      changeCenter,
+      createMarker,
+      isLoad,
+      handleMouseUp,
+      timerRef,
+    }: MapProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
     const [createdPositionCoordinates, setCreatedPositionCoordinates] =
@@ -67,8 +78,6 @@ const Map = forwardRef(
       }
     }, [createMarker, isLoad]);
 
-    const timerRef = useRef<NodeJS.Timeout | null>(null);
-
     const handleMouseDown = useCallback(
       (e: kakao.maps.event.MouseEvent) => {
         timerRef.current = setTimeout(() => {
@@ -85,14 +94,8 @@ const Map = forwardRef(
           }
         }, 1000);
       },
-      [map, movePosition, createdPositionCoordinates],
+      [timerRef, createdPositionCoordinates, map, movePosition],
     );
-
-    const handleMouseUp = () => {
-      if (timerRef.current) {
-        clearTimeout(timerRef.current);
-      }
-    };
 
     const handleTouchStart = useCallback(
       (e: TouchEvent) => {
@@ -114,7 +117,7 @@ const Map = forwardRef(
           }, 1000);
         }
       },
-      [createdPositionCoordinates, map, movePosition],
+      [createdPositionCoordinates, map, movePosition, timerRef],
     );
 
     useEffect(() => {
@@ -135,7 +138,7 @@ const Map = forwardRef(
         }
         mapContainer.removeEventListener('touchstart', handleTouchStart);
       };
-    }, [handleMouseDown, handleTouchStart, map]);
+    }, [handleMouseDown, handleMouseUp, handleTouchStart, map]);
 
     return (
       <div
