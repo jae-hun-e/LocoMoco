@@ -3,6 +3,8 @@
 import useMGCList from '@/apis/mgcList/useMGCList';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import { Search } from 'lucide-react';
+import CreateBtn from '../_components/CreateBtn';
+import Filter from '../_components/filter/Filter';
 
 const SearchMGC = () => {
   const { data } = useMGCList([]);
@@ -30,7 +32,7 @@ const SearchMGC = () => {
   // }
 
   return (
-    <div className="mt-20pxr">
+    <div className="pt-20pxr">
       <div
         id="input-wrap"
         className="flex h-50pxr flex-row items-center rounded-lg border"
@@ -42,12 +44,14 @@ const SearchMGC = () => {
           className="m-10pxr"
         />
         <input
-          placeholder="장소를 입력해 주세요."
+          placeholder="제목, 사용자명 또는 장소를 입력해 주세요."
           className="h-10 w-full text-sm focus:outline-none"
         />
       </div>
-      {/* Todo: filter 가져와야 함 [2024/02/13] */}
-      {/* Todo: 생성 버튼 가져와야 함 [2024/02/13] */}
+      <Filter />
+      <div className="absolute bottom-50pxr right-24pxr z-30">
+        <CreateBtn />
+      </div>
       <MGCList data={data ?? []}></MGCList>
     </div>
   );
