@@ -5,6 +5,7 @@ import { MGCTypes } from '@/constants/types';
 import { MGCSummary } from '@/types/MGCList';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
 
 // import { formatDistance } from 'date-fns';
 // import { ko } from 'date-fns/locale';
@@ -14,6 +15,8 @@ interface MGCListItemPropsType {
 }
 
 const MGCListItem = ({ data }: MGCListItemPropsType) => {
+  const router = useRouter();
+
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey)!;
 
@@ -22,6 +25,9 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
 
   const handleMGCItemClick = () => {
     console.log(data.id);
+    router.push(`/mgc/1`);
+    // Todo: 현재 임시로 모각코 상세페이지로 이동, 추후 id에 맞게 변경 [2024/03/04]
+    // router.push(`/mgc/${data.id}`);
   };
 
   const TagsUI = (tagIds: number[] | undefined) => {
@@ -64,6 +70,7 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
         <span className="mx-1">·</span>
         {/* TODO: 서버 데이터에 createdAt생기면 Date연산 하기 [24.02.24] */}
         {/* {formatDistance(data.createAt, new Date(), { addSuffix: true, locale: ko })} */}
+        {'ex)0시간 전'}
         <span className="mx-1">·</span>조회
         {data.views}
       </div>
