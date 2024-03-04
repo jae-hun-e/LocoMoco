@@ -1,29 +1,38 @@
-import { Category } from '@/apis/mgc/queryFn';
-import { create } from 'zustand';
+import { createStore } from 'zustand/vanilla';
 
 export interface TagMapping {
   tagId: number;
   tagName: string;
   categoryName: string;
 }
-interface TagsMappingStore<T> {
+// interface TagsMappingStore {
+//   tagMap: Map<number, TagMapping>;
+//   setTagMap: (newMap: Map<number, TagMapping>) => void;
+// }
+//
+// const useTagStore = create<TagsMappingStore>((set) => ({
+//   tagMap: new Map(),
+//   setTagMap: (newMap) => set({ tagMap: newMap }),
+// }));
+//
+// export default useTagStore;
+
+export interface TagMapState {
   tagMap: Map<number, TagMapping>;
-  setTagMap: (categoryList: T[]) => void;
 }
 
-const useTagStore = <T extends Category['data'][0]>() =>
-  create<TagsMappingStore<T>>((set) => ({
-    tagMap: new Map(),
-    setTagMap: (categoryList) =>
-      set(() => {
-        const newMap = new Map();
-        categoryList?.slice(1).forEach(({ category_name, tags }) => {
-          tags.forEach(({ tag_id, tag_name }) => {
-            newMap.set(tag_id, { tagName: tag_name, categoryName: category_name });
-          });
-        });
-        return { tagMap: newMap };
-      }),
-  }));
+export interface TagMapActions {
+  setTagMap: (newMap: Map<number, TagMapping>) => void;
+}
+export type TagMapStore = TagMapState & TagMapActions;
 
-export default useTagStore;
+export const defaultInitState: TagMapState = {
+  tagMap: new Map(),
+};
+
+export const tagMapStore = (initState: TagMapState = defaultInitState) => {
+  return createStore<TagMapStore>()((set) => ({
+    ...initState,
+    setTagMap: (newMap) => set({ tagMap: newMap }),
+  }));
+};

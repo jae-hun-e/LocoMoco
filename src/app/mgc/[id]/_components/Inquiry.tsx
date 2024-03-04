@@ -14,7 +14,6 @@ interface Props {
 // TODO: 문의 API 완성 되면 CRUD연결 - 다음 PR [24/03/04]
 // TODO: 모각코 생성자만 답글 가능한 툴바 생성 - 다음 PR [24/03/04]
 const Inquiry = ({ MGCId }: Props) => {
-  console.log(MGCId);
   const inquiries: InquiryRes[] = dummyData.inquiries;
 
   const { register, handleSubmit, resetField } = useForm<InquiryReq>();
@@ -22,7 +21,7 @@ const Inquiry = ({ MGCId }: Props) => {
     const req = { ...data, author: '111' };
     // TODO: api 연결 시 콘솔제거 [24/02/12]
     console.log(req);
-
+    console.log(MGCId);
     resetField('content');
   };
 
