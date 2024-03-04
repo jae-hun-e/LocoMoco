@@ -1,14 +1,20 @@
 'use client';
 
-import useMGCList from '@/apis/mgcList/useMGCList';
+import { useState } from 'react';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
 import Filter from '../_components/filter/Filter';
 
-const SearchMGC = () => {
-  const { data } = useMGCList([]);
+type SearchForm = {
+  search: string;
+};
 
+const SearchMGC = () => {
+  const [temp, setTemp] = useState({ searchType: 'TOTAL' });
+  const { data } = useMGCTotalList(temp);
   //   {
   //     "id": 53,
   //     "title": "이게 무슨 일이야 이렇게 좋은 날에",
@@ -31,6 +37,13 @@ const SearchMGC = () => {
   //     ]
   // }
 
+  const { register, handleSubmit } = useForm<SearchForm>();
+
+  const onSubmit: SubmitHandler<SearchForm> = ({ search }) => {
+    console.log(search);
+    setTemp({ ...temp, search: search });
+  };
+
   return (
     <div className="pt-20pxr">
       <div
@@ -43,15 +56,22 @@ const SearchMGC = () => {
           color="gray"
           className="m-10pxr"
         />
-        <input
-          placeholder="제목, 사용자명 또는 장소를 입력해 주세요."
-          className="h-10 w-full text-sm focus:outline-none"
-        />
+        <form
+          className="w-full"
+          onSubmit={handleSubmit(onSubmit)}
+        >
+          <input
+            placeholder="제목, 사용자명 또는 장소를 입력해 주세요."
+            className="h-10 w-full text-sm focus:outline-none"
+            {...register('search', { required: true })}
+          />
+        </form>
       </div>
       <Filter />
       <div className="absolute bottom-50pxr right-24pxr z-30">
         <CreateBtn />
       </div>
+      <div>{JSON.stringify(temp)}</div>
       <MGCList data={data ?? []}></MGCList>
     </div>
   );
