@@ -2,7 +2,7 @@ import client from '@/apis/core';
 import { LocationInfo } from '@/apis/mgc/queryFn';
 import { useSuspenseQuery } from '@tanstack/react-query';
 
-interface UserInfo {
+export interface UserInfo {
   userId: number;
   nickname: string;
 }

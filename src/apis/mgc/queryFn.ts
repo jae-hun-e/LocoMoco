@@ -1,6 +1,6 @@
 import client from '@/apis/core';
 
-interface Category {
+export interface Category {
   data: {
     category_id: number;
     category_name: string;
