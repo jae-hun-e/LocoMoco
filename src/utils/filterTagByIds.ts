@@ -1,4 +1,8 @@
-import { TagMapping } from '@/store/useTagStore';
+export interface TagMapping {
+  tagId: number;
+  tagName: string;
+  categoryName: string;
+}
 
 interface ResultType {
   categoryName: string;
