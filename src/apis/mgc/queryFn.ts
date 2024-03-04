@@ -9,23 +9,33 @@ interface Category {
   }[];
 }
 
-interface TestType {
-  body: string;
-  id: number;
-  title: string;
-  userId: number;
-}
-
-export const testQuery = async (id: number) => {
-  return await client.get<TestType>({ url: `/posts/${id}` });
-};
-
 export interface TagType {
   tag_id: number;
   tag_name: string;
 }
+
 export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   const { data } = await client.get<Category>({ url: `/category?type=${type}` });
 
   return data;
 };
+
+interface CreateMGCReq {
+  creatorId: number;
+  title: string;
+  location: {
+    address: string;
+    latitude: number;
+    longitude: number;
+    city: string;
+  };
+  startTime: string;
+  endTime: string;
+  deadline: string;
+  maxParticipants: number;
+  content?: string;
+  tags?: number[];
+}
+
+export const createMGC = async (createMGCReq: CreateMGCReq) =>
+  await client.put({ url: '/mogakko/map', data: createMGCReq });

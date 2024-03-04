@@ -17,8 +17,8 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey)!;
 
-  const MGCTypeTag = categoryList[0].tags;
-  const tagInfo = [...categoryList[1].tags, ...categoryList[2].tags];
+  const MGCTypeTag = categoryList ? categoryList[0].tags : [];
+  const tagInfo = categoryList ? [...categoryList[1].tags, ...categoryList[2].tags] : [];
 
   const handleMGCItemClick = () => {
     console.log(data.id);

@@ -31,12 +31,28 @@ const useGeolocation = () => {
     });
   }, []);
 
-  useEffect(() => {
-    if (!('geolocation' in navigator)) {
-      onError('gps 추적이 불가능합니다.');
-    }
-    navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
+  const handlePermissionChange = useCallback(() => {
+    navigator.permissions.query({ name: 'geolocation' }).then(() => {
+      if (!('geolocation' in navigator)) {
+        onError('gps 추적이 불가능합니다.');
+      }
+      navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
+    });
   }, [onError, onSuccess]);
+
+  useEffect(() => {
+    handlePermissionChange();
+
+    navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
+      permissionStatus.addEventListener('change', handlePermissionChange);
+    });
+
+    return () => {
+      navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
+        permissionStatus.removeEventListener('change', handlePermissionChange);
+      });
+    };
+  }, [handlePermissionChange]);
 
   return location;
 };

@@ -1,24 +1,36 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-interface CreateKakaoMapProps {
-  showCurrentLocation: boolean;
-  isCustomlevelControl?: boolean;
+export interface CreateMarkerParams {
+  latitude: number;
+  longitude: number;
+  draggble?: boolean;
+  none?: boolean;
+  markerSrc?: string;
+  markerSize?: {
+    width: number;
+    height: number;
+  };
 }
 
-const useCreateKakaoMap = ({
-  showCurrentLocation,
-  isCustomlevelControl = false,
-}: CreateKakaoMapProps) => {
+export interface MovePositionParams {
+  marker: kakao.maps.Marker;
+  latitude: number;
+  longitude: number;
+}
+
+const useCreateKakaoMap = (isCustomlevelControl = false) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
-  const [createPositionMarker, setCreatePositionMarker] = useState<kakao.maps.Marker>();
+  const [isLoad, setIsLoad] = useState(false);
 
   const createMarker = useCallback(
-    (movePosition: kakao.maps.LatLng, draggble?: boolean, none?: boolean) => {
+    ({ latitude, longitude, draggble, none, markerSrc, markerSize }: CreateMarkerParams) => {
       // TODO: 임시 현재위치 아이콘 추후에 변경해야함 [24.02.14]
-      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-      const imageSize = new kakao.maps.Size(64, 69);
+      const movePosition = new kakao.maps.LatLng(latitude, longitude);
+      const imageSrc =
+        markerSrc ?? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
+      const imageSize = new kakao.maps.Size(markerSize?.width ?? 64, markerSize?.height ?? 69);
       const imageOption = { offset: new kakao.maps.Point(27, 69) };
 
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
@@ -41,16 +53,14 @@ const useCreateKakaoMap = ({
     [map],
   );
 
-  const setCurrentLocation = useCallback(
-    (latitude: number, longitude: number) => {
-      if (map && kakao.maps.LatLng) {
-        const movePosition = new kakao.maps.LatLng(latitude, longitude);
-        map.setCenter(movePosition);
-        createMarker(movePosition);
-      }
-    },
-    [createMarker, map],
-  );
+  const removeMarker = (marker: kakao.maps.Marker) => {
+    marker?.setMap(null);
+  };
+
+  const movePosition = ({ marker, latitude, longitude }: MovePositionParams) => {
+    marker.setPosition(new kakao.maps.LatLng(latitude, longitude));
+    marker.setMap(map!);
+  };
 
   const changeCenter = useCallback(
     (latitude: number, longitude: number) => {
@@ -102,25 +112,23 @@ const useCreateKakaoMap = ({
         });
 
         setMap(createdMap);
-
-        if (showCurrentLocation) {
-          setCreatePositionMarker(createMarker(mapOption.center, true, true));
-        }
         setClusterer(clusterer);
+        setIsLoad(true);
       }
     });
-  }, [showCurrentLocation]);
+  }, [isCustomlevelControl]);
 
   return {
     clusterer,
     map,
     mapRef,
-    createPositionMarker,
     createMarker,
-    setCurrentLocation,
     changeCenter,
+    removeMarker,
+    movePosition,
     zoomIn,
     zoomOut,
+    isLoad,
   };
 };
 

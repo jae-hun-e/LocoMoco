@@ -1,4 +1,4 @@
-import React from 'react';
+import { useEffect } from 'react';
 import {
   FieldErrors,
   UseFormRegister,
@@ -23,14 +23,11 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
   const requiredFields: { field: keyof MGCCreateForm; message: string }[] = [
     { field: 'title', message: '제목을 입력해주세요.' },
     { field: 'date', message: '모각코 날짜를 선택해주세요.' },
-    { field: 'startTime', message: '시작시간을 선택해주세요.' },
-    { field: 'endTime', message: '종료시간을 선택해주세요.' },
+    { field: 'startTime', message: '시간을 선택해주세요.' },
+    { field: 'endTime', message: '시간을 선택해주세요.' },
     { field: 'deadLine', message: '신청 마감일을 선택해주세요.' },
     { field: 'maxParticipants', message: '참여 인원을 입력해주세요.' },
   ];
-  requiredFields.forEach(({ field, message }) => {
-    register(field, { required: message });
-  });
 
   const handleMGCDate = (field: keyof MGCCreateForm, selectedDay: Date) => {
     setValue(field, selectedDay);
@@ -42,11 +39,20 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     trigger(field);
   };
 
+  useEffect(() => {
+    requiredFields.forEach(({ field, message }) => {
+      register(field, { required: message });
+    });
+  }, []);
+
   return (
     <>
       {/*필수 값 - 장소, 날짜/시간, 신청 종류시간, 신청기한 */}
       {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/15]*/}
-      <section className="mb-10pxr h-150pxr w-full bg-layer-5">지도</section>
+      <section
+        className="mb-10pxr h-150pxr w-full bg-layer-5"
+        // ref={mapRef}
+      />
 
       <section className={labelVariants()}>
         <input
@@ -65,7 +71,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
       />
 
       <MGCTime
-        onChangeInput={handleMGCTime}
+        onChangeInput={(field, selectedTime) => handleMGCTime(field, selectedTime)}
         startErrormessage={errors.startTime?.message}
         endErrormessage={errors.endTime?.message}
         watch={watch}

@@ -1,42 +1,90 @@
-import { ForwardedRef, forwardRef, useCallback, useEffect, useRef } from 'react';
+import { ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { CreateMarkerParams, MovePositionParams } from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
+import markerImg from '../../../../public/oh.png';
 
 interface MapProps {
-  setCurrentLocation: (a: number, b: number) => void;
   map?: kakao.maps.Map;
-  createPositionMarker?: kakao.maps.Marker;
+  removeMarker: (marker: kakao.maps.Marker) => void;
+  movePosition: ({ marker, latitude, longitude }: MovePositionParams) => void;
+  changeCenter: (latitude: number, longitude: number) => void;
+  createMarker: ({
+    latitude,
+    longitude,
+    draggble,
+    none,
+    markerSrc,
+    markerSize,
+  }: CreateMarkerParams) => kakao.maps.Marker;
+  isLoad: boolean;
 }
 
 const Map = forwardRef(
   (
-    { setCurrentLocation, map, createPositionMarker }: MapProps,
+    { map, removeMarker, movePosition, changeCenter, createMarker, isLoad }: MapProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
+    const [createdPositionCoordinates, setCreatedPositionCoordinates] =
+      useState<kakao.maps.Marker>();
+    const [currentPositionMarker, setCurrentPositionMarker] = useState<kakao.maps.Marker>();
+
     const location = useGeolocation();
 
     useEffect(() => {
-      if (location.loaded) {
+      if (location.loaded && currentPositionMarker) {
         const { lat, lng } = location.coordinates!;
-        setCurrentLocation(lat, lng);
+        movePosition({ marker: currentPositionMarker, latitude: lat, longitude: lng });
+        changeCenter(lat, lng);
+      } else {
+        removeMarker(currentPositionMarker!);
       }
-    }, [location.coordinates, location.loaded, setCurrentLocation]);
+    }, [changeCenter, currentPositionMarker, location.coordinates, location.loaded]);
+
+    useEffect(() => {
+      if (isLoad) {
+        setCreatedPositionCoordinates(
+          createMarker({
+            latitude: 35.1543440473172,
+            longitude: 128.686892962301,
+            draggble: true,
+            none: true,
+            markerSrc: markerImg.src,
+            markerSize: {
+              width: 30,
+              height: 30,
+            },
+          }),
+        );
+
+        setCurrentPositionMarker(
+          createMarker({
+            latitude: 35.1543440473172,
+            longitude: 128.686892962301,
+            draggble: false,
+            none: true,
+          }),
+        );
+      }
+    }, [createMarker, isLoad]);
 
     const timerRef = useRef<NodeJS.Timeout | null>(null);
 
     const handleMouseDown = useCallback(
-      (e: kakao.maps.event.MouseEvent, createPositionMarker: kakao.maps.Marker) => {
+      (e: kakao.maps.event.MouseEvent, createdPositionCoordinates: kakao.maps.Marker) => {
         // 마우스 다운 이벤트 발생 시 타이머를 설정합니다.
         timerRef.current = setTimeout(() => {
           const latLng = e.latLng;
-          const movePosition = new kakao.maps.LatLng(latLng.getLat(), latLng.getLng());
 
-          if (createPositionMarker && map) {
-            createPositionMarker.setPosition(movePosition);
-            createPositionMarker.setMap(map);
+          if (createdPositionCoordinates && map) {
+            movePosition({
+              marker: createdPositionCoordinates,
+              latitude: latLng.getLat(),
+              longitude: latLng.getLng(),
+            });
           }
         }, 1500);
       },
-      [map],
+      [map, movePosition],
     );
 
     const handleMouseUp = () => {
@@ -48,7 +96,7 @@ const Map = forwardRef(
     useEffect(() => {
       if (map) {
         kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) =>
-          handleMouseDown(e, createPositionMarker!),
+          handleMouseDown(e, createdPositionCoordinates!),
         );
         kakao.maps.event.addListener(map, 'mouseup', () => handleMouseUp);
         kakao.maps.event.addListener(map, 'touchend', () => handleMouseUp);
@@ -63,7 +111,7 @@ const Map = forwardRef(
 
         clearTimeout(timerRef.current!);
       };
-    }, [handleMouseDown, map, createPositionMarker]);
+    }, [handleMouseDown, map, createdPositionCoordinates]);
 
     return (
       <>

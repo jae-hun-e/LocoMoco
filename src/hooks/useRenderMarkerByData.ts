@@ -6,10 +6,10 @@ interface MakerInfo {
   data: MGCSummary;
 }
 
-const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void) => {
+const useRenderMarkerByData = (openBottomSheetAndUpdate: (mapData: MGCSummary[]) => void) => {
   const setMarker = useCallback(
     (mapMGCData: MGCSummary[], clusterer: kakao.maps.MarkerClusterer) => {
-      const markersInfo = [] as MakerInfo[];
+      const markersInfo: MakerInfo[] = [];
       // TODO: 임시 아이콘 추후에 변경해야함 [24.02.14]
       const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
       const imageSize = new kakao.maps.Size(24, 35);
@@ -18,7 +18,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
       clusterer?.clear();
 
       for (const mgc of mapMGCData) {
-        if (!mgc.location.latitude && mgc.location.longitude) continue;
+        if (!(mgc.location.latitude && mgc.location.longitude)) continue;
 
         const marker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(mgc.location.latitude, mgc.location.longitude),
@@ -26,7 +26,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
         });
 
         kakao.maps.event.addListener(marker, 'click', () => {
-          openSheetUpdate([mgc]);
+          openBottomSheetAndUpdate([mgc]);
         });
 
         const newMarkerInfo = { data: mgc, marker: marker };
@@ -36,7 +36,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
 
       return markersInfo;
     },
-    [openSheetUpdate],
+    [openBottomSheetAndUpdate],
   );
 
   const renderMarker = (clusterer: kakao.maps.MarkerClusterer, mapMGCData: MGCSummary[]) => {
@@ -53,7 +53,7 @@ const useRenderMarkerByData = (openSheetUpdate: (mapData: MGCSummary[]) => void)
         );
       }
 
-      openSheetUpdate(markerList);
+      openBottomSheetAndUpdate(markerList);
     });
   };
 

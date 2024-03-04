@@ -13,7 +13,7 @@ const MapSection = ({ data }: MGCListType) => {
   const [open, setOpen] = useState(false);
   const { centerPosition } = useCenterPosition();
 
-  const openSheetUpdate = (mapData: MGCSummary[]) => {
+  const openBottomSheetAndUpdate = (mapData: MGCSummary[]) => {
     setMGCDataList(mapData);
     setOpen(true);
   };
@@ -24,9 +24,9 @@ const MapSection = ({ data }: MGCListType) => {
     }
   }, [data]);
 
-  const { clusterer, map, mapRef, createPositionMarker, setCurrentLocation, changeCenter } =
-    useCreateKakaoMap({ showCurrentLocation: true, isCustomlevelControl: false });
-  const renderMarker = useRenderMarkerByData(openSheetUpdate);
+  const { clusterer, map, mapRef, createMarker, changeCenter, removeMarker, movePosition, isLoad } =
+    useCreateKakaoMap();
+  const renderMarker = useRenderMarkerByData(openBottomSheetAndUpdate);
 
   useEffect(() => {
     if (clusterer && data) {
@@ -46,8 +46,11 @@ const MapSection = ({ data }: MGCListType) => {
     <>
       <Map
         map={map}
-        createPositionMarker={createPositionMarker}
-        setCurrentLocation={setCurrentLocation}
+        isLoad={isLoad}
+        createMarker={createMarker}
+        removeMarker={removeMarker}
+        changeCenter={changeCenter}
+        movePosition={movePosition}
         ref={mapRef}
       />
 
