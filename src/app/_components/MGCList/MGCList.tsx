@@ -7,18 +7,22 @@ interface MGCListPropsType {
 }
 
 const MGCList = ({ data }: MGCListPropsType) => {
-  return (
-    <div>
-      {data.map((mgc, idx) => {
-        return (
-          <div key={idx}>
-            <MGCListItem data={mgc}></MGCListItem>
-            <Separator></Separator>
-          </div>
-        );
-      })}
-    </div>
-  );
+  if (data.length !== 0) {
+    return (
+      <div>
+        {data.map((mgc, idx) => {
+          return (
+            <div key={idx}>
+              <MGCListItem data={mgc}></MGCListItem>
+              <Separator></Separator>
+            </div>
+          );
+        })}
+      </div>
+    );
+  } else {
+    return <div>검색 결과에 해당하는 모각코가 없습니다!</div>;
+  }
 };
 
 export default MGCList;
