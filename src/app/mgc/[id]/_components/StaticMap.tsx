@@ -19,12 +19,14 @@ const StaticMap = ({ location: { address, latitude, longitude } }: Props) => {
 
       if (mapRef.current != null) {
         const mapOption = {
-          center: position, // 이미지 지도의 중심좌표
-          level: 3, // 이미지 지도의 확대 레벨
+          center: position,
+          level: 3,
           marker: { position },
         };
 
-        const staticMap = new window.kakao.maps.StaticMap(mapRef.current, mapOption);
+        const staticMap = new window.kakao.maps.Map(mapRef.current, mapOption);
+        staticMap.setDraggable(false);
+        staticMap.setZoomable(false);
         marker.setMap(staticMap);
       }
     });

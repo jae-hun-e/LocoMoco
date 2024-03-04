@@ -73,14 +73,3 @@ const MGCInfo = ({ title, location, startTime, endTime, content, tagIds }: Props
 };
 
 export default MGCInfo;
-
-/*
-getQueryData
-  <TQueryFnData = unknown,
-  TTaggedQueryKey extends QueryKey = QueryKey,
-  TInferredQueryFnData = TTaggedQueryKey extends DataTag<unknown, infer TaggedValue>
-    ? TaggedValue
-    : TQueryFnData>
-    (queryKey: TTaggedQueryKey): TInferredQueryFnData | undefined;
-
- */
