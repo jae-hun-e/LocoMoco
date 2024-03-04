@@ -2,6 +2,7 @@
 
 import { LocationInfo } from '@/apis/mgc/queryFn';
 import Tag from '@/app/_components/Tag';
+import StaticMap from '@/app/mgc/[id]/_components/StaticMap';
 import { filterTagsByIds } from '@/utils/filterTagByIds';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
@@ -65,9 +66,7 @@ const MGCInfo = ({ title, location, startTime, endTime, content, tagIds }: Props
 
       <div className="mb-10pxr">
         <p>{content ?? '내용 없음'}</p>
-        <div className="mb-10pxr mt-30pxr h-150pxr w-full bg-layer-5">지도</div>
-        {/*TODO: 카카오 정적 지도 생성 [24/03/04]*/}
-        <div className="text-sm">장소: {location.address}</div>
+        <StaticMap location={location} />
       </div>
     </section>
   );
