@@ -1,13 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { formatDistance, subDays } from 'date-fns';
+import { formatDistance } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 
 interface Props {
   author: string;
   hits: number;
+  createdAt: string;
 }
-const AuthorInfo = ({ author, hits }: Props) => {
+const AuthorInfo = ({ author, hits, createdAt }: Props) => {
   return (
     <section className="my-10pxr flex gap-11pxr">
       <Avatar className="h-32pxr w-32pxr rounded-full ">
@@ -28,8 +29,8 @@ const AuthorInfo = ({ author, hits }: Props) => {
       <div className="flex flex-col gap-3pxr">
         <p>{author}</p>
         <p className="font-extralight">
-          {formatDistance(subDays(new Date(), 3), new Date(), { addSuffix: true, locale: ko })} ·
-          조회 {hits}
+          {formatDistance(new Date(createdAt), new Date(), { addSuffix: true, locale: ko })} · 조회{' '}
+          {hits}
         </p>
       </div>
     </section>

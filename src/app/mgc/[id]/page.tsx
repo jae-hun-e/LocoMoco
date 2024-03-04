@@ -28,6 +28,7 @@ const MGCDetail = ({ params }: { params: { id: number } }) => {
       <AuthorInfo
         author={mgcDetail.creatorInfo.nickname}
         hits={dummyData.hits}
+        createdAt={mgcDetail.MogakkoInfo.createdAt}
       />
       <Separator className="my-15pxr" />
 
