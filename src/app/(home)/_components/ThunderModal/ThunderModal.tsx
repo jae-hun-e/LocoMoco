@@ -15,7 +15,7 @@ import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
 type ThunderFormData = {
   endTime: string;
-  title?: string;
+  title: string;
   location: string;
 };
 
@@ -47,24 +47,29 @@ const ThunderModal = () => {
     toggleModal();
   };
 
-  const onSubmit: SubmitHandler<ThunderFormData> = ({
+  const onSubmit: SubmitHandler<ThunderFormData> = async ({
     endTime,
     title,
     location,
   }: ThunderFormData) => {
+    const currentDate = new Date();
+    const endDate = new Date(currentDate);
+    const hour = endTime === 'N' ? 12 : Number(endTime);
+    endDate.setHours(currentDate.getHours() + hour);
+
     const req = {
       creatorId: 5,
-      title: '123',
+      title,
       location: {
         address: '경기도 부천시 소사로 114번길 5',
         latitude: 31.4295839,
         longitude: 123.123456789,
         city: location,
       },
-      startTime: toKoreanTimeZone(new Date()),
-      endTime: endTime,
-      deadline: toKoreanTimeZone(new Date()),
-      maxParticipants: 8,
+      startTime: toKoreanTimeZone(currentDate),
+      endTime: toKoreanTimeZone(endDate),
+      deadline: toKoreanTimeZone(endDate),
+      maxParticipants: 10,
       content: title,
       tags: [],
     };
