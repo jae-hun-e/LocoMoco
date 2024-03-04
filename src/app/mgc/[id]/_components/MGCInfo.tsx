@@ -1,6 +1,8 @@
 'use client';
 
 import { LocationInfo } from '@/apis/mgc/queryFn';
+import Tag from '@/app/_components/Tag';
+import { filterTagsByIds } from '@/utils/filterTagByIds';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -19,14 +21,15 @@ const MGCInfo = ({ title, location, startTime, endTime, content, tagIds }: Props
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
-  console.log('categoryList', categoryList);
-  console.log(location, tagIds);
-  // const optionsMapping = [
-  //   { title: '개발 언어', value: languageTypes },
-  //   { title: '공부 분야', value: studyTypes },
-  //   { title: '현재 신분', value: job },
-  //   { title: '원하는 연령대', value: ageRange },
-  // ];
+  // TODO: 어디서 카테고리 정보 맵핑할 지 좀 더 고민해보기..[24/03/04]
+  // const { tagMap, setTagMap } = useTagStore<Category['data'][0]>();
+  const tagMapping = new Map();
+  categoryList?.slice(1).forEach(({ category_name, tags }) => {
+    tags.forEach(({ tag_id, tag_name }) => {
+      tagMapping.set(tag_id, { tagName: tag_name, categoryName: category_name });
+    });
+  });
+  const optionsMapping = filterTagsByIds(tagMapping, tagIds ?? []);
 
   return (
     <section>
@@ -40,30 +43,31 @@ const MGCInfo = ({ title, location, startTime, endTime, content, tagIds }: Props
 
       <div className="mb-30pxr">
         <div className="flex flex-col gap-5pxr">
-          {/*{optionsMapping.map(({ title, value }) => (*/}
-          {/*  <div*/}
-          {/*    key={title}*/}
-          {/*    className="flex gap-10pxr">*/}
-          {/*    <p className="w-100pxr">{title}</p>*/}
-          {/*    {value ? (*/}
-          {/*      <div className="flex gap-10pxr">*/}
-          {/*        {value.map((language) => (*/}
-          {/*          <Tag key={language}>{language}</Tag>*/}
-          {/*        ))}*/}
-          {/*      </div>*/}
-          {/*    ) : (*/}
-          {/*      <Tag>상관없음</Tag>*/}
-          {/*    )}*/}
-          {/*  </div>*/}
-          {/*))}*/}
+          {optionsMapping.map(({ categoryName, tagNames }) => (
+            <div
+              key={categoryName}
+              className="flex gap-10pxr"
+            >
+              <p className="w-100pxr">{categoryName}</p>
+              {tagNames ? (
+                <div className="flex gap-10pxr">
+                  {tagNames.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
+                </div>
+              ) : (
+                <Tag>상관없음</Tag>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
       <div className="mb-10pxr">
         <p>{content ?? '내용 없음'}</p>
         <div className="mb-10pxr mt-30pxr h-150pxr w-full bg-layer-5">지도</div>
-        {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/09]*/}
-        {/*<div className="text-sm">장소: {location}</div>*/}
+        {/*TODO: 카카오 정적 지도 생성 [24/03/04]*/}
+        <div className="text-sm">장소: {location.address}</div>
       </div>
     </section>
   );
