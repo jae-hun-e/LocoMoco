@@ -8,6 +8,7 @@ interface Props {
   hits: number;
   createdAt: string;
 }
+// TODO: 유저 프로필 이미지 추가하기[24/03/04]
 const AuthorInfo = ({ author, hits, createdAt }: Props) => {
   return (
     <section className="my-10pxr flex gap-11pxr">

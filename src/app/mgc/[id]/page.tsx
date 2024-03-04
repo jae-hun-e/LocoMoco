@@ -9,27 +9,34 @@ import MGCParticipants from '@/app/mgc/[id]/_components/MGCParticipants';
 import { Separator } from '@/components/ui/separator';
 import { dummyData } from '@/constants/mgcDummyData';
 
-// TODO: api연결 후 더미 제거 [24/02/15]
 const MGCDetail = ({ params }: { params: { id: number } }) => {
   const { mgcDetail } = useGetMGCDetail(params.id);
+
+  const AuthorInfoData = {
+    author: mgcDetail.creatorInfo.nickname,
+    hits: dummyData.hits,
+    createdAt: mgcDetail.MogakkoInfo.createdAt,
+  };
 
   const MGCInfoData = {
     title: mgcDetail.MogakkoInfo.title,
     location: mgcDetail.MogakkoInfo.location,
     startTime: mgcDetail.MogakkoInfo.startTime,
     endTime: mgcDetail.MogakkoInfo.endTime,
-
     content: mgcDetail.MogakkoInfo.content,
     tagIds: mgcDetail.MogakkoInfo.tagIds,
   };
 
+  const MGCApplyAreaData = {
+    maxParticipants: mgcDetail.MogakkoInfo.maxParticipants,
+    currentParticipants: mgcDetail.participants.length + 1,
+    endTime: mgcDetail.MogakkoInfo.endTime,
+    like: mgcDetail.MogakkoInfo.likeCount,
+  };
+
   return (
     <div>
-      <AuthorInfo
-        author={mgcDetail.creatorInfo.nickname}
-        hits={dummyData.hits}
-        createdAt={mgcDetail.MogakkoInfo.createdAt}
-      />
+      <AuthorInfo {...AuthorInfoData} />
       <Separator className="my-15pxr" />
 
       <MGCInfo {...MGCInfoData} />
@@ -37,13 +44,9 @@ const MGCDetail = ({ params }: { params: { id: number } }) => {
       <MGCParticipants joinUsers={mgcDetail.participants} />
       <Separator className="my-15pxr" />
 
-      <Inquiry inquiries={dummyData.inquiries} />
+      <Inquiry MGCId={mgcDetail.MogakkoInfo.mogakkoId} />
 
-      <MGCApplyArea
-        maxParticipantsCount={dummyData.maxParticipantsCount}
-        endTime={dummyData.endTime}
-        like={dummyData.like}
-      />
+      <MGCApplyArea {...MGCApplyAreaData} />
     </div>
   );
 };

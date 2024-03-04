@@ -50,7 +50,7 @@ interface MGCDetail {
   like: number; // 좋아요 수
   hits: number; // 조회수 수
   joinUsers: string[]; // 참여자Id
-  inquiries?: InquiryRes[];
+  inquiries: InquiryRes[];
 }
 
 export interface InquiryReq {
