@@ -1,40 +1,126 @@
-import { ForwardedRef, forwardRef, useCallback, useEffect } from 'react';
-import { toast } from '@/components/ui/use-toast';
+import { ForwardedRef, forwardRef, useCallback, useEffect, useRef, useState } from 'react';
+import { CreateMarkerParams, MovePositionParams } from '@/hooks/useCreateKakaoMap';
+import useGeolocation from '@/hooks/useGeolocation';
+import markerImg from '../../../../public/oh.png';
 
 interface MapProps {
-  setCurrentLocation: (a: number, b: number) => void;
+  map?: kakao.maps.Map;
+  removeMarker: (marker: kakao.maps.Marker) => void;
+  movePosition: ({ marker, latitude, longitude }: MovePositionParams) => void;
+  changeCenter: (latitude: number, longitude: number) => void;
+  createMarker: ({
+    latitude,
+    longitude,
+    draggble,
+    none,
+    markerSrc,
+    markerSize,
+  }: CreateMarkerParams) => kakao.maps.Marker;
+  isLoad: boolean;
 }
 
-const Map = forwardRef(({ setCurrentLocation }: MapProps, mapRef: ForwardedRef<HTMLDivElement>) => {
-  const onSuccess = useCallback(
-    (location: { coords: { latitude: number; longitude: number } }) => {
-      setCurrentLocation(location.coords.latitude, location.coords.longitude);
-    },
-    [setCurrentLocation],
-  );
+const Map = forwardRef(
+  (
+    { map, removeMarker, movePosition, changeCenter, createMarker, isLoad }: MapProps,
+    mapRef: ForwardedRef<HTMLDivElement>,
+  ) => {
+    const [createdPositionCoordinates, setCreatedPositionCoordinates] =
+      useState<kakao.maps.Marker>();
+    const [currentPositionMarker, setCurrentPositionMarker] = useState<kakao.maps.Marker>();
 
-  const onError = useCallback((message?: string) => {
-    toast({
-      description: message ?? '💡 위치정보를 허용하지 않으면 현재 위치가 표시되지 않습니다!',
-    });
-  }, []);
+    const location = useGeolocation();
 
-  useEffect(() => {
-    if (!('geolocation' in navigator)) {
-      onError('gps 추적이 불가능합니다.');
-    }
-    navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
-  }, [onError, onSuccess]);
+    useEffect(() => {
+      if (location.loaded && currentPositionMarker) {
+        const { lat, lng } = location.coordinates!;
+        movePosition({ marker: currentPositionMarker, latitude: lat, longitude: lng });
+        changeCenter(lat, lng);
+      } else {
+        removeMarker(currentPositionMarker!);
+      }
+    }, [changeCenter, currentPositionMarker, location.coordinates, location.loaded]);
 
-  return (
-    <>
+    useEffect(() => {
+      if (isLoad) {
+        setCreatedPositionCoordinates(
+          createMarker({
+            latitude: 35.1543440473172,
+            longitude: 128.686892962301,
+            draggble: true,
+            none: true,
+            markerSrc: markerImg.src,
+            markerSize: {
+              width: 30,
+              height: 30,
+            },
+          }),
+        );
+
+        setCurrentPositionMarker(
+          createMarker({
+            latitude: 35.1543440473172,
+            longitude: 128.686892962301,
+            draggble: false,
+            none: true,
+          }),
+        );
+      }
+    }, [createMarker, isLoad]);
+
+    const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+    const handleMouseDown = useCallback(
+      (e: kakao.maps.event.MouseEvent, createdPositionCoordinates: kakao.maps.Marker) => {
+        // 마우스 다운 이벤트 발생 시 타이머를 설정합니다.
+        timerRef.current = setTimeout(() => {
+          const latLng = e.latLng;
+
+          if (createdPositionCoordinates && map) {
+            movePosition({
+              marker: createdPositionCoordinates,
+              latitude: latLng.getLat(),
+              longitude: latLng.getLng(),
+            });
+          }
+        }, 1500);
+      },
+      [map, movePosition],
+    );
+
+    const handleMouseUp = () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+      }
+    };
+
+    useEffect(() => {
+      if (map) {
+        kakao.maps.event.addListener(map, 'click', (e: kakao.maps.event.MouseEvent) =>
+          handleMouseDown(e, createdPositionCoordinates!),
+        );
+        kakao.maps.event.addListener(map, 'mouseup', () => handleMouseUp);
+        kakao.maps.event.addListener(map, 'touchend', () => handleMouseUp);
+      }
+
+      return () => {
+        if (map) {
+          kakao.maps.event.removeListener(map, 'click', handleMouseDown);
+          kakao.maps.event.removeListener(map, 'mouseup', () => handleMouseUp);
+          kakao.maps.event.removeListener(map, 'touchend', () => handleMouseUp);
+        }
+
+        clearTimeout(timerRef.current!);
+      };
+    }, [handleMouseDown, map, createdPositionCoordinates]);
+
+    return (
       <div
         ref={mapRef}
         className="h-[calc(100svh-3.125rem-7.5rem)] w-full"
       ></div>
-    </>
-  );
-});
+    );
+  },
+);
 
 Map.displayName = 'Map';
 

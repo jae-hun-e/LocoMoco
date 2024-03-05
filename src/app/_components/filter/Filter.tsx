@@ -1,32 +1,15 @@
 import React from 'react';
 import { AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
-import { toast } from '@/components/ui/use-toast';
-import useMapMGCDataStore, { DUMMYDATAS } from '@/store/useMapMGCDataStore';
 import { SearchFilterForm } from '@/types/searchFilterForm';
 import { Accordion, AccordionItem } from '@radix-ui/react-accordion';
 import FilterContent from './FilterContent';
 
 const Filter = () => {
-  const { setMapMGCData } = useMapMGCDataStore();
-
   const handleSubmit = (data: SearchFilterForm) => {
-    const { language, mgc, study } = data;
-
-    const filtedDatas = DUMMYDATAS.filter((data) => {
-      const isMGC = mgc.includes(data.MGSType);
-      const isLanguage = data.languageTypes.filter((x) => language.includes(x)).length;
-      const isStudy = data.studyTypes.filter((x) => study.includes(x)).length;
-
-      return isMGC && isLanguage && isStudy;
-    });
-
-    if (filtedDatas.length === 0) {
-      toast({
-        description: '해당하는 조건의 모각코가 없습니다.',
-      });
-    }
-
-    setMapMGCData(filtedDatas);
+    const values = Object.values(data);
+    const tags = [].concat(...values);
+    // TODO: 백엔드 api 완성되면 api 연결하기 [24.02.22]
+    console.log('필터링할 태그 배열', tags);
   };
 
   return (

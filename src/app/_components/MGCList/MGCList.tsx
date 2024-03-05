@@ -1,5 +1,6 @@
-import MGCListItem, { MGCSummary } from '@/app/_components/MGCList/MGCListItem';
+import MGCListItem from '@/app/_components/MGCList/MGCListItem';
 import { Separator } from '@/components/ui/separator';
+import { MGCSummary } from '@/types/MGCList';
 
 interface MGCListPropsType {
   data: MGCSummary[];
