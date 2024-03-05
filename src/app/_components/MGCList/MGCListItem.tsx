@@ -25,9 +25,7 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
 
   const handleMGCItemClick = () => {
     console.log(data.id);
-    router.push(`/mgc/1`);
-    // Todo: 현재 임시로 모각코 상세페이지로 이동, 추후 id에 맞게 변경 [2024/03/04]
-    // router.push(`/mgc/${data.id}`);
+    router.push(`/mgc/${data.id}`);
   };
 
   const TagsUI = (tagIds: number[] | undefined) => {
