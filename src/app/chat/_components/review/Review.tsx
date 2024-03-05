@@ -7,6 +7,7 @@ import useGetUserInfo from '@/apis/user/useGetUserInfo';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
 import { job } from '@/constants/userInfo';
+import { USER_ID_KEY, getItem } from '@/utils/storage';
 import Profile from './Profile';
 import Rating from './Rating';
 import ReviewContent from './ReviewContent';
@@ -22,7 +23,7 @@ const Review = () => {
   const { mutate: createReview } = useCreateReview();
   const [selectedRating, setSelectedRating] = useState(0);
 
-  const reviewerId = localStorage.getItem('userId');
+  const reviewerId = getItem<string>(localStorage, USER_ID_KEY);
   // TODO: 후기 톡방으로부터 mogakkoId 받아와서 수정 [24.03.05]
   const MGCId = 54;
   // TODO: revieweeId 받아와서 수정 [24.03.05]
@@ -52,7 +53,7 @@ const Review = () => {
   };
 
   const onSubmit = (data: ReviewForm) => {
-    if (reviewerId === null) {
+    if (!reviewerId) {
       toast({
         description: '오류가 발생했습니다. 재로그인후 다시 시도해주세요.',
       });
