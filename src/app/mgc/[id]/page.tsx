@@ -7,14 +7,13 @@ import MGCApplyArea from '@/app/mgc/[id]/_components/MGCApplyArea';
 import MGCInfo from '@/app/mgc/[id]/_components/MGCInfo';
 import MGCParticipants from '@/app/mgc/[id]/_components/MGCParticipants';
 import { Separator } from '@/components/ui/separator';
-import { dummyData } from '@/constants/mgcDummyData';
 
 const MGCDetail = ({ params }: { params: { id: number } }) => {
   const { mgcDetail } = useGetMGCDetail(params.id);
 
   const AuthorInfoData = {
-    author: mgcDetail.creatorInfo.nickname,
-    hits: dummyData.hits,
+    author: mgcDetail.creatorInfo,
+    hits: mgcDetail.MogakkoInfo.views,
     createdAt: mgcDetail.MogakkoInfo.createdAt,
   };
 

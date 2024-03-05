@@ -5,6 +5,10 @@ import { useSuspenseQuery } from '@tanstack/react-query';
 export interface UserInfo {
   userId: number;
   nickname: string;
+  profileImage: {
+    imageId: number;
+    path: string;
+  };
 }
 interface MogakkoInfo {
   mogakkoId: number;
@@ -16,6 +20,7 @@ interface MogakkoInfo {
   location: LocationInfo;
   maxParticipants: number;
   likeCount: number;
+  views: number;
 
   content?: string;
   tagIds?: number[];
