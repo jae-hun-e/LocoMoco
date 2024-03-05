@@ -19,7 +19,7 @@ const MGCOptions = ({ tagIds }: Props) => {
   const tagMapping = useMemo(() => {
     const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
     const newTagMapping = new Map();
-    categoryList?.slice(1).forEach(({ category_name, tags }) => {
+    categoryList?.forEach(({ category_name, tags }) => {
       tags.forEach(({ tag_id, tag_name }) => {
         newTagMapping.set(tag_id, { tagName: tag_name, categoryName: category_name });
       });
