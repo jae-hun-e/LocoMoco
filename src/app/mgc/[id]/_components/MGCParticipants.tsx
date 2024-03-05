@@ -13,14 +13,14 @@ const MGCParticipants = ({ joinUsers }: Props) => {
       <p>현재 참여자</p>
       <div className="mt-10pxr flex gap-11pxr">
         {joinUsers.length ? (
-          joinUsers.map(({ userId, nickname }) => (
+          joinUsers.map(({ userId, nickname, profileImage }) => (
             <div
               key={userId}
               className="flex flex-col items-center justify-center"
             >
               <Avatar className="h-32pxr w-32pxr rounded-full ">
                 <AvatarImage
-                  src="https://github.com/shadcn.png"
+                  src={profileImage?.path || 'https://github.com/shadcn.png'}
                   alt="참가자 정보"
                 />
                 <AvatarFallback>
