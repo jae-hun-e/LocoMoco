@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
+import { TotalSearchProps } from '@/apis/mgcList/useMGCTotalList';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
@@ -13,35 +14,16 @@ type SearchForm = {
 };
 
 const SearchMGC = () => {
-  const [temp, setTemp] = useState({ searchType: 'TOTAL' });
-  const { data } = useMGCTotalList(temp);
-  //   {
-  //     "id": 53,
-  //     "title": "이게 무슨 일이야 이렇게 좋은 날에",
-  //     "views": 0,
-  //     "likeCount": 0,
-  //     "maxParticipants": 2,
-  //     "curParticipants": 0,
-  //     "location": {
-  //         "address": "경기도 부천시 소사로 114번길 5",
-  //         "latitude": 31.4295839,
-  //         "longitude": 123.123456789,
-  //         "city": "소사본동"
-  //     },
-  //     "tags": [
-  //         222,
-  //         220,
-  //         218,
-  //         225,
-  //         217
-  //     ]
-  // }
+  const initParams: TotalSearchProps = { search: '', searchType: 'TOTAL' };
+
+  const [params, setParams] = useState(initParams);
+  const { data } = useMGCTotalList(params);
 
   const { register, handleSubmit } = useForm<SearchForm>();
 
   const onSubmit: SubmitHandler<SearchForm> = ({ search }) => {
     console.log(search);
-    setTemp({ ...temp, search: search });
+    setParams({ ...params, search: search });
   };
 
   return (
@@ -68,10 +50,10 @@ const SearchMGC = () => {
         </form>
       </div>
       <Filter />
+      {/* TODO: Filter의 전송 버튼 클릭 시 현재 search, searchType도 추가해서 API 요청해야 함 [2024/03/05] */}
       <div className="absolute bottom-50pxr right-24pxr z-30">
         <CreateBtn />
       </div>
-      <div>{JSON.stringify(temp)}</div>
       <MGCList data={data ?? []}></MGCList>
     </div>
   );
