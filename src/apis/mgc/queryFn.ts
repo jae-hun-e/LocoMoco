@@ -20,7 +20,7 @@ export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   return data;
 };
 
-interface CreateMGCReq {
+export interface CreateMGCReq {
   creatorId: number;
   title: string;
   location: {
