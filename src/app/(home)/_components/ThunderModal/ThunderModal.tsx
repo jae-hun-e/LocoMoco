@@ -19,6 +19,7 @@ type ThunderFormData = {
   location: string;
 };
 
+// TODO: 위치 정보 추가 [2024/03/05]
 const ThunderModal = () => {
   const endTimeList = ['1', '2', '3', '5', 'N'];
 
@@ -129,7 +130,7 @@ const ThunderModal = () => {
               placeholder="글 제목을 입력해주세요 (선택)"
             />
             <div className="mb-5pxr mt-15pxr font-bold">장소</div>
-            <LocationSearch onSelect={handleSelectLocation}></LocationSearch>
+            <LocationSearch onSelect={handleSelectLocation} />
             <input
               className="hidden"
               {...register('location', { required: true })}
