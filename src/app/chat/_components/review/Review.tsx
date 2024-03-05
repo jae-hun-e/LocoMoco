@@ -2,21 +2,33 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import useCreateReview from '@/apis/review/useCreateReview';
+import useGetUserInfo from '@/apis/user/useGetUserInfo';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
+import { job } from '@/constants/userInfo';
 import Profile from './Profile';
 import Rating from './Rating';
 import ReviewContent from './ReviewContent';
 
 export interface ReviewForm {
-  rating: number;
-  isPositive?: boolean;
-  blockDesired?: boolean;
-  reviewOptions?: number[];
-  reviewContent?: string;
+  score: number;
+  blockDesired: boolean;
+  reviewContentId: number[];
+  content: string;
 }
 
 const Review = () => {
+  const { mutate: createReview } = useCreateReview();
   const [selectedRating, setSelectedRating] = useState(0);
+
+  const reviewerId = localStorage.getItem('userId');
+  // TODO: 후기 톡방으로부터 mogakkoId 받아와서 수정 [24.03.05]
+  const MGCId = 54;
+  // TODO: revieweeId 받아와서 수정 [24.03.05]
+  const revieweeId = 77;
+
+  const { data: userInfo } = useGetUserInfo(revieweeId);
 
   const {
     formState: { errors },
@@ -26,9 +38,13 @@ const Review = () => {
     setValue,
     trigger,
     reset,
-  } = useForm<ReviewForm>();
+  } = useForm<ReviewForm>({
+    defaultValues: {
+      blockDesired: false,
+    },
+  });
 
-  register('reviewOptions', { required: '하나 이상 선택해주세요.' });
+  register('reviewContentId', { required: '하나 이상 선택해주세요.' });
 
   const handleCancelClick = () => {
     reset();
@@ -36,42 +52,48 @@ const Review = () => {
   };
 
   const onSubmit = (data: ReviewForm) => {
-    console.log(data);
-    // TODO: 모달에 뿌려줄 컴포넌트가 list인지 판별하는 state변경을 해야함 [24.02.20]
-  };
+    if (reviewerId === null) {
+      toast({
+        description: '오류가 발생했습니다. 재로그인후 다시 시도해주세요.',
+      });
+      return;
+    }
 
-  // TODO: 후기 보내기 버튼 클릭시 props받아오는 것으로 변경 [24.02.20]
-  const userInfo = {
-    nickname: '닉네임',
-    birth: '2024-02-19',
-    gender: '여자',
-    job: '현직자',
-    profileImg: 'https://cdn.pixabay.com/photo/2023/09/29/20/28/motocross-8284539_1280.jpg',
+    const reviewData = {
+      MGCId: MGCId,
+      reviewerId: reviewerId,
+      data: {
+        ...data,
+        revieweeId,
+      },
+    };
+
+    createReview(reviewData);
+    // TODO: 모달에 뿌려줄 컴포넌트가 list인지 판별하는 state변경을 해야함 [24.02.20]
   };
 
   const handleRatingChange = (rating: number) => {
     if (rating === selectedRating) return;
 
     setSelectedRating(rating);
-    setValue('rating', rating);
-    setValue('isPositive', rating > 2);
+    setValue('score', rating);
   };
 
   const handleMultiDeselect = (deselected: number) => {
-    const selectedList = getValues('reviewOptions');
+    const selectedList = getValues('reviewContentId');
 
     if (!selectedList) return;
 
     const updatedList = selectedList.filter((item) => item !== deselected);
-    setValue('reviewOptions', updatedList);
-    trigger('reviewOptions');
+    setValue('reviewContentId', updatedList);
+    trigger('reviewContentId');
   };
 
   const handleMultiSelect = (selected: number) => {
-    const selectedList = getValues('reviewOptions');
+    const selectedList = getValues('reviewContentId');
 
     setValue(
-      'reviewOptions',
+      'reviewContentId',
       selectedList
         ? selectedList.includes(selected)
           ? selectedList
@@ -79,16 +101,16 @@ const Review = () => {
         : [selected],
     );
 
-    trigger('reviewOptions');
+    trigger('reviewContentId');
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex h-full flex-col gap-30pxr pb-50pxr">
         <Profile
-          profileImg={userInfo.profileImg}
-          nickname={userInfo.nickname}
-          job={userInfo.job}
+          profileImg={userInfo?.profileImage ?? ''}
+          nickname={userInfo?.nickname ?? ''}
+          job={userInfo?.job ? job[userInfo?.job] : ''}
         />
 
         <Rating
@@ -96,7 +118,7 @@ const Review = () => {
           setValue={setValue}
           selectedRating={selectedRating}
           onClick={handleRatingChange}
-          nickname={userInfo.nickname}
+          nickname={userInfo?.nickname ?? ''}
         />
         {selectedRating > 0 ? (
           <>
