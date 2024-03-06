@@ -9,6 +9,7 @@ export const routes = {
   currentJoinMGC: '/mypage/current-join-mgc',
   endJoinMGC: '/mypage/end-join-mgc',
   receivedReviews: '/mypage/received-reviews',
+  // TODO: 종료된 모각코에서 갈 수 있게 경로 수정해야함 [24.03.06]
   sendReviews: '/mypage/send-reviews',
   reportList: '/mypage/report-list',
   blackList: '/mypage/black-list',
