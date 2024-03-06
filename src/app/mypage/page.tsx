@@ -21,7 +21,7 @@ const MyPage = () => {
       count: userInfoDummy.endJoinMGC?.length || 0,
     },
     {
-      title: '받은리뷰',
+      title: '받은 리뷰 평가',
       link: routes.receivedReviews,
       count: userInfoDummy.receivedReview?.length || 0,
     },
