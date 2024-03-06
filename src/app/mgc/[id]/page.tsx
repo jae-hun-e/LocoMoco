@@ -1,48 +1,51 @@
+'use client';
+
+import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
 import AuthorInfo from '@/app/mgc/[id]/_components/AuthorInfo';
 import Inquiry from '@/app/mgc/[id]/_components/Inquiry';
 import MGCApplyArea from '@/app/mgc/[id]/_components/MGCApplyArea';
 import MGCInfo from '@/app/mgc/[id]/_components/MGCInfo';
 import MGCParticipants from '@/app/mgc/[id]/_components/MGCParticipants';
 import { Separator } from '@/components/ui/separator';
-import { dummyData } from '@/constants/mgcDummyData';
 
-// TODO: api연결 후 더미 제거 [24/02/15]
-const MGCDetail = () => {
+const MGCDetail = ({ params }: { params: { id: number } }) => {
+  const { mgcDetail } = useGetMGCDetail(params.id);
+
+  const AuthorInfoData = {
+    author: mgcDetail.creatorInfo,
+    hits: mgcDetail.MogakkoInfo.views,
+    createdAt: mgcDetail.MogakkoInfo.createdAt,
+  };
+
   const MGCInfoData = {
-    title: dummyData.title,
-    location: dummyData.location,
-    startTime: dummyData.startTime,
-    endTime: dummyData.endTime,
+    title: mgcDetail.MogakkoInfo.title,
+    location: mgcDetail.MogakkoInfo.location,
+    startTime: mgcDetail.MogakkoInfo.startTime,
+    endTime: mgcDetail.MogakkoInfo.endTime,
+    content: mgcDetail.MogakkoInfo.content,
+    tagIds: mgcDetail.MogakkoInfo.tagIds,
+  };
 
-    MGCType: dummyData.MGCType,
-    languageTypes: dummyData.languageTypes,
-    studyTypes: dummyData.studyTypes,
-    job: dummyData.job,
-    ageRange: dummyData.ageRange,
-    content: dummyData.content,
+  const MGCApplyAreaData = {
+    maxParticipants: mgcDetail.MogakkoInfo.maxParticipants,
+    currentParticipants: mgcDetail.participants.length + 1,
+    endTime: mgcDetail.MogakkoInfo.endTime,
+    like: mgcDetail.MogakkoInfo.likeCount,
   };
 
   return (
     <div>
-      <AuthorInfo
-        author={dummyData.author}
-        hits={dummyData.hits}
-      />
+      <AuthorInfo {...AuthorInfoData} />
       <Separator className="my-15pxr" />
 
-      {/* TODO: 협의 후 모각코 생성쪽에서 공통 컴포넌트로 빼기 [24/02/09]*/}
       <MGCInfo {...MGCInfoData} />
 
-      <MGCParticipants joinUsers={dummyData.joinUsers} />
+      <MGCParticipants joinUsers={mgcDetail.participants} />
       <Separator className="my-15pxr" />
 
-      <Inquiry inquiries={dummyData.inquiries} />
+      <Inquiry MGCId={mgcDetail.MogakkoInfo.mogakkoId} />
 
-      <MGCApplyArea
-        maxParticipantsCount={dummyData.maxParticipantsCount}
-        endTime={dummyData.endTime}
-        like={dummyData.like}
-      />
+      <MGCApplyArea {...MGCApplyAreaData} />
     </div>
   );
 };
