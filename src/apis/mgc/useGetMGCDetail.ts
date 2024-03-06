@@ -31,7 +31,6 @@ interface MgcData {
   MogakkoInfo: MogakkoInfo;
 }
 
-// TODO: queryFn 코로케이션 시킬지 말지 논의 하기 [24/02/26]
 const getMGCDetail = async (id: number) => await client.get<MgcData>({ url: `/mogakko/map/${id}` });
 
 export const useGetMGCDetail = (id: number) => {
