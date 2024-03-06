@@ -22,7 +22,7 @@ const ChatInput = forwardRef(({ sendMessage }: Props, inputRef: Ref<HTMLTextArea
         onKeyDown={handleNewLine}
       />
       <div className="flex select-none justify-between">
-        <p className="ml-1 text-gray-400">Shift + Enter로 띄워쓰기</p>
+        <p className="ml-1 text-gray-400">Shift + Enter로 줄바꿈</p>
         <div className="flex gap-6">
           <Button onClick={() => console.log()}>Photo</Button>
           <Button onClick={sendMessage}>Send</Button>
