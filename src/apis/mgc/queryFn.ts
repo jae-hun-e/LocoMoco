@@ -26,7 +26,7 @@ export interface LocationInfo {
   longitude: number;
   city: string;
 }
-interface CreateMGCReq {
+export interface CreateMGCReq {
   creatorId: number;
   title: string;
   location: LocationInfo;
