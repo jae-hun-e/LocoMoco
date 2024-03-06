@@ -5,24 +5,38 @@ import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/comp
 import { SearchFilterForm } from '@/types/searchFilterForm';
 
 interface TypeCheckListProps {
-  types: string[];
+  types: number[];
   control: Control<SearchFilterForm>;
   type: keyof SearchFilterForm;
 }
 
+// TODO: filted item 백엔드와 결정 후 변경 [24.02.22]
+const filtedTextById = [
+  { id: 1, text: '전체' },
+  { id: 2, text: '번개' },
+  { id: 3, text: '장소확정' },
+  { id: 4, text: '장소미정' },
+  { id: 5, text: 'JAVASCRIPT' },
+  { id: 6, text: 'JAVA' },
+  { id: 7, text: 'PYTHON' },
+  { id: 8, text: 'web' },
+  { id: 9, text: 'FE' },
+  { id: 10, text: 'BE' },
+];
+
 const TypeCheckList = ({ types, control, type }: TypeCheckListProps) => {
   const handleCheckedChange = (
     checked: boolean | 'indeterminate',
-    item: string,
+    item: number,
     field: ControllerRenderProps<SearchFilterForm, keyof SearchFilterForm>,
   ) => {
-    if (item === '전체') {
+    if (item === 1) {
       return checked ? field.onChange([...types]) : field.onChange([]);
     } else {
-      if (field.value.includes('전체')) {
+      if (field.value.includes(1)) {
         return checked
           ? field.onChange([...field.value])
-          : field.onChange(field.value?.filter((value) => value !== item && value !== '전체'));
+          : field.onChange(field.value?.filter((value) => value !== item && value !== 1));
       } else {
         return checked
           ? field.onChange([...field.value, item])
@@ -55,7 +69,9 @@ const TypeCheckList = ({ types, control, type }: TypeCheckListProps) => {
                           onCheckedChange={(checked) => handleCheckedChange(checked, item, field)}
                         />
                       </FormControl>
-                      <FormLabel className="text-sm font-normal">{item}</FormLabel>
+                      <FormLabel className="text-sm font-normal">
+                        {filtedTextById.find((e) => e.id === item)?.text}
+                      </FormLabel>
                     </FormItem>
                   );
                 }}

@@ -1,5 +1,5 @@
 export interface SearchFilterForm {
-  mgc: string[];
-  language: string[];
-  study: string[];
+  mgc: number[];
+  language: number[];
+  study: number[];
 }

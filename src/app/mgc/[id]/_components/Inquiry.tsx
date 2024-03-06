@@ -64,7 +64,7 @@ const Inquiry = ({ MGCId }: Props) => {
           <Avatar className="h-32pxr w-32pxr rounded-full">
             <AvatarImage
               src="https://github.com/shadcn.png"
-              alt="참가자 프로필 이미지"
+              alt="문의 작성자 이미지"
             />
             <AvatarFallback>
               <Image
