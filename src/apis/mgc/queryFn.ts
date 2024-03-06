@@ -13,6 +13,7 @@ export interface TagType {
   tag_id: number;
   tag_name: string;
 }
+
 export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   const { data } = await client.get<Category>({ url: `/category?type=${type}` });
 

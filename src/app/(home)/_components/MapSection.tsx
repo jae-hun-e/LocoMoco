@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import CreateBtn from '@/app/_components/CreateBtn';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
@@ -13,20 +13,28 @@ const MapSection = ({ data }: MGCListType) => {
   const [open, setOpen] = useState(false);
   const { centerPosition } = useCenterPosition();
 
-  const openBottomSheetAndUpdate = (mapData: MGCSummary[]) => {
-    setMGCDataList(mapData);
-    setOpen(true);
-  };
-
   useEffect(() => {
     if (data) {
       setMGCDataList(data);
     }
   }, [data]);
 
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const handleMouseUp = () => {
+    if (timerRef.current) {
+      clearTimeout(timerRef.current);
+    }
+  };
+
+  const openBottomSheetAndUpdate = (mapData: MGCSummary[]) => {
+    setMGCDataList(mapData);
+    setOpen(true);
+  };
+
   const { clusterer, map, mapRef, createMarker, changeCenter, removeMarker, movePosition, isLoad } =
-    useCreateKakaoMap();
-  const renderMarker = useRenderMarkerByData(openBottomSheetAndUpdate);
+    useCreateKakaoMap({ isCustomlevelControl: false, handleMouseUp: handleMouseUp });
+  const renderMarker = useRenderMarkerByData(openBottomSheetAndUpdate, handleMouseUp);
 
   useEffect(() => {
     if (clusterer && data) {
@@ -52,6 +60,8 @@ const MapSection = ({ data }: MGCListType) => {
         changeCenter={changeCenter}
         movePosition={movePosition}
         ref={mapRef}
+        timerRef={timerRef}
+        handleMouseUp={handleMouseUp}
       />
 
       <div className="absolute bottom-0 right-24pxr z-30">
