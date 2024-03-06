@@ -20,8 +20,7 @@ const useRenderMarkerByData = (
 
       clusterer?.clear();
 
-      for (let i = 0; i < mapMGCData.length; i++) {
-        const mgc = mapMGCData[i];
+      for (const mgc of mapMGCData) {
         if (!(mgc.location.latitude && mgc.location.longitude)) continue;
 
         const marker = new kakao.maps.Marker({
