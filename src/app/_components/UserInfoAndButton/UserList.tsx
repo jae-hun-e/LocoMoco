@@ -1,3 +1,4 @@
+import { Separator } from '@radix-ui/react-separator';
 import UserListItem, { UserInfo } from './UserListItem';
 
 interface UserListProps {
@@ -9,14 +10,16 @@ interface UserListProps {
 const UserList = ({ data, onClick, buttonName }: UserListProps) => {
   return (
     <section>
-      <ul className="flex flex-col gap-3">
+      <ul className="">
         {data.map((el) => (
-          <UserListItem
-            key={el.userId}
-            data={el}
-            onClick={onClick}
-            buttonName={buttonName}
-          />
+          <div key={el.userId}>
+            <UserListItem
+              data={el}
+              onClick={onClick}
+              buttonName={buttonName}
+            />
+            <Separator />
+          </div>
         ))}
       </ul>
     </section>
