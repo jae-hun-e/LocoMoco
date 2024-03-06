@@ -9,7 +9,7 @@ const StaticMap = ({ location: { address, latitude, longitude } }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    window.kakao.maps.load(function () {
+    window.kakao.maps.load(() => {
       const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
       const imageSize = new kakao.maps.Size(24, 35);
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
