@@ -1,10 +1,8 @@
+import { ReviewContent } from '@/apis/review/useGetReviewContents';
 import { Users } from 'lucide-react';
 
 interface ReviewListProps {
-  list: {
-    id: number;
-    text: string;
-  }[];
+  list: ReviewContent[];
   reviews: {
     reviewId: number;
     reviewerId: number;
@@ -17,22 +15,24 @@ interface ReviewListProps {
 }
 
 const ReviewList = ({ list, reviews, title }: ReviewListProps) => {
+  const reviewsId = reviews.map((review) => review.reviewContentId);
+
   return (
     <div>
       <p className="mb-5pxr font-bold">{title}</p>
       {reviews.length ? (
         <ul className="flex flex-col">
-          {list.map(({ id, text }) => (
+          {list.map(({ reviewContentId, content }) => (
             <li
-              key={id}
+              key={reviewContentId}
               className="flex items-center gap-2 border-b border-solid border-layer-4 py-16pxr"
             >
-              <span className="grow">{text}</span>
+              <span className="grow">{content}</span>
               <Users
                 width={18}
                 height={18}
               />
-              <span>{reviews.filter((item) => item.reviewContentId.includes(id)).length}</span>
+              <span>{reviewsId.flat().filter((item) => item === reviewContentId).length}</span>
             </li>
           ))}
         </ul>
