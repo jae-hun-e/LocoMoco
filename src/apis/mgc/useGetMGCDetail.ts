@@ -34,6 +34,7 @@ interface MgcData {
 const getMGCDetail = async (id: number) => await client.get<MgcData>({ url: `/mogakko/map/${id}` });
 
 export const useGetMGCDetail = (id: number) => {
+  // const { data, ...rest } = useQuery({
   const { data, ...rest } = useSuspenseQuery({
     queryKey: ['mgc', id],
     queryFn: () => getMGCDetail(id),
