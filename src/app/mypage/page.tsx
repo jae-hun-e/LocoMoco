@@ -22,7 +22,7 @@ const MyPage = () => {
     },
     {
       title: '받은 리뷰 평가',
-      link: routes.receivedReviews,
+      link: routes.receivedReviewsAssessment,
       count: userInfoDummy.receivedReview?.length || 0,
     },
     { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackList?.length || 0 },
