@@ -1,8 +1,12 @@
-'use client';
-
 import React from 'react';
 import { Separator } from '@/components/ui/separator';
+import { ReviewDetailType } from '@/types/review';
 import UserInfo from './UserInfo';
+
+interface ReviewItemProps {
+  data: ReviewData;
+  onClick: (detailData: ReviewDetailType) => void;
+}
 
 export interface UserInfoData {
   userId: number;
@@ -22,20 +26,22 @@ interface ReviewData extends UserInfoData {
   content: string;
 }
 
-const ReviewItem = ({ data }: { data: ReviewData }) => {
-  const { content, reviewContentId, reviewId, ...userInfo } = data;
+const ReviewItem = ({ data, onClick }: ReviewItemProps) => {
+  const { content, reviewContentId, ...userInfo } = data;
 
   const handleRevieItemClick = () => {
-    console.log(reviewId);
-    // reviewContentId 링크 이동 시 넘겨주기 or reviewId로만 조회되는 api 요청하기
-    console.log(reviewContentId);
+    onClick({
+      reviewContentId,
+      content: content,
+      nickname: userInfo.nickname,
+    });
   };
 
   return (
     <div onClick={handleRevieItemClick}>
       <div className="py-10pxr">
         <UserInfo userInfo={userInfo} />
-        <p className="mt-20pxr text-sm">
+        <p className="mt-20pxr text-sm max-two-lines">
           {content === '' ? '작성한 상세 리뷰가 없습니다.' : content}
         </p>
       </div>

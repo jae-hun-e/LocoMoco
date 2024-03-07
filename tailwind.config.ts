@@ -126,6 +126,13 @@ const config = {
             display: 'none',
           },
         },
+        '.max-two-lines': {
+          'text-overflow': 'ellipsis',
+          overflow: 'hidden',
+          display: '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '2',
+        },
       });
     }),
   ],
