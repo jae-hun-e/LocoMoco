@@ -4,34 +4,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import client from '@/apis/core';
 import { Button } from '@/components/ui/button';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import DatePick from '../_components/DatePick';
 import Gender from '../_components/Gender';
 import Job from '../_components/Job';
 import NickName from '../_components/Nickname';
-import ProgressBar from '../_components/ProgressBar';
 import Warning from '../_components/Warning';
-
-interface ResponseType {
-  isNewUser: boolean;
-  tokenResponseDto: {
-    token_type: string;
-    access_token: string;
-    refresh_token: string;
-    expires_in: number;
-    refresh_token_expires_in: number;
-  };
-  userInfoDto: {
-    birth: null | string;
-    email: string;
-    gender: null | 'male' | 'female';
-    job: null | 'worker' | 'ready' | 'etc';
-    nickname: null | string;
-    provider: 'Github' | 'Kakao';
-    temperature: number;
-    userId: number;
-  };
-}
 
 export interface SignupValue {
   nickname: string;
@@ -41,7 +19,6 @@ export interface SignupValue {
 }
 
 const Signup = ({ params: { method } }: { params: { method: string } }) => {
-  // Todo: 생년월일 달력, useQuery enabled, redirection url 변경 후 분기
   const {
     register,
     handleSubmit,
@@ -58,44 +35,19 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
     },
   });
 
-  const [loading, setLoading] = useState(true);
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
   const router = useRouter();
-  const code = useSearchParams().get('code');
 
   useEffect(() => {
-    const login = () => {
-      client
-        .get<ResponseType>({ url: `users/login/${method}/callback?code=${code}` })
-        .then((res) => {
-          const token = res.tokenResponseDto.access_token;
-          const { userId, birth } = res.userInfoDto;
-          if (birth) {
-            localStorage.setItem('userId', userId.toString());
-            localStorage.setItem(`${method}_token`, token);
-            router.replace('/');
-            return;
-          }
-          sessionStorage.setItem('userId', userId.toString());
-          sessionStorage.setItem(`${method}_token`, token);
-        });
-    };
-    if (localStorage.getItem(`${method}_token`)) router.replace('/');
-    else {
-      if (!sessionStorage.getItem(`${method}_token`)) login();
+    const kakaoToken = localStorage.getItem('kakao_token');
+    const githubToken = localStorage.getItem('github_token');
+    if (kakaoToken || githubToken) {
+      alert('잘못된 접근입니다. 홈으로 돌아갑니다');
+      sessionStorage.clear();
+      router.replace('/');
     }
-    setLoading(false);
-  }, [code, method, router]);
-
-  useEffect(() => {
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = '';
-    };
-    addEventListener('beforeunload', handleBeforeUnload, { capture: true });
-    return () => removeEventListener('beforeunload', handleBeforeUnload);
-  }, [method]);
+  }, [router]);
 
   const onSubmit = useCallback(async () => {
     const valid = await trigger();
@@ -132,42 +84,36 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
 
   return (
     <section className="flex flex-col justify-center gap-8 p-6">
-      {!loading ? (
-        <>
-          <h2 className="mt-8 w-full text-center text-xl font-bold">회원가입</h2>
-          <div className="relative">
-            <NickName
-              register={register}
-              getNickname={getValues}
-              setNickname={setValue}
-              trigger={trigger}
-              setIsDuplicated={setIsDuplicated}
-              setDuplicateWarning={setDuplicateWarning}
-            />
-            {errors.nickname && <Warning good={false}>닉네임을 입력해주세요</Warning>}
-            {!errors.nickname && <Warning good={!isDuplicated}>{duplicateWarning}</Warning>}
-          </div>
-          <div className="relative">
-            <DatePick
-              register={register}
-              getDate={getValues}
-              setDate={setValue}
-              trigger={trigger}
-            />
-            <Warning good={!errors.birth}>{errors.birth && '올바른 날짜를 입력해주세요'}</Warning>
-          </div>
-          <Gender setGender={setValue} />
-          <Job setJob={setValue} />
-          <Button
-            onClick={handleSubmit(onSubmit)}
-            className="mt-4 bg-main-1"
-          >
-            완료
-          </Button>
-        </>
-      ) : (
-        <ProgressBar />
-      )}
+      <h2 className="mt-8 w-full text-center text-xl font-bold">회원가입</h2>
+      <div className="relative">
+        <NickName
+          register={register}
+          getNickname={getValues}
+          setNickname={setValue}
+          trigger={trigger}
+          setIsDuplicated={setIsDuplicated}
+          setDuplicateWarning={setDuplicateWarning}
+        />
+        {errors.nickname && <Warning good={false}>닉네임을 입력해주세요</Warning>}
+        {!errors.nickname && <Warning good={!isDuplicated}>{duplicateWarning}</Warning>}
+      </div>
+      <div className="relative">
+        <DatePick
+          register={register}
+          getDate={getValues}
+          setDate={setValue}
+          trigger={trigger}
+        />
+        <Warning good={!errors.birth}>{errors.birth && '올바른 날짜를 입력해주세요'}</Warning>
+      </div>
+      <Gender setGender={setValue} />
+      <Job setJob={setValue} />
+      <Button
+        onClick={handleSubmit(onSubmit)}
+        className="mt-4 bg-main-1"
+      >
+        완료
+      </Button>
     </section>
   );
 };
