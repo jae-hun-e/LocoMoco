@@ -86,7 +86,8 @@ const config = {
         'main-2': '#85D5B1',
         'main-3': '#A4E0C5',
         'main-4': '#C2EAD8',
-        'main-5': '#F0FAF5',
+        'main-5': '#E0F6EB',
+        'main-6': '#F0FAF5',
         hover: '#39A776',
 
         'red-1': '#FF5A5A',
