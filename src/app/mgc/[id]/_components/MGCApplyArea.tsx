@@ -6,19 +6,30 @@ import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
 
 interface Props {
-  maxParticipantsCount?: number;
-  endTime: Date;
+  maxParticipants: number;
+  currentParticipants: number;
+  endTime: string;
   like: number;
 }
-const MGCApplyArea = ({ maxParticipantsCount = 1, endTime, like }: Props) => {
+
+// TODO: 참여하기 API 연결[24/03/04]
+// TODO: 찜하기 API 연결 - optimistic update [24/03/04]
+const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like }: Props) => {
   const [isLike, setLike] = useState(false);
   const handleLike = () => {
     setLike(!isLike);
   };
 
+  const isClose = new Date() > new Date(endTime);
+
   return (
     <section className="fixed bottom-0 z-50 w-[calc(100%-2.5rem)] bg-layer-1">
-      <MainStyleButton content={`참여하기 (2/${maxParticipantsCount})`}>
+      <MainStyleButton
+        content={
+          isClose ? '모집 종료된 모각코' : `참여하기 (${currentParticipants}/${maxParticipants})`
+        }
+        disabled={isClose}
+      >
         <button
           className="flex flex-col items-center"
           onClick={handleLike}

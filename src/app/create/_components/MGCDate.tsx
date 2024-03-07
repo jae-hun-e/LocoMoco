@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import DatePicker from '@/app/create/_components/DatePick';
 import { Label } from '@/components/ui/label';
