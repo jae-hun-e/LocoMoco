@@ -47,6 +47,13 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       sessionStorage.clear();
       router.replace('/');
     }
+    addEventListener('beforeunload', () => {
+      sessionStorage.clear();
+    });
+    return () =>
+      removeEventListener('beforeunload', () => {
+        sessionStorage.clear();
+      });
   }, [router]);
 
   const onSubmit = useCallback(async () => {
