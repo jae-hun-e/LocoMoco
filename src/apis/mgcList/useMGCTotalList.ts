@@ -14,7 +14,7 @@ export const getMGCTotalList = async ({
   tags,
 }: TotalSearchProps) => {
   const { data } = await client.get<MGCList>({
-    url: `${process.env.NEXT_PUBLIC_BASE_URL}/mogakko/map`,
+    url: `/mogakko/map`,
     params: { tags, search, searchType },
   });
 
