@@ -10,7 +10,7 @@ interface UserListProps {
 const UserList = ({ data, onClick, buttonName }: UserListProps) => {
   return (
     <section>
-      <ul className="">
+      <ul>
         {data.map((el) => (
           <div key={el.userId}>
             <UserListItem
