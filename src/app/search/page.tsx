@@ -14,16 +14,16 @@ type SearchForm = {
 };
 
 const SearchMGC = () => {
-  const initParams: TotalSearchProps = { search: '', searchType: 'TOTAL' };
+  const initialSearchParams: TotalSearchProps = { search: '', searchType: 'TOTAL' };
 
-  const [params, setParams] = useState(initParams);
-  const { data } = useMGCTotalList(params);
+  const [searchParams, setSearchParams] = useState(initialSearchParams);
+  const { data } = useMGCTotalList(searchParams);
 
   const { register, handleSubmit } = useForm<SearchForm>();
 
   const onSubmit: SubmitHandler<SearchForm> = ({ search }) => {
     console.log(search);
-    setParams({ ...params, search: search });
+    setSearchParams({ ...searchParams, search: search });
   };
 
   return (
