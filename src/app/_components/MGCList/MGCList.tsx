@@ -10,9 +10,9 @@ const MGCList = ({ data }: MGCListPropsType) => {
   if (data.length !== 0) {
     return (
       <div>
-        {data.map((mgc, idx) => {
+        {data.map((mgc) => {
           return (
-            <div key={idx}>
+            <div key={mgc.id}>
               <MGCListItem data={mgc}></MGCListItem>
               <Separator></Separator>
             </div>
