@@ -1,5 +1,5 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import Image from 'next/image';
 
 export interface UserInfo {
   username: string;
@@ -17,14 +17,10 @@ const UserListItem = ({ data, onClick, buttonName }: UserListProps) => {
   return (
     <li className="flex w-full items-center justify-between border-b border-solid py-14pxr">
       <div className="flex items-center gap-4">
-        <Image
-          className="ml-1 rounded-3xl"
-          src={data.profileImg}
-          alt="profile image"
-          width={40}
-          height={40}
-          priority
-        />
+        <Avatar className="ml-1 rounded-3xl">
+          <AvatarImage src={data.profileImg} />
+          <AvatarFallback>{data.username}</AvatarFallback>
+        </Avatar>
         <p>{data.username}</p>
       </div>
 
