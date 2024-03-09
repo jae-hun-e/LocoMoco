@@ -6,54 +6,59 @@ import { AccordionTrigger } from '@/components/ui/accordion';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SearchFilterForm } from '@/types/searchFilterForm';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
+import { useQueryClient } from '@tanstack/react-query';
 import TypeCheckList from './TypeCheckList';
 
-const MGCType = {
-  all: 1,
-  ThunderMGC: 2,
-  LocationConfirmed: 3,
-  LocationNotConfirmed: 4,
-} as const;
+interface Category {
+  category_id: number;
+  category_name: string;
+  input_type: 'COMBOBOX' | 'CHECKBOX' | 'RADIOGROUP';
+  tags: {
+    tag_id: number;
+    tag_name: string;
+  }[];
+}
 
-const languageType = {
-  all: 1,
-  JAVASCRIPT: 5,
-  JAVA: 6,
-  PYTHON: 7,
-} as const;
-
-const studyType = {
-  all: 1,
-  web: 8,
-  FE: 9,
-  BE: 10,
-} as const;
-
-// const MGCType = {
-//   all: {id: 1, text: '전체'},
-//   ThunderMGC: {id: 1, text: '번개'},
-//   LocationConfirmed: {id: 1, text: '장소확정'},
-//   LocationNotConfirmed: {id: 1, text: '장소미정'},
-// } as const;
-
-// const languageType = {
-//   all: '전체',
-//   JAVASCRIPT: 'JAVASCRIPT',
-//   JAVA: 'JAVA',
-//   PYTHON: 'PYTHON',
-// } as const;
-
-// const studyType = {
-//   all: '전체',
-//   web: 'web',
-//   FE: 'FE',
-//   BE: 'BE',
-// } as const;
+export interface FilterCategoryList {
+  tagId: number;
+  tagName: string;
+  categoryName: string;
+}
 
 const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => void }) => {
-  const MGCTypes = Object.values(MGCType);
-  const languageTypes = Object.values(languageType);
-  const studyTypes = Object.values(studyType);
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+
+  const setFilterList = (filterCategoryData?: Category[]) => {
+    const filterCategoryList: FilterCategoryList[] = [];
+
+    filterCategoryData?.forEach(({ category_name, tags }) => {
+      tags.forEach(({ tag_id, tag_name }) => {
+        filterCategoryList.push({ tagId: tag_id, tagName: tag_name, categoryName: category_name });
+      });
+    });
+
+    return filterCategoryList;
+  };
+
+  const allCategory = [
+    {
+      categoryName: '',
+      tagId: 0,
+      tagName: '전체',
+    },
+  ];
+
+  const MGCTypes = setFilterList(
+    categoryList?.filter(({ category_name }) => category_name === '모각코 유형'),
+  );
+  const languageTypes = setFilterList(
+    categoryList?.filter(({ category_name }) => category_name === '개발 언어'),
+  );
+  const studyTypes = setFilterList(
+    categoryList?.filter(({ category_name }) => category_name === '개발 유형'),
+  );
 
   const form = useForm<SearchFilterForm>({
     defaultValues: {
@@ -76,17 +81,17 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
         >
           <div className="flex h-120pxr flex-row justify-between pt-10pxr">
             <TypeCheckList
-              types={MGCTypes}
+              types={allCategory.concat(MGCTypes)}
               control={form.control}
               type="mgc"
             />
             <TypeCheckList
-              types={languageTypes}
+              types={allCategory.concat(languageTypes)}
               control={form.control}
               type="language"
             />
             <TypeCheckList
-              types={studyTypes}
+              types={allCategory.concat(studyTypes)}
               control={form.control}
               type="study"
             />
