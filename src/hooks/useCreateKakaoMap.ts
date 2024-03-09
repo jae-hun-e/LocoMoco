@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import useSearchInputValueStore from '@/store/useSearchValueStore';
 
 interface CreateKakaoMapProps {
   isCustomlevelControl: boolean;
@@ -27,7 +28,10 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
+  const [geocoder, setGeocoder] = useState<kakao.maps.services.Geocoder>();
   const [isLoad, setIsLoad] = useState(false);
+
+  const { searchValue, setSearchValue } = useSearchInputValueStore();
 
   const createMarker = useCallback(
     ({ latitude, longitude, draggble, none, markerSrc, markerSize }: CreateMarkerParams) => {
@@ -99,6 +103,21 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
     }
   };
 
+  const getAddressByCoorinates = (latitude: number, longitude: number) => {
+    let addressName = '';
+    geocoder?.coord2RegionCode(longitude, latitude, (result, status) => {
+      if (status === kakao.maps.services.Status.OK) {
+        for (let i = 0; i < result.length; i++) {
+          if (result[i].region_type === 'H') {
+            addressName = result[i].address_name;
+            break;
+          }
+        }
+        setSearchValue({ ...searchValue, address: addressName });
+      }
+    });
+  };
+
   useEffect(() => {
     window.kakao.maps.load(function () {
       if (mapRef.current != null) {
@@ -124,6 +143,9 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
         setMap(createdMap);
         setClusterer(clusterer);
         setIsLoad(true);
+
+        const geocoder = new kakao.maps.services.Geocoder();
+        setGeocoder(geocoder);
       }
     });
   }, [isCustomlevelControl]);
@@ -139,6 +161,7 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
     zoomIn,
     zoomOut,
     isLoad,
+    getAddressByCoorinates,
   };
 };
 

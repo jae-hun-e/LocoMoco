@@ -32,8 +32,17 @@ const MapSection = ({ data }: MGCListType) => {
     setOpen(true);
   };
 
-  const { clusterer, map, mapRef, createMarker, changeCenter, removeMarker, movePosition, isLoad } =
-    useCreateKakaoMap({ isCustomlevelControl: false, handleMouseUp: handleMouseUp });
+  const {
+    clusterer,
+    map,
+    mapRef,
+    createMarker,
+    changeCenter,
+    removeMarker,
+    movePosition,
+    isLoad,
+    getAddressByCoorinates,
+  } = useCreateKakaoMap({ isCustomlevelControl: false, handleMouseUp: handleMouseUp });
   const renderMarker = useRenderMarkerByData(openBottomSheetAndUpdate, handleMouseUp);
 
   useEffect(() => {
@@ -47,6 +56,7 @@ const MapSection = ({ data }: MGCListType) => {
 
     if (latitude !== 0 && longitude !== 0) {
       changeCenter(latitude, longitude);
+      getAddressByCoorinates(latitude, longitude);
     }
   }, [centerPosition, changeCenter]);
 
