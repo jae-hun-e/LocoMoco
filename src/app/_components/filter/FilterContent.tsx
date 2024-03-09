@@ -10,16 +10,6 @@ import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
 import TypeCheckList from './TypeCheckList';
 
-interface Category {
-  category_id: number;
-  category_name: string;
-  input_type: 'COMBOBOX' | 'CHECKBOX' | 'RADIOGROUP';
-  tags: {
-    tag_id: number;
-    tag_name: string;
-  }[];
-}
-
 export interface FilterCategoryList {
   tagId: number;
   tagName: string;
@@ -30,10 +20,13 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
-  const setFilterList = (filterCategoryData?: Category[]) => {
+  const getFilterList = (categoryName: string) => {
+    const categoryData = categoryList?.filter(
+      ({ category_name }) => category_name === categoryName,
+    );
     const filterCategoryList: FilterCategoryList[] = [];
 
-    filterCategoryData?.forEach(({ category_name, tags }) => {
+    categoryData?.forEach(({ category_name, tags }) => {
       tags.forEach(({ tag_id, tag_name }) => {
         filterCategoryList.push({ tagId: tag_id, tagName: tag_name, categoryName: category_name });
       });
@@ -50,15 +43,9 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
     },
   ];
 
-  const MGCTypes = setFilterList(
-    categoryList?.filter(({ category_name }) => category_name === '모각코 유형'),
-  );
-  const languageTypes = setFilterList(
-    categoryList?.filter(({ category_name }) => category_name === '개발 언어'),
-  );
-  const studyTypes = setFilterList(
-    categoryList?.filter(({ category_name }) => category_name === '개발 유형'),
-  );
+  const MGCTypes = getFilterList('모각코 유형');
+  const languageTypes = getFilterList('개발 언어');
+  const studyTypes = getFilterList('개발 유형');
 
   const form = useForm<SearchFilterForm>({
     defaultValues: {
