@@ -40,9 +40,8 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const kakaoToken = localStorage.getItem('kakao_token');
-    const githubToken = localStorage.getItem('github_token');
-    if (kakaoToken || githubToken) {
+    const token = localStorage.getItem('token');
+    if (token) {
       alert('잘못된 접근입니다. 홈으로 돌아갑니다');
       sessionStorage.clear();
       router.replace('/');
@@ -63,14 +62,14 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       alert('닉네임 중복체크를 해주세요');
       return;
     }
-    const token = sessionStorage.getItem(`${method}_token`);
+    const token = sessionStorage.getItem(`token`);
     const userId = sessionStorage.getItem('userId');
     if (!token || !userId) return;
     client
       .put({
         url: `/users/init/${userId}`,
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: token,
         },
         data: {
           nickname: getValues('nickname'),
@@ -81,7 +80,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       })
       .then(() => {
         alert('회원가입 성공');
-        localStorage.setItem(`${method}_token`, token);
+        localStorage.setItem('token', token);
         localStorage.setItem('userId', userId);
         localStorage.setItem('provider', method.toUpperCase());
         sessionStorage.clear();

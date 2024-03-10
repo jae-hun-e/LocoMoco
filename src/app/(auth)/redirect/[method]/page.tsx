@@ -47,11 +47,11 @@ const Redirect = ({ params: { method } }: { params: { method: string } }) => {
       })
       .then(({ tokenResponseDto: { access_token }, userInfoDto: { nickname, userId } }) => {
         if (!nickname) {
-          sessionStorage.setItem(`${method}_token`, access_token);
+          sessionStorage.setItem('token', access_token);
           sessionStorage.setItem(`userId`, userId.toString());
           router.replace(`/signup/${method}`);
         } else {
-          localStorage.setItem(`${method}_token`, access_token);
+          localStorage.setItem('token', access_token);
           localStorage.setItem(`userId`, userId.toString());
           localStorage.setItem('provider', method.toUpperCase());
           console.log(method.toUpperCase());
