@@ -20,7 +20,6 @@ export interface ChatType {
 }
 
 const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
-  id;
   const [talks, setTalks] = useState<ChatType[]>([]);
   const [stop, setStop] = useState(false);
   const stomp = useRef<Client>(new Client());
@@ -29,11 +28,8 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
     console.log('fetching chat...');
     const data = await client.get<ChatType[]>({
-      // Todo: 생선된 모각코에 따른 다른 채팅방 보여주기, headers에 Authorization추가해서 로그인한 유저만 사용가능하게 하기
-      url: `${process.env.NEXT_PUBLIC_BASE_URL}/chats/room/${3}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
-      // headers: {
-      //   Authorization: ``,
-      // },
+      // Todo: 생선된 모각코에 따른 다른 채팅방 보여주기
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/chats/room/${9}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
       params: {
         pageSize: pageParam,
       },
@@ -60,22 +56,21 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
 
   useEffect(() => {
     const subscribe = () => {
-      stomp.current.subscribe(`/sub/chat/room/3`, (body) => {
+      stomp.current.subscribe(`/sub/chat/room/${9}`, (body) => {
         const parsedBody = JSON.parse(body.body);
         console.log(parsedBody, 'subscribe');
         if (!talks || !parsedBody.senderNickName) return;
-        setTalks([...talks, parsedBody]);
+
+        setTalks((prev) => [...prev, parsedBody]);
       });
     };
 
     const addParticipant = () => {
-      if (!stomp.current.connected) return;
-
       stomp.current.publish({
         destination: '/pub/chats/enter',
         body: JSON.stringify({
-          chatRoomId: 3,
-          mogakkoId: 52,
+          chatRoomId: 9,
+          mogakkoId: 80,
           senderId: localStorage.getItem('userId'),
         }),
       });
@@ -90,13 +85,15 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
           addParticipant();
         },
       });
+
       stomp.current.activate();
     };
 
     connect();
 
     return () => disconnect();
-  }, [talks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
 
   const sendMessage = () => {
     if (!input.current!.value.trim()) return;
@@ -104,9 +101,9 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
     stomp.current.publish({
       destination: '/pub/chats/message',
       body: JSON.stringify({
-        chatRoomId: 3, // 채팅방 ID
+        chatRoomId: 9, // 채팅방 ID
         senderId: localStorage.getItem('userId'), // 보내는 사람 ID
-        mogakkoId: 52, // 모각코 ID
+        mogakkoId: 80, // 모각코 ID
         message: input.current!.value, // 메시지 내용
       }),
     });
