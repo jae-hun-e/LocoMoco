@@ -55,14 +55,15 @@ const ChatList = () => {
     queryFn: () =>
       client.get<ResponseType>({
         url: `${process.env.NEXT_PUBLIC_BASE_URL}/chats/rooms/${localStorage.getItem('userId')}`,
-        // headers: {
-        //   Authorization: `KakaoAK ${process.env.NEXT_PUBLIC_KAKAO_REST_API_KEY}`,
-        // },
+        headers: {
+          Authorization: localStorage.getItem('token'),
+          provider: localStorage.getItem('provider'),
+        },
       }),
   });
 
   //Todo: 실제 데이터 사용하기
-  data;
+  console.log(data);
   isLoading;
 
   return (
