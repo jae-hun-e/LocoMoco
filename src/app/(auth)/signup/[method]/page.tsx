@@ -83,6 +83,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
         alert('회원가입 성공');
         localStorage.setItem(`${method}_token`, token);
         localStorage.setItem('userId', userId);
+        localStorage.setItem('provider', method.toUpperCase());
         sessionStorage.clear();
         router.replace('/');
       })

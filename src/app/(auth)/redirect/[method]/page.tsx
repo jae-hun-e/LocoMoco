@@ -53,6 +53,8 @@ const Redirect = ({ params: { method } }: { params: { method: string } }) => {
         } else {
           localStorage.setItem(`${method}_token`, access_token);
           localStorage.setItem(`userId`, userId.toString());
+          localStorage.setItem('provider', method.toUpperCase());
+          console.log(method.toUpperCase());
           router.replace('/');
         }
       });
