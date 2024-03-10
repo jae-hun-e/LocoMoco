@@ -1,5 +1,4 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import useSearchInputValueStore from '@/store/useSearchValueStore';
 
 interface CreateKakaoMapProps {
   isCustomlevelControl: boolean;
@@ -30,8 +29,6 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
   const [geocoder, setGeocoder] = useState<kakao.maps.services.Geocoder>();
   const [isLoad, setIsLoad] = useState(false);
-
-  const { searchValue, setSearchValue } = useSearchInputValueStore();
 
   const createMarker = useCallback(
     ({ latitude, longitude, draggble, none, markerSrc, markerSize }: CreateMarkerParams) => {
@@ -103,20 +100,47 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
     }
   };
 
-  const getAddressByCoorinates = (latitude: number, longitude: number) => {
-    let addressName = '';
-    geocoder?.coord2RegionCode(longitude, latitude, (result, status) => {
-      if (status === kakao.maps.services.Status.OK) {
-        for (let i = 0; i < result.length; i++) {
-          if (result[i].region_type === 'H') {
-            addressName = result[i].address_name;
-            break;
-          }
+  const coord2RegionCodePromise = useCallback(
+    (longitude: number, latitude: number): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        console.log(geocoder);
+        if (geocoder) {
+          geocoder.coord2RegionCode(longitude, latitude, (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              let addressName = '';
+              for (let i = 0; i < result.length; i++) {
+                if (result[i].region_type === 'H') {
+                  addressName = result[i].address_name;
+                  break;
+                }
+              }
+
+              resolve(addressName);
+            } else {
+              reject(new Error('Geocoder failed'));
+            }
+          });
+        } else {
+          reject(new Error('Geocoder가 없음'));
         }
-        setSearchValue({ ...searchValue, address: addressName });
+      });
+    },
+    [geocoder],
+  );
+
+  const getAddressByCoorinates = useCallback(
+    async (latitude: number, longitude: number) => {
+      try {
+        const addressName = await coord2RegionCodePromise(longitude, latitude);
+
+        return addressName;
+      } catch (error) {
+        console.error(error);
+        return;
       }
-    });
-  };
+    },
+    [coord2RegionCodePromise],
+  );
 
   useEffect(() => {
     window.kakao.maps.load(function () {
