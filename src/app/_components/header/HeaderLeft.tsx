@@ -5,7 +5,8 @@ import { ChevronLeftIcon } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 const HeaderLeft = () => {
-  const pathname = usePathname().split('/')[1];
+  const pathArray = usePathname().split('/');
+  const pathname = pathArray[pathArray.length - 1];
   const router = useRouter();
 
   // TODO: 에러 처리 중앙화 하기 [24/02/14]
