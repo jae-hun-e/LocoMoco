@@ -4,6 +4,7 @@ export interface Report {
   reportId: number;
   reporterId: number;
   reportedId: number;
+  reportedNickname: string;
   content: string;
 }
 
@@ -17,7 +18,7 @@ const ReportListItem = ({ data, onModifyBtnClick, onDeleteBtnClick }: ReportList
   return (
     <li className="w-full flex-col border-b border-solid py-14pxr">
       <div className="mb-10pxr flex items-center justify-between">
-        신고 대상: {data.reportedId}
+        신고 대상: {data.reportedNickname}
         <div className="flex gap-2">
           <Button
             type="button"

@@ -7,7 +7,7 @@ interface ReportListProps {
   onDeleteBtnClick: (id: number) => void;
 }
 
-const UserList = ({ data, onModifyBtnClick, onDeleteBtnClick }: ReportListProps) => {
+const ReportList = ({ data, onModifyBtnClick, onDeleteBtnClick }: ReportListProps) => {
   return (
     <section>
       <ul>
@@ -26,4 +26,4 @@ const UserList = ({ data, onModifyBtnClick, onDeleteBtnClick }: ReportListProps)
   );
 };
 
-export default UserList;
+export default ReportList;
