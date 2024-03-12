@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import {
   FieldErrors,
   UseFormRegister,
@@ -7,6 +7,7 @@ import {
   UseFormWatch,
 } from 'react-hook-form';
 import MGCDate from '@/app/create/_components/MGCDate';
+import MGCMap from '@/app/create/_components/MGCMap';
 import MGCTime from '@/app/create/_components/MGCTime';
 import { MGCCreateForm } from '@/app/create/page';
 import { Input } from '@/components/ui/input';
@@ -47,12 +48,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
 
   return (
     <>
-      {/*필수 값 - 장소, 날짜/시간, 신청 종류시간, 신청기한 */}
-      {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/15]*/}
-      <section
-        className="mb-10pxr h-150pxr w-full bg-layer-5"
-        // ref={mapRef}
-      />
+      <MGCMap />
 
       <section className={labelVariants()}>
         <input
