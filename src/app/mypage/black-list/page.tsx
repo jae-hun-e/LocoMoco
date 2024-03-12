@@ -1,13 +1,18 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useDeleteBlacklist from '@/apis/blacklist/useDeleteBlacklist';
 import useGetBlackList from '@/apis/blacklist/useGetBlacklist';
 import UserList from '@/app/_components/UserInfoAndButton/UserList';
+import { USER_ID_KEY, getItem } from '@/utils/storage';
 
 const BlackList = () => {
-  // [Todo]: util에서 userId 가져오게 (2024/03/12)
-  const userId = 78;
+  const [userId, setUserId] = useState<number>(78);
+
+  useEffect(() => {
+    setUserId(getItem(localStorage, USER_ID_KEY, 78));
+  }, []);
+
   const [targetId, setTargetId] = useState<number>(userId);
   const { data } = useGetBlackList(userId);
   const { deleteBlackList } = useDeleteBlacklist(userId, targetId);
