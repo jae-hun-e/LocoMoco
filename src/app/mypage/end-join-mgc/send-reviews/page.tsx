@@ -54,7 +54,7 @@ const SendReviews = () => {
     <>
       <ReviewList
         reviews={dummy}
-        title="받은"
+        title="보낸"
       />
     </>
   );

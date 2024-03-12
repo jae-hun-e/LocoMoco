@@ -38,7 +38,7 @@ const ReceivedReviews = () => {
     <>
       <ReviewList
         reviews={dummy}
-        title="보낸"
+        title="받은"
       />
     </>
   );
