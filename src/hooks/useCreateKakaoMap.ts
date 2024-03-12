@@ -1,5 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
+interface CreateKakaoMapProps {
+  isCustomlevelControl: boolean;
+  handleMouseUp?: () => void;
+}
+
 export interface CreateMarkerParams {
   latitude: number;
   longitude: number;
@@ -18,7 +23,7 @@ export interface MovePositionParams {
   longitude: number;
 }
 
-const useCreateKakaoMap = (isCustomlevelControl = false) => {
+const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoMapProps) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
@@ -31,7 +36,12 @@ const useCreateKakaoMap = (isCustomlevelControl = false) => {
       const imageSrc =
         markerSrc ?? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
       const imageSize = new kakao.maps.Size(markerSize?.width ?? 64, markerSize?.height ?? 69);
-      const imageOption = { offset: new kakao.maps.Point(27, 69) };
+      const imageOption = {
+        offset: new kakao.maps.Point(
+          markerSize?.width ? markerSize?.width / 2 : 32,
+          markerSize?.height ? markerSize?.height / 2 : 69 / 2,
+        ),
+      };
 
       const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
       const marker = new kakao.maps.Marker({
@@ -45,6 +55,7 @@ const useCreateKakaoMap = (isCustomlevelControl = false) => {
 
       kakao.maps.event.addListener(marker, 'click', () => {
         // TODO: 모달 컴포넌트 생성되면 모달 컴포넌트 연결 [24.02.17]
+        handleMouseUp?.();
         console.log('번개 모각코 생성할 좌표', marker.getPosition());
       });
 
@@ -98,7 +109,6 @@ const useCreateKakaoMap = (isCustomlevelControl = false) => {
         };
 
         const createdMap = new window.kakao.maps.Map(mapRef.current, mapOption);
-        // TODO: 커스텀 컨트롤러 사용할지 논의 후 변경 [24.02.14]
         if (!isCustomlevelControl) {
           const zoomControl = new kakao.maps.ZoomControl();
           createdMap.addControl(zoomControl, kakao.maps.ControlPosition.TOPRIGHT);

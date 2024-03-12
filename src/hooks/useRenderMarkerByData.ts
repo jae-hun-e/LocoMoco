@@ -6,7 +6,10 @@ interface MakerInfo {
   data: MGCSummary;
 }
 
-const useRenderMarkerByData = (openBottomSheetAndUpdate: (mapData: MGCSummary[]) => void) => {
+const useRenderMarkerByData = (
+  openBottomSheetAndUpdate: (mapData: MGCSummary[]) => void,
+  handleMouseUp: () => void,
+) => {
   const setMarker = useCallback(
     (mapMGCData: MGCSummary[], clusterer: kakao.maps.MarkerClusterer) => {
       const markersInfo: MakerInfo[] = [];
@@ -26,6 +29,7 @@ const useRenderMarkerByData = (openBottomSheetAndUpdate: (mapData: MGCSummary[])
         });
 
         kakao.maps.event.addListener(marker, 'click', () => {
+          handleMouseUp();
           openBottomSheetAndUpdate([mgc]);
         });
 
@@ -36,7 +40,7 @@ const useRenderMarkerByData = (openBottomSheetAndUpdate: (mapData: MGCSummary[])
 
       return markersInfo;
     },
-    [openBottomSheetAndUpdate],
+    [handleMouseUp, openBottomSheetAndUpdate],
   );
 
   const renderMarker = (clusterer: kakao.maps.MarkerClusterer, mapMGCData: MGCSummary[]) => {
@@ -48,9 +52,11 @@ const useRenderMarkerByData = (openBottomSheetAndUpdate: (mapData: MGCSummary[])
       const markerList = [];
 
       for (const clusterMarker of clusterMarkers) {
-        markerList.push(
-          markersInfo.filter((markerInfo) => markerInfo.marker === clusterMarker)[0].data,
-        );
+        for (const markerInfo of markersInfo) {
+          if (markerInfo.marker === clusterMarker) {
+            markerList.push(markerInfo.data);
+          }
+        }
       }
 
       openBottomSheetAndUpdate(markerList);

@@ -8,7 +8,8 @@ export const routes = {
   likeMGC: '/mypage/like-mgc',
   currentJoinMGC: '/mypage/current-join-mgc',
   endJoinMGC: '/mypage/end-join-mgc',
-  receivedReviews: '/mypage/received-reviews',
+  receivedReviewsAssessment: '/mypage/received-reviews-assessment',
+  // TODO: 종료된 모각코에서 갈 수 있게 경로 수정해야함 [24.03.06]
   sendReviews: '/mypage/send-reviews',
   reportList: '/mypage/report-list',
   blackList: '/mypage/black-list',
@@ -24,4 +25,5 @@ export const titleMap = {
   'current-join-mgc': '참여중인 모각코',
   'end-join-mgc': '종료된 모각코',
   'like-mgc': '내가 찜한 모각코',
+  'received-reviews-assessment': '받은 리뷰 평가',
 } as const;

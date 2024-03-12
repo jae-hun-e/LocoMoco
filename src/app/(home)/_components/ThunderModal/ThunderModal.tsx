@@ -1,4 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { useCreateThunderMGC } from '@/apis/thunderMGC/useCreateThunderMGC';
 import LocationSearch from '@/app/(home)/_components/ThunderModal/LocationSearch';
 import Modal from '@/app/_components/Modal';
 import { Button } from '@/components/ui/button';
@@ -10,13 +11,15 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useThunderModalStore } from '@/store/thunderModalStore';
+import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
-type ThunderInputs = {
+type ThunderFormData = {
   endTime: string;
-  title?: string;
+  title: string;
   location: string;
 };
 
+// TODO: 위치 정보 추가 [2024/03/05]
 const ThunderModal = () => {
   const endTimeList = ['1', '2', '3', '5', 'N'];
 
@@ -27,7 +30,16 @@ const ThunderModal = () => {
     reset,
     trigger,
     formState: { errors },
-  } = useForm<ThunderInputs>();
+  } = useForm<ThunderFormData>({
+    mode: 'onSubmit',
+    defaultValues: {
+      endTime: '',
+      title: '',
+      location: '',
+    },
+  });
+
+  const { createThunderMGC } = useCreateThunderMGC();
 
   const { isOpen, toggleModal } = useThunderModalStore();
 
@@ -36,15 +48,41 @@ const ThunderModal = () => {
     toggleModal();
   };
 
-  const onSubmit: SubmitHandler<ThunderInputs> = (data) => {
-    const postData = {
-      startTime: new Date(),
-      endTime: data.endTime,
-      title: data.title,
-      location: data.location,
+  const onSubmit: SubmitHandler<ThunderFormData> = async ({
+    endTime,
+    title,
+    location,
+  }: ThunderFormData) => {
+    const currentDate = new Date();
+    const endDate = new Date(currentDate);
+    const hour = endTime === 'N' ? 12 : Number(endTime);
+    endDate.setHours(currentDate.getHours() + hour);
+
+    const req = {
+      creatorId: 5,
+      title,
+      location: {
+        address: '경기도 부천시 소사로 114번길 5',
+        latitude: 31.4295839,
+        longitude: 123.123456789,
+        city: location,
+      },
+      startTime: toKoreanTimeZone(currentDate),
+      endTime: toKoreanTimeZone(endDate),
+      deadline: toKoreanTimeZone(endDate),
+      maxParticipants: 10,
+      content: title,
+      tags: [],
     };
-    console.log(postData);
+
+    console.log(req);
+    createThunderMGC(req);
     handleCloseModal();
+  };
+
+  const handleSelectLocation = (location: string) => {
+    setValue('location', location);
+    trigger('location');
   };
 
   return (
@@ -92,12 +130,7 @@ const ThunderModal = () => {
               placeholder="글 제목을 입력해주세요 (선택)"
             />
             <div className="mb-5pxr mt-15pxr font-bold">장소</div>
-            <LocationSearch
-              changeInput={(location) => {
-                setValue('location', location);
-                trigger('location');
-              }}
-            ></LocationSearch>
+            <LocationSearch onSelect={handleSelectLocation} />
             <input
               className="hidden"
               {...register('location', { required: true })}
