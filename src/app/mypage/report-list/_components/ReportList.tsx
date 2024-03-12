@@ -1,5 +1,6 @@
+import { Report } from '@/types/report';
 import { Separator } from '@radix-ui/react-separator';
-import ReportListItem, { Report } from './ReportListItem';
+import ReportListItem from './ReportListItem';
 
 interface ReportListProps {
   data: Report[];
