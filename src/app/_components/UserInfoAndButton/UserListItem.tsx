@@ -7,12 +7,12 @@ export interface UserInfo {
   profileImage: {
     imageId: number;
     path: string;
-  };
+  } | null;
 }
 
 interface UserListProps {
   data: UserInfo;
-  onClick: (id: number) => void;
+  onClick: (targetId: number) => void;
   buttonName: string;
 }
 
@@ -21,7 +21,11 @@ const UserListItem = ({ data, onClick, buttonName }: UserListProps) => {
     <li className="flex w-full items-center justify-between border-b border-solid py-14pxr">
       <div className="flex items-center gap-4">
         <Avatar className="ml-1 rounded-3xl">
-          <AvatarImage src={data.profileImage.path} />
+          {data.profileImage === null ? (
+            <AvatarImage src={'/oh.png'} />
+          ) : (
+            <AvatarImage src={data.profileImage.path} />
+          )}
           <AvatarFallback>{data.nickname}</AvatarFallback>
         </Avatar>
         <p>{data.nickname}</p>
