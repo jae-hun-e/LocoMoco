@@ -1,6 +1,6 @@
 import client from '@/apis/core';
 
-interface Category {
+export interface Category {
   data: {
     category_id: number;
     category_name: string;
@@ -13,21 +13,23 @@ export interface TagType {
   tag_id: number;
   tag_name: string;
 }
+
 export const getCategory = async ({ type }: { type: 'USER' | 'MOGAKKO' }) => {
   const { data } = await client.get<Category>({ url: `/category?type=${type}` });
 
   return data;
 };
 
-interface CreateMGCReq {
+export interface LocationInfo {
+  address: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+}
+export interface CreateMGCReq {
   creatorId: number;
   title: string;
-  location: {
-    address: string;
-    latitude: number;
-    longitude: number;
-    city: string;
-  };
+  location: LocationInfo;
   startTime: string;
   endTime: string;
   deadline: string;

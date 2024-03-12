@@ -3,26 +3,30 @@
 import { useForm } from 'react-hook-form';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Input } from '@/components/ui/input';
-import { InquiryReq, InquiryRes } from '@/constants/mgcDummyData';
+import { InquiryReq, InquiryRes, dummyData } from '@/constants/mgcDummyData';
 import { format } from 'date-fns';
 import Image from 'next/image';
 
 interface Props {
-  inquiries?: InquiryRes[];
+  MGCId: number;
 }
 
-const Inquiry = ({ inquiries = [] }: Props) => {
+// TODO: 문의 API 완성 되면 CRUD연결 - 다음 PR [24/03/04]
+// TODO: 모각코 생성자만 답글 가능한 툴바 생성 - 다음 PR [24/03/04]
+const Inquiry = ({ MGCId }: Props) => {
+  const inquiries: InquiryRes[] = dummyData.inquiries;
+
   const { register, handleSubmit, resetField } = useForm<InquiryReq>();
   const onSubmit = (data: InquiryReq) => {
     const req = { ...data, author: '111' };
     // TODO: api 연결 시 콘솔제거 [24/02/12]
     console.log(req);
-
+    console.log(MGCId);
     resetField('content');
   };
 
   return (
-    <section className="mb-40pxr">
+    <section className="mb-100pxr">
       <div className="mb-20pxr flex gap-1">
         <b>문의</b>
         <p>{inquiries.length}</p>
@@ -35,7 +39,7 @@ const Inquiry = ({ inquiries = [] }: Props) => {
         <Avatar className="h-32pxr w-32pxr rounded-full ">
           <AvatarImage
             src="https://github.com/shadcn.png"
-            alt="유저 이미지"
+            alt="유저 프로필 이미지"
           />
           <AvatarFallback>
             <Image

@@ -38,7 +38,8 @@ const DrawerContent = React.forwardRef<
   React.ComponentPropsWithoutRef<typeof DrawerPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DrawerPortal>
-    <DrawerOverlay />
+    {className?.split(' ').includes('main-bottom-sheet') ? null : <DrawerOverlay />}
+
     <DrawerPrimitive.Content
       ref={ref}
       className={cn(
@@ -47,7 +48,7 @@ const DrawerContent = React.forwardRef<
       )}
       {...props}
     >
-      <div className="mx-auto mt-4 h-2 w-[100px] rounded-full bg-muted" />
+      <div className="mx-auto mt-4 h-1 w-40pxr rounded-full bg-layer-4" />
       {children}
     </DrawerPrimitive.Content>
   </DrawerPortal>

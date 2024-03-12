@@ -85,9 +85,9 @@ const ReviewContent = ({
             </li>
           ))}
         </ul>
-        {errors?.reviewOptions && (
+        {errors?.reviewContentId && (
           <span className="absolute -bottom-5 text-xs text-red-500">
-            {errors.reviewOptions.message}
+            {errors.reviewContentId.message}
           </span>
         )}
       </section>
@@ -95,16 +95,14 @@ const ReviewContent = ({
         <p className="font-bold ">{addTextTitle[isGood(selectedRating)]}</p>
         <span className="text-xs text-layer-5">{guideText[isGood(selectedRating)]}</span>
         <Textarea
-          {...register('reviewContent', {
+          {...register('content', {
             maxLength: { value: 300, message: '입력가능한 글자수는 300자입니다.' },
           })}
           className="mt-10pxr"
           placeholder="여기에 적어주세요. (선택사항)"
         />
-        {errors?.reviewContent && (
-          <span className="absolute -bottom-5 text-xs text-red-500">
-            {errors.reviewContent.message}
-          </span>
+        {errors?.content && (
+          <span className="absolute -bottom-5 text-xs text-red-500">{errors.content.message}</span>
         )}
       </section>
     </>
