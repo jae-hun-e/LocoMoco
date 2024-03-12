@@ -21,11 +21,10 @@ const MyPage = () => {
       count: userInfoDummy.endJoinMGC?.length || 0,
     },
     {
-      title: '받은리뷰',
-      link: routes.receivedReviews,
+      title: '받은 리뷰 평가',
+      link: routes.receivedReviewsAssessment,
       count: userInfoDummy.receivedReview?.length || 0,
     },
-    { title: '보낸리뷰', link: routes.sendReviews, count: userInfoDummy.sentReview?.length || 0 },
     { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackList?.length || 0 },
     { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportList?.length || 0 },
   ];
