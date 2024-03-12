@@ -1,7 +1,6 @@
 'use client';
 
-import client from '@/apis/core';
-import { useQuery } from '@tanstack/react-query';
+import useChatList from '@/apis/chat/useChatList';
 import { differenceInDays, format, getYear } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
@@ -50,17 +49,7 @@ const ChatList = () => {
     }
   };
 
-  const { data, isLoading } = useQuery({
-    queryKey: ['chatList'] as const,
-    queryFn: () =>
-      client.get<ResponseType>({
-        url: `${process.env.NEXT_PUBLIC_BASE_URL}/chats/rooms/${localStorage.getItem('userId')}`,
-        headers: {
-          Authorization: localStorage.getItem('token'),
-          provider: localStorage.getItem('provider'),
-        },
-      }),
-  });
+  const { data, isLoading } = useChatList();
 
   //Todo: 실제 데이터 사용하기
   console.log(data);
