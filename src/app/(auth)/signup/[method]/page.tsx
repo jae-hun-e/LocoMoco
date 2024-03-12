@@ -4,6 +4,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import client from '@/apis/core';
 import { Button } from '@/components/ui/button';
+import { clearItem, getItem, setItem } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
 import DatePick from '../_components/DatePick';
 import Gender from '../_components/Gender';
@@ -40,18 +41,18 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const token = getItem(localStorage, 'token');
     if (token) {
       alert('잘못된 접근입니다. 홈으로 돌아갑니다');
-      sessionStorage.clear();
+      clearItem(sessionStorage);
       router.replace('/');
     }
     addEventListener('beforeunload', () => {
-      sessionStorage.clear();
+      clearItem(sessionStorage);
     });
     return () =>
       removeEventListener('beforeunload', () => {
-        sessionStorage.clear();
+        clearItem(sessionStorage);
       });
   }, [router]);
 
@@ -62,8 +63,8 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       alert('닉네임 중복체크를 해주세요');
       return;
     }
-    const token = sessionStorage.getItem(`token`);
-    const userId = sessionStorage.getItem('userId');
+    const token = getItem<string | undefined>(sessionStorage, `token`);
+    const userId = getItem<string | undefined>(sessionStorage, 'userId');
     if (!token || !userId) return;
     client
       .put({
@@ -80,10 +81,10 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       })
       .then(() => {
         alert('회원가입 성공');
-        localStorage.setItem('token', token);
-        localStorage.setItem('userId', userId);
-        localStorage.setItem('provider', method.toUpperCase());
-        sessionStorage.clear();
+        setItem(localStorage, 'token', token);
+        setItem(localStorage, 'userId', userId);
+        setItem(localStorage, 'provider', method.toUpperCase());
+        clearItem(sessionStorage);
         router.replace('/');
       })
       .catch((error) => alert(error));

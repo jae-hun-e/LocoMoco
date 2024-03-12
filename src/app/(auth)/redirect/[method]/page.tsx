@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import client from '@/apis/core';
+import { clearItem, getItem, setItem } from '@/utils/storage';
 import { useRouter, useSearchParams } from 'next/navigation';
 import ProgressBar from '../../signup/_components/ProgressBar';
 
@@ -31,11 +32,9 @@ const Redirect = ({ params: { method } }: { params: { method: string } }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const kakaoToken = localStorage.getItem('kakao_token');
-    const githubToken = localStorage.getItem('github_token');
-    if (kakaoToken || githubToken) {
+    if (getItem(localStorage, 'token')) {
       alert('잘못된 접근입니다. 홈으로 돌아갑니다');
-      sessionStorage.clear();
+      clearItem(sessionStorage);
       router.replace('/');
     }
   }, [router]);
@@ -47,14 +46,14 @@ const Redirect = ({ params: { method } }: { params: { method: string } }) => {
       })
       .then(({ tokenResponseDto: { access_token }, userInfoDto: { nickname, userId } }) => {
         if (!nickname) {
-          sessionStorage.setItem('token', access_token);
-          sessionStorage.setItem(`userId`, userId.toString());
+          setItem(sessionStorage, 'token', access_token);
+          setItem(sessionStorage, 'userId', userId.toString());
+
           router.replace(`/signup/${method}`);
         } else {
-          localStorage.setItem('token', access_token);
-          localStorage.setItem(`userId`, userId.toString());
-          localStorage.setItem('provider', method.toUpperCase());
-          console.log(method.toUpperCase());
+          setItem(localStorage, 'token', access_token);
+          setItem(localStorage, `userId`, userId.toString());
+          setItem(localStorage, 'provider', method.toUpperCase());
           router.replace('/');
         }
       });

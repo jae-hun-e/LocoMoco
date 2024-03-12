@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { clearItem, getItem } from '@/utils/storage';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -9,11 +10,9 @@ const Signin = () => {
   const router = useRouter();
 
   useEffect(() => {
-    const kakaoToken = localStorage.getItem('kakao_token');
-    const githubToken = localStorage.getItem('github_token');
-    if (kakaoToken || githubToken) {
+    if (getItem(localStorage, 'token')) {
       alert('잘못된 접근입니다. 홈으로 돌아갑니다');
-      sessionStorage.clear();
+      clearItem(sessionStorage);
       router.replace('/');
     }
   }, [router]);
