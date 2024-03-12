@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { UseFormSetValue } from 'react-hook-form';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
 import MapCustomControl from '@/app/_components/MapCustomControl';
+import { MGCCreateForm } from '@/app/create/page';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';
@@ -14,7 +16,11 @@ import Marker = kakao.maps.Marker;
   2. zoonIn, Zoonout 시 지도 변경 오류..
   3. 컴포넌트로 만들되 사용하는 쪽에서 필요하는 기능만 선택 할 수 있도록 리팩하면 좋을 것 가타요,,
  */
-const MGCMap = () => {
+
+interface Props {
+  setValue: UseFormSetValue<MGCCreateForm>;
+}
+const MGCMap = ({ setValue }: Props) => {
   const [createdPositionCoordinates, setCreatedPositionCoordinates] = useState<kakao.maps.Marker>();
   const location = useGeolocation();
 
@@ -53,7 +59,13 @@ const MGCMap = () => {
           });
 
           const newAddress = await getAddressByCoorinates(latLng.getLat(), latLng.getLng());
-          newAddress && setAddress(newAddress);
+          if (newAddress) {
+            setAddress(newAddress);
+            setValue('location.address', newAddress);
+            setValue('location.latitude', latLng.getLat());
+            setValue('location.longitude', latLng.getLng());
+            setValue('location.city', newAddress);
+          }
         }
       }
     },

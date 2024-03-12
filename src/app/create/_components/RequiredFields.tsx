@@ -48,7 +48,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
 
   return (
     <>
-      <MGCMap />
+      <MGCMap setValue={setValue} />
 
       <section className={labelVariants()}>
         <input
