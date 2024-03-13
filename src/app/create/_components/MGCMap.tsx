@@ -13,8 +13,6 @@ import Marker = kakao.maps.Marker;
 
 /* TODO : [24/03/13]
   1. Link로 보내줄 때 위치 정보 && 동 정보 받아와야함
-  2. zoonIn, Zoonout 시 지도 변경 오류..
-  3. 컴포넌트로 만들되 사용하는 쪽에서 필요하는 기능만 선택 할 수 있도록 리팩하면 좋을 것 가타요,,
  */
 
 interface Props {
@@ -92,12 +90,12 @@ const MGCMap = ({ setValue }: Props) => {
     return () => {
       if (map) {
         kakao.maps.event.removeListener(map, 'click', handleMapClick);
+        kakao.maps.event.addListener(map, 'dragstart', handleMouseUp);
       }
     };
   }, [handleMapClick, map]);
 
   useEffect(() => {
-    console.log(location);
     if (isLoad && location.coordinates) {
       setCreatedPositionCoordinates(
         createMarker({
