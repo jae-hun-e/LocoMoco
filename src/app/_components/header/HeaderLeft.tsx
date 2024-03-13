@@ -6,8 +6,12 @@ import { usePathname, useRouter } from 'next/navigation';
 
 const HeaderLeft = () => {
   const pathArray = usePathname().split('/');
-  const pathname = pathArray[pathArray.length - 1];
+  let pathname = pathArray.at(-1);
   const router = useRouter();
+
+  if (!isNaN(Number(pathname))) {
+    pathname = pathArray.at(-2);
+  }
 
   // TODO: 에러 처리 중앙화 하기 [24/02/14]
   // if (!Object.keys(titleMap).includes(pathname)) throw new Error('잘못된 경로로 들어왔습니다.');
