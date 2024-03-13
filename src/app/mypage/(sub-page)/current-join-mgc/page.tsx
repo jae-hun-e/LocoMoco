@@ -1,20 +1,28 @@
+'use client';
+
 import MGCSummaryInfo from '@/app/mypage/(sub-page)/_components/MGCSummaryInfo';
-import { dummyData } from '@/constants/mgcListDummy';
+import { useGetCurrentJoinMGC } from '@/app/mypage/(sub-page)/current-join-mgc/_hooks/useGetCurrentJoinMGC';
+import { getItem } from '@/utils/storage';
 
 const CurrentMGC = () => {
-  // TODO: API 연동 후 실데이터로 변경 [24/03/05]
-  const currentMGCData = dummyData;
+  let userId;
+  if (typeof window !== 'undefined') {
+    userId = getItem<string | undefined>(localStorage, 'userId');
+  }
+
+  const { currentMGCs } = useGetCurrentJoinMGC({ userId: Number(userId) });
 
   return (
     <>
-      {currentMGCData.map((mgc) => (
-        <MGCSummaryInfo
-          MGCInfo={mgc}
-          key={mgc.id}
-        >
-          <MGCSummaryInfo.Chatting MGCId={mgc.id} />
-        </MGCSummaryInfo>
-      ))}
+      {currentMGCs &&
+        currentMGCs.map((mgc) => (
+          <MGCSummaryInfo
+            MGCInfo={mgc}
+            key={mgc.id}
+          >
+            <MGCSummaryInfo.Chatting MGCId={mgc.id} />
+          </MGCSummaryInfo>
+        ))}
     </>
   );
 };

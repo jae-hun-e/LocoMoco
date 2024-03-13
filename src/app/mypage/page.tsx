@@ -8,7 +8,8 @@ import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
 /* TODO: BE에게 요청사항 [24/03/13]
-1. 마이페이지 정보에 찜한, 진행중, 종료 모각코 개수 담은 필드 넘겨주세요!
+  1. 마이페이지 정보에 찜한, 진행중, 종료 모각코 개수 담은 필드 넘겨주세요!
+  2. 진행중, 종료 모각코도 찜한 모각코 처럼 MGCSummary 타입으로 넘겨주세요...
  */
 const MyPage = () => {
   const myActivities = [
