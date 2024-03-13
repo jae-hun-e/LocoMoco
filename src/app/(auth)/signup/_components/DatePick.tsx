@@ -29,10 +29,7 @@ const DatePick = ({ register, setDate }: Props) => {
             validate: {
               lessThanToday: (date) => new Date(date) < new Date(),
             },
-            onChange: (e: ChangeEvent<HTMLInputElement>) => {
-              setDate('birth', e.target.value);
-              console.log(e.target.value.length);
-            },
+            onChange: (e: ChangeEvent<HTMLInputElement>) => setDate('birth', e.target.value),
           })}
         />
       </div>
