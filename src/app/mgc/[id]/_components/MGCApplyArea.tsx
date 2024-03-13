@@ -1,7 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import MainStyleButton from '@/components/MainStyleButton';
+import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
 
@@ -10,14 +12,25 @@ interface Props {
   currentParticipants: number;
   endTime: string;
   like: number;
+  MGCId: number;
 }
 
 // TODO: 참여하기 API 연결[24/03/04]
 // TODO: 찜하기 API 연결 - optimistic update [24/03/04]
-const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like }: Props) => {
+const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGCId }: Props) => {
   const [isLike, setLike] = useState(false);
+  const userId = Number(getItem<string | undefined>(localStorage, 'userId'));
+
+  const { applyMGC } = useApplyMGC();
+
   const handleLike = () => {
     setLike(!isLike);
+  };
+
+  const handleApply = () => {
+    console.log('userId', userId);
+    console.log('참여하기');
+    applyMGC({ MGCId, userId });
   };
 
   const isClose = new Date() > new Date(endTime);
@@ -29,6 +42,7 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like }: P
           isClose ? '모집 종료된 모각코' : `참여하기 (${currentParticipants}/${maxParticipants})`
         }
         disabled={isClose}
+        onClick={handleApply}
       >
         <button
           className="flex flex-col items-center"
