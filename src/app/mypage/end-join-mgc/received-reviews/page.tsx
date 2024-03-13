@@ -21,15 +21,20 @@ const ReceivedReviews = () => {
   }, []);
 
   const { data } = useGetReceivedReviewsByMGCId(parseInt(userId, 10), MGCId);
-  const { data: reviews } = useGetReceivedReviews(parseInt(userId, 10), MGCId, data);
+  const { data: reviews, pending } = useGetReceivedReviews(parseInt(userId, 10), MGCId, data);
 
+  console.log(reviews);
   return (
     <>
       <ReviewList
-        reviews={reviews.filter(
-          (reviewData): reviewData is ReviewSummary =>
-            reviewData !== undefined && reviewData.score >= 3,
-        )}
+        reviews={
+          !pending
+            ? reviews.filter(
+                (reviewData): reviewData is ReviewSummary =>
+                  reviewData !== undefined && reviewData.score >= 3,
+              )
+            : []
+        }
         title="받은"
       />
     </>

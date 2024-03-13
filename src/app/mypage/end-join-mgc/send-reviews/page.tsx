@@ -21,14 +21,16 @@ const SendReviews = () => {
   }, []);
 
   const { data } = useGetSentReviewsByMGCId(parseInt(userId, 10), MGCId);
-  const { data: reviews } = useGetSentReviews(parseInt(userId, 10), MGCId, data);
+  const { data: reviews, pending } = useGetSentReviews(parseInt(userId, 10), MGCId, data);
 
   return (
     <>
       <ReviewList
-        reviews={reviews.filter(
-          (reviewData): reviewData is ReviewSummary => reviewData !== undefined,
-        )}
+        reviews={
+          !pending
+            ? reviews.filter((reviewData): reviewData is ReviewSummary => reviewData !== undefined)
+            : []
+        }
         title="보낸"
       />
     </>
