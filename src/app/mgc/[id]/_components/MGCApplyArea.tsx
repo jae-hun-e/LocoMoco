@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
+import { toast } from '@/components/ui/use-toast';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
@@ -29,17 +30,27 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGC
   const isClose = new Date() > new Date(endTime);
 
   const router = useRouter();
+
+  const handleLoginAction = () => {
+    if (!userId) {
+      toast({
+        description: '로그인 시에만 가능합니다.',
+      });
+      router.push('/signin');
+    }
+  };
   const handleLike = () => {
+    handleLoginAction();
     setLike(!isLike);
   };
 
   const handleLinkChatting = () => {
+    handleLoginAction();
     router.push(`/chat/${MGCId}`);
   };
 
   const handleApply = () => {
-    console.log('userId', userId);
-    console.log('참여하기');
+    handleLoginAction();
     applyMGC({ MGCId, userId });
   };
 
