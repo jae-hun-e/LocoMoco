@@ -20,9 +20,9 @@ const LikeMGCAreaButtons = ({ MGCId }: { MGCId: number }) => {
         onClick={handleParticipation}
       />
       <MainStyleButton
-        content="찜하기 취소"
+        content="취소"
         layout="flex-grow-0"
-        className="bg-layer-5 px-5pxr"
+        className="bg-layer-5 px-10pxr"
         onClick={handleCancelLike}
       />
     </div>
