@@ -5,28 +5,28 @@ import { getMGCDetail } from '../mgc/useGetMGCDetail';
 import { MgcData } from '../mgc/useGetMGCDetail';
 import { UserInfo, getUserInfo } from '../user/useGetUserInfo';
 
-export const getReceivedReviewsByMGCId = async (userId: number, mogakkoId: number) => {
+export const getSentReviewsByMGCId = async (userId: number, mogakkoId: number) => {
   return await client.get<Reviews[]>({
-    url: `/reviews/mogakko/${mogakkoId}/recieved`,
+    url: `/reviews/mogakko/${mogakkoId}/sent`,
     params: {
-      revieweeId: userId,
+      reviewerId: userId,
     },
   });
 };
 
-const useGetReceivedReviewsByMGCId = (userId: number, mogakkoId: number) => {
+export const useGetSentReviewsByMGCId = (userId: number, mogakkoId: number) => {
   return useQuery({
-    queryKey: ['receivedReviewsByMGCId', userId, mogakkoId] as const,
-    queryFn: () => getReceivedReviewsByMGCId(userId, mogakkoId),
+    queryKey: ['sentReviewsByMGCId', userId, mogakkoId] as const,
+    queryFn: () => getSentReviewsByMGCId(userId, mogakkoId),
     enabled: !!userId,
   });
 };
 
-export const useGetReceivedReviews = (userId: number, mogakkoId: number, reviews?: Reviews[]) => {
+export const useGetSentReviewSummary = (userId: number, mogakkoId: number, reviews?: Reviews[]) => {
   return useQueries({
     queries: reviews
       ? reviews.map((review) => ({
-          queryKey: ['reviews', review, mogakkoId],
+          queryKey: ['sentReviews', review, mogakkoId],
           queryFn: () => {
             return Promise.all([getUserInfo(review.reviewerId), getMGCDetail(mogakkoId)]);
           },
@@ -58,4 +58,4 @@ export const useGetReceivedReviews = (userId: number, mogakkoId: number, reviews
   });
 };
 
-export default useGetReceivedReviewsByMGCId;
+export default useGetSentReviewSummary;

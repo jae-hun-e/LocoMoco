@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useGetSentReviewsByMGCId, {
-  useGetSentReviews,
-} from '@/apis/review/useGetSentReviewsByMGCId';
+import useGetSentReviewSummary, {
+  useGetSentReviewsByMGCId,
+} from '@/apis/review/useGetSentReviewSummary';
 import ReviewList from '@/app/_components/reviewList/ReviewList';
 import { ReviewSummary } from '@/types/review';
 import { USER_ID_KEY, getItem } from '@/utils/storage';
@@ -21,7 +21,7 @@ const SendReviews = () => {
   }, []);
 
   const { data } = useGetSentReviewsByMGCId(parseInt(userId, 10), MGCId);
-  const { data: reviews, pending } = useGetSentReviews(parseInt(userId, 10), MGCId, data);
+  const { data: reviews, pending } = useGetSentReviewSummary(parseInt(userId, 10), MGCId, data);
 
   return (
     <>

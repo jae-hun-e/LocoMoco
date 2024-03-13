@@ -1,9 +1,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import useGetReceivedReviewsByMGCId, {
-  useGetReceivedReviews,
-} from '@/apis/review/useGetReceivedReviewsByMGCId';
+import useGetReceivedReviewSummary, {
+  useGetReceivedReviewsByMGCId,
+} from '@/apis/review/useGetReceivedReviewSummary';
 import ReviewList from '@/app/_components/reviewList/ReviewList';
 import { ReviewSummary } from '@/types/review';
 import { USER_ID_KEY, getItem } from '@/utils/storage';
@@ -21,15 +21,19 @@ const ReceivedReviews = () => {
   }, []);
 
   const { data } = useGetReceivedReviewsByMGCId(parseInt(userId, 10), MGCId);
-  const { data: reviews, pending } = useGetReceivedReviews(parseInt(userId, 10), MGCId, data);
+  const { data: reviewSummary, pending } = useGetReceivedReviewSummary(
+    parseInt(userId, 10),
+    MGCId,
+    data,
+  );
 
-  console.log(reviews);
+  console.log(reviewSummary);
   return (
     <>
       <ReviewList
         reviews={
           !pending
-            ? reviews.filter(
+            ? reviewSummary.filter(
                 (reviewData): reviewData is ReviewSummary =>
                   reviewData !== undefined && reviewData.score >= 3,
               )
