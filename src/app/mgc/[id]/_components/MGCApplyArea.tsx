@@ -2,10 +2,12 @@
 
 import { useState } from 'react';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
+import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface Props {
   maxParticipants: number;
@@ -21,10 +23,18 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGC
   const [isLike, setLike] = useState(false);
   const userId = Number(getItem<string | undefined>(localStorage, 'userId'));
 
+  const { isParticipated } = useIsApply({ MGCId, userId });
   const { applyMGC } = useApplyMGC();
 
+  const isClose = new Date() > new Date(endTime);
+
+  const router = useRouter();
   const handleLike = () => {
     setLike(!isLike);
+  };
+
+  const handleLinkChatting = () => {
+    router.push(`/chat/${MGCId}`);
   };
 
   const handleApply = () => {
@@ -33,16 +43,18 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGC
     applyMGC({ MGCId, userId });
   };
 
-  const isClose = new Date() > new Date(endTime);
-
   return (
     <section className="fixed bottom-0 z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
         content={
-          isClose ? '모집 종료된 모각코' : `참여하기 (${currentParticipants}/${maxParticipants})`
+          isClose
+            ? '모집 종료된 모각코'
+            : isParticipated
+              ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
+              : `참여하기 (${currentParticipants}/${maxParticipants})`
         }
         disabled={isClose}
-        onClick={handleApply}
+        onClick={isParticipated ? handleLinkChatting : handleApply}
       >
         <button
           className="flex flex-col items-center"

@@ -1,11 +1,8 @@
 import client from '@/apis/core';
 import { useMutation } from '@tanstack/react-query';
 
-const participateMGC = async ({ MGCId, userId }: { MGCId: number; userId: number }) => {
-  console.log('MGCId', MGCId);
-  console.log('userId', userId);
+const participateMGC = async ({ MGCId, userId }: { MGCId: number; userId: number }) =>
   await client.post({ url: `/mogakko/map/${MGCId}/participate`, data: { userId } });
-};
 
 export const useApplyMGC = () => {
   const { mutate, ...rest } = useMutation({
