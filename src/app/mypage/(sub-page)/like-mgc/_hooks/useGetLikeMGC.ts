@@ -6,7 +6,7 @@ const getGetLikeMGC = async ({ userId }: { userId: number }) => {
   try {
     return await client.get<MGCSummary[]>({ url: `/users/${userId}/mogakko/like` });
   } catch (error) {
-    console.error('마이페이지 정보를 불러오는데 실패했습니다.', error);
+    console.error('찜한 모각코 정보를 불러오는데 실패했습니다.', error);
   }
 };
 
