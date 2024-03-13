@@ -26,4 +26,5 @@ export const titleMap = {
   'end-join-mgc': '종료된 모각코',
   'like-mgc': '내가 찜한 모각코',
   'received-reviews-assessment': '받은 리뷰 평가',
+  'change-my-info': '개인정보 수정',
 } as const;
