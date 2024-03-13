@@ -24,7 +24,7 @@ axiosInstance.interceptors.request.use(
 
     if (typeof window !== 'undefined') {
       const token = getItem<string | undefined>(localStorage, 'token');
-      if (token) config.headers['Authorization'] = token;
+      if (token) config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },

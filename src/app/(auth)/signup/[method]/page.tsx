@@ -69,9 +69,6 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
     client
       .put({
         url: `/users/init/${userId}`,
-        headers: {
-          Authorization: token,
-        },
         data: {
           nickname: getValues('nickname'),
           birth: getValues('birth'),
