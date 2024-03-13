@@ -3,7 +3,7 @@ import { Report } from '@/types/report';
 
 interface ReportListItemProps {
   data: Report;
-  onModifyBtnClick: (id: number) => void;
+  onModifyBtnClick: (id: number, content: string) => void;
   onDeleteBtnClick: (id: number) => void;
 }
 
@@ -18,7 +18,7 @@ const ReportListItem = ({ data, onModifyBtnClick, onDeleteBtnClick }: ReportList
             variant="outline"
             className="border-1pxr h-30pxr w-50pxr border-solid border-main-1 text-xs text-main-1 hover:border-hover hover:bg-white hover:text-hover"
             onClick={() => {
-              onModifyBtnClick(data.reportId);
+              onModifyBtnClick(data.reportId, data.content);
             }}
           >
             수정

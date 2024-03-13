@@ -4,7 +4,7 @@ import ReportListItem from './ReportListItem';
 
 interface ReportListProps {
   data: Report[];
-  onModifyBtnClick: (id: number) => void;
+  onModifyBtnClick: (id: number, content: string) => void;
   onDeleteBtnClick: (id: number) => void;
 }
 

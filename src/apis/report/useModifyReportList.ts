@@ -1,14 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import client from '../core';
 
-export const modifyReportList = async (targetId: number, content: string) => {
+export const modifyReportList = async (
+  targetId: number | undefined,
+  content: string | undefined,
+) => {
+  if (typeof targetId === 'undefined') return;
   return await client.patch({
     url: `/reports/${targetId}`,
-    data: content,
+    data: { content: content },
   });
 };
 
-const useModifyReportlist = (targetId: number, content: string) => {
+const useModifyReportlist = (targetId: number | undefined, content: string | undefined) => {
   const queryClient = useQueryClient();
 
   const { mutate, ...rest } = useMutation({
