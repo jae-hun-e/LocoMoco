@@ -28,6 +28,11 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
+  const initCheckedList = (categoryName: keyof MGCCreateForm) => {
+    return getValues(categoryName)
+      ? (getValues(categoryName) as TagType[]).map(({ tag_name }) => tag_name)
+      : [];
+  };
   const handleMultiSelect = (field: keyof MGCCreateForm, selected: TagType) => {
     if (selected.tag_name === 'all') {
       setValue(field, []);
@@ -56,6 +61,12 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
     const updatedList = selectedList.filter(({ tag_id }) => tag_id !== deselected);
     setValue(field, updatedList);
     trigger(field);
+  };
+
+  const initRadioSelect = (categoryName: keyof MGCCreateForm) => {
+    console.log('getValues(categoryName)', getValues(categoryName));
+
+    return getValues(categoryName) ? (getValues(categoryName) as TagType[])[0].tag_name : undefined;
   };
 
   const handleRadioSelect = (field: keyof MGCCreateForm, selected: string, tags: TagType[]) => {
@@ -118,6 +129,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                     className="mt-4"
                     onSelected={(selected) => handleMultiSelect(categoryNameCopy, selected)}
                     onDeselected={(deselected) => handleMultiDeselect(categoryNameCopy, deselected)}
+                    initCheckedList={initCheckedList(categoryNameCopy)}
                   />
                 </section>
               );
@@ -127,7 +139,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                 <section key={category_id}>
                   <Label className="w-100pxr flex-shrink-0">현재신분</Label>
                   <RadioGroup
-                    defaultValue="상관 없음"
+                    defaultValue={initRadioSelect(categoryNameCopy)}
                     onValueChange={(value) => handleRadioSelect(categoryNameCopy, value, tags)}
                     className="mt-4 flex grow flex-wrap justify-around"
                   >

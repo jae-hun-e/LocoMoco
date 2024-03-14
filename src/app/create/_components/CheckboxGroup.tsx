@@ -10,9 +10,17 @@ interface Props {
   onSelected: (checked: TagType) => void;
   onDeselected: (checked: number) => void;
   className?: string;
+  initCheckedList?: string[];
 }
 
-const CheckboxGroup = ({ title, checkBoxList, className, onSelected, onDeselected }: Props) => {
+const CheckboxGroup = ({
+  title,
+  checkBoxList,
+  className,
+  onSelected,
+  onDeselected,
+  initCheckedList,
+}: Props) => {
   const uniqueId = useId();
 
   return (
@@ -29,6 +37,7 @@ const CheckboxGroup = ({ title, checkBoxList, className, onSelected, onDeselecte
               onCheckedChange={(checked) =>
                 checked ? onSelected({ tag_id, tag_name }) : onDeselected(tag_id)
               }
+              checked={initCheckedList && initCheckedList.includes(tag_name)}
             />
             <label
               htmlFor={`${uniqueId}-${tag_name}`}

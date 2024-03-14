@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TagType } from '@/apis/mgc/queryFn';
 import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
@@ -7,6 +8,7 @@ import { MogakkoInfo } from '@/apis/mgc/useGetMGCDetail';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
+import { useFilterTagsByIds } from '@/hooks/useFilterTagByIds';
 import { getTimeString } from '@/utils/getTimeString';
 import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
@@ -36,7 +38,6 @@ interface Props {
 }
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = ({ initData }: Props) => {
-  console.log('initData', initData);
   const {
     register,
     handleSubmit,
@@ -63,6 +64,17 @@ const CreateMGC = ({ initData }: Props) => {
       content: initData?.content,
     },
   });
+
+  const options = useFilterTagsByIds(initData?.tagIds ?? []);
+
+  useEffect(() => {
+    options.map(({ categoryName, tagNames, tagId }) => {
+      setValue(
+        categoryName as keyof MGCCreateForm,
+        tagNames.map((tag_name) => ({ tag_id: tagId, tag_name })),
+      );
+    });
+  }, []);
 
   const { createMGC } = useCreateMGC();
 
