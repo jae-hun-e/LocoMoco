@@ -1,3 +1,4 @@
+import { getItem } from '@/utils/storage';
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 import qs from 'qs';
 
@@ -7,7 +8,6 @@ const axiosInstance: AxiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
 });
 
-// todo: token 관련 처리는 추후 추가해야함 [24/02/07]
 axiosInstance.interceptors.request.use(
   (config) => {
     if (config.params) {
@@ -23,8 +23,9 @@ axiosInstance.interceptors.request.use(
     }
 
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
-      if (token) config.headers['Authorization'] = token;
+
+      const token = getItem<string>(localStorage, 'token');
+      if (token) config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;
   },
