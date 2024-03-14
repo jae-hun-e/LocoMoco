@@ -29,4 +29,5 @@ export const titleMap = {
   'received-reviews-assessment': '받은 리뷰 평가',
   another: '프로필',
   'join-mgc': '참여한 모각코',
+  'change-my-info': '개인정보 수정',
 } as const;

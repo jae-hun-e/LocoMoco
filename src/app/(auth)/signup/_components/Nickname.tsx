@@ -17,6 +17,8 @@ interface Props {
   trigger: UseFormTrigger<SignupValue>;
   setIsDuplicated: (isDuplicated: boolean) => void;
   setDuplicateWarning: (text: string) => void;
+  defaultValue?: string;
+  className?: string;
 }
 
 const NickName = ({
@@ -26,6 +28,8 @@ const NickName = ({
   trigger,
   setIsDuplicated,
   setDuplicateWarning,
+  defaultValue,
+  className,
 }: Props) => {
   const checkDuplication = async () => {
     const valid = await trigger('nickname');
@@ -43,7 +47,7 @@ const NickName = ({
 
   return (
     <div className="flex flex-col gap-1">
-      <h2>닉네임</h2>
+      <p className={className}>닉네임</p>
       <div className="flex justify-between gap-1">
         <div className="flex w-full flex-col">
           <Input
@@ -58,11 +62,13 @@ const NickName = ({
               },
             })}
             placeholder="닉네임을 입력해주세요."
+            defaultValue={defaultValue}
           />
         </div>
         <Button
           className="bg-main-1"
           onClick={checkDuplication}
+          type="button"
         >
           중복 확인
         </Button>
