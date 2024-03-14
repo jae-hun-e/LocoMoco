@@ -15,11 +15,15 @@ interface BlackLists {
 }
 
 export const getBlackList = async (userId: number) => {
-  const { data } = await client.get<BlackLists>({
-    url: `/users/${userId}/blacklist`,
-  });
+  try {
+    const { data } = await client.get<BlackLists>({
+      url: `/users/${userId}/blacklist`,
+    });
 
-  return data;
+    return data;
+  } catch (e) {
+    alert(e);
+  }
 };
 
 const useGetBlackList = (userId: number) => {

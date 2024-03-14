@@ -1,14 +1,18 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import client from '../core';
 
-export const deleteBlackList = async (userId: number, blockedId: number) => {
-  return await client.delete({
-    url: `/users/${userId}/blacklist`,
-    params: { userId, blockedId },
-  });
+export const deleteBlackList = async (userId: number, blockedId: number | undefined) => {
+  try {
+    return await client.delete({
+      url: `/users/${userId}/blacklist`,
+      params: { userId, blockedId },
+    });
+  } catch (e) {
+    alert(e);
+  }
 };
 
-const useDeleteBlacklist = (userId: number, blockedId: number) => {
+const useDeleteBlacklist = (userId: number, blockedId: number | undefined) => {
   const queryClient = useQueryClient();
 
   const { mutate, ...rest } = useMutation({
