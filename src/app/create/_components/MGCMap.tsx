@@ -3,7 +3,7 @@ import { UseFormSetValue } from 'react-hook-form';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
 import MapCustomControl from '@/app/_components/MapCustomControl';
-import { LocationProps, MGCCreateForm } from '@/app/create/page';
+import { LocationProps, MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';

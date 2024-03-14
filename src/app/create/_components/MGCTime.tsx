@@ -1,6 +1,6 @@
 import { ChangeEvent, useId, useState } from 'react';
 import { UseFormWatch } from 'react-hook-form';
-import { MGCCreateForm } from '@/app/create/page';
+import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 

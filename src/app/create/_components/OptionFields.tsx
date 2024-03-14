@@ -9,7 +9,7 @@ import { TagType } from '@/apis/mgc/queryFn';
 import Tag from '@/app/_components/Tag';
 import CheckboxGroup from '@/app/create/_components/CheckboxGroup';
 import Combobox from '@/app/create/_components/Combobox';
-import { MGCCreateForm } from '@/app/create/page';
+import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Textarea } from '@/components/ui/textarea';

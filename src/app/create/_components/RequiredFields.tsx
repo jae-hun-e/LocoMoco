@@ -6,10 +6,10 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
+import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import MGCDate from '@/app/create/_components/MGCDate';
 import MGCMap from '@/app/create/_components/MGCMap';
 import MGCTime from '@/app/create/_components/MGCTime';
-import { MGCCreateForm } from '@/app/create/page';
 import { Input } from '@/components/ui/input';
 import { Label, labelVariants } from '@/components/ui/label';
 
