@@ -46,12 +46,10 @@ export const useGetSentReviewSummary = (userId: number, reviews?: Reviews[]) => 
           },
         }))
       : [],
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        pending: results.some((result) => result.isPending),
-      };
-    },
+    combine: (results) => ({
+      data: results.map((result) => result.data),
+      pending: results.some((result) => result.isPending),
+    }),
   });
 };
 
