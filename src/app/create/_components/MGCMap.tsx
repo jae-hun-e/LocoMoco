@@ -90,7 +90,6 @@ const MGCMap = ({ setValue }: Props) => {
     return () => {
       if (map) {
         kakao.maps.event.removeListener(map, 'click', handleMapClick);
-        kakao.maps.event.addListener(map, 'dragstart', handleMouseUp);
       }
     };
   }, [handleMapClick, map]);
