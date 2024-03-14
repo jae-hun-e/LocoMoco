@@ -12,7 +12,6 @@ const CurrentMGC = () => {
 
   const { currentMGCs } = useGetCurrentJoinMGC({ userId: Number(userId) });
 
-  console.log('currentMGCs', currentMGCs);
   return (
     <>
       {currentMGCs && currentMGCs.length ? (

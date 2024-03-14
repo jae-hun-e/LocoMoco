@@ -2,8 +2,6 @@
 
 import MGCSummaryInfo from '@/app/mypage/(sub-page)/_components/MGCSummaryInfo';
 import { useGetEndMGC } from '@/app/mypage/(sub-page)/end-join-mgc/_hooks/useGetEndMGC';
-// TODO: API 연동 후 실데이터로 변경 [24/03/14]
-import { dummyData } from '@/constants/mgcListDummy';
 import { getItem } from '@/utils/storage';
 
 const EndMGC = () => {
@@ -14,18 +12,20 @@ const EndMGC = () => {
 
   const { endMGCs } = useGetEndMGC({ userId: Number(userId) });
 
-  console.log('endMGCs', endMGCs);
-
   return (
     <>
-      {dummyData.map((mgc) => (
-        <MGCSummaryInfo
-          MGCInfo={mgc}
-          key={mgc.id}
-        >
-          <MGCSummaryInfo.Reviews MGCId={mgc.id} />
-        </MGCSummaryInfo>
-      ))}
+      {endMGCs && endMGCs.length ? (
+        endMGCs.map((mgc) => (
+          <MGCSummaryInfo
+            MGCInfo={mgc}
+            key={mgc.id}
+          >
+            <MGCSummaryInfo.Reviews MGCId={mgc.id} />
+          </MGCSummaryInfo>
+        ))
+      ) : (
+        <div> 종료된 모각코가 없습니다. </div>
+      )}
     </>
   );
 };
