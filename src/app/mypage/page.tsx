@@ -1,11 +1,12 @@
 'use client';
 
-import UserInfo from '@/app/mypage/_components/UserInfo';
+import MainStyleButton from '@/components/MainStyleButton';
 import { Separator } from '@/components/ui/separator';
 import { userInfoDummy } from '@/constants/mypageDummyData';
 import { routes } from '@/constants/routeURL';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
+import UserProfileInfo from '../_components/UserProfileInfo';
 
 /* TODO: BE에게 요청사항 [24/03/13]
   1. 마이페이지 정보에 찜한, 진행중, 종료 모각코 개수 담은 필드 넘겨주세요!
@@ -41,7 +42,14 @@ const MyPage = () => {
   return (
     <section>
       {/*유저정보*/}
-      <UserInfo />
+      <UserProfileInfo userInfo={userInfoDummy}>
+        <Link href={routes.changeMyInfo}>
+          <MainStyleButton
+            content="개인정보 수정하기"
+            layout="h-33pxr"
+          />
+        </Link>
+      </UserProfileInfo>
 
       {/*나의 활동*/}
       <section className="mb-10 flex flex-col gap-4 font-bold">
