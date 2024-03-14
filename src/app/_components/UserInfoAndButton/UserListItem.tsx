@@ -22,9 +22,15 @@ const UserListItem = ({ data, onClick, buttonName }: UserListProps) => {
       <div className="flex items-center gap-4">
         <Avatar className="ml-1 rounded-3xl">
           {data.profileImage === null ? (
-            <AvatarImage src={'/oh.png'} />
+            <AvatarImage
+              src={'/oh.png'}
+              alt="프로필 사진"
+            />
           ) : (
-            <AvatarImage src={data.profileImage.path} />
+            <AvatarImage
+              src={data.profileImage.path}
+              alt="프로필 사진"
+            />
           )}
           <AvatarFallback>{data.nickname}</AvatarFallback>
         </Avatar>
