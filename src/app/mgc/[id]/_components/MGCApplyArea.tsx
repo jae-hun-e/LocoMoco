@@ -18,13 +18,12 @@ interface Props {
   MGCId: number;
 }
 
-// TODO: 참여하기 API 연결[24/03/04]
 // TODO: 찜하기 API 연결 - optimistic update [24/03/04]
 const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGCId }: Props) => {
   const [isLike, setLike] = useState(false);
-  const userId = Number(getItem<string | undefined>(localStorage, 'userId'));
+  const userId = getItem<string | undefined>(localStorage, 'userId');
 
-  const { isParticipated } = useIsApply({ MGCId, userId });
+  const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
 
   const isClose = new Date() > new Date(endTime);
@@ -51,7 +50,7 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGC
 
   const handleApply = () => {
     handleLoginAction();
-    applyMGC({ MGCId, userId });
+    applyMGC({ MGCId, userId: userId ?? '' });
   };
 
   return (

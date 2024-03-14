@@ -3,7 +3,7 @@ import { getMGCDetailQueryOption } from '@/apis/mgc/useGetMGCDetail';
 import { getCurrentApplyMGC } from '@/app/mgc/[id]/_hooks/useIsApply';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
-const participateMGC = async ({ MGCId, userId }: { MGCId: number; userId: number }) =>
+const participateMGC = async ({ MGCId, userId }: { MGCId: number; userId: string }) =>
   await client.post({ url: `/mogakko/map/${MGCId}/participate`, data: { userId } });
 
 export const useApplyMGC = () => {
