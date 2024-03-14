@@ -14,10 +14,7 @@ interface Props {
 const MGCSummaryInfoContainer = ({ MGCInfo, children }: Props) => {
   return (
     <>
-      <MGCListItem
-        data={MGCInfo}
-        key={MGCInfo.id}
-      />
+      <MGCListItem data={MGCInfo} />
       {children}
       <Separator />
     </>

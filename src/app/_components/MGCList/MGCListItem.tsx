@@ -18,10 +18,14 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   const router = useRouter();
 
   const queryClient = useQueryClient();
-  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey)!;
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
-  const MGCTypeTag = categoryList ? categoryList[0].tags : [];
-  const tagInfo = categoryList ? [...categoryList[1].tags, ...categoryList[2].tags] : [];
+  if (!categoryList) return null;
+  const MGCType = categoryList.find(({ category_name }) => category_name === '모각코 유형');
+
+  const MGCTypeTag = MGCType?.tags ?? [];
+  const tagInfo = [...categoryList.flatMap(({ tags }) => tags)] ?? [];
+  console.log('tagInfo', tagInfo);
 
   const handleMGCItemClick = () => {
     console.log(data.id);
@@ -29,6 +33,7 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   };
 
   const TagsUI = (tagIds: number[] | undefined) => {
+    console.log('tagIds', tagIds);
     return (
       tagIds &&
       tagIds.map((tagId) => {

@@ -14,7 +14,7 @@ const LikeMGC = () => {
 
   return (
     <>
-      {likeMGCs &&
+      {likeMGCs && likeMGCs.length ? (
         likeMGCs.map((mgc) => (
           <MGCSummaryInfo
             MGCInfo={mgc}
@@ -22,7 +22,10 @@ const LikeMGC = () => {
           >
             <MGCSummaryInfo.LikeMGCArea MGCId={mgc.id} />
           </MGCSummaryInfo>
-        ))}
+        ))
+      ) : (
+        <div> 찜한 모각코가 없습니다. </div>
+      )}
     </>
   );
 };
