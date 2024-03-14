@@ -105,9 +105,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       <div className="relative">
         <DatePick
           register={register}
-          getDate={getValues}
           setDate={setValue}
-          trigger={trigger}
         />
         <Warning good={!errors.birth}>{errors.birth && '올바른 날짜를 입력해주세요'}</Warning>
       </div>
