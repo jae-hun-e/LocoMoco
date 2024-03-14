@@ -4,7 +4,7 @@ import useGetReceivedReviews from '@/apis/review/useGetReceivedReviews';
 import useGetReviewContents from '@/apis/review/useGetReviewContents';
 import ReviewList from '../../_components/ReviewAssessment/ReviewList';
 
-const ReviewAssessment = ({ userId }: { userId: number }) => {
+const ReviewAssessment = ({ userId }: { userId: string }) => {
   const { data: receivedReviews } = useGetReceivedReviews(userId);
   const { data: reviewContents } = useGetReviewContents();
 
