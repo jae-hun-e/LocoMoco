@@ -34,7 +34,7 @@ export interface MGCCreateForm {
 }
 
 interface Props {
-  initData: MogakkoInfo;
+  initData?: MogakkoInfo;
 }
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = ({ initData }: Props) => {
@@ -57,8 +57,8 @@ const CreateMGC = ({ initData }: Props) => {
         city: initData?.location.city,
       },
       date: initData?.startTime ? new Date(initData?.startTime) : undefined,
-      startTime: getTimeString(initData?.startTime),
-      endTime: getTimeString(initData?.endTime),
+      startTime: initData?.startTime && getTimeString(initData?.startTime),
+      endTime: initData?.endTime && getTimeString(initData?.endTime),
       deadLine: initData?.startTime ? new Date(initData?.startTime) : undefined,
       maxParticipants: initData?.maxParticipants ?? 10,
       content: initData?.content,
