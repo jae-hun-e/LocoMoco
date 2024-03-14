@@ -1,36 +1,41 @@
 'use client';
 
 import UserInfo from '@/app/mypage/_components/UserInfo';
+import { useMypageInfo } from '@/app/mypage/_hooks/useMypageInfo';
 import { Separator } from '@/components/ui/separator';
-import { userInfoDummy } from '@/constants/mypageDummyData';
 import { routes } from '@/constants/routeURL';
+import { getItem } from '@/utils/storage';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
-/* TODO: BE에게 요청사항 [24/03/13]
-  1. 마이페이지 정보에 찜한, 진행중, 종료 모각코 개수 담은 필드 넘겨주세요!
-  2. 진행중, 종료 모각코도 찜한 모각코 처럼 MGCSummary 타입으로 넘겨주세요...
- */
+// TODO: 마이페이지 데이터 프리패칭으로 변경하기 [24/03/15]
 const MyPage = () => {
+  let userId;
+  if (typeof window !== 'undefined') userId = getItem(localStorage, 'userId');
+
+  const { myInfo } = useMypageInfo({ userId: Number(userId) });
+
+  // TODO: 로딩처리 스켈레톤 추가[24/03/15]
+  if (!myInfo) return <div>로딩중...</div>;
+
   const myActivities = [
-    { title: '내가 찜한 모각코', link: routes.likeMGC, count: userInfoDummy.likeMGC?.length || 0 },
+    { title: '내가 찜한 모각코', link: routes.likeMGC, count: myInfo.likeMogakkoCount },
     {
       title: '현재 참여중인 모각코',
       link: routes.currentJoinMGC,
-      count: userInfoDummy.currentJoinMGC?.length || 0,
+      count: myInfo.ongoingMogakkoCount,
     },
     {
       title: '종료된 모각코',
       link: routes.endJoinMGC,
-      count: userInfoDummy.endJoinMGC?.length || 0,
+      count: myInfo.completeMogakkoCount,
     },
     {
       title: '받은 리뷰 평가',
       link: routes.receivedReviewsAssessment,
-      count: userInfoDummy.receivedReview?.length || 0,
     },
-    { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackList?.length || 0 },
-    { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportList?.length || 0 },
+    { title: '블랙리스트', link: routes.blackList },
+    { title: '신고목록', link: routes.reportList },
   ];
 
   const manageMyInfo = [
@@ -41,7 +46,7 @@ const MyPage = () => {
   return (
     <section>
       {/*유저정보*/}
-      <UserInfo />
+      <UserInfo myInfo={myInfo.userInfo} />
 
       {/*나의 활동*/}
       <section className="mb-10 flex flex-col gap-4 font-bold">

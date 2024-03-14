@@ -1,7 +1,7 @@
 import client from '@/apis/core';
 import { useQuery } from '@tanstack/react-query';
 
-interface MypageInfoProps {
+export interface UserInfoProps {
   userId: number;
   nickname: string;
   birth: string;
@@ -14,6 +14,12 @@ interface MypageInfoProps {
     path: string;
   };
   provider: string;
+}
+interface MypageInfoProps {
+  userInfo: UserInfoProps;
+  completeMogakkoCount: number;
+  likeMogakkoCount: number;
+  ongoingMogakkoCount: number;
 }
 
 const getMypageInfo = async ({ userId }: { userId: number }) => {
