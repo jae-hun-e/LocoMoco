@@ -1,7 +1,7 @@
 'use client';
 
 import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
-import CreateMGC from '@/app/create/page';
+import CreateMGC from '@/app/create/_components/CreateMGC';
 
 const MGCEdit = ({ params }: { params: { id: number } }) => {
   const {
