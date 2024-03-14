@@ -8,11 +8,10 @@ const HeaderLeft = () => {
   const pathArray = usePathname().split('/');
   const lastArray = pathArray.at(-1);
   const router = useRouter();
-  // TODO: 에러 처리 중앙화 하기 [24/02/14]
+  
   let title;
   if (Number(lastArray)) title = titleMap[pathArray.at(-2) as keyof typeof titleMap];
   else title = titleMap[lastArray as keyof typeof titleMap];
-
 
   return (
     <div className="flex items-center gap-25pxr">
