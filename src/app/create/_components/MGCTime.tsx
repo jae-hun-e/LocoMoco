@@ -46,6 +46,7 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
               step="600"
               onChange={(e) => onChangeInput('startTime', e.currentTarget.value)}
               className="w-100pxr text-xs"
+              defaultValue={watch('startTime')}
             />
             {startErrormessage && (
               <span className="absolute top-11 text-xs text-red-1">{startErrormessage}</span>
@@ -60,6 +61,7 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
               step="600"
               onChange={handelEndTimeValidation}
               className="w-100pxr text-xs"
+              defaultValue={watch('endTime')}
             />
             {errorMessage && (
               <span className="absolute top-11 text-xs text-red-1">{errorMessage}</span>

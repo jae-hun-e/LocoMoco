@@ -3,20 +3,23 @@
 import { useForm } from 'react-hook-form';
 import { TagType } from '@/apis/mgc/queryFn';
 import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
+import { MogakkoInfo } from '@/apis/mgc/useGetMGCDetail';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
+import { getTimeString } from '@/utils/getTimeString';
 import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
+export interface LocationProps {
+  address: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+}
 export interface MGCCreateForm {
   title: string;
-  location: {
-    address: string;
-    latitude: number;
-    longitude: number;
-    city: string;
-  };
+  location: LocationProps;
   date: Date;
   startTime: string;
   endTime: string;
@@ -28,8 +31,12 @@ export interface MGCCreateForm {
   tags?: TagType[];
 }
 
+interface Props {
+  initData: MogakkoInfo;
+}
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
-const CreateMGC = () => {
+const CreateMGC = ({ initData }: Props) => {
+  console.log('initData', initData);
   const {
     register,
     handleSubmit,
@@ -41,8 +48,19 @@ const CreateMGC = () => {
   } = useForm<MGCCreateForm>({
     mode: 'onTouched',
     defaultValues: {
-      title: '',
-      maxParticipants: 10,
+      title: initData?.title,
+      location: {
+        address: initData?.location.address,
+        latitude: initData?.location.latitude,
+        longitude: initData?.location.longitude,
+        city: initData?.location.city,
+      },
+      date: new Date(initData?.startTime),
+      startTime: getTimeString(initData?.startTime),
+      endTime: getTimeString(initData?.endTime),
+      deadLine: new Date(initData?.deadline),
+      maxParticipants: initData?.maxParticipants,
+      content: initData?.content,
     },
   });
 
@@ -83,6 +101,7 @@ const CreateMGC = () => {
       tags,
     };
 
+    console.log('req', req);
     createMGC(req);
   };
 

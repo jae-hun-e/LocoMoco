@@ -16,13 +16,22 @@ interface Props {
   endTime: string;
   like: number;
   MGCId: number;
+  createUserId: number;
 }
 
 // TODO: 찜하기 API 연결 - optimistic update [24/03/04]
-const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGCId }: Props) => {
+const MGCApplyArea = ({
+  maxParticipants,
+  currentParticipants,
+  endTime,
+  like,
+  MGCId,
+  createUserId,
+}: Props) => {
   const [isLike, setLike] = useState(false);
   const userId = getItem<string | undefined>(localStorage, 'userId');
 
+  const isOwner = Number(userId) === createUserId;
   const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
 
@@ -48,6 +57,10 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGC
     router.push(`/chat/${MGCId}`);
   };
 
+  const handleLinkEdit = () => {
+    router.push(`/edit-mgc/${MGCId}`);
+  };
+
   const handleApply = () => {
     handleLoginAction();
     applyMGC({ MGCId, userId: userId ?? '' });
@@ -59,12 +72,14 @@ const MGCApplyArea = ({ maxParticipants, currentParticipants, endTime, like, MGC
         content={
           isClose
             ? '모집 종료된 모각코'
-            : isParticipated
-              ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
-              : `참여하기 (${currentParticipants}/${maxParticipants})`
+            : isOwner
+              ? '수정하기'
+              : isParticipated
+                ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
+                : `참여하기 (${currentParticipants}/${maxParticipants})`
         }
         disabled={isClose}
-        onClick={isParticipated ? handleLinkChatting : handleApply}
+        onClick={isOwner ? handleLinkEdit : isParticipated ? handleLinkChatting : handleApply}
       >
         <button
           className="flex flex-col items-center"

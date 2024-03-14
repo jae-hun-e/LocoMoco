@@ -3,7 +3,7 @@ import { UseFormSetValue } from 'react-hook-form';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
 import MapCustomControl from '@/app/_components/MapCustomControl';
-import { MGCCreateForm } from '@/app/create/page';
+import { LocationProps, MGCCreateForm } from '@/app/create/page';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';
@@ -17,8 +17,9 @@ import Marker = kakao.maps.Marker;
 
 interface Props {
   setValue: UseFormSetValue<MGCCreateForm>;
+  defaultAddress?: LocationProps;
 }
-const MGCMap = ({ setValue }: Props) => {
+const MGCMap = ({ setValue, defaultAddress }: Props) => {
   const [createdPositionCoordinates, setCreatedPositionCoordinates] = useState<kakao.maps.Marker>();
   const location = useGeolocation();
 
@@ -43,7 +44,7 @@ const MGCMap = ({ setValue }: Props) => {
   };
 
   const [defaultMarker, setDeaultMarker] = useState<Marker>();
-  const [currentAddress, setAddress] = useState('');
+  const [currentAddress, setAddress] = useState(defaultAddress?.address ?? '');
   const handleMapClick = useCallback(
     async (e: kakao.maps.event.MouseEvent) => {
       if (createdPositionCoordinates && defaultMarker) {
@@ -71,7 +72,14 @@ const MGCMap = ({ setValue }: Props) => {
   );
 
   useEffect(() => {
-    if (location?.coordinates && createdPositionCoordinates) {
+    if (defaultAddress && createdPositionCoordinates) {
+      changeCenter(defaultAddress.latitude, defaultAddress.longitude);
+      const marker = createMarker({
+        latitude: defaultAddress.latitude,
+        longitude: defaultAddress.longitude,
+      });
+      setDeaultMarker(marker);
+    } else if (location?.coordinates && createdPositionCoordinates) {
       changeCenter(location.coordinates?.lat, location.coordinates?.lng);
       const marker = createMarker({
         latitude: location.coordinates?.lat,
@@ -120,6 +128,8 @@ const MGCMap = ({ setValue }: Props) => {
     changeCenter(Number(data.latitude), Number(data.longitude));
     setShow(false);
   };
+
+  useEffect(() => {}, []);
 
   return (
     <section className="mb-10pxr flex w-full flex-col gap-2">

@@ -48,7 +48,10 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
 
   return (
     <>
-      <MGCMap setValue={setValue} />
+      <MGCMap
+        setValue={setValue}
+        defaultAddress={watch('location')}
+      />
 
       <section className={labelVariants()}>
         <input
@@ -64,6 +67,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
         title="* 모각코 날짜"
         onSelectedDay={(selectedDay) => handleMGCDate('date', selectedDay)}
         errorMessages={errors.date?.message}
+        defaultValue={watch('date')}
       />
 
       <MGCTime
@@ -78,6 +82,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
         onSelectedDay={(selectedDay) => handleMGCDate('deadLine', selectedDay)}
         endDate={watch('date')}
         errorMessages={errors.deadLine?.message}
+        defaultValue={watch('deadLine')}
       />
 
       <section>
