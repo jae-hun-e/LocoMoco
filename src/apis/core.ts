@@ -6,22 +6,11 @@ const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
+  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.params) {
-      const paramsValues = Object.values(config.params);
-      for (const value of paramsValues) {
-        if (Array.isArray(value)) {
-          config.paramsSerializer = {
-            encode: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
-          };
-          break;
-        }
-      }
-    }
-
     if (typeof window !== 'undefined') {
 
       const token = getItem<string>(localStorage, 'token');

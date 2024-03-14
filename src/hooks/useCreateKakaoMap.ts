@@ -27,6 +27,7 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
   const mapRef = useRef<HTMLDivElement>(null);
   const [map, setMap] = useState<kakao.maps.Map>();
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
+  const [geocoder, setGeocoder] = useState<kakao.maps.services.Geocoder>();
   const [isLoad, setIsLoad] = useState(false);
 
   const createMarker = useCallback(
@@ -99,6 +100,48 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
     }
   };
 
+  const coord2RegionCodePromise = useCallback(
+    (longitude: number, latitude: number): Promise<string> => {
+      return new Promise((resolve, reject) => {
+        console.log(geocoder);
+        if (geocoder) {
+          geocoder.coord2RegionCode(longitude, latitude, (result, status) => {
+            if (status === kakao.maps.services.Status.OK) {
+              let addressName = '';
+              for (let i = 0; i < result.length; i++) {
+                if (result[i].region_type === 'H') {
+                  addressName = result[i].address_name;
+                  break;
+                }
+              }
+
+              resolve(addressName);
+            } else {
+              reject(new Error('Geocoder failed'));
+            }
+          });
+        } else {
+          reject(new Error('Geocoder가 없음'));
+        }
+      });
+    },
+    [geocoder],
+  );
+
+  const getAddressByCoorinates = useCallback(
+    async (latitude: number, longitude: number) => {
+      try {
+        const addressName = await coord2RegionCodePromise(longitude, latitude);
+
+        return addressName;
+      } catch (error) {
+        console.error(error);
+        return;
+      }
+    },
+    [coord2RegionCodePromise],
+  );
+
   useEffect(() => {
     window.kakao.maps.load(function () {
       if (mapRef.current != null) {
@@ -124,6 +167,9 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
         setMap(createdMap);
         setClusterer(clusterer);
         setIsLoad(true);
+
+        const geocoder = new kakao.maps.services.Geocoder();
+        setGeocoder(geocoder);
       }
     });
   }, [isCustomlevelControl]);
@@ -139,6 +185,7 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
     zoomIn,
     zoomOut,
     isLoad,
+    getAddressByCoorinates,
   };
 };
 
