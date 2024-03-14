@@ -1,35 +1,34 @@
-interface UserInfo {
-  name: string;
-  profileImg: string;
-  nickname: string;
-  birth: string;
-  gender: boolean;
-  job: string;
-  temperature: number;
+import { UserInfo } from '@/apis/user/useGetUserInfo';
 
-  likeMGC?: string[];
-  currentJoinMGC?: string[];
-  endJoinMGC?: string[];
+const gender = {
+  FEMALE: 'FEMALE',
+  MALE: 'MALE',
+} as const;
 
-  receivedReview?: string[];
-  sentReview?: string[];
-  reportList?: string[];
+const job = {
+  JOB_SEEKER: 'JOB_SEEKER',
+  DEVELOPER: 'DEVELOPER',
+  ETC: 'ETC',
+} as const;
 
-  blackList?: string[];
-}
+const provider = {
+  KAKAO: 'KAKAO',
+  GITHUB: 'GITHUB',
+} as const;
 
 export const userInfoDummy: UserInfo = {
-  name: '조재훈',
-  profileImg: 'https://image.newsis.com/2023/07/12/NISI20230712_0001313626_web.jpg',
-  nickname: '냐옹',
-  birth: '1997-07-22',
-  gender: true,
-  job: '취준생',
-  temperature: 36.5,
-
-  likeMGC: ['7', '8', '9'],
-  currentJoinMGC: ['1', '2', '3'],
-  endJoinMGC: ['4', '5', '6'],
-
-  blackList: ['4', '5', '6'],
+  userInfo: {
+    userId: 78,
+    nickname: '닉네임',
+    birth: '2023-12-12',
+    gender: gender.FEMALE,
+    temperature: 39,
+    job: job.DEVELOPER,
+    email: 'naver.com',
+    provider: provider.KAKAO,
+    profileImage: null,
+  },
+  completeMogakkoCount: 3,
+  likeMogakkoCount: 2,
+  ongoingMogakkoCount: 1,
 };
