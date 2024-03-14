@@ -18,10 +18,7 @@ const AnotherPage = ({ params }: { params: { userId: string } }) => {
         <section className="flex flex-col gap-3 text-sm ">
           <div className="flex justify-between">
             <p>참여한 모각코 {userInfoDummy.currentJoinMGC?.length} 개</p>
-            <Link
-              href="/another/[userId]/join-mgc"
-              as={`/another/${params.userId}/join-mgc`}
-            >
+            <Link href={`/another/${params.userId}/join-mgc`}>
               <ChevronRightIcon />
             </Link>
           </div>
@@ -30,10 +27,7 @@ const AnotherPage = ({ params }: { params: { userId: string } }) => {
         <section className="flex flex-col gap-3 text-sm ">
           <div className="flex justify-between">
             <p>받은 리뷰 평가</p>
-            <Link
-              href="/another/[userId]/received-reviews-assessment"
-              as={`/another/${params.userId}/received-reviews-assessment`}
-            >
+            <Link href={`/another/${params.userId}/received-reviews-assessment`}>
               <ChevronRightIcon />
             </Link>
           </div>
