@@ -8,12 +8,13 @@ interface Props {
   register: UseFormRegister<SignupValue>;
   setDate: UseFormSetValue<SignupValue>;
   defaultValue?: string;
+  className?: string;
 }
 
-const DatePick = ({ register, setDate, defaultValue }: Props) => {
+const DatePick = ({ register, setDate, defaultValue, className }: Props) => {
   return (
     <Label className="flex flex-col gap-1 ">
-      <h2>생년월일</h2>
+      <p className={className}>생년월일</p>
       <div className="relative flex h-10 items-center gap-1 rounded-md border p-2">
         <input
           type="date"

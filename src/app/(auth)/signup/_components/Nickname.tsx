@@ -18,6 +18,7 @@ interface Props {
   setIsDuplicated: (isDuplicated: boolean) => void;
   setDuplicateWarning: (text: string) => void;
   defaultValue?: string;
+  className?: string;
 }
 
 const NickName = ({
@@ -28,6 +29,7 @@ const NickName = ({
   setIsDuplicated,
   setDuplicateWarning,
   defaultValue,
+  className,
 }: Props) => {
   const checkDuplication = async () => {
     const valid = await trigger('nickname');
@@ -45,7 +47,7 @@ const NickName = ({
 
   return (
     <div className="flex flex-col gap-1">
-      <h2>닉네임</h2>
+      <p className={className}>닉네임</p>
       <div className="flex justify-between gap-1">
         <div className="flex w-full flex-col">
           <Input

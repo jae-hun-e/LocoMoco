@@ -96,6 +96,7 @@ const ChangeMyInfo = () => {
             setIsDuplicated={setIsDuplicated}
             setDuplicateWarning={setDuplicateWarning}
             defaultValue={myInfo.nickname}
+            className="text-xs"
           />
           {errors.nickname && (
             <Warning
@@ -146,6 +147,7 @@ const ChangeMyInfo = () => {
           register={register}
           setDate={setValue}
           defaultValue={myInfo.birth}
+          className="text-xs"
         />
       </section>
 
