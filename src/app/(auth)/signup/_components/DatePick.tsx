@@ -1,24 +1,20 @@
 import { ChangeEvent } from 'react';
-import {
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-  UseFormTrigger,
-} from 'react-hook-form';
+import { UseFormRegister, UseFormSetValue } from 'react-hook-form';
+import { Label } from '@/components/ui/label';
 import { format } from 'date-fns';
 import { SignupValue } from '../[method]/page';
 
 interface Props {
   register: UseFormRegister<SignupValue>;
   setDate: UseFormSetValue<SignupValue>;
-  getDate: UseFormGetValues<SignupValue>;
-  trigger: UseFormTrigger<SignupValue>;
+  defaultValue?: string;
+  className?: string;
 }
 
-const DatePick = ({ register, setDate }: Props) => {
+const DatePick = ({ register, setDate, defaultValue, className }: Props) => {
   return (
-    <div className="flex flex-col gap-1">
-      <h2>생년월일</h2>
+    <Label className="flex flex-col gap-1 ">
+      <p className={className}>생년월일</p>
       <div className="relative flex h-10 items-center gap-1 rounded-md border p-2">
         <input
           type="date"
@@ -29,14 +25,12 @@ const DatePick = ({ register, setDate }: Props) => {
             validate: {
               lessThanToday: (date) => new Date(date) < new Date(),
             },
-            onChange: (e: ChangeEvent<HTMLInputElement>) => {
-              setDate('birth', e.target.value);
-              console.log(e.target.value.length);
-            },
+            onChange: (e: ChangeEvent<HTMLInputElement>) => setDate('birth', e.target.value),
           })}
+          defaultValue={defaultValue && format(new Date(defaultValue), 'yyyy-MM-dd')}
         />
       </div>
-    </div>
+    </Label>
   );
 };
 

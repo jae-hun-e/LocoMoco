@@ -1,3 +1,4 @@
+import { getItem } from '@/utils/storage';
 import axios, { AxiosInstance, AxiosRequestConfig, Method } from 'axios';
 import qs from 'qs';
 
@@ -5,25 +6,13 @@ const axiosInstance: AxiosInstance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
   timeout: 10000,
   headers: { 'Content-Type': 'application/json' },
+  paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });
 
-// todo: token 관련 처리는 추후 추가해야함 [24/02/07]
 axiosInstance.interceptors.request.use(
   (config) => {
-    if (config.params) {
-      const paramsValues = Object.values(config.params);
-      for (const value of paramsValues) {
-        if (Array.isArray(value)) {
-          config.paramsSerializer = {
-            encode: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
-          };
-          break;
-        }
-      }
-    }
-
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+      const token = getItem<string>(localStorage, 'token');
       if (token) config.headers['Authorization'] = `Bearer ${token}`;
     }
     return config;

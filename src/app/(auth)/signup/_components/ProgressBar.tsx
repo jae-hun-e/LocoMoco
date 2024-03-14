@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const ProgressBar = () => {
   const [barWidth, setBarWidth] = useState(0);
@@ -8,11 +8,11 @@ const ProgressBar = () => {
   }, []);
 
   return (
-    <div className="relative ml-10 h-3 max-w-xl overflow-hidden rounded-full">
-      <div className="absolute h-full w-full bg-gray-200"></div>
+    <div className="relative h-5">
+      <div className="absolute h-5 w-full  rounded-sm bg-gray-200"></div>
       <div
         style={{ width: `${barWidth}%` }}
-        className="relative h-full bg-main-1 transition-all duration-700 ease-out"
+        className="absolute h-5 rounded-sm bg-main-1 transition-all duration-700 ease-out"
       ></div>
     </div>
   );

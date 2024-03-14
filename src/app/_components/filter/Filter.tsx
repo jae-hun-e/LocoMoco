@@ -1,15 +1,17 @@
 import React from 'react';
 import { AccordionContent, AccordionTrigger } from '@/components/ui/accordion';
+import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { SearchFilterForm } from '@/types/searchFilterForm';
 import { Accordion, AccordionItem } from '@radix-ui/react-accordion';
 import FilterContent from './FilterContent';
 
 const Filter = () => {
+  const { searchValue, setSearchValue } = useSearchInputValueStore();
+
   const handleSubmit = (data: SearchFilterForm) => {
     const values = Object.values(data);
     const tags = [].concat(...values);
-    // TODO: 백엔드 api 완성되면 api 연결하기 [24.02.22]
-    console.log('필터링할 태그 배열', tags);
+    setSearchValue({ ...searchValue, tags: tags.filter((tagId) => tagId !== 0) });
   };
 
   return (

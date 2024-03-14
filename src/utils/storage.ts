@@ -38,4 +38,6 @@ export const removeItem = (storage: Storage, key: string) => {
   storage.removeItem(key);
 };
 
+export const clearItem = (storage: Storage) => storage.clear();
+
 export const USER_ID_KEY = 'userId';

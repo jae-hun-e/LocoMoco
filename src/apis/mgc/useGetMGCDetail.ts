@@ -1,6 +1,6 @@
 import client from '@/apis/core';
 import { LocationInfo } from '@/apis/mgc/queryFn';
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { queryOptions, useSuspenseQuery } from '@tanstack/react-query';
 
 export interface UserInfo {
   userId: number;
@@ -35,12 +35,14 @@ export interface MgcData {
 export const getMGCDetail = async (id: number) =>
   await client.get<MgcData>({ url: `/mogakko/map/${id}` });
 
-export const useGetMGCDetail = (id: number) => {
-  // const { data, ...rest } = useQuery({
-  const { data, ...rest } = useSuspenseQuery({
+export const getMGCDetailQueryOption = (id: number) =>
+  queryOptions({
     queryKey: ['mgc', id],
     queryFn: () => getMGCDetail(id),
   });
+
+export const useGetMGCDetail = (id: number) => {
+  const { data, ...rest } = useSuspenseQuery(getMGCDetailQueryOption(id));
 
   return {
     mgcDetail: data,

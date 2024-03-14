@@ -1,12 +1,17 @@
+'use client';
+
 import MainStyleButton from '@/components/MainStyleButton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
 import { userInfoDummy } from '@/constants/mypageDummyData';
 import { routes } from '@/constants/routeURL';
 import { ChevronRightIcon } from 'lucide-react';
-import Image from 'next/image';
 import Link from 'next/link';
+import UserProfileInfo from '../_components/UserProfileInfo';
 
+/* TODO: BE에게 요청사항 [24/03/13]
+  1. 마이페이지 정보에 찜한, 진행중, 종료 모각코 개수 담은 필드 넘겨주세요!
+  2. 진행중, 종료 모각코도 찜한 모각코 처럼 MGCSummary 타입으로 넘겨주세요...
+ */
 const MyPage = () => {
   const myActivities = [
     { title: '내가 찜한 모각코', link: routes.likeMGC, count: userInfoDummy.likeMGC?.length || 0 },
@@ -37,43 +42,14 @@ const MyPage = () => {
   return (
     <section>
       {/*유저정보*/}
-      <section className="my-5">
-        <div className="flex gap-4">
-          <Avatar className="h-100pxr w-100pxr rounded-full">
-            <AvatarImage
-              src="https://github.com/shadcn.png"
-              alt="유저 이미지"
-            />
-            <AvatarFallback>
-              <Image
-                src={'/oh.png'}
-                alt={'cn'}
-                width={100}
-                height={100}
-              />
-            </AvatarFallback>
-          </Avatar>
-          <div className="flex flex-grow flex-col justify-center gap-2">
-            <div className="mx-auto flex flex-col justify-center">
-              <p>닉네임 : {userInfoDummy.nickname}</p>
-              <div className="flex gap-6">
-                <p>성별 : {userInfoDummy.gender ? '남성' : '여성'}</p>
-                <p>
-                  나이 : {new Date().getFullYear() - Number(userInfoDummy.birth.split('-')[0])}세
-                </p>
-              </div>
-              <p>온도 : {userInfoDummy.temperature}</p>
-            </div>
-          </div>
-        </div>
-
+      <UserProfileInfo userInfo={userInfoDummy}>
         <Link href={routes.changeMyInfo}>
           <MainStyleButton
             content="개인정보 수정하기"
             layout="h-33pxr"
           />
         </Link>
-      </section>
+      </UserProfileInfo>
 
       {/*나의 활동*/}
       <section className="mb-10 flex flex-col gap-4 font-bold">

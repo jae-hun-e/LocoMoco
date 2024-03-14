@@ -21,6 +21,7 @@ const MainStyleButton = ({ layout, content, className, children, onClick, disabl
           disabled ? 'bg-layer-5' : 'bg-main-1',
           className,
         )}
+        disabled={disabled}
       >
         <p>{content}</p>
       </button>
