@@ -41,13 +41,6 @@ const CreateMGC = () => {
     mode: 'onTouched',
     defaultValues: {
       title: '',
-      // TODO : 위치 넘겨 받기 || 현재 위치 받아오기
-      location: {
-        address: '경기도 부천시 소사로 114번길 5',
-        latitude: 31.4295839,
-        longitude: 123.123456789,
-        city: '서초동',
-      },
       maxParticipants: 10,
     },
   });
@@ -65,7 +58,6 @@ const CreateMGC = () => {
     location,
     ...rest
   }: MGCCreateForm) => {
-    // TODO: 위치 정보 받아오기 [24/02/23]
     console.log('location', location);
 
     const [newStartTime, newEndTime] = [startTime, endTime].map((time) => {
@@ -81,12 +73,7 @@ const CreateMGC = () => {
     const req = {
       creatorId: 4,
       title,
-      location: {
-        address: '경기도 부천시 소사로 114번길 5',
-        latitude: 31.4295839,
-        longitude: 123.123456789,
-        city: '소사본동',
-      },
+      location,
       startTime: newStartTime,
       endTime: newEndTime,
       deadline: toKoreanTimeZone(deadLine),

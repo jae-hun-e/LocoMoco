@@ -2,6 +2,7 @@ export const routes = {
   home: '/',
   create: '/create',
   chat: '/chat',
+  mgc: 'mgc',
   search: '/search',
   mypage: '/mypage',
   changeMyInfo: '/mypage/change-my-info',

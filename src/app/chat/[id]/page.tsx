@@ -1,142 +1,133 @@
 'use client';
 
-import { Fragment, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import client from '@/apis/core';
+import ChatInput from '@/app/chat/_components/ChatInput';
+import Messages from '@/app/chat/_components/Messages';
 import { Button } from '@/components/ui/button';
-import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
-import Image from 'next/image';
+import { getItem } from '@/utils/storage';
+import { Client } from '@stomp/stompjs';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import SockJS from 'sockjs-client';
 
-const chatData = [
-  { username: 'me', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-28T11:38:30' },
-  {
-    username: 'm1',
-    profileImg: '/oh.png',
-    message: 'hifdsfnskjflajsdfljasdfjlasjdflasjdfljadslfjlasjdflsdajf',
-    createdAt: '2024-02-28T11:38:30',
-  },
-  { username: 'm2', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-28T11:38:30' },
-  {
-    username: 'me',
-    profileImg: '/oh.png',
-    message: 'hidjfgljfdslfjdkfjdkjflsj\n\ndfldksjflsdjlfkjdslfkjsdfsdfsdfdsf',
-    createdAt: '2024-02-28T11:38:30',
-  },
-  { username: 'm1', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-02-29T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-01T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-02T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-04T11:38:30' },
-  { username: 'm3', profileImg: '/oh.png', message: 'hi', createdAt: '2024-03-04T13:38:30' },
-];
+export interface ChatType {
+  chatMessageId: number;
+  chatRoomId: number;
+  createdAt: string;
+  message: string;
+  senderId: number;
+  senderNickName: string;
+  senderProfileImage: string | null;
+}
 
 const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
-  id;
-  const [message, setMessage] = useState('');
+  const [talks, setTalks] = useState<ChatType[]>([]);
+  const [stop, setStop] = useState(false);
+  const stomp = useRef<Client>(new Client());
+  const input = useRef<HTMLTextAreaElement>(null);
 
-  const handleLineFeed = (msg: string) =>
-    msg.split('\n').map((line, idx) => {
-      const sliced = [];
-      if (line.length > 40) {
-        while (line.length > 40) {
-          sliced.push(line.slice(0, 40));
-          line = line.slice(40);
-        }
-        sliced.push(line);
-        return sliced.map((line, idx) => (
-          <Fragment key={idx}>
-            {line}
-            <br />
-          </Fragment>
-        ));
-      } else {
-        return (
-          <Fragment key={idx}>
-            {line}
-            <br />
-          </Fragment>
-        );
-      }
+  const fetchChats = async ({ pageParam }: { pageParam: number }) => {
+    console.log('fetching chat...');
+    const data = await client.get<ChatType[]>({
+      // Todo: 생선된 모각코에 따른 다른 채팅방 보여주기
+      url: `/chats/room/${9}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
     });
+    setTalks([...data, ...talks]);
+    if (data.length < 20) setStop(true);
+    return data;
+  };
+
+  const { hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ['moreChat'],
+    queryFn: fetchChats,
+    initialPageParam: 0,
+    getNextPageParam: () => {
+      if (stop || talks.length === 0) return undefined;
+      return talks[0].chatMessageId;
+    },
+  });
+
+  const disconnect = () => {
+    stomp.current.deactivate();
+    console.log('채팅이 종료되었습니다.');
+  };
+
+  useEffect(() => {
+    const subscribe = () => {
+      stomp.current.subscribe(`/sub/chat/room/${9}`, (body) => {
+        const parsedBody = JSON.parse(body.body);
+        console.log(parsedBody, 'subscribe');
+        if (!talks || !parsedBody.senderNickName) return;
+        setTalks((prev) => [...prev, parsedBody]);
+      });
+    };
+
+    const addParticipant = () => {
+      stomp.current.publish({
+        destination: '/pub/chats/enter',
+        body: JSON.stringify({
+          chatRoomId: 9,
+          mogakkoId: 80,
+          senderId: getItem(localStorage, 'userId'),
+        }),
+      });
+    };
+
+    const connect = () => {
+      stomp.current = new Client({
+        webSocketFactory: () => new SockJS(`${process.env.NEXT_PUBLIC_BASE_URL}/stomp/chat`),
+        onConnect: () => {
+          console.log('Connection success');
+          subscribe();
+          addParticipant();
+        },
+      });
+
+      stomp.current.activate();
+    };
+
+    connect();
+
+    return () => disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id]);
+
+  const sendMessage = () => {
+    const text = input.current!.value;
+    if (!text.trim()) return;
+    if (text.length > 255) {
+      alert(`채팅은 255자를 넘길 수 없습니다. (현재: ${text.length}자)`);
+      return;
+    }
+    input.current?.value.length;
+    stomp.current.publish({
+      destination: '/pub/chats/message',
+      body: JSON.stringify({
+        chatRoomId: 9, // 채팅방 ID
+        senderId: getItem(localStorage, 'userId'),
+        mogakkoId: 80, // 모각코 ID
+        message: input.current!.value, // 메시지 내용
+      }),
+    });
+    input.current!.value = '';
+  };
 
   return (
     <section className="flex flex-col">
-      <div className="flex h-[calc(100vh-288px)] flex-col gap-1">
-        <div className="flex w-[60%] self-center rounded-3xl bg-main-5 text-center">
-          <p className="flex w-full justify-center">
-            {format(chatData[0].createdAt, 'yyyy-MM-dd-E', { locale: ko })}
-          </p>
-        </div>
-        {chatData.map(({ username, profileImg, message, createdAt }, idx) => {
-          const notMe = username !== 'me';
-          const commonBorder = 'rounded-bl-lg rounded-br-lg';
-          const createDate = format(createdAt, 'yyyy-MM-dd-E', { locale: ko });
-
-          return (
-            <Fragment key={idx}>
-              {idx > 0 &&
-                format(chatData[idx - 1].createdAt, 'yyyy-MM-dd-E', { locale: ko }) !==
-                  createDate && (
-                  <div className="flex w-[60%] self-center rounded-3xl bg-main-5 text-center">
-                    <p className="flex w-full justify-center">{createDate}</p>
-                  </div>
-                )}
-              <div
-                className={`flex w-full flex-col ${notMe ? 'items-start' : 'items-end'}`}
-                key={idx}
-              >
-                <div className="flex items-center gap-1">
-                  {notMe && (
-                    <Image
-                      className="rounded-3xl"
-                      src={profileImg}
-                      alt="profile image"
-                      width={30}
-                      height={30}
-                      priority
-                    />
-                  )}
-                  <p>{notMe && username}</p>
-                </div>
-                <div className={`flex gap-1 ${notMe ? '' : 'flex-row-reverse'}`}>
-                  <p
-                    className={`mt-1 border-t ${
-                      notMe
-                        ? `ml-8 ${commonBorder} rounded-tr-lg bg-main-4`
-                        : `${commonBorder} rounded-tl-lg bg-hover text-white`
-                    } p-2`}
-                  >
-                    {handleLineFeed(message)}
-                  </p>
-                  <p className="self-end text-xs text-slate-500">
-                    {format(createdAt, 'bHH:mm', { locale: ko })}
-                  </p>
-                </div>
-              </div>
-            </Fragment>
-          );
-        })}
-      </div>
-      <div className="fixed bottom-50pxr z-50 flex w-[calc(100%-2.5rem)] flex-col justify-between bg-layer-1">
-        <textarea
-          onChange={(e) => setMessage(e.target.value)}
-          className="h-80pxr resize-none border-2 border-solid"
-        />
-        <div className="flex justify-end gap-4">
-          <Button onClick={() => console.log(message)}>Photo</Button>
-          <Button>Send</Button>
-        </div>
-      </div>
+      <Messages talks={talks} />
+      <ChatInput
+        ref={input}
+        sendMessage={sendMessage}
+      />
+      {hasNextPage && (
+        <Button
+          disabled={isFetchingNextPage}
+          className="absolute h-5 opacity-30"
+          onClick={() => fetchNextPage()}
+        >
+          {isFetchingNextPage ? 'Loading' : '이전 대화 불러오기'}
+        </Button>
+      )}
     </section>
   );
 };

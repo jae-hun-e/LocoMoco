@@ -1,24 +1,30 @@
 'use client';
 
+import { useState } from 'react';
+import useDeleteBlacklist from '@/apis/blacklist/useDeleteBlacklist';
+import useGetBlackList from '@/apis/blacklist/useGetBlacklist';
 import UserList from '@/app/_components/UserInfoAndButton/UserList';
-
-// TODO: layout.tsx 파일 생성 -> header 추가해야 함 [2024/03/06]
-
-const userList = [
-  { username: 'Nickname1', profileImg: '/oh.png', userId: 1 },
-  { username: 'Nickname2', profileImg: '/oh.png', userId: 2 },
-  { username: 'Nickname3', profileImg: '/oh.png', userId: 3 },
-  { username: 'Nickname4', profileImg: '/oh.png', userId: 4 },
-];
+import { getItem } from '@/utils/storage';
 
 const BlackList = () => {
+  let userId;
+  if (typeof window !== 'undefined') {
+    userId = getItem<string | undefined>(localStorage, 'userId');
+  }
+
+  const [targetId, setTargetId] = useState<number | undefined>(undefined);
+  const { data } = useGetBlackList(Number(userId));
+  const { deleteBlackList } = useDeleteBlacklist(Number(userId), targetId);
+
   const handleButtonClick = (targetId: number) => {
     console.log(`유저 ${targetId}를 차단 해제합니다.`);
+    setTargetId(targetId);
+    deleteBlackList();
   };
 
   return (
     <UserList
-      data={userList}
+      data={data ?? []}
       onClick={handleButtonClick}
       buttonName="차단 해제"
     />
