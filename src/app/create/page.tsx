@@ -6,6 +6,7 @@ import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
+import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 
 export interface MGCCreateForm {
@@ -58,8 +59,6 @@ const CreateMGC = () => {
     location,
     ...rest
   }: MGCCreateForm) => {
-    console.log('location', location);
-
     const [newStartTime, newEndTime] = [startTime, endTime].map((time) => {
       const [h, m] = time.split(':').map(Number);
       const newTime = new Date(date);
@@ -70,8 +69,10 @@ const CreateMGC = () => {
 
     const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
 
+    const userId = getItem(localStorage, 'userId');
+
     const req = {
-      creatorId: 4,
+      creatorId: Number(userId),
       title,
       location,
       startTime: newStartTime,

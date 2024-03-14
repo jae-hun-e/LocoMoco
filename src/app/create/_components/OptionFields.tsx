@@ -66,91 +66,93 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
 
   return (
     <>
-      {categoryList?.slice(1).map(({ category_id, category_name, tags, input_type }) => {
-        const categoryNameCopy = category_name as keyof MGCCreateForm;
+      {categoryList
+        ?.filter(({ category_name }) => category_name !== '모각코 유형')
+        .map(({ category_id, category_name, tags, input_type }) => {
+          const categoryNameCopy = category_name as keyof MGCCreateForm;
 
-        switch (input_type) {
-          case 'COMBOBOX':
-            return (
-              <section
-                className="flex items-center"
-                key={category_id}
-              >
-                <Label
-                  className="w-100pxr flex-shrink-0"
-                  htmlFor={`${uniqueId}-${category_id}`}
+          switch (input_type) {
+            case 'COMBOBOX':
+              return (
+                <section
+                  className="flex items-center"
+                  key={category_id}
                 >
-                  {categoryNameCopy}
-                </Label>
-                <div className="w-full">
-                  <div className="mb-2">
-                    {(getValues(categoryNameCopy) as TagType[])?.map(({ tag_id, tag_name }) => (
-                      <Tag
-                        key={tag_id}
-                        onClick={() => handleMultiDeselect(categoryNameCopy, tag_id)}
-                        className="inline-flex items-center gap-1"
-                      >
-                        <p>{tag_name}</p>
-                        <p className="text-red-1">x</p>
-                      </Tag>
-                    ))}
-                  </div>
-
-                  <Combobox
-                    id={`${uniqueId}-${category_id}`}
-                    dropdownList={tags}
-                    defaultValue="상관 없음"
-                    placeholder={`${category_name}를 검색해주세요`}
-                    onSelected={(selected) => handleMultiSelect(categoryNameCopy, selected)}
-                  />
-                </div>
-              </section>
-            );
-
-          case 'CHECKBOX':
-            return (
-              <section key={category_id}>
-                <CheckboxGroup
-                  title={categoryNameCopy}
-                  checkBoxList={tags}
-                  className="mt-4"
-                  onSelected={(selected) => handleMultiSelect(categoryNameCopy, selected)}
-                  onDeselected={(deselected) => handleMultiDeselect(categoryNameCopy, deselected)}
-                />
-              </section>
-            );
-
-          case 'RADIOGROUP':
-            return (
-              <section key={category_id}>
-                <Label className="w-100pxr flex-shrink-0">현재신분</Label>
-                <RadioGroup
-                  defaultValue="상관 없음"
-                  onValueChange={(value) => handleRadioSelect(categoryNameCopy, value, tags)}
-                  className="mt-4 flex grow flex-wrap justify-around"
-                >
-                  {tags.map(({ tag_name, tag_id }) => (
-                    <div
-                      className="flex items-center space-x-2"
-                      key={tag_id}
-                    >
-                      <RadioGroupItem
-                        value={tag_name}
-                        id={tag_name}
-                      />
-                      <Label
-                        htmlFor={tag_name}
-                        className="text-xs"
-                      >
-                        {tag_name}
-                      </Label>
+                  <Label
+                    className="w-100pxr flex-shrink-0"
+                    htmlFor={`${uniqueId}-${category_id}`}
+                  >
+                    {category_name}
+                  </Label>
+                  <div className="w-full">
+                    <div className="mb-2">
+                      {(getValues(categoryNameCopy) as TagType[])?.map(({ tag_id, tag_name }) => (
+                        <Tag
+                          key={tag_id}
+                          onClick={() => handleMultiDeselect(categoryNameCopy, tag_id)}
+                          className="inline-flex items-center gap-1"
+                        >
+                          <p>{tag_name}</p>
+                          <p className="text-red-1">x</p>
+                        </Tag>
+                      ))}
                     </div>
-                  ))}
-                </RadioGroup>
-              </section>
-            );
-        }
-      })}
+
+                    <Combobox
+                      id={`${uniqueId}-${category_id}`}
+                      dropdownList={tags}
+                      defaultValue="상관 없음"
+                      placeholder={`${category_name}를 검색해주세요`}
+                      onSelected={(selected) => handleMultiSelect(categoryNameCopy, selected)}
+                    />
+                  </div>
+                </section>
+              );
+
+            case 'CHECKBOX':
+              return (
+                <section key={category_id}>
+                  <CheckboxGroup
+                    title={categoryNameCopy}
+                    checkBoxList={tags}
+                    className="mt-4"
+                    onSelected={(selected) => handleMultiSelect(categoryNameCopy, selected)}
+                    onDeselected={(deselected) => handleMultiDeselect(categoryNameCopy, deselected)}
+                  />
+                </section>
+              );
+
+            case 'RADIOGROUP':
+              return (
+                <section key={category_id}>
+                  <Label className="w-100pxr flex-shrink-0">현재신분</Label>
+                  <RadioGroup
+                    defaultValue="상관 없음"
+                    onValueChange={(value) => handleRadioSelect(categoryNameCopy, value, tags)}
+                    className="mt-4 flex grow flex-wrap justify-around"
+                  >
+                    {tags.map(({ tag_name, tag_id }) => (
+                      <div
+                        className="flex items-center space-x-2"
+                        key={tag_id}
+                      >
+                        <RadioGroupItem
+                          value={tag_name}
+                          id={tag_name}
+                        />
+                        <Label
+                          htmlFor={tag_name}
+                          className="text-xs"
+                        >
+                          {tag_name}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </section>
+              );
+          }
+        })}
 
       <section className="mb-2">
         <Label htmlFor="content">
