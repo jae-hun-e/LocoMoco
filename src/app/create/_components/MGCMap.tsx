@@ -17,7 +17,7 @@ import Marker = kakao.maps.Marker;
 
 interface Props {
   setValue: UseFormSetValue<MGCCreateForm>;
-  defaultAddress?: LocationProps;
+  defaultAddress?: LocationProps | undefined;
 }
 const MGCMap = ({ setValue, defaultAddress }: Props) => {
   const [createdPositionCoordinates, setCreatedPositionCoordinates] = useState<kakao.maps.Marker>();

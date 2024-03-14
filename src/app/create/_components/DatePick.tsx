@@ -22,6 +22,7 @@ const DatePicker = ({
   defaultValue,
 }: Props) => {
   const [date, setDate] = useState<Date | undefined>(defaultValue);
+
   const handleSelect: SelectSingleEventHandler = (day) => {
     setDate(day);
     day && onSelectedDay?.(day);

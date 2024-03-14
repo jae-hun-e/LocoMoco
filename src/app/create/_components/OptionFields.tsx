@@ -64,8 +64,6 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
   };
 
   const initRadioSelect = (categoryName: keyof MGCCreateForm) => {
-    console.log('getValues(categoryName)', getValues(categoryName));
-
     return getValues(categoryName) ? (getValues(categoryName) as TagType[])[0].tag_name : undefined;
   };
 
@@ -170,7 +168,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
         <Label htmlFor="content">
           <p className="mb-4">모각코 내용</p>
           <Textarea
-            placeholder="모각코 제목을 입력해주세요"
+            placeholder="모각코 내용을 입력해주세요"
             {...register('content')}
           />
         </Label>

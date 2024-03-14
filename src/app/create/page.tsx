@@ -22,10 +22,10 @@ export interface LocationProps {
 export interface MGCCreateForm {
   title: string;
   location: LocationProps;
-  date: Date;
+  date: Date | undefined;
   startTime: string;
   endTime: string;
-  deadLine: Date;
+  deadLine: Date | undefined;
   maxParticipants: number;
 
   content?: string;
@@ -56,11 +56,11 @@ const CreateMGC = ({ initData }: Props) => {
         longitude: initData?.location.longitude,
         city: initData?.location.city,
       },
-      date: new Date(initData?.startTime),
+      date: initData?.startTime ? new Date(initData?.startTime) : undefined,
       startTime: getTimeString(initData?.startTime),
       endTime: getTimeString(initData?.endTime),
-      deadLine: new Date(initData?.deadline),
-      maxParticipants: initData?.maxParticipants,
+      deadLine: initData?.startTime ? new Date(initData?.startTime) : undefined,
+      maxParticipants: initData?.maxParticipants ?? 10,
       content: initData?.content,
     },
   });
@@ -91,7 +91,8 @@ const CreateMGC = ({ initData }: Props) => {
   }: MGCCreateForm) => {
     const [newStartTime, newEndTime] = [startTime, endTime].map((time) => {
       const [h, m] = time.split(':').map(Number);
-      const newTime = new Date(date);
+
+      const newTime = date as Date;
       newTime.setHours(h);
       newTime.setMinutes(m);
       return toKoreanTimeZone(newTime);
@@ -107,13 +108,12 @@ const CreateMGC = ({ initData }: Props) => {
       location,
       startTime: newStartTime,
       endTime: newEndTime,
-      deadline: toKoreanTimeZone(deadLine),
+      deadline: toKoreanTimeZone(deadLine as Date),
       maxParticipants: Number(maxParticipants),
       content,
       tags,
     };
 
-    console.log('req', req);
     createMGC(req);
   };
 

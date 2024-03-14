@@ -50,7 +50,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     <>
       <MGCMap
         setValue={setValue}
-        defaultAddress={watch('location')}
+        defaultAddress={watch('location.address') ? watch('location') : undefined}
       />
 
       <section className={labelVariants()}>
