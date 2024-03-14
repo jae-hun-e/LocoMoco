@@ -20,6 +20,7 @@ export interface Reviews {
   score: number;
   reviewContentId: number[];
   content: string;
+  createdAt: string;
 }
 
 export interface ReviewDetailType {

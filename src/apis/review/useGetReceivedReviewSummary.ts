@@ -1,8 +1,6 @@
 import { ReviewSummary, Reviews } from '@/types/review';
 import { useQueries, useQuery } from '@tanstack/react-query';
 import client from '../core';
-import { getMGCDetail } from '../mgc/useGetMGCDetail';
-import { MgcData } from '../mgc/useGetMGCDetail';
 import { UserInfo, getUserInfo } from '../user/useGetUserInfo';
 
 export const getReceivedReviewsByMGCId = async (userId: number, mogakkoId: number) => {
@@ -22,22 +20,17 @@ export const useGetReceivedReviewsByMGCId = (userId: number, mogakkoId: number) 
   });
 };
 
-export const useGetReceivedReviewSummary = (
-  userId: number,
-  mogakkoId: number,
-  reviews?: Reviews[],
-) => {
+export const useGetReceivedReviewSummary = (userId: number, reviews?: Reviews[]) => {
   return useQueries({
     queries: reviews
       ? reviews.map((review) => ({
-          queryKey: ['reviews', review, mogakkoId],
-          queryFn: () => {
-            return Promise.all([getUserInfo(review.reviewerId), getMGCDetail(mogakkoId)]);
+          queryKey: ['reviews', review],
+          queryFn: async () => {
+            return await getUserInfo(review.reviewerId);
           },
-          select: (reviewData: [UserInfo, MgcData]): ReviewSummary => {
-            const { reviewId, reviewContentId, content, score } = review;
-            const { nickname, job, profileImage } = reviewData[0];
-            const { createdAt } = reviewData[1].MogakkoInfo;
+          select: (userInfo: UserInfo): ReviewSummary => {
+            const { reviewId, reviewContentId, content, score, createdAt } = review;
+            const { nickname, job, profileImage } = userInfo;
 
             return {
               userId,

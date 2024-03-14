@@ -21,11 +21,7 @@ const ReceivedReviews = () => {
   }, []);
 
   const { data } = useGetReceivedReviewsByMGCId(parseInt(userId, 10), MGCId);
-  const { data: reviewSummary, pending } = useGetReceivedReviewSummary(
-    parseInt(userId, 10),
-    MGCId,
-    data,
-  );
+  const { data: reviewSummary, pending } = useGetReceivedReviewSummary(parseInt(userId, 10), data);
 
   console.log(reviewSummary);
   return (

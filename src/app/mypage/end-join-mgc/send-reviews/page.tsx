@@ -21,7 +21,7 @@ const SendReviews = () => {
   }, []);
 
   const { data } = useGetSentReviewsByMGCId(parseInt(userId, 10), MGCId);
-  const { data: reviews, pending } = useGetSentReviewSummary(parseInt(userId, 10), MGCId, data);
+  const { data: reviews, pending } = useGetSentReviewSummary(parseInt(userId, 10), data);
 
   return (
     <>
