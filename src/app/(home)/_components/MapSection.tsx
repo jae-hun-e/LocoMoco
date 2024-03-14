@@ -1,9 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import CreateBtn from '@/app/_components/CreateBtn';
 import MGCList from '@/app/_components/MGCList/MGCList';
+import InfoWindow from '@/app/_components/infoWindow/InfoWindow';
+// import useCreateInfoWindow from '@/hooks/useCreateInfoWindow';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useRenderMarkerByData from '@/hooks/useRenderMarkerByData';
 import useCenterPosition from '@/store/useCenterPosition';
+import useInfoWindowPosition from '@/store/useInfoWindowPosition';
 import { MGCList as MGCListType, MGCSummary } from '@/types/MGCList';
 import BottomSheet from './BottomSheet';
 import Map from './Map';
@@ -36,6 +39,8 @@ const MapSection = ({ data }: MGCListType) => {
     useCreateKakaoMap({ isCustomlevelControl: false, handleMouseUp: handleMouseUp });
   const renderMarker = useRenderMarkerByData(openBottomSheetAndUpdate, handleMouseUp);
 
+  const { infoWindowPosition } = useInfoWindowPosition();
+
   useEffect(() => {
     if (clusterer && data) {
       renderMarker(clusterer, data);
@@ -63,7 +68,12 @@ const MapSection = ({ data }: MGCListType) => {
         timerRef={timerRef}
         handleMouseUp={handleMouseUp}
       />
-
+      <InfoWindow
+        map={map}
+        isLoad={isLoad}
+        show={infoWindowPosition.latitude !== 0 && infoWindowPosition.longitude !== 0}
+        position={infoWindowPosition}
+      />
       <div className="absolute bottom-0 right-24pxr z-30">
         <CreateBtn />
       </div>

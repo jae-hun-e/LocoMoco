@@ -1,6 +1,7 @@
 import { ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 import { CreateMarkerParams, MovePositionParams } from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
+import useInfoWindowPosition from '@/store/useInfoWindowPosition';
 import markerImg from '../../../../public/oh.png';
 
 interface MapProps {
@@ -40,6 +41,8 @@ const Map = forwardRef(
     const [currentPositionMarker, setCurrentPositionMarker] = useState<kakao.maps.Marker>();
 
     const location = useGeolocation();
+
+    const { setInfoWindowPosition } = useInfoWindowPosition();
 
     useEffect(() => {
       if (location.loaded && currentPositionMarker) {
@@ -84,6 +87,7 @@ const Map = forwardRef(
           if (createdPositionCoordinates) {
             const latLng = e.latLng;
 
+            setInfoWindowPosition({ latitude: latLng.getLat(), longitude: latLng.getLng() });
             if (createdPositionCoordinates && map) {
               movePosition({
                 marker: createdPositionCoordinates,
@@ -94,7 +98,7 @@ const Map = forwardRef(
           }
         }, 1000);
       },
-      [timerRef, createdPositionCoordinates, map, movePosition],
+      [timerRef, createdPositionCoordinates, setInfoWindowPosition, map, movePosition],
     );
 
     const handleTouchStart = useCallback(
@@ -106,6 +110,7 @@ const Map = forwardRef(
             const mapProjection = map.getProjection();
             const point = new kakao.maps.Point(e.touches[0].clientX, e.touches[0].clientY - 120);
             const latLng = mapProjection.coordsFromContainerPoint(point);
+            setInfoWindowPosition({ latitude: latLng.getLat(), longitude: latLng.getLng() });
 
             if (createdPositionCoordinates && map) {
               movePosition({
@@ -117,7 +122,7 @@ const Map = forwardRef(
           }, 1000);
         }
       },
-      [createdPositionCoordinates, map, movePosition, timerRef],
+      [createdPositionCoordinates, map, movePosition, setInfoWindowPosition, timerRef],
     );
 
     useEffect(() => {
