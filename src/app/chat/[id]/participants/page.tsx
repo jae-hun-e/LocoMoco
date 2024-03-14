@@ -3,10 +3,30 @@
 import UserList from '@/app/_components/UserInfoAndButton/UserList';
 
 const participants = [
-  { username: 'Nickname1', profileImg: '/oh.png', userId: 1 },
-  { username: 'Nickname2222', profileImg: '/oh.png', userId: 2 },
-  { username: 'Nickname3', profileImg: '/oh.png', userId: 3 },
-  { username: 'Nickname4', profileImg: '/oh.png', userId: 4 },
+  {
+    userId: 1,
+    nickname: '사용자1',
+    profileImage: {
+      imageId: 1,
+      path: '/oh.png',
+    },
+  },
+  {
+    userId: 2,
+    nickname: '사용자2',
+    profileImage: {
+      imageId: 1,
+      path: '/oh.png',
+    },
+  },
+  {
+    userId: 3,
+    nickname: '사용자3',
+    profileImage: {
+      imageId: 1,
+      path: '/oh.png',
+    },
+  },
 ];
 
 const Participants = () => {

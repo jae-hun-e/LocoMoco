@@ -3,7 +3,7 @@ import { useQuery } from '@tanstack/react-query';
 import client from '../core';
 
 export interface TotalSearchProps {
-  search: string;
+  search?: string;
   searchType: 'TOTAL' | 'LOCATION';
   tags?: number[];
 }

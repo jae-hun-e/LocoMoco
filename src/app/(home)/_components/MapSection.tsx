@@ -1,9 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import CreateBtn from '@/app/_components/CreateBtn';
 import MGCList from '@/app/_components/MGCList/MGCList';
+import { toast } from '@/components/ui/use-toast';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useRenderMarkerByData from '@/hooks/useRenderMarkerByData';
 import useCenterPosition from '@/store/useCenterPosition';
+import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCList as MGCListType, MGCSummary } from '@/types/MGCList';
 import BottomSheet from './BottomSheet';
 import Map from './Map';
@@ -32,8 +34,17 @@ const MapSection = ({ data }: MGCListType) => {
     setOpen(true);
   };
 
-  const { clusterer, map, mapRef, createMarker, changeCenter, removeMarker, movePosition, isLoad } =
-    useCreateKakaoMap({ isCustomlevelControl: false, handleMouseUp: handleMouseUp });
+  const {
+    clusterer,
+    map,
+    mapRef,
+    createMarker,
+    changeCenter,
+    removeMarker,
+    movePosition,
+    isLoad,
+    getAddressByCoorinates,
+  } = useCreateKakaoMap({ isCustomlevelControl: false, handleMouseUp: handleMouseUp });
   const renderMarker = useRenderMarkerByData(openBottomSheetAndUpdate, handleMouseUp);
 
   useEffect(() => {
@@ -42,13 +53,32 @@ const MapSection = ({ data }: MGCListType) => {
     }
   }, [clusterer, data, renderMarker]);
 
+  const { searchValue, setSearchValue } = useSearchInputValueStore();
+
+  const changeAddress = useCallback(
+    async (latitude: number, longitude: number) => {
+      const address = await getAddressByCoorinates(latitude, longitude);
+
+      if (!address) {
+        toast({
+          description: '오류가 발생했습니다.',
+        });
+        return;
+      }
+
+      setSearchValue({ ...searchValue, address });
+    },
+    [getAddressByCoorinates],
+  );
+
   useEffect(() => {
     const { latitude, longitude } = centerPosition;
 
     if (latitude !== 0 && longitude !== 0) {
       changeCenter(latitude, longitude);
+      changeAddress(latitude, longitude);
     }
-  }, [centerPosition, changeCenter]);
+  }, [centerPosition, changeCenter, changeAddress]);
 
   return (
     <>
