@@ -30,8 +30,6 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
   const [geocoder, setGeocoder] = useState<kakao.maps.services.Geocoder>();
   const [isLoad, setIsLoad] = useState(false);
 
-  const [geocoder, setGeocoder] = useState<kakao.maps.services.Geocoder>();
-
   const createMarker = useCallback(
     ({ latitude, longitude, draggble, none, markerSrc, markerSize }: CreateMarkerParams) => {
       // TODO: 임시 현재위치 아이콘 추후에 변경해야함 [24.02.14]
@@ -145,48 +143,6 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
     }
   };
 
-  const coord2RegionCodePromise = useCallback(
-    (longitude: number, latitude: number): Promise<string> => {
-      return new Promise((resolve, reject) => {
-        console.log(geocoder);
-        if (geocoder) {
-          geocoder.coord2RegionCode(longitude, latitude, (result, status) => {
-            if (status === kakao.maps.services.Status.OK) {
-              let addressName = '';
-              for (let i = 0; i < result.length; i++) {
-                if (result[i].region_type === 'H') {
-                  addressName = result[i].address_name;
-                  break;
-                }
-              }
-
-              resolve(addressName);
-            } else {
-              reject(new Error('Geocoder failed'));
-            }
-          });
-        } else {
-          reject(new Error('Geocoder가 없음'));
-        }
-      });
-    },
-    [geocoder],
-  );
-
-  const getAddressByCoorinates = useCallback(
-    async (latitude: number, longitude: number) => {
-      try {
-        const addressName = await coord2RegionCodePromise(longitude, latitude);
-
-        return addressName;
-      } catch (error) {
-        console.error(error);
-        return;
-      }
-    },
-    [coord2RegionCodePromise],
-  );
-
   useEffect(() => {
     window.kakao.maps.load(function () {
       if (mapRef.current != null) {
@@ -215,9 +171,6 @@ const useCreateKakaoMap = ({ isCustomlevelControl, handleMouseUp }: CreateKakaoM
         setMap(createdMap);
         setClusterer(clusterer);
         setIsLoad(true);
-
-        const geocoder = new kakao.maps.services.Geocoder();
-        setGeocoder(geocoder);
       }
     });
   }, [isCustomlevelControl]);
