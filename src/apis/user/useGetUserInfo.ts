@@ -10,10 +10,13 @@ export interface UserInfo {
   job: 'DEVELOPER' | 'JOB_SEEKER' | 'ETC';
   email: string;
   provider: 'KAKAO' | 'GITHUB';
-  profileImage: string | null;
+  profileImage: {
+    imageId: number;
+    path: string;
+  } | null;
 }
 
-const getUserInfo = async (userId: number) => {
+export const getUserInfo = async (userId: number) => {
   return client.get<UserInfo>({
     url: `/users/${userId}`,
   });

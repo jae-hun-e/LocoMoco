@@ -12,7 +12,7 @@ const UserInfo = ({ userInfo }: { userInfo: UserInfoData }) => {
         <div className="flex items-center gap-2">
           <Avatar className="h-32pxr w-32pxr rounded-full ">
             <AvatarImage
-              src={userInfo.profileImage.path || 'https://github.com/shadcn.png'}
+              src={userInfo.profileImage?.path || 'https://github.com/shadcn.png'}
               alt="유저 이미지"
             />
             <AvatarFallback>

@@ -25,9 +25,9 @@ const Review = () => {
 
   const reviewerId = getItem<string>(localStorage, USER_ID_KEY);
   // TODO: 후기 톡방으로부터 mogakkoId 받아와서 수정 [24.03.05]
-  const MGCId = 54;
+  const MGCId = 71;
   // TODO: revieweeId 받아와서 수정 [24.03.05]
-  const revieweeId = 77;
+  const revieweeId = 78;
 
   const { data: userInfo } = useGetUserInfo(revieweeId);
 
@@ -109,7 +109,7 @@ const Review = () => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex h-full flex-col gap-30pxr pb-50pxr">
         <Profile
-          profileImg={userInfo?.profileImage ?? ''}
+          profileImg={userInfo?.profileImage?.path ?? ''}
           nickname={userInfo?.nickname ?? ''}
           job={userInfo?.job ? job[userInfo?.job] : ''}
         />

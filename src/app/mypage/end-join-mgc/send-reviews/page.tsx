@@ -1,60 +1,37 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import useGetSentReviewSummary, {
+  useGetSentReviewsByMGCId,
+} from '@/apis/review/useGetSentReviewSummary';
 import ReviewList from '@/app/_components/reviewList/ReviewList';
+import { ReviewSummary } from '@/types/review';
+import { USER_ID_KEY, getItem } from '@/utils/storage';
 
 const SendReviews = () => {
-  const dummy = [
-    {
-      reviewId: 1,
-      reviewerId: 5,
-      score: 4,
-      reviewContentId: [1, 2, 3],
-      content:
-        'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that ',
-      userId: 1,
-      nickname: '닉네임',
-      job: '현직자',
-      profileImage: {
-        imageId: 1,
-        path: '',
-      },
-      createdAt: '2024-02-12',
-    },
-    {
-      reviewId: 2,
-      reviewerId: 5,
-      score: 3,
-      reviewContentId: [1, 2, 3, 4],
-      content: '',
-      userId: 1,
-      nickname: '닉네임2',
-      job: '현직자',
-      profileImage: {
-        imageId: 1,
-        path: '',
-      },
-      createdAt: '2024-03-06',
-    },
-    {
-      reviewId: 3,
-      reviewerId: 5,
-      score: 3,
-      reviewContentId: [1, 4],
-      content: '',
-      userId: 1,
-      nickname: '닉네임3',
-      job: '현직자',
-      profileImage: {
-        imageId: 1,
-        path: '',
-      },
-      createdAt: '2024-03-06',
-    },
-  ];
+  const [userId, setUserId] = useState('');
+  // TODO: 종료된 모각코에서 클릭 시 받아오기 [24.03.12]
+  const MGCId = 71;
+
+  useEffect(() => {
+    const id = getItem<string>(localStorage, USER_ID_KEY);
+    if (id) {
+      setUserId(id);
+    }
+  }, []);
+
+  const { data } = useGetSentReviewsByMGCId(parseInt(userId, 10), MGCId);
+  const { data: reviews, pending } = useGetSentReviewSummary(parseInt(userId, 10), data);
 
   return (
     <>
       <ReviewList
-        reviews={dummy}
-        title="받은"
+        reviews={
+          !pending
+            ? reviews.filter((reviewData): reviewData is ReviewSummary => reviewData !== undefined)
+            : []
+        }
+        title="보낸"
       />
     </>
   );
