@@ -2,7 +2,7 @@ import client from '@/apis/core';
 import { useMutation } from '@tanstack/react-query';
 
 interface ReviewData {
-  MGCId: number;
+  MGCId: string;
   reviewerId: string;
   data: {
     revieweeId: number;
