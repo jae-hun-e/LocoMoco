@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import client from '@/apis/core';
+import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
 import Modal from '@/app/_components/Modal';
 import UserList from '@/app/_components/UserInfoAndButton/UserList';
 import ChatInput from '@/app/chat/_components/ChatInput';
@@ -34,6 +35,9 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
 
   const [isUserList, setIsUserList] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState(0);
+
+  // TODO: params에 들어갈 값 모각코id로 할지 회의 후 수정(현재 id는 모각코 id) [24.03.15]
+  const { mgcDetail } = useGetMGCDetail(parseInt(id, 10));
 
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
     console.log('fetching chat...');
@@ -110,40 +114,12 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
 
   const { isOpen, toggleModal } = useThunderModalStore();
 
-  const participants = [
-    {
-      userId: 1,
-      nickname: '사용자1',
-      profileImage: {
-        imageId: 1,
-        path: '/oh.png',
-      },
-    },
-    {
-      userId: 2,
-      nickname: '사용자2',
-      profileImage: {
-        imageId: 1,
-        path: '/oh.png',
-      },
-    },
-    {
-      userId: 3,
-      nickname: '사용자3',
-      profileImage: {
-        imageId: 1,
-        path: '/oh.png',
-      },
-    },
-  ];
-
   const handleCloseModal = () => {
     toggleModal();
     setIsUserList(true);
   };
 
   const handleButtonClick = (targetId: number) => {
-    console.log(`${targetId}에게 후기를 보냅니다.`);
     setSelectedUserId(targetId);
     setIsUserList(false);
   };
@@ -178,7 +154,7 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
             </button>
             {isUserList ? (
               <UserList
-                data={participants}
+                data={[...mgcDetail.participants, mgcDetail.creatorInfo]}
                 onClick={handleButtonClick}
                 buttonName="후기 보내기"
               />
