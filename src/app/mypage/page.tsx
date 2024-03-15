@@ -28,7 +28,6 @@ const MyPage = () => {
     {
       title: '받은 리뷰 평가',
       link: routes.receivedReviewsAssessment,
-      count: 0,
     },
     { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackListCount || 0 },
     { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportListCount || 0 },
@@ -61,7 +60,7 @@ const MyPage = () => {
           >
             <div className="flex justify-between">
               <p>
-                {title} {count}
+                {title} {count ?? ''}
               </p>
               <Link href={link}>
                 <ChevronRightIcon />
