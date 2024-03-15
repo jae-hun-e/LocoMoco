@@ -1,13 +1,16 @@
+'use client';
+
+import useGetJoinMGCByUserId from '@/apis/user/useGetJoinMGCByUserId';
 import MGCList from '@/app/_components/MGCList/MGCList';
 
-const page = ({ params }: { params: { userId: string } }) => {
-  // TODO: api 연결 후 제거 [24.03.13]
-  console.log(params);
+const JoinPage = ({ params }: { params: { userId: string } }) => {
+  const { data } = useGetJoinMGCByUserId(params.userId);
 
+  // TODO: suspense 적용 후 더미 제거 [24.03.15]
   const dummy = [
     {
       id: 1,
-      title: '모각코',
+      title: '모각코111',
       views: 12,
       likeCount: 1,
       maxParticipants: 3,
@@ -20,8 +23,8 @@ const page = ({ params }: { params: { userId: string } }) => {
       tags: [240],
     },
     {
-      id: 1,
-      title: '모각코2',
+      id: 2,
+      title: '모각코2222',
       views: 12,
       likeCount: 1,
       maxParticipants: 3,
@@ -37,9 +40,9 @@ const page = ({ params }: { params: { userId: string } }) => {
 
   return (
     <div>
-      <MGCList data={dummy} />
+      <MGCList data={data ?? dummy} />
     </div>
   );
 };
 
-export default page;
+export default JoinPage;
