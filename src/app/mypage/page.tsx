@@ -15,29 +15,27 @@ import UserProfileInfo from '../_components/UserProfileInfo';
   1. 마이페이지 정보에 찜한, 진행중, 종료 모각코 개수 담은 필드 넘겨주세요!
   2. 진행중, 종료 모각코도 찜한 모각코 처럼 MGCSummary 타입으로 넘겨주세요...
  */
-
-const myActivities = [
-  { title: '내가 찜한 모각코', link: routes.likeMGC, count: userInfoDummy.likeMGC?.length || 0 },
-  {
-    title: '현재 참여중인 모각코',
-    link: routes.currentJoinMGC,
-    count: userInfoDummy.currentJoinMGC?.length || 0,
-  },
-  {
-    title: '종료된 모각코',
-    link: routes.endJoinMGC,
-    count: userInfoDummy.endJoinMGC?.length || 0,
-  },
-  {
-    title: '받은 리뷰 평가',
-    link: routes.receivedReviewsAssessment,
-    count: userInfoDummy.receivedReview?.length || 0,
-  },
-  { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackList?.length || 0 },
-  { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportList?.length || 0 },
-];
-
 const MyPage = () => {
+  const myActivities = [
+    { title: '내가 찜한 모각코', link: routes.likeMGC, count: userInfoDummy.likeMogakkoCount || 0 },
+    {
+      title: '현재 참여중인 모각코',
+      link: routes.currentJoinMGC,
+      count: userInfoDummy.ongoingMogakkoCount || 0,
+    },
+    {
+      title: '종료된 모각코',
+      link: routes.endJoinMGC,
+      count: userInfoDummy.completeMogakkoCount || 0,
+    },
+    {
+      title: '받은 리뷰 평가',
+      link: routes.receivedReviewsAssessment,
+    },
+    { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackListCount || 0 },
+    { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportListCount || 0 },
+  ];
+
   const router = useRouter();
   const handleLogout = async () => {
     const provider = getItem(localStorage, 'provider');
@@ -112,7 +110,7 @@ const MyPage = () => {
           >
             <div className="flex justify-between">
               <p>
-                {title} {count}
+                {title} {count ?? ''}
               </p>
               <Link href={link}>
                 <ChevronRightIcon />

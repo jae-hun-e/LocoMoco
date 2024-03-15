@@ -29,7 +29,9 @@ const Review = () => {
   // TODO: revieweeId 받아와서 수정 [24.03.05]
   const revieweeId = 78;
 
-  const { data: userInfo } = useGetUserInfo(revieweeId);
+  const { data: userInfoData } = useGetUserInfo(revieweeId);
+
+  const userInfo = userInfoData?.userInfo;
 
   const {
     formState: { errors },
