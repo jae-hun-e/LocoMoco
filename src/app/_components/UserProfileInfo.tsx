@@ -1,4 +1,5 @@
 import { ReactNode } from 'react';
+import { UserInfo } from '@/apis/user/useGetUserInfo';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import Image from 'next/image';
 
@@ -8,28 +9,8 @@ interface UserProfileInfoProps {
   flexDirection?: 'row' | 'col';
 }
 
-interface UserInfo {
-  name: string;
-  profileImg: string;
-  nickname: string;
-  birth: string;
-  gender: boolean;
-  job: string;
-  temperature: number;
-
-  likeMGC?: string[];
-  currentJoinMGC?: string[];
-  endJoinMGC?: string[];
-
-  receivedReview?: string[];
-  sentReview?: string[];
-  reportList?: string[];
-
-  blackList?: string[];
-}
-
 const UserProfileInfo = ({ userInfo, children, flexDirection = 'row' }: UserProfileInfoProps) => {
-  const { nickname, gender, birth, temperature } = userInfo;
+  const { nickname, gender, birth, temperature } = userInfo.userInfo;
 
   return (
     <section className="my-5">

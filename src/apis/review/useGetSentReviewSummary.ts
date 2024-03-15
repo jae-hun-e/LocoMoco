@@ -30,7 +30,7 @@ export const useGetSentReviewSummary = (userId: number, reviews?: Reviews[]) => 
           },
           select: (userInfo: UserInfo): ReviewSummary => {
             const { reviewId, reviewContentId, content, score, createdAt } = review;
-            const { nickname, job, profileImage } = userInfo;
+            const { nickname, job, profileImage } = userInfo.userInfo;
 
             return {
               userId,

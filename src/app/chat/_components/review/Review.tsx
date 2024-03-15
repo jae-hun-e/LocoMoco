@@ -31,7 +31,9 @@ const Review = ({ MGCId, revieweeId, onCancel }: ReviewProps) => {
 
   const reviewerId = getItem<string>(localStorage, USER_ID_KEY);
 
-  const { data: userInfo } = useGetUserInfo(revieweeId);
+  const { data: userInfoData } = useGetUserInfo(revieweeId);
+
+  const userInfo = userInfoData?.userInfo;
 
   const {
     formState: { errors },

@@ -16,6 +16,7 @@ import SockJS from 'sockjs-client';
 import Review from '../_components/review/Review';
 
 export interface ChatType {
+  isNotice: boolean;
   chatMessageId: number;
   chatRoomId: number;
   createdAt: string;
@@ -37,10 +38,10 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
     console.log('fetching chat...');
     const data = await client.get<ChatType[]>({
-      // Todo: 생선된 모각코에 따른 다른 채팅방 보여주기
-      url: `/chats/room/${9}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
+      url: `/chats/room/${id}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
     });
     setTalks([...data, ...talks]);
+    console.log(data);
     if (data.length < 20) setStop(true);
     return data;
   };
@@ -62,22 +63,11 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
 
   useEffect(() => {
     const subscribe = () => {
-      stomp.current.subscribe(`/sub/chat/room/${9}`, (body) => {
+      stomp.current.subscribe(`/sub/chat/room/${id}`, (body) => {
         const parsedBody = JSON.parse(body.body);
         console.log(parsedBody, 'subscribe');
         if (!talks || !parsedBody.senderNickName) return;
         setTalks((prev) => [...prev, parsedBody]);
-      });
-    };
-
-    const addParticipant = () => {
-      stomp.current.publish({
-        destination: '/pub/chats/enter',
-        body: JSON.stringify({
-          chatRoomId: 9,
-          mogakkoId: 80,
-          senderId: getItem(localStorage, 'userId'),
-        }),
       });
     };
 
@@ -87,7 +77,6 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
         onConnect: () => {
           console.log('Connection success');
           subscribe();
-          addParticipant();
         },
       });
 
@@ -111,9 +100,8 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
     stomp.current.publish({
       destination: '/pub/chats/message',
       body: JSON.stringify({
-        chatRoomId: 9, // 채팅방 ID
+        chatRoomId: id, // 채팅방 ID
         senderId: getItem(localStorage, 'userId'),
-        mogakkoId: 80, // 모각코 ID
         message: input.current!.value, // 메시지 내용
       }),
     });
