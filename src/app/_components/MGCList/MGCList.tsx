@@ -21,7 +21,7 @@ const MGCList = ({ data }: MGCListPropsType) => {
       </div>
     );
   } else {
-    return <div>검색 결과에 해당하는 모각코가 없습니다!</div>;
+    return <div>해당하는 모각코가 없습니다!</div>;
   }
 };
 

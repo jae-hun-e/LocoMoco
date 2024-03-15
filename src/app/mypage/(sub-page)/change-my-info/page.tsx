@@ -2,7 +2,6 @@
 
 import { ChangeEvent, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { SignupValue } from '@/app/(auth)/signup/[method]/page';
 import DatePick from '@/app/(auth)/signup/_components/DatePick';
 import NickName from '@/app/(auth)/signup/_components/Nickname';
 import Warning from '@/app/(auth)/signup/_components/Warning';
@@ -12,6 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { genderType } from '@/constants/userInfo';
+import { UserProfile } from '@/types/userInfo';
 import { getItem } from '@/utils/storage';
 import { CameraIcon } from 'lucide-react';
 import Image from 'next/image';
@@ -33,7 +33,7 @@ const ChangeMyInfo = () => {
     setValue,
     getValues,
     formState: { errors },
-  } = useForm<SignupValue>();
+  } = useForm<UserProfile>();
 
   // image 임시저장
   const [imageUrl, setImageUrl] = useState('/oh.png');
@@ -53,11 +53,11 @@ const ChangeMyInfo = () => {
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
 
-  const handleRadioSelect = (field: keyof SignupValue, selected: string) => {
-    setValue('gender', selected);
+  const handleRadioSelect = (field: keyof UserProfile['requestDto'], selected: string) => {
+    setValue('requestDto.gender', selected);
   };
 
-  const onSubmitPatchMyInfo = (data: SignupValue) => {
+  const onSubmitPatchMyInfo = (data: UserProfile) => {
     console.log('data', data);
     console.log('imageFile', imageFile);
   };
@@ -74,6 +74,7 @@ const ChangeMyInfo = () => {
             width={100}
             height={100}
             className="rounded-full"
+            priority
           />
           <Label className="absolute bottom-0 right-0">
             <Input
@@ -98,7 +99,7 @@ const ChangeMyInfo = () => {
             defaultValue={myInfo.nickname}
             className="text-xs"
           />
-          {errors.nickname && (
+          {errors.requestDto?.nickname && (
             <Warning
               good={false}
               className="text-xs"
@@ -106,7 +107,7 @@ const ChangeMyInfo = () => {
               닉네임을 입력해주세요
             </Warning>
           )}
-          {!errors.nickname && (
+          {!errors.requestDto?.nickname && (
             <Warning
               good={!isDuplicated}
               className="text-xs"

@@ -8,13 +8,13 @@ import {
 import client from '@/apis/core';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { SignupValue } from '../[method]/page';
+import { UserProfile } from '@/types/userInfo';
 
 interface Props {
-  register: UseFormRegister<SignupValue>;
-  setNickname: UseFormSetValue<SignupValue>;
-  getNickname: UseFormGetValues<SignupValue>;
-  trigger: UseFormTrigger<SignupValue>;
+  register: UseFormRegister<UserProfile>;
+  setNickname: UseFormSetValue<UserProfile>;
+  getNickname: UseFormGetValues<UserProfile>;
+  trigger: UseFormTrigger<UserProfile>;
   setIsDuplicated: (isDuplicated: boolean) => void;
   setDuplicateWarning: (text: string) => void;
   defaultValue?: string;
@@ -32,17 +32,19 @@ const NickName = ({
   className,
 }: Props) => {
   const checkDuplication = async () => {
-    const valid = await trigger('nickname');
+    const valid = await trigger('requestDto.nickname');
     if (!valid) return;
-    client.get({ url: `users/nickname/${getNickname('nickname')}/check` }).then((res) => {
-      if (!res) {
-        setDuplicateWarning('중복된 닉네임입니다.');
-        setIsDuplicated(true);
-      } else {
-        setDuplicateWarning('사용가능한 닉네임입니다.');
-        setIsDuplicated(false);
-      }
-    });
+    client
+      .get({ url: `users/nickname/${getNickname('requestDto.nickname')}/check` })
+      .then((res) => {
+        if (!res) {
+          setDuplicateWarning('중복된 닉네임입니다.');
+          setIsDuplicated(true);
+        } else {
+          setDuplicateWarning('사용가능한 닉네임입니다.');
+          setIsDuplicated(false);
+        }
+      });
   };
 
   return (
@@ -52,11 +54,11 @@ const NickName = ({
         <div className="flex w-full flex-col">
           <Input
             className="flex w-full"
-            {...register('nickname', {
+            {...register('requestDto.nickname', {
               required: true,
               min: 1,
               onChange: (e: ChangeEvent<HTMLInputElement>) => {
-                setNickname('nickname', e.target.value);
+                setNickname('requestDto.nickname', e.target.value);
                 setDuplicateWarning('');
                 setIsDuplicated(true);
               },

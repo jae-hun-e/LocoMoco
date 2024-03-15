@@ -25,7 +25,6 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
 
   const MGCTypeTag = MGCType?.tags ?? [];
   const tagInfo = [...categoryList.flatMap(({ tags }) => tags)] ?? [];
-  console.log('tagInfo', tagInfo);
 
   const handleMGCItemClick = () => {
     console.log(data.id);
@@ -33,7 +32,6 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   };
 
   const TagsUI = (tagIds: number[] | undefined) => {
-    console.log('tagIds', tagIds);
     return (
       tagIds &&
       tagIds.map((tagId) => {

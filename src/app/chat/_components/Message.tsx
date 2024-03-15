@@ -10,12 +10,16 @@ interface Props {
   talk: ChatType;
 }
 
-const Message = ({ notMe, commonBorder, talk }: Props) => {
+const Message = ({
+  notMe,
+  commonBorder,
+  talk: { chatMessageId, senderProfileImage, senderNickName, message, createdAt },
+}: Props) => {
   const scroll = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!notMe) scroll.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [notMe, talk]);
+  }, [notMe, chatMessageId]);
 
   const handleLineFeed = (msg: string) => {
     if (!msg) return;
@@ -48,20 +52,20 @@ const Message = ({ notMe, commonBorder, talk }: Props) => {
     <div
       ref={scroll}
       className={`flex w-full flex-col ${notMe ? 'items-start' : 'items-end'}`}
-      key={talk.chatMessageId}
+      key={chatMessageId}
     >
       <div className="flex items-center gap-1">
         {notMe && (
           <Image
             className="rounded-3xl"
-            src={talk.senderProfileImage || '/oh.png'}
+            src={senderProfileImage || '/oh.png'}
             alt="profile image"
             width={30}
             height={30}
             priority
           />
         )}
-        <p>{notMe && talk.senderNickName}</p>
+        <p>{notMe && senderNickName}</p>
       </div>
       <div className={`flex gap-1 ${notMe ? '' : 'flex-row-reverse'}`}>
         <p
@@ -71,10 +75,10 @@ const Message = ({ notMe, commonBorder, talk }: Props) => {
               : `${commonBorder} rounded-tl-lg bg-hover text-white`
           } p-2`}
         >
-          {handleLineFeed(talk.message)}
+          {handleLineFeed(message)}
         </p>
         <p className="self-end text-xs text-slate-500">
-          {format(talk.createdAt, 'bHH:mm', { locale: ko })}
+          {format(createdAt, 'bHH:mm', { locale: ko })}
         </p>
       </div>
     </div>

@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import client from '@/apis/core';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
@@ -41,9 +42,7 @@ const MGCApplyArea = ({
 
   const handleLoginAction = () => {
     if (!userId) {
-      toast({
-        description: '로그인 시에만 가능합니다.',
-      });
+      toast({ description: '로그인 시에만 가능합니다.' });
       router.push('/signin');
     }
   };
@@ -54,7 +53,9 @@ const MGCApplyArea = ({
 
   const handleLinkChatting = () => {
     handleLoginAction();
-    router.push(`/chat/${MGCId}`);
+    client.get({ url: `/chats/room/mogakko/${MGCId}` }).then((chatRootId) => {
+      router.push(`/chat/${chatRootId}`);
+    });
   };
 
   const handleLinkEdit = () => {
