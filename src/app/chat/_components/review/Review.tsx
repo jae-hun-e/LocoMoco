@@ -134,7 +134,7 @@ const Review = ({ MGCId, revieweeId, onCancel }: ReviewProps) => {
             />
           </>
         ) : null}
-        <div className="fixed bottom-0 z-50 flex w-[calc(100vw-2.5rem)] justify-between gap-20pxr bg-white py-15pxr">
+        <div className="fixed bottom-0 left-0 z-50 flex w-full justify-between gap-20pxr bg-white px-20pxr py-15pxr">
           <Button
             type="button"
             onClick={handleCancelClick}
