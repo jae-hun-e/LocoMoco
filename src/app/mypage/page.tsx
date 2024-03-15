@@ -14,24 +14,24 @@ import UserProfileInfo from '../_components/UserProfileInfo';
  */
 const MyPage = () => {
   const myActivities = [
-    { title: '내가 찜한 모각코', link: routes.likeMGC, count: userInfoDummy.likeMGC?.length || 0 },
+    { title: '내가 찜한 모각코', link: routes.likeMGC, count: userInfoDummy.likeMogakkoCount || 0 },
     {
       title: '현재 참여중인 모각코',
       link: routes.currentJoinMGC,
-      count: userInfoDummy.currentJoinMGC?.length || 0,
+      count: userInfoDummy.ongoingMogakkoCount || 0,
     },
     {
       title: '종료된 모각코',
       link: routes.endJoinMGC,
-      count: userInfoDummy.endJoinMGC?.length || 0,
+      count: userInfoDummy.completeMogakkoCount || 0,
     },
     {
       title: '받은 리뷰 평가',
       link: routes.receivedReviewsAssessment,
-      count: userInfoDummy.receivedReview?.length || 0,
+      count: 0,
     },
-    { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackList?.length || 0 },
-    { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportList?.length || 0 },
+    { title: '블랙리스트', link: routes.blackList, count: userInfoDummy.blackListCount || 0 },
+    { title: '신고목록', link: routes.reportList, count: userInfoDummy.reportListCount || 0 },
   ];
 
   const manageMyInfo = [

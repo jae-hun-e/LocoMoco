@@ -19,6 +19,8 @@ export interface UserInfo {
   completeMogakkoCount: number;
   likeMogakkoCount: number;
   ongoingMogakkoCount: number;
+  blackListCount: number;
+  reportListCount: number;
 }
 
 export const getUserInfo = async (userId: number) => {

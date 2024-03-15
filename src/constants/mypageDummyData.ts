@@ -31,4 +31,7 @@ export const userInfoDummy: UserInfo = {
   completeMogakkoCount: 3,
   likeMogakkoCount: 2,
   ongoingMogakkoCount: 1,
+  // TODO: 백엔드와 합의 후 이름 변경 [24.03.15]
+  blackListCount: 1,
+  reportListCount: 3,
 };
