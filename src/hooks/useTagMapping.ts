@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
 
-interface TagMapProps {
+export interface TagMapProps {
   tagId: number;
   tagName: string;
   categoryName: string;

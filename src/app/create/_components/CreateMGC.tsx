@@ -67,19 +67,19 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     },
   });
 
+  const { createMGC } = useCreateMGC();
+  const { patchMGC } = usePatchMGC(MGCId);
+
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
   useEffect(() => {
-    options.map(({ categoryName, tagNames, tagId }) => {
+    options.map(({ categoryName, tags }) => {
       setValue(
         categoryName as keyof MGCCreateForm,
-        tagNames.map((tag_name) => ({ tag_id: tagId, tag_name })),
+        tags.map(({ tag_name, tag_id }) => ({ tag_name, tag_id })),
       );
     });
   }, []);
-
-  const { createMGC } = useCreateMGC();
-  const { patchMGC } = usePatchMGC(MGCId);
 
   const handleMGCRequest = ({
     title,
