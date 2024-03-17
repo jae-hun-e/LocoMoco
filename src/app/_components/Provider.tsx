@@ -33,6 +33,29 @@ const Provider = ({
     initializeApp(firebaseConfig);
   };
 
+  if (typeof window !== 'undefined' && 'serviceWorker' in window.navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker
+        .getRegistrations()
+        .then((registrations) => {
+          for (const registration of registrations) {
+            registration.unregister();
+          }
+        })
+        .then(() => {
+          return navigator.serviceWorker.register('/firebase-messaging-sw.js', {
+            scope: '/firebase-cloud-messaging-push-scope',
+          });
+        })
+        .then((registration) => {
+          console.log('Service Worker registered with scope:', registration.scope);
+        })
+        .catch((error) => {
+          console.error('Service Worker registration failed:', error);
+        });
+    });
+  }
+
   initFireBase();
   return (
     <QueryClientProvider client={queryClient}>

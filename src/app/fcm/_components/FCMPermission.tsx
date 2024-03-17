@@ -34,7 +34,9 @@ const FCMPermission = () => {
             if (currentToken) {
               // 인증 후 토큰 업로드
               uploadToken(currentToken);
+              alert('알림 권한 허용하였습니다.');
             } else {
+              console.log('2');
               // 토큰 생성 불가
               alert('푸시 토큰 생성에 실패하였습니다...\n잠시 후 다시 시도해 주세요.');
               return;
