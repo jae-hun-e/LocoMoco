@@ -8,7 +8,7 @@ interface PostTokenProps {
 }
 
 const postToken = async (data: PostTokenProps) =>
-  await axios({ method: 'POST', url: 'http://localhost:3000/api/db?id=87', data });
+  await axios({ method: 'POST', url: 'http://localhost:3000/api/db', data });
 export const useSaveTokenToDB = () => {
   const { mutate, ...rest } = useMutation({ mutationFn: postToken });
 
