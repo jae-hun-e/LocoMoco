@@ -38,5 +38,9 @@ export interface CreateMGCReq {
   tags?: number[];
 }
 
+interface CreateMGCRes {
+  id: number;
+}
+
 export const createMGC = async (createMGCReq: CreateMGCReq) =>
-  await client.put({ url: '/mogakko/map', data: createMGCReq });
+  await client.post<CreateMGCRes>({ url: '/mogakko/map', data: createMGCReq });

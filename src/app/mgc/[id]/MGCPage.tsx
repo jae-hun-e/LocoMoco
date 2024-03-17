@@ -32,6 +32,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
     endTime: mgcDetail.MogakkoInfo.endTime,
     like: mgcDetail.MogakkoInfo.likeCount,
     MGCId,
+    createUserId: mgcDetail.creatorInfo.userId,
   };
 
   return (

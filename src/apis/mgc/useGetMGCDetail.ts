@@ -10,7 +10,7 @@ export interface UserInfo {
     path: string;
   };
 }
-interface MogakkoInfo {
+export interface MogakkoInfo {
   mogakkoId: number;
   title: string;
   startTime: string;
@@ -25,6 +25,7 @@ interface MogakkoInfo {
   content?: string;
   tagIds?: number[];
 }
+
 
 export interface MgcData {
   creatorInfo: UserInfo;
