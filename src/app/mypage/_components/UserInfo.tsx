@@ -4,10 +4,13 @@ import { UserInfoProps } from '@/app/mypage/_hooks/useMypageInfo';
 import MainStyleButton from '@/components/MainStyleButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { routes } from '@/constants/routeURL';
+import { useTagMapping } from '@/hooks/useTagMapping';
 import Image from 'next/image';
 import Link from 'next/link';
 
 const UserInfo = ({ myInfo }: { myInfo: UserInfoProps }) => {
+  const tagMapping = useTagMapping();
+
   return (
     <section className="my-5">
       <div className="flex gap-4">
@@ -32,6 +35,7 @@ const UserInfo = ({ myInfo }: { myInfo: UserInfoProps }) => {
               <p>성별 : {myInfo.gender ? '남성' : '여성'}</p>
               <p>나이 : {new Date().getFullYear() - Number(myInfo.birth.split('-')[0])}세</p>
             </div>
+            <p>직업 : {tagMapping.get(myInfo.jobId)?.tagName}</p>
             <p>온도 : {myInfo.temperature}</p>
           </div>
         </div>

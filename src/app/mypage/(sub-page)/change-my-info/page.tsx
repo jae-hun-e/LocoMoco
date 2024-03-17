@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import DatePick from '@/app/(auth)/signup/_components/DatePick';
 import NickName from '@/app/(auth)/signup/_components/Nickname';
 import Warning from '@/app/(auth)/signup/_components/Warning';
+import { useChangeMyInfo } from '@/app/mypage/(sub-page)/change-my-info/_hooks/useChangeMyInfo';
 import { useMypageInfo } from '@/app/mypage/_hooks/useMypageInfo';
 import MainStyleButton from '@/components/MainStyleButton';
 import { Input } from '@/components/ui/input';
@@ -12,7 +13,9 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { genderType } from '@/constants/userInfo';
 import { UserProfile } from '@/types/userInfo';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { getItem } from '@/utils/storage';
+import { useQueryClient } from '@tanstack/react-query';
 import { CameraIcon } from 'lucide-react';
 import Image from 'next/image';
 
@@ -20,12 +23,14 @@ import Image from 'next/image';
 1. 개인정보 수정 API 필요
  */
 const ChangeMyInfo = () => {
-  let userId;
+  let userId: string | undefined;
   if (typeof window !== 'undefined') {
     userId = getItem<string | undefined>(localStorage, 'userId');
   }
 
   const { myInfo } = useMypageInfo({ userId: Number(userId) });
+  console.log('myInfo', myInfo);
+  const { changeMyInfo } = useChangeMyInfo({ userId: userId! });
   const {
     register,
     handleSubmit,
@@ -53,22 +58,34 @@ const ChangeMyInfo = () => {
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
 
-  /* TODO: BE와 논의
-  1. 개인정보에 job에는 DEVELOPER로 들어가있음
-  2. 하지만 카테고리에는 한글로되어있음
-  3. 매치가 안됨
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
-  const jabType = categoryList?.find(({ category_name }) => category_name === '직업');
-  */
+  const tags = categoryList?.find(({ category_name }) => category_name === '직업')?.tags;
 
-  const handleRadioSelect = (field: keyof UserProfile['requestDto'], selected: string) => {
+  const handleGenderSelect = (field: keyof UserProfile['requestDto'], selected: string) => {
     setValue(`requestDto.${field}`, selected);
   };
 
+  const handleJobSelect = (field: keyof UserProfile['requestDto'], selected: string) => {
+    if (!tags) return;
+    const tagId = tags.find(({ tag_name }) => tag_name === selected)?.tag_id;
+
+    tagId && setValue(`requestDto.${field}`, tagId);
+  };
+
   const onSubmitPatchMyInfo = (data: UserProfile) => {
-    console.log('data', data);
-    console.log('imageFile', imageFile);
+    if (!userId) return;
+
+    const changeMyData = {
+      requestDto: {
+        ...data.requestDto,
+        gender: data.requestDto.gender ?? myInfo?.userInfo.gender,
+        jobId: data.requestDto.jobId ?? myInfo?.userInfo.jobId,
+      },
+      file: imageFile,
+    };
+
+    changeMyInfo(changeMyData);
   };
 
   if (!myInfo) return <div>로딩중...</div>;
@@ -82,7 +99,7 @@ const ChangeMyInfo = () => {
             alt={'유저 이미지'}
             width={100}
             height={100}
-            className="rounded-full"
+            className="max-h-100pxr min-h-100pxr min-w-100pxr max-w-100pxr rounded-full"
             priority
           />
           <Label className="absolute bottom-0 right-0">
@@ -130,7 +147,7 @@ const ChangeMyInfo = () => {
           <p className="mb-2 text-xs">성별</p>
           <RadioGroup
             defaultValue={myInfo.userInfo.gender}
-            onValueChange={(value) => handleRadioSelect('gender', value)}
+            onValueChange={(value) => handleGenderSelect('gender', value)}
             className="mt-4 flex grow flex-wrap justify-around"
           >
             {genderType.map(({ tag_name, tag_id, value }) => (
@@ -155,29 +172,31 @@ const ChangeMyInfo = () => {
 
         <Label>
           <p className="mb-2 text-xs">직업</p>
-          <RadioGroup
-            defaultValue={myInfo.userInfo.job}
-            onValueChange={(value) => handleRadioSelect('job', value)}
-            className="mt-4 flex grow flex-wrap justify-around"
-          >
-            {genderType.map(({ tag_name, tag_id, value }) => (
-              <div
-                className="flex items-center space-x-2"
-                key={tag_id}
-              >
-                <RadioGroupItem
-                  value={value}
-                  id={tag_name}
-                />
-                <Label
-                  htmlFor={tag_name}
-                  className="text-xs"
+          {tags && (
+            <RadioGroup
+              defaultValue={tags.find(({ tag_id }) => tag_id === myInfo.userInfo.jobId)?.tag_name}
+              onValueChange={(value) => handleJobSelect('jobId', value)}
+              className="mt-4 flex grow flex-wrap justify-around"
+            >
+              {tags.map(({ tag_name, tag_id }) => (
+                <div
+                  className="flex items-center space-x-2"
+                  key={tag_id}
                 >
-                  {tag_name}
-                </Label>
-              </div>
-            ))}
-          </RadioGroup>
+                  <RadioGroupItem
+                    value={tag_name}
+                    id={tag_name}
+                  />
+                  <Label
+                    htmlFor={tag_name}
+                    className="text-xs"
+                  >
+                    {tag_name}
+                  </Label>
+                </div>
+              ))}
+            </RadioGroup>
+          )}
         </Label>
 
         <DatePick
