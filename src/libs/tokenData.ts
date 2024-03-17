@@ -1,3 +1,0 @@
-export const tokenData = [
-  'fkTiMpuhiC5oH0gVXENo_V:APA91bFNsNiwGM6AD9tvW9YuK6wJHSERJAonNEdkZs27jt8KYe-jbrjByC_7v1msIiwWJDbY-79T45nrQd06bNcv9WF1k-kcFpBLmS1Duqzh6wzFCqtJye6ccsIZ9rml7lVExf5wjAdr',
-];

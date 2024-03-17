@@ -2,13 +2,16 @@ import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 
 interface SendPushProps {
-  title: string;
-  body: string;
-  image?: string;
-  click_action: string;
+  data: {
+    title: string;
+    body: string;
+    image?: string;
+    click_action: string;
+  };
+  userIds: string[];
 }
 
-const sendPostFCM = async (data: SendPushProps) => {
+const sendPostFCM = async ({ data, userIds }: SendPushProps) => {
   await axios({
     method: 'POST',
     url: '/api/fcm',
@@ -16,6 +19,7 @@ const sendPostFCM = async (data: SendPushProps) => {
       message: {
         data: { ...data, image: data.image ? data.image : '/oh.png' },
       },
+      userIds,
     },
   });
 };

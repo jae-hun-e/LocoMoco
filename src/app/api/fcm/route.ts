@@ -3,12 +3,12 @@ import { NextRequest } from 'next/server';
 
 export async function POST(req: NextRequest) {
   try {
-    const { message } = await req.json();
-    const res = await sendFCMNotification(message);
+    const { message, userIds } = await req.json();
+    const res = await sendFCMNotification({ data: message, userIds: userIds });
 
     return Response.json({ res });
   } catch (e) {
-    console.log(e);
+    console.log('FCM Error: ', e);
   }
   return;
 }

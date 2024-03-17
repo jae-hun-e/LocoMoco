@@ -1,16 +1,32 @@
 'use client';
 
+import { useSaveTokenToDB } from '@/app/fcm/_hooks/useSaveTokenToDB';
+import { getDeviceType } from '@/utils/getDeviceType';
+import { getItem } from '@/utils/storage';
 import { getMessaging, getToken } from '@firebase/messaging';
 
 const FCMPermission = () => {
-  const uploadToken = (currentToken: string) => {
-    console.log('여기서 토큰을 서버에 업로드할꺼임.', currentToken);
+  const { saveToken } = useSaveTokenToDB();
+
+  let userId: string | undefined;
+  if (typeof window !== 'undefined') userId = getItem<string | undefined>(localStorage, 'userId');
+
+  const uploadToken = (token: string) => {
+    if (!userId) {
+      alert('로그인을 해주세요');
+      return;
+    }
+
+    saveToken({
+      id: userId,
+      deviceType: getDeviceType(),
+      token,
+    });
   };
 
   const requestPermission = () => {
     window.Notification.requestPermission().then((permission) => {
       if (permission === 'granted') {
-        alert('알림 권한이 허용됨');
         const messaging = getMessaging();
 
         getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY })
