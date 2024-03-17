@@ -1,14 +1,18 @@
 import { RefObject } from 'react';
 import { Card } from '@/components/ui/card';
 import useClickAway from '@/hooks/useClickaway';
+import { cn } from '@/libs/utils';
 
 interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
+  width?: string;
+  height?: string;
+  rounded?: string;
 }
 
-const Modal = ({ isOpen, onClose, children }: ModalProps) => {
+const Modal = ({ isOpen, onClose, children, width, height, rounded }: ModalProps) => {
   const modalContentRef = useClickAway((e: MouseEvent | TouchEvent) => {
     const { innerHTML } = e.target as HTMLDivElement;
     if (innerHTML === '⚡번개 모각코') return;
@@ -22,7 +26,9 @@ const Modal = ({ isOpen, onClose, children }: ModalProps) => {
           <Card
             ref={modalContentRef as RefObject<HTMLDivElement>}
             id="modal-content"
-            className="z-100 relative w-310pxr rounded-lg opacity-100 shadow"
+            className={cn(
+              `z-100 relative w-310pxr opacity-100 shadow w-${width ?? '310pxr'} h-${height ?? 'auto'} rounded-${rounded ?? 'lg'}`,
+            )}
           >
             {children}
           </Card>
