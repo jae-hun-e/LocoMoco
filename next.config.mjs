@@ -1,6 +1,14 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  reactStrictMode: false,
-};
+import withPWAInit, { runtimeCaching } from '@ducanh2912/next-pwa';
+// const nextConfig = {
+//   reactStrictMode: false,
+// };
 
-export default nextConfig;
+const withPWA = withPWAInit({
+  dest: "public",
+  runtimeCaching
+});
+
+export default withPWA;
+
+// export default nextConfig;

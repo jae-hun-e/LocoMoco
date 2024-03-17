@@ -53,8 +53,17 @@ const ChangeMyInfo = () => {
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
 
+  /* TODO: BE와 논의
+  1. 개인정보에 job에는 DEVELOPER로 들어가있음
+  2. 하지만 카테고리에는 한글로되어있음
+  3. 매치가 안됨
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+  const jabType = categoryList?.find(({ category_name }) => category_name === '직업');
+  */
+
   const handleRadioSelect = (field: keyof UserProfile['requestDto'], selected: string) => {
-    setValue('requestDto.gender', selected);
+    setValue(`requestDto.${field}`, selected);
   };
 
   const onSubmitPatchMyInfo = (data: UserProfile) => {
@@ -96,7 +105,7 @@ const ChangeMyInfo = () => {
             trigger={trigger}
             setIsDuplicated={setIsDuplicated}
             setDuplicateWarning={setDuplicateWarning}
-            defaultValue={myInfo.nickname}
+            defaultValue={myInfo.userInfo.nickname}
             className="text-xs"
           />
           {errors.requestDto?.nickname && (
@@ -120,8 +129,35 @@ const ChangeMyInfo = () => {
         <Label>
           <p className="mb-2 text-xs">성별</p>
           <RadioGroup
-            defaultValue={myInfo.gender}
+            defaultValue={myInfo.userInfo.gender}
             onValueChange={(value) => handleRadioSelect('gender', value)}
+            className="mt-4 flex grow flex-wrap justify-around"
+          >
+            {genderType.map(({ tag_name, tag_id, value }) => (
+              <div
+                className="flex items-center space-x-2"
+                key={tag_id}
+              >
+                <RadioGroupItem
+                  value={value}
+                  id={tag_name}
+                />
+                <Label
+                  htmlFor={tag_name}
+                  className="text-xs"
+                >
+                  {tag_name}
+                </Label>
+              </div>
+            ))}
+          </RadioGroup>
+        </Label>
+
+        <Label>
+          <p className="mb-2 text-xs">직업</p>
+          <RadioGroup
+            defaultValue={myInfo.userInfo.job}
+            onValueChange={(value) => handleRadioSelect('job', value)}
             className="mt-4 flex grow flex-wrap justify-around"
           >
             {genderType.map(({ tag_name, tag_id, value }) => (
@@ -147,7 +183,7 @@ const ChangeMyInfo = () => {
         <DatePick
           register={register}
           setDate={setValue}
-          defaultValue={myInfo.birth}
+          defaultValue={myInfo.userInfo.birth}
           className="text-xs"
         />
       </section>
