@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
-import { TotalSearchProps } from '@/apis/mgcList/useMGCTotalList';
 import MGCList from '@/app/_components/MGCList/MGCList';
+import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { Search } from 'lucide-react';
 import CreateBtn from '../_components/CreateBtn';
 import Filter from '../_components/filter/Filter';
@@ -14,16 +14,22 @@ type SearchForm = {
 };
 
 const SearchMGC = () => {
-  const initialSearchParams: TotalSearchProps = { search: '', searchType: 'TOTAL' };
+  const { searchValue, setSearchValue } = useSearchInputValueStore();
+  useEffect(() => {
+    setSearchValue({ ...searchValue, address: '', tags: [] });
+  }, []);
 
-  const [searchParams, setSearchParams] = useState(initialSearchParams);
-  const { data } = useMGCTotalList(searchParams);
+  const { data } = useMGCTotalList({
+    search: searchValue.address,
+    searchType: 'TOTAL',
+    tags: searchValue.tags,
+  });
 
   const { register, handleSubmit } = useForm<SearchForm>();
 
   const onSubmit: SubmitHandler<SearchForm> = ({ search }) => {
     console.log(search);
-    setSearchParams({ ...searchParams, search: search });
+    setSearchValue({ ...searchValue, address: search });
   };
 
   return (
@@ -50,7 +56,6 @@ const SearchMGC = () => {
         </form>
       </div>
       <Filter />
-      {/* TODO: Filter의 전송 버튼 클릭 시 현재 search, searchType도 추가해서 API 요청해야 함 [2024/03/05] */}
       <div className="absolute bottom-50pxr right-24pxr z-30">
         <CreateBtn />
       </div>

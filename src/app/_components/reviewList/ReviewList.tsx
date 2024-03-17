@@ -3,28 +3,14 @@
 import { useState } from 'react';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 import { ReviewDetailType } from '@/types/review';
+import { ReviewSummary } from '@/types/review';
 import Modal from '../Modal';
 import ReviewDetail from './ReviewDetail';
 import ReviewItem from './ReviewItem';
 
-export interface ReviewData {
-  reviewId: number;
-  reviewContentId: number[];
-  content: string;
-  userId: number;
-  nickname: string;
-  job: string;
-  profileImage: {
-    imageId: number;
-    path: string;
-  };
-  score: number;
-  createdAt: string;
-}
-
 interface ReviewListProps {
   title: string;
-  reviews: ReviewData[];
+  reviews: ReviewSummary[];
 }
 
 const ReviewList = ({ title, reviews }: ReviewListProps) => {
