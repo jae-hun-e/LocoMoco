@@ -2,7 +2,7 @@
 
 import { getMessaging, getToken } from '@firebase/messaging';
 
-const FCMTest = () => {
+const FCMPermission = () => {
   const uploadToken = (currentToken: string) => {
     console.log('여기서 토큰을 서버에 업로드할꺼임.', currentToken);
   };
@@ -20,12 +20,12 @@ const FCMTest = () => {
               uploadToken(currentToken);
             } else {
               // 토큰 생성 불가
-              alert('푸시 토큰 생성에 실패하였습니다.\n잠시 후 다시 시도해 주세요.');
+              alert('푸시 토큰 생성에 실패하였습니다...\n잠시 후 다시 시도해 주세요.');
               return;
             }
           })
           .catch((error) => {
-            alert('푸시 등록 중 문제가 발생하였습니다.\n잠시 후 다시 시도해 주세요.');
+            alert('푸시 등록 중 문제가 발생하였습니다...\n잠시 후 다시 시도해 주세요.');
             console.log('An error occurred while retrieving token. ', error);
             return;
           });
@@ -48,4 +48,4 @@ const FCMTest = () => {
   );
 };
 
-export default FCMTest;
+export default FCMPermission;

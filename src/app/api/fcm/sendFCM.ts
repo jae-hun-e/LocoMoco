@@ -1,13 +1,12 @@
-import { tokenData } from '@/app/_store/tokenData';
+import { tokenData } from '@/libs/tokenData';
 import admin, { ServiceAccount, messaging } from 'firebase-admin';
-import { NextRequest } from 'next/server';
 
 interface NotificationData {
   data: {
     title: string;
     body: string;
-    // image: string;
-    // click_action: string;
+    image: string;
+    click_action: string;
   };
 }
 
@@ -50,7 +49,6 @@ const sendFCMNotification = async (data: NotificationData) => {
 
   // 선택한 여러개의 토큰으로 발송
   const res = await messaging().sendEachForMulticast(notificationData);
-
   //
   // // 토큰 하나에 발송
   // const res = await messaging().send(tokenData[0]);
@@ -59,14 +57,4 @@ const sendFCMNotification = async (data: NotificationData) => {
   return res;
 };
 
-export async function POST(req: NextRequest) {
-  try {
-    const { message } = (await req.json()) as { message: NotificationData };
-    const res = await sendFCMNotification(message);
-
-    return Response.json({ res });
-  } catch (e) {
-    console.log(e);
-  }
-  return;
-}
+export default sendFCMNotification;
