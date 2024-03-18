@@ -2,11 +2,11 @@
 
 import { MouseEvent, useState } from 'react';
 import { UserInfo } from '@/apis/mgc/useGetMGCDetail';
-import useSendPush from '@/app/fcm/_hooks/useSendPush';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
 import { toast } from '@/components/ui/use-toast';
+import useSendPush from '@/hooks/useSendPush';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';

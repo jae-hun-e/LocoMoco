@@ -1,5 +1,5 @@
-import { useSaveTokenToDB } from '@/app/fcm/_hooks/useSaveTokenToDB';
 import { toast } from '@/components/ui/use-toast';
+import { useSaveTokenToDB } from '@/hooks/useSaveTokenToDB';
 import { getDeviceType } from '@/utils/getDeviceType';
 import { getMessaging, getToken } from '@firebase/messaging';
 
