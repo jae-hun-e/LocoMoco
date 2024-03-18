@@ -48,9 +48,9 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
   const [currentAddress, setAddress] = useState(defaultAddress?.address ?? '');
   const handleMapClick = useCallback(
     async (e: kakao.maps.event.MouseEvent) => {
-      if (createdPositionCoordinates && defaultMarker) {
+      if (createdPositionCoordinates) {
         const latLng = e.latLng;
-        removeMarker(defaultMarker);
+        defaultMarker && removeMarker(defaultMarker);
         if (createdPositionCoordinates && map) {
           movePosition({
             marker: createdPositionCoordinates,
@@ -105,11 +105,11 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
   }, [handleMapClick, map]);
 
   useEffect(() => {
-    if (isLoad && location.coordinates) {
+    if (isLoad) {
       setCreatedPositionCoordinates(
         createMarker({
-          latitude: location.coordinates.lat,
-          longitude: location.coordinates.lng,
+          latitude: location.coordinates ? location.coordinates.lat : 0,
+          longitude: location.coordinates ? location.coordinates.lng : 0,
           draggble: true,
           none: true,
           markerSrc: markerImg.src,

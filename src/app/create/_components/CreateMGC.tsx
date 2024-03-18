@@ -10,9 +10,11 @@ import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
 import { useFilterTagsByIds } from '@/hooks/useFilterTagByIds';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { getTimeString } from '@/utils/getTimeString';
 import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface LocationProps {
   address: string;
@@ -70,6 +72,12 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
   const { createMGC } = useCreateMGC();
   const { patchMGC } = usePatchMGC(MGCId);
 
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+  const defaultTags = categoryList
+    ?.find(({ category_name }) => category_name === '모각코 유형')
+    ?.tags.find(({ tag_name }) => tag_name === '일반')?.tag_id;
+
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
   useEffect(() => {
@@ -102,6 +110,7 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     });
 
     const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
+    tags.push(defaultTags as number);
 
     const userId = getItem(localStorage, 'userId');
 

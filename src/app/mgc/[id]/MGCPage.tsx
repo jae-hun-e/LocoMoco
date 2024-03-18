@@ -28,7 +28,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
 
   const MGCApplyAreaData = {
     maxParticipants: mgcDetail.MogakkoInfo.maxParticipants,
-    currentParticipants: mgcDetail.participants.length + 1,
+    currentParticipants: mgcDetail.participants,
     endTime: mgcDetail.MogakkoInfo.endTime,
     like: mgcDetail.MogakkoInfo.likeCount,
     MGCId,

@@ -59,13 +59,18 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
       />
 
       <section className={labelVariants()}>
-        <input
-          {...register('title', { required: '제목을 입력해주세요.' })}
-          placeholder="모각코 제목을 입력해주세요."
-          type="text"
-          className="h-10 w-full border-b-2 border-layer-3 bg-transparent text-lg font-bold focus:outline-none focus:ring-0"
-        />
-        {errors.title && <span className="text-xs text-red-1">{errors.title.message}</span>}
+        <div className="flex h-10">
+          <p className="pr-5pxr">*</p>
+          <input
+            {...register('title', { required: '제목을 입력해주세요.' })}
+            placeholder="모각코 제목을 입력해주세요."
+            type="text"
+            className="w-full border-b-2 border-layer-3 bg-transparent text-lg font-bold focus:outline-none focus:ring-0"
+          />
+        </div>
+        {errors.title && (
+          <span className="ml-12pxr text-xs text-red-1">{errors.title.message}</span>
+        )}
       </section>
 
       <MGCDate

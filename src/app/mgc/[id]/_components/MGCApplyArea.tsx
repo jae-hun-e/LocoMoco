@@ -1,10 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
+import { UserInfo } from '@/apis/mgc/useGetMGCDetail';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
 import { toast } from '@/components/ui/use-toast';
+import useSendPush from '@/hooks/useSendPush';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
@@ -12,7 +14,7 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   maxParticipants: number;
-  currentParticipants: number;
+  currentParticipants: UserInfo[];
   endTime: string;
   like: number;
   MGCId: number;
@@ -35,6 +37,7 @@ const MGCApplyArea = ({
   const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
 
+  const { sendPush } = useSendPush();
   const isClose = new Date() > new Date(endTime);
 
   const router = useRouter();
@@ -45,7 +48,8 @@ const MGCApplyArea = ({
       router.push('/signin');
     }
   };
-  const handleLike = () => {
+  const handleLike = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     handleLoginAction();
     setLike(!isLike);
   };
@@ -61,22 +65,36 @@ const MGCApplyArea = ({
 
   const handleApply = () => {
     handleLoginAction();
+
+    sendPush({
+      data: {
+        title: `모각코에 새로운 멤버가 참여했습니다.`,
+        body: '즐거운 모각코 시간을 보내세요!',
+        click_action: window.location.href,
+      },
+      userIds: currentParticipants.map((user) => user.userId + ''),
+    });
+
     applyMGC({ MGCId, userId: userId ?? '' });
   };
+
+  const currentParticipantsLength = currentParticipants.length;
 
   return (
     <section className="fixed bottom-50pxr z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
         content={
-          isClose
-            ? '모집 종료된 모각코'
-            : isOwner
-              ? '수정하기'
-              : isParticipated
-                ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
-                : `참여하기 (${currentParticipants}/${maxParticipants})`
+          currentParticipantsLength >= maxParticipants
+            ? '정원초과'
+            : isClose
+              ? '모집 종료된 모각코'
+              : isOwner
+                ? '수정하기'
+                : isParticipated
+                  ? `톡방으로 이동하기 (${currentParticipantsLength}/${maxParticipants})`
+                  : `참여하기 (${currentParticipantsLength}/${maxParticipants})`
         }
-        disabled={isClose}
+        disabled={currentParticipantsLength >= maxParticipants || isClose}
         onClick={isOwner ? handleLinkEdit : isParticipated ? handleLinkChatting : handleApply}
       >
         <button
@@ -94,7 +112,7 @@ const MGCApplyArea = ({
       </MainStyleButton>
 
       <div className="flex justify-center text-xs">
-        <b>{format(endTime, 'M월 d일 HH시')}</b>
+        <b>{format(endTime, 'M월 d일 HH시 mm분')}</b>
         <p>까지만 신청 할 수 있어요!</p>
       </div>
     </section>
