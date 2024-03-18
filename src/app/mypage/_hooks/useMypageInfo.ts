@@ -7,7 +7,7 @@ export interface UserInfoProps {
   birth: string;
   gender: string;
   temperature: number;
-  job: string;
+  jobId: number;
   email: string;
   profileImage: {
     imageId: number;

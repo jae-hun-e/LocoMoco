@@ -135,7 +135,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
             case 'RADIOGROUP':
               return (
                 <section key={category_id}>
-                  <Label className="w-100pxr flex-shrink-0">현재신분</Label>
+                  <Label className="w-100pxr flex-shrink-0">{category_name}</Label>
                   <RadioGroup
                     defaultValue={initRadioSelect(categoryNameCopy)}
                     onValueChange={(value) => handleRadioSelect(categoryNameCopy, value, tags)}
