@@ -31,4 +31,6 @@ export const titleMap = {
   another: '프로필',
   'join-mgc': '참여한 모각코',
   'change-my-info': '개인정보 수정',
+  'black-list': '블랙리스트',
+  'report-list': '신고 목록',
 } as const;
