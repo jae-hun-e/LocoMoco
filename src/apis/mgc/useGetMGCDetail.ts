@@ -25,16 +25,13 @@ export interface MogakkoInfo {
   content?: string;
   tagIds?: number[];
 }
-
-
-export interface MgcData {
+export interface MGCData {
   creatorInfo: UserInfo;
   participants: UserInfo[]; // 여기에 참가자 정보에 대한 인터페이스를 추가하는 것이 좋습니다.
   MogakkoInfo: MogakkoInfo;
 }
 
-export const getMGCDetail = async (id: number) =>
-  await client.get<MgcData>({ url: `/mogakko/map/${id}` });
+const getMGCDetail = async (id: number) => await client.get<MGCData>({ url: `/mogakko/map/${id}` });
 
 export const getMGCDetailQueryOption = (id: number) =>
   queryOptions({

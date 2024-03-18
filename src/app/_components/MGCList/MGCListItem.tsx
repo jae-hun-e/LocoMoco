@@ -1,6 +1,5 @@
 'use client';
 
-import { TagType } from '@/apis/mgc/queryFn';
 import Tag from '@/app/_components/Tag';
 import { MGCTypes } from '@/constants/types';
 import { MGCSummary } from '@/types/MGCList';
@@ -21,11 +20,10 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey)!;
 
-  const MGCTypeTag = categoryList ? categoryList[2].tags : [];
+  const MGCType = categoryList.find(({ category_name }) => category_name === '모각코 유형');
 
-  const tagInfo = categoryList
-    ? categoryList.reduce((acc, category) => [...acc, ...category.tags], [] as TagType[])
-    : [];
+  const MGCTypeTag = MGCType?.tags ?? [];
+  const tagInfo = [...categoryList.flatMap(({ tags }) => tags)] ?? [];
 
   const handleMGCItemClick = () => {
     console.log(data.id);

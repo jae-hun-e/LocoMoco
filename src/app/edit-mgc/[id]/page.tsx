@@ -10,7 +10,10 @@ const MGCEdit = ({ params }: { params: { id: number } }) => {
 
   return (
     <div>
-      <CreateMGC initData={MogakkoInfo} />
+      <CreateMGC
+        initData={MogakkoInfo}
+        MGCId={params.id}
+      />
     </div>
   );
 };

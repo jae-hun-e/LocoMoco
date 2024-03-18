@@ -1,23 +1,13 @@
 'use client';
 
-import { useMypageInfo } from '@/app/mypage/_hooks/useMypageInfo';
+import { UserInfoProps } from '@/app/mypage/_hooks/useMypageInfo';
 import MainStyleButton from '@/components/MainStyleButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { routes } from '@/constants/routeURL';
-import { getItem } from '@/utils/storage';
 import Image from 'next/image';
 import Link from 'next/link';
 
-const UserInfo = () => {
-  let userId;
-  if (typeof window !== 'undefined') {
-    userId = getItem<string | undefined>(localStorage, 'userId');
-  }
-
-  const { myInfo } = useMypageInfo({ userId: Number(userId) });
-
-  if (!myInfo) return <div>로딩중...</div>;
-
+const UserInfo = ({ myInfo }: { myInfo: UserInfoProps }) => {
   return (
     <section className="my-5">
       <div className="flex gap-4">

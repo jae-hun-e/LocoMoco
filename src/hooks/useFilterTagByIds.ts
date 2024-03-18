@@ -1,31 +1,33 @@
-import { useTagMapping } from '@/hooks/useTagMapping';
+import { TagType } from '@/apis/mgc/queryFn';
+import { TagMapProps, useTagMapping } from '@/hooks/useTagMapping';
 
-interface ResultType {
+interface FilterTagItem {
+  tags: TagType[];
   categoryName: string;
-  tagNames: string[];
-  tagId: number;
 }
-export const useFilterTagsByIds = (tagIds: number[]): ResultType[] => {
-  const result: Record<string, string[]> = {};
+export const useFilterTagsByIds = (tagIds: number[]) => {
   const tagMapping = useTagMapping();
+  const selectTags: TagMapProps[] = [];
 
   tagIds.forEach((tagId) => {
     const tagMapValues = tagMapping.get(tagId);
+    tagMapValues && selectTags.push(tagMapValues);
+  });
 
-    if (tagMapValues) {
-      const { categoryName, tagName } = tagMapValues;
+  const result: FilterTagItem[] = [];
 
-      result[categoryName] = result[categoryName] ? [...result[categoryName], tagName] : [tagName];
+  selectTags.forEach(({ tagId, tagName, categoryName }) => {
+    const existingCategory = result.find((item) => item.categoryName === categoryName);
+
+    if (existingCategory) {
+      existingCategory.tags.push({ tag_id: tagId, tag_name: tagName });
+    } else {
+      result.push({
+        categoryName,
+        tags: [{ tag_id: tagId, tag_name: tagName }],
+      });
     }
   });
 
-  return Object.entries(result).map(([categoryName, tagNames]) => ({
-    categoryName,
-    tagNames,
-    tagId: tagIds.find((tagId) => {
-      const tagMapValues = tagMapping.get(tagId);
-
-      return tagMapValues?.categoryName === categoryName;
-    }) as number,
-  }));
+  return result;
 };

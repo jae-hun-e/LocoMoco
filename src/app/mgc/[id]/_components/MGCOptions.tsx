@@ -16,16 +16,16 @@ const MGCOptions = ({ tagIds }: Props) => {
 
   return (
     <div className="flex flex-col gap-5pxr">
-      {options.map(({ categoryName, tagNames }) => (
+      {options.map(({ categoryName, tags }) => (
         <div
           key={categoryName}
           className="flex gap-10pxr"
         >
           <p className="w-100pxr">{categoryName}</p>
-          {tagNames ? (
+          {tags ? (
             <div className="flex gap-10pxr">
-              {tagNames.map((tag) => (
-                <Tag key={tag}>{tag}</Tag>
+              {tags.map((tag) => (
+                <Tag key={tag.tag_id}>{tag.tag_name}</Tag>
               ))}
             </div>
           ) : (

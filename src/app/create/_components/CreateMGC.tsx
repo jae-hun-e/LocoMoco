@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { TagType } from '@/apis/mgc/queryFn';
 import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
 import { MogakkoInfo } from '@/apis/mgc/useGetMGCDetail';
+import { usePatchMGC } from '@/apis/mgc/usePatchMGC';
 import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
@@ -35,9 +36,10 @@ export interface MGCCreateForm {
 
 interface Props {
   initData?: MogakkoInfo;
+  MGCId?: number;
 }
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
-const CreateMGC = ({ initData }: Props) => {
+const CreateMGC = ({ initData, MGCId }: Props) => {
   const {
     register,
     handleSubmit,
@@ -65,20 +67,21 @@ const CreateMGC = ({ initData }: Props) => {
     },
   });
 
+  const { createMGC } = useCreateMGC();
+  const { patchMGC } = usePatchMGC(MGCId);
+
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
   useEffect(() => {
-    options.map(({ categoryName, tagNames, tagId }) => {
+    options.map(({ categoryName, tags }) => {
       setValue(
         categoryName as keyof MGCCreateForm,
-        tagNames.map((tag_name) => ({ tag_id: tagId, tag_name })),
+        tags.map(({ tag_name, tag_id }) => ({ tag_name, tag_id })),
       );
     });
   }, []);
 
-  const { createMGC } = useCreateMGC();
-
-  const handleCreateMGC = ({
+  const handleMGCRequest = ({
     title,
     date,
     startTime,
@@ -114,7 +117,7 @@ const CreateMGC = ({ initData }: Props) => {
       tags,
     };
 
-    createMGC(req);
+    MGCId ? patchMGC(req) : createMGC(req);
   };
 
   return (
@@ -138,7 +141,7 @@ const CreateMGC = ({ initData }: Props) => {
         <MainStyleButton
           content="완료"
           disabled={!isValid}
-          onClick={handleSubmit(handleCreateMGC)}
+          onClick={handleSubmit(handleMGCRequest)}
         />
       </div>
     </form>
