@@ -148,7 +148,7 @@ const ChangeMyInfo = () => {
           <p className="mb-2 text-xs">직업</p>
           <RadioGroup
             defaultValue={myInfo.userInfo.job}
-            onValueChange={(value) => handleRadioSelect('job', value)}
+            onValueChange={(value) => handleRadioSelect('jobId', value)}
             className="mt-4 flex grow flex-wrap justify-around"
           >
             {genderType.map(({ tag_name, tag_id, value }) => (
