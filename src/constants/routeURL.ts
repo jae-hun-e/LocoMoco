@@ -4,6 +4,7 @@ export const routes = {
   chat: '/chat',
   mgc: '/mgc',
   search: '/search',
+  signin: '/signin',
   mypage: '/mypage',
   changeMyInfo: '/mypage/change-my-info',
   likeMGC: '/mypage/like-mgc',
@@ -14,7 +15,6 @@ export const routes = {
   sendReviews: '/mypage/send-reviews',
   reportList: '/mypage/report-list',
   blackList: '/mypage/black-list',
-  logout: '/mypage/logout',
   withdrawal: '/mypage/withdrawal',
 } as const;
 

@@ -26,7 +26,7 @@ const Inquiry = ({ MGCId }: Props) => {
   };
 
   return (
-    <section className="mb-100pxr">
+    <section className="mb-150pxr">
       <div className="mb-20pxr flex gap-1">
         <b>문의</b>
         <p>{inquiries.length}</p>

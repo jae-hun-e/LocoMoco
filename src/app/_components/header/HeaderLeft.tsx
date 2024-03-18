@@ -14,7 +14,7 @@ const HeaderLeft = () => {
   else title = titleMap[lastArray as keyof typeof titleMap];
 
   return (
-    <div className="flex items-center gap-25pxr">
+    <div className="flex items-center gap-25pxr ">
       <button onClick={() => router.back()}>
         <ChevronLeftIcon />
       </button>
