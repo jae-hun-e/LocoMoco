@@ -7,7 +7,6 @@ import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
 import { toast } from '@/components/ui/use-toast';
-import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
@@ -37,7 +36,7 @@ const MGCApplyArea = ({
   const isOwner = Number(userId) === createUserId;
   const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
-  const { requestPermission } = useRequestPermission();
+
   const { sendPush } = useSendPush();
   const isClose = new Date() > new Date(endTime);
 
@@ -66,8 +65,6 @@ const MGCApplyArea = ({
 
   const handleApply = () => {
     handleLoginAction();
-
-    requestPermission({ userId });
 
     sendPush({
       data: {
