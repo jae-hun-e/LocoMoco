@@ -3,11 +3,11 @@ import { UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
 import MapCustomControl from '@/app/_components/MapCustomControl';
-import { LocationProps, MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';
-import markerImg from '../../../../public/oh.png';
+import { LocationProps, ThunderFormData } from './ThunderModal';
+import markerImg from '/public/oh.png';
 
 import Marker = kakao.maps.Marker;
 
@@ -16,8 +16,8 @@ import Marker = kakao.maps.Marker;
  */
 
 interface Props {
-  trigger: UseFormTrigger<MGCCreateForm>;
-  setValue: UseFormSetValue<MGCCreateForm>;
+  setValue: UseFormSetValue<ThunderFormData>;
+  trigger: UseFormTrigger<ThunderFormData>;
   defaultAddress?: LocationProps | undefined;
 }
 const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {

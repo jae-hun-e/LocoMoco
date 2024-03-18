@@ -48,7 +48,12 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
 
   return (
     <>
+      <input
+        className="hidden"
+        {...register('location.address', { required: true })}
+      />
       <MGCMap
+        trigger={trigger}
         setValue={setValue}
         defaultAddress={watch('location.address') ? watch('location') : undefined}
       />

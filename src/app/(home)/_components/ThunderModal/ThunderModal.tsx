@@ -1,6 +1,5 @@
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateThunderMGC } from '@/apis/thunderMGC/useCreateThunderMGC';
-import LocationSearch from '@/app/(home)/_components/ThunderModal/LocationSearch';
 import Modal from '@/app/_components/Modal';
 import { Button } from '@/components/ui/button';
 import {
@@ -11,17 +10,31 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { useThunderModalStore } from '@/store/thunderModalStore';
+import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
+import MGCMap from './MGCMap';
 
-type ThunderFormData = {
+export interface ThunderFormData {
   endTime: string;
   title: string;
-  location: string;
-};
+  location: LocationProps;
+}
+
+export interface LocationProps {
+  address: string;
+  latitude: number;
+  longitude: number;
+  city: string;
+}
 
 // TODO: 위치 정보 추가 [2024/03/05]
 const ThunderModal = () => {
   const endTimeList = ['1', '2', '3', '5', 'N'];
+
+  let userId: string | undefined;
+  if (typeof window !== 'undefined') {
+    userId = getItem<string | undefined>(localStorage, 'userId');
+  }
 
   const {
     register,
@@ -29,13 +42,19 @@ const ThunderModal = () => {
     setValue,
     reset,
     trigger,
+    watch,
     formState: { errors },
   } = useForm<ThunderFormData>({
     mode: 'onSubmit',
     defaultValues: {
       endTime: '',
       title: '',
-      location: '',
+      location: {
+        address: undefined,
+        latitude: undefined,
+        longitude: undefined,
+        city: undefined,
+      },
     },
   });
 
@@ -59,14 +78,9 @@ const ThunderModal = () => {
     endDate.setHours(currentDate.getHours() + hour);
 
     const req = {
-      creatorId: 5,
+      creatorId: Number(userId),
       title,
-      location: {
-        address: '경기도 부천시 소사로 114번길 5',
-        latitude: 31.4295839,
-        longitude: 123.123456789,
-        city: location,
-      },
+      location,
       startTime: toKoreanTimeZone(currentDate),
       endTime: toKoreanTimeZone(endDate),
       deadline: toKoreanTimeZone(endDate),
@@ -78,11 +92,6 @@ const ThunderModal = () => {
     console.log(req);
     createThunderMGC(req);
     handleCloseModal();
-  };
-
-  const handleSelectLocation = (location: string) => {
-    setValue('location', location);
-    trigger('location');
   };
 
   return (
@@ -129,13 +138,19 @@ const ThunderModal = () => {
               {...register('title')}
               placeholder="글 제목을 입력해주세요 (선택)"
             />
-            <div className="mb-5pxr mt-15pxr font-bold">장소</div>
-            <LocationSearch onSelect={handleSelectLocation} />
             <input
               className="hidden"
-              {...register('location', { required: true })}
+              {...register('location.address', { required: true })}
             />
-            {errors.location && <span className="text-sm text-red-1">장소를 선택해야 합니다.</span>}
+            <div className="mb-5pxr mt-15pxr font-bold">장소</div>
+            <MGCMap
+              trigger={trigger}
+              setValue={setValue}
+              defaultAddress={watch('location.address') ? watch('location') : undefined}
+            />
+            {errors.location?.address && (
+              <span className="text-sm text-red-1">장소를 선택해야 합니다.</span>
+            )}
           </CardContent>
           <CardFooter className="flex justify-between">
             <Button
