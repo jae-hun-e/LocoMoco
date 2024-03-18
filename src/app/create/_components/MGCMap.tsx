@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { UseFormSetValue } from 'react-hook-form';
+import { UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
 import MapCustomControl from '@/app/_components/MapCustomControl';
@@ -16,10 +16,11 @@ import Marker = kakao.maps.Marker;
  */
 
 interface Props {
+  trigger: UseFormTrigger<MGCCreateForm>;
   setValue: UseFormSetValue<MGCCreateForm>;
   defaultAddress?: LocationProps | undefined;
 }
-const MGCMap = ({ setValue, defaultAddress }: Props) => {
+const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
   const [createdPositionCoordinates, setCreatedPositionCoordinates] = useState<kakao.maps.Marker>();
   const location = useGeolocation();
 
@@ -64,6 +65,7 @@ const MGCMap = ({ setValue, defaultAddress }: Props) => {
             setValue('location.latitude', latLng.getLat());
             setValue('location.longitude', latLng.getLng());
             setValue('location.city', newAddress);
+            trigger('location');
           }
         }
       }
