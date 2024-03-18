@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import client from '@/apis/core';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
@@ -53,9 +52,7 @@ const MGCApplyArea = ({
 
   const handleLinkChatting = () => {
     handleLoginAction();
-    client.get({ url: `/chats/room/mogakko/${MGCId}` }).then((chatRootId) => {
-      router.push(`/chat/${chatRootId}`);
-    });
+    router.push(`/chat/${MGCId}`);
   };
 
   const handleLinkEdit = () => {

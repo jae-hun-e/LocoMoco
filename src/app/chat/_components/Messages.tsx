@@ -1,8 +1,8 @@
 import { Fragment } from 'react';
+import { ChatType } from '@/types/chat';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import { ChatType } from '../[id]/page';
 import Message from './Message';
 import NotMessage from './NotMessage';
 

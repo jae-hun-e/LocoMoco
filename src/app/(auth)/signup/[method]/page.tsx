@@ -27,7 +27,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
         nickname: '',
         birth: '',
         gender: 'male',
-        job: 'developer',
+        jobId: 244,
       },
       file: null,
     },
@@ -117,6 +117,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       <Gender setGender={setValue} />
       <Job setJob={setValue} />
       <Button
+        disabled={isDuplicated}
         onClick={handleSubmit(onSubmit)}
         className="mt-4 bg-main-1"
       >
