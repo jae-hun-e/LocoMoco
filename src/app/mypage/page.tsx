@@ -3,6 +3,7 @@
 import client from '@/apis/core';
 import UserInfo from '@/app/mypage/_components/UserInfo';
 import { useMypageInfo } from '@/app/mypage/_hooks/useMypageInfo';
+import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { routes } from '@/constants/routeURL';
 import { getItem, removeItem } from '@/utils/storage';
@@ -71,9 +72,17 @@ const MyPage = () => {
   };
 
   // TODO: 로딩처리 스켈레톤 추가[24/03/15]
+
   if (!myInfo) {
-    return <div>로딩중...</div>;
+    return (
+      <div className="flex h-svh w-full items-center justify-center">
+        <Link href={routes.signin}>
+          <Button>회원가입 시에만 사용할 수 있습니다.</Button>
+        </Link>
+      </div>
+    );
   }
+
   const myActivities = [
     { title: '내가 찜한 모각코', link: routes.likeMGC, count: myInfo.likeMogakkoCount },
     {

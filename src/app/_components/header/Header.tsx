@@ -10,9 +10,11 @@ interface Props {
 const HeaderContainer = ({ children }: Props) => {
   return (
     <>
-      <header className="fixed left-0 top-0 z-50 flex h-14 w-full items-center justify-between bg-layer-1">
-        <HeaderLeft />
-        {children}
+      <header className="fixed left-0 top-0 z-50 h-14 w-full  bg-layer-1">
+        <div className="mx-20pxr flex h-full items-center justify-between">
+          <HeaderLeft />
+          {children}
+        </div>
       </header>
       <div className="mb-14" />
     </>

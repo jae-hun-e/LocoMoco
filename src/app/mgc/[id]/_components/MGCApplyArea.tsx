@@ -65,7 +65,7 @@ const MGCApplyArea = ({
   };
 
   return (
-    <section className="fixed bottom-0 z-50 w-[calc(100%-2.5rem)] bg-layer-1">
+    <section className="fixed bottom-50pxr z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
         content={
           isClose
