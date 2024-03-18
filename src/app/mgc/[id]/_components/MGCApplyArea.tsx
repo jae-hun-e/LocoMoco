@@ -68,13 +68,15 @@ const MGCApplyArea = ({
     <section className="fixed bottom-50pxr z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
         content={
-          isClose
-            ? '모집 종료된 모각코'
-            : isOwner
-              ? '수정하기'
-              : isParticipated
-                ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
-                : `참여하기 (${currentParticipants}/${maxParticipants})`
+          maxParticipants > currentParticipants
+            ? '정원초과'
+            : isClose
+              ? '모집 종료된 모각코'
+              : isOwner
+                ? '수정하기'
+                : isParticipated
+                  ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
+                  : `참여하기 (${currentParticipants}/${maxParticipants})`
         }
         disabled={isClose}
         onClick={isOwner ? handleLinkEdit : isParticipated ? handleLinkChatting : handleApply}
