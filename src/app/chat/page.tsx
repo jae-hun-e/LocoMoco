@@ -1,41 +1,11 @@
 'use client';
 
 import useChatList from '@/apis/chat/useChatList';
+import ProgressBar from '@/app/(auth)/signup/_components/ProgressBar';
 import { differenceInDays, format, getYear } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-
-const chatList = [
-  {
-    name: 'good',
-    roomId: 0,
-    profileImg: '/oh.png',
-    updatedAt: '2024-03-02T11:38:30',
-    lastMsg: 'This is Last chat',
-  },
-  {
-    name: 'good',
-    roomId: 0,
-    profileImg: '/oh.png',
-    updatedAt: '2024-03-01T11:38:30',
-    lastMsg: 'This is Last chat',
-  },
-  {
-    name: 'good',
-    roomId: 0,
-    profileImg: '/oh.png',
-    updatedAt: '2024-02-29T11:38:30',
-    lastMsg: 'This is Last chat',
-  },
-  {
-    name: 'good',
-    roomId: 0,
-    profileImg: '/oh.png',
-    updatedAt: '2023-02-29T11:38:30',
-    lastMsg: 'This is Last chat',
-  },
-];
 
 const ChatList = () => {
   const router = useRouter();
@@ -49,35 +19,37 @@ const ChatList = () => {
     }
   };
 
-  const { data, isLoading } = useChatList();
-
-  //Todo: 실제 데이터 사용하기
-  console.log(data);
-  isLoading;
+  const { data: chatRooms, isLoading } = useChatList();
 
   return (
     <ul className="flex flex-col gap-2">
-      {chatList.map(({ roomId, name, profileImg, updatedAt, lastMsg }, idx) => (
-        <li
-          key={idx}
-          className="flex items-center justify-between gap-2"
-          onClick={() => router.push(`chat/${roomId}`)}
-        >
-          <Image
-            src={profileImg}
-            width={48}
-            height={48}
-            alt="profile"
-            className="rounded-xl"
-            priority
-          />
-          <div className="flex w-48 grow flex-col">
-            <p className="text-lg">{name}</p>
-            <p className="text-gray-500">{lastMsg}</p>
-          </div>
-          <p className="text-sm text-gray-500">{handleDate(updatedAt)}</p>
-        </li>
-      ))}
+      {isLoading ? (
+        <ProgressBar />
+      ) : chatRooms?.length !== 0 ? (
+        chatRooms?.map(({ mogakkoId, lastMessage, name, updatedAt }) => (
+          <li
+            key={mogakkoId}
+            className="flex items-center justify-between gap-2"
+            onClick={() => router.push(`chat/${mogakkoId}`)}
+          >
+            <Image
+              src={lastMessage.senderProfileImage || '/oh.png'}
+              width={48}
+              height={48}
+              alt="profile"
+              className="rounded-xl"
+              priority
+            />
+            <div className="flex w-48 grow flex-col">
+              <p className="text-lg">{name}</p>
+              <p className="text-gray-500">{lastMessage.message}</p>
+            </div>
+            <p className="text-sm text-gray-500">{handleDate(updatedAt)}</p>
+          </li>
+        ))
+      ) : (
+        '참여중인 채팅방이 없습니다.'
+      )}
     </ul>
   );
 };
