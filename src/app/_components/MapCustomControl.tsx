@@ -12,6 +12,7 @@ const MapCustomControl = ({ zoomIn, zoomOut }: MapCustomControlProps) => {
       <button
         onClick={zoomIn}
         className="flex h-32pxr w-32pxr items-center justify-center rounded-t-[3px] border-b border-solid border-gray-300 bg-white"
+        type="button"
       >
         <Plus
           width={18}
@@ -22,6 +23,7 @@ const MapCustomControl = ({ zoomIn, zoomOut }: MapCustomControlProps) => {
       <button
         onClick={zoomOut}
         className="flex h-32pxr w-32pxr items-center justify-center rounded-b-[3px] border-b border-solid border-gray-300 bg-white"
+        type="button"
       >
         <Minus
           width={18}

@@ -1,40 +1,58 @@
 import { UseFormSetValue } from 'react-hook-form';
+import { TagType } from '@/apis/mgc/queryFn';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { SignupValue } from '../[method]/page';
+import { UserProfile } from '@/types/userInfo';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface Props {
-  setJob: UseFormSetValue<SignupValue>;
+  setJob: UseFormSetValue<UserProfile>;
 }
 
-const job = [
-  { value: 'developer', label: '현직자' },
-  { value: 'job_seeker', label: '취준생' },
-  { value: 'etc', label: '기타' },
-];
-
 const Job = ({ setJob }: Props) => {
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+  const tags = categoryList?.find(({ category_name }) => category_name === '직업')?.tags;
+
+  16;
+  const handleRadioSelect = (
+    field: keyof UserProfile['requestDto'],
+    selected: string,
+    tags: TagType[],
+  ) => {
+    const selectTag = tags.filter(({ tag_name }) => tag_name === selected);
+    selectTag && setJob(`requestDto.${field}`, selectTag[0].tag_id);
+  };
+
   return (
     <div className="flex flex-col gap-1">
       <h2>직업</h2>
-      <RadioGroup
-        className="flex"
-        defaultValue="developer"
-        onValueChange={(job) => setJob('job', job)}
-      >
-        {job.map(({ value, label }) => (
-          <div
-            className="flex items-center space-x-2"
-            key={value}
-          >
-            <RadioGroupItem
-              value={value}
-              id={value}
-            />
-            <Label htmlFor={value}>{label}</Label>
-          </div>
-        ))}
-      </RadioGroup>
+      {tags && (
+        <RadioGroup
+          className="flex"
+          defaultValue="취준생"
+          onValueChange={(value) => handleRadioSelect('jobId', value, tags)}
+        >
+          {tags.map(({ tag_name, tag_id }) => (
+            <div
+              className="flex items-center space-x-2"
+              key={tag_id}
+            >
+              <RadioGroupItem
+                value={tag_name}
+                id={tag_name}
+              />
+              <Label
+                htmlFor={tag_name}
+                className="text-xs"
+              >
+                {tag_name}
+              </Label>
+            </div>
+          ))}
+        </RadioGroup>
+      )}
     </div>
   );
 };

@@ -1,8 +1,5 @@
-import { useMemo } from 'react';
 import Tag from '@/app/_components/Tag';
-import { filterTagsByIds } from '@/utils/filterTagByIds';
-import { getCategoryOptions } from '@/utils/getQueryOptions';
-import { useQueryClient } from '@tanstack/react-query';
+import { useFilterTagsByIds } from '@/hooks/useFilterTagByIds';
 
 interface Props {
   tagIds?: number[];
@@ -15,32 +12,20 @@ const MGCOptions = ({ tagIds }: Props) => {
    *   -> Context.Provider + useTagMapStore로 해결 시도 중
    */
 
-  const queryClient = useQueryClient();
-  const tagMapping = useMemo(() => {
-    const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
-    const newTagMapping = new Map();
-    categoryList?.forEach(({ category_name, tags }) => {
-      tags.forEach(({ tag_id, tag_name }) => {
-        newTagMapping.set(tag_id, { tagName: tag_name, categoryName: category_name });
-      });
-    });
-    return newTagMapping;
-  }, [queryClient]);
-
-  const options = filterTagsByIds(tagMapping, tagIds ?? []);
+  const options = useFilterTagsByIds(tagIds ?? []);
 
   return (
     <div className="flex flex-col gap-5pxr">
-      {options.map(({ categoryName, tagNames }) => (
+      {options.map(({ categoryName, tags }) => (
         <div
           key={categoryName}
           className="flex gap-10pxr"
         >
           <p className="w-100pxr">{categoryName}</p>
-          {tagNames ? (
+          {tags ? (
             <div className="flex gap-10pxr">
-              {tagNames.map((tag) => (
-                <Tag key={tag}>{tag}</Tag>
+              {tags.map((tag) => (
+                <Tag key={tag.tag_id}>{tag.tag_name}</Tag>
               ))}
             </div>
           ) : (

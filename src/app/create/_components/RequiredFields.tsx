@@ -6,9 +6,10 @@ import {
   UseFormTrigger,
   UseFormWatch,
 } from 'react-hook-form';
+import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import MGCDate from '@/app/create/_components/MGCDate';
+import MGCMap from '@/app/create/_components/MGCMap';
 import MGCTime from '@/app/create/_components/MGCTime';
-import { MGCCreateForm } from '@/app/create/page';
 import { Input } from '@/components/ui/input';
 import { Label, labelVariants } from '@/components/ui/label';
 
@@ -47,11 +48,14 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
 
   return (
     <>
-      {/*필수 값 - 장소, 날짜/시간, 신청 종류시간, 신청기한 */}
-      {/*TODO: 유경이가 PR 머지하고 나면 지도 합치기 [24/02/15]*/}
-      <section
-        className="mb-10pxr h-150pxr w-full bg-layer-5"
-        // ref={mapRef}
+      <input
+        className="hidden"
+        {...register('location.address', { required: true })}
+      />
+      <MGCMap
+        trigger={trigger}
+        setValue={setValue}
+        defaultAddress={watch('location.address') ? watch('location') : undefined}
       />
 
       <section className={labelVariants()}>
@@ -68,6 +72,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
         title="* 모각코 날짜"
         onSelectedDay={(selectedDay) => handleMGCDate('date', selectedDay)}
         errorMessages={errors.date?.message}
+        defaultValue={watch('date')}
       />
 
       <MGCTime
@@ -82,6 +87,7 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
         onSelectedDay={(selectedDay) => handleMGCDate('deadLine', selectedDay)}
         endDate={watch('date')}
         errorMessages={errors.deadLine?.message}
+        defaultValue={watch('deadLine')}
       />
 
       <section>

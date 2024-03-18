@@ -15,7 +15,7 @@ export interface UserInfoData {
   profileImage: {
     imageId: number;
     path: string;
-  };
+  } | null;
   score: number;
   createdAt: string;
 }

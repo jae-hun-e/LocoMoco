@@ -13,13 +13,16 @@ interface Props {
   onSelectedDay?: (day: Date) => void;
   startDate?: Date;
   endDate?: Date;
+  defaultValue?: Date;
 }
 const DatePicker = ({
   onSelectedDay,
   startDate = new Date(new Date().setHours(0, 0, 0, 0)),
   endDate,
+  defaultValue,
 }: Props) => {
-  const [date, setDate] = useState<Date>();
+  const [date, setDate] = useState<Date | undefined>(defaultValue);
+
   const handleSelect: SelectSingleEventHandler = (day) => {
     setDate(day);
     day && onSelectedDay?.(day);

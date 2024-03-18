@@ -2,7 +2,9 @@ export const routes = {
   home: '/',
   create: '/create',
   chat: '/chat',
+  mgc: '/mgc',
   search: '/search',
+  signin: '/signin',
   mypage: '/mypage',
   changeMyInfo: '/mypage/change-my-info',
   likeMGC: '/mypage/like-mgc',
@@ -13,7 +15,6 @@ export const routes = {
   sendReviews: '/mypage/send-reviews',
   reportList: '/mypage/report-list',
   blackList: '/mypage/black-list',
-  logout: '/mypage/logout',
   withdrawal: '/mypage/withdrawal',
 } as const;
 
@@ -22,8 +23,12 @@ export const titleMap = {
   chat: '채팅',
   create: '모각코 생성',
   mgc: '모각코 디테일',
+  'edit-mgc': '모각코 수정',
   'current-join-mgc': '참여중인 모각코',
   'end-join-mgc': '종료된 모각코',
   'like-mgc': '내가 찜한 모각코',
   'received-reviews-assessment': '받은 리뷰 평가',
+  another: '프로필',
+  'join-mgc': '참여한 모각코',
+  'change-my-info': '개인정보 수정',
 } as const;

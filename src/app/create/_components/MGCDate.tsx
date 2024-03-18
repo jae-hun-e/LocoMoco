@@ -7,9 +7,10 @@ interface Props {
   onSelectedDay: (selectedDay: Date) => void;
   endDate?: Date;
   errorMessages?: string;
+  defaultValue?: Date;
 }
 
-const MGCDate = ({ title, onSelectedDay, endDate, errorMessages }: Props) => {
+const MGCDate = ({ title, onSelectedDay, endDate, errorMessages, defaultValue }: Props) => {
   return (
     <section>
       <Label className="flex items-center">
@@ -18,6 +19,7 @@ const MGCDate = ({ title, onSelectedDay, endDate, errorMessages }: Props) => {
           <DatePicker
             onSelectedDay={onSelectedDay}
             endDate={endDate}
+            defaultValue={defaultValue}
           />
           {errorMessages && (
             <span className="absolute -bottom-5 text-xs text-red-1">{errorMessages}</span>

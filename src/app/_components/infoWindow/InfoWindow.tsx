@@ -8,7 +8,7 @@ interface InfoWindow {
     latitude: number;
     longitude: number;
   };
-  children: ReactNode;
+  children?: ReactNode;
 }
 
 const InfoWindow = ({ map, isLoad, show, position, children }: InfoWindow) => {
