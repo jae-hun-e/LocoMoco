@@ -53,15 +53,6 @@ const ChangeMyInfo = () => {
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
 
-  /* TODO: BE와 논의
-  1. 개인정보에 job에는 DEVELOPER로 들어가있음
-  2. 하지만 카테고리에는 한글로되어있음
-  3. 매치가 안됨
-  const queryClient = useQueryClient();
-  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
-  const jabType = categoryList?.find(({ category_name }) => category_name === '직업');
-  */
-
   const handleRadioSelect = (field: keyof UserProfile['requestDto'], selected: string) => {
     setValue(`requestDto.${field}`, selected);
   };

@@ -18,9 +18,8 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   const router = useRouter();
 
   const queryClient = useQueryClient();
-  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey)!;
 
-  if (!categoryList) return null;
   const MGCType = categoryList.find(({ category_name }) => category_name === '모각코 유형');
 
   const MGCTypeTag = MGCType?.tags ?? [];

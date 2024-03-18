@@ -2,13 +2,19 @@
 
 import { useEffect, useRef, useState } from 'react';
 import client from '@/apis/core';
+import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
+import Modal from '@/app/_components/Modal';
+import UserList from '@/app/_components/UserInfoAndButton/UserList';
 import ChatInput from '@/app/chat/_components/ChatInput';
 import Messages from '@/app/chat/_components/Messages';
 import { Button } from '@/components/ui/button';
+import { useThunderModalStore } from '@/store/thunderModalStore';
 import { getItem } from '@/utils/storage';
 import { Client } from '@stomp/stompjs';
 import { useInfiniteQuery } from '@tanstack/react-query';
+import { X } from 'lucide-react';
 import SockJS from 'sockjs-client';
+import Review from '../_components/review/Review';
 
 export interface ChatType {
   isNotice: boolean;
@@ -26,6 +32,12 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
   const [stop, setStop] = useState(false);
   const stomp = useRef<Client>(new Client());
   const input = useRef<HTMLTextAreaElement>(null);
+
+  const [isUserList, setIsUserList] = useState(true);
+  const [selectedUserId, setSelectedUserId] = useState(0);
+
+  // TODO: params에 들어갈 값 모각코id로 할지 회의 후 수정(현재 id는 모각코 id) [24.03.15]
+  const { mgcDetail } = useGetMGCDetail(parseInt(id, 10));
 
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
     console.log('fetching chat...');
@@ -100,23 +112,63 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
     input.current!.value = '';
   };
 
+  const { isOpen, toggleModal } = useThunderModalStore();
+
+  const handleCloseModal = () => {
+    toggleModal();
+    setIsUserList(true);
+  };
+
+  const handleButtonClick = (targetId: number) => {
+    setSelectedUserId(targetId);
+    setIsUserList(false);
+  };
+
   return (
-    <section className="flex flex-col">
-      <Messages talks={talks} />
-      <ChatInput
-        ref={input}
-        sendMessage={sendMessage}
-      />
-      {hasNextPage && (
-        <Button
-          disabled={isFetchingNextPage}
-          className="absolute h-5 opacity-30"
-          onClick={() => fetchNextPage()}
+    <div>
+      <section className="flex flex-col">
+        <Messages talks={talks} />
+        <ChatInput
+          ref={input}
+          sendMessage={sendMessage}
+        />
+        {hasNextPage && (
+          <Button
+            disabled={isFetchingNextPage}
+            className="absolute h-5 opacity-30"
+            onClick={() => fetchNextPage()}
+          >
+            {isFetchingNextPage ? 'Loading' : '이전 대화 불러오기'}
+          </Button>
+        )}
+        <Modal
+          isOpen={isOpen}
+          onClose={handleCloseModal}
+          width="full"
+          height="full"
+          rounded="none"
         >
-          {isFetchingNextPage ? 'Loading' : '이전 대화 불러오기'}
-        </Button>
-      )}
-    </section>
+          <div className="p-20pxr">
+            <button onClick={handleCloseModal}>
+              <X />
+            </button>
+            {isUserList ? (
+              <UserList
+                data={[...mgcDetail.participants, mgcDetail.creatorInfo]}
+                onClick={handleButtonClick}
+                buttonName="후기 보내기"
+              />
+            ) : (
+              <Review
+                MGCId={id}
+                revieweeId={selectedUserId}
+                onCancel={() => setIsUserList(true)}
+              />
+            )}
+          </div>
+        </Modal>
+      </section>
+    </div>
   );
 };
 export default ChatRoom;
