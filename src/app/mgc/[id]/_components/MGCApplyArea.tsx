@@ -1,10 +1,13 @@
 'use client';
 
 import { MouseEvent, useState } from 'react';
+import { UserInfo } from '@/apis/mgc/useGetMGCDetail';
+import useSendPush from '@/app/fcm/_hooks/useSendPush';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
 import { toast } from '@/components/ui/use-toast';
+import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
@@ -12,7 +15,7 @@ import { useRouter } from 'next/navigation';
 
 interface Props {
   maxParticipants: number;
-  currentParticipants: number;
+  currentParticipants: UserInfo[];
   endTime: string;
   like: number;
   MGCId: number;
@@ -34,7 +37,8 @@ const MGCApplyArea = ({
   const isOwner = Number(userId) === createUserId;
   const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
-
+  const { requestPermission } = useRequestPermission();
+  const { sendPush } = useSendPush();
   const isClose = new Date() > new Date(endTime);
 
   const router = useRouter();
@@ -62,25 +66,38 @@ const MGCApplyArea = ({
 
   const handleApply = () => {
     handleLoginAction();
+
+    requestPermission({ userId });
+
+    sendPush({
+      data: {
+        title: `모각코에 새로운 멤버가 참여했습니다.`,
+        body: '즐거운 모각코 시간을 보내세요!',
+        click_action: window.location.href,
+      },
+      userIds: currentParticipants.map((user) => user.userId + ''),
+    });
+
     applyMGC({ MGCId, userId: userId ?? '' });
   };
 
-  console.log(currentParticipants, maxParticipants);
+  const currentParticipantsLength = currentParticipants.length;
+
   return (
     <section className="fixed bottom-50pxr z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
         content={
-          currentParticipants >= maxParticipants
+          currentParticipantsLength >= maxParticipants
             ? '정원초과'
             : isClose
               ? '모집 종료된 모각코'
               : isOwner
                 ? '수정하기'
                 : isParticipated
-                  ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
-                  : `참여하기 (${currentParticipants}/${maxParticipants})`
+                  ? `톡방으로 이동하기 (${currentParticipantsLength}/${maxParticipants})`
+                  : `참여하기 (${currentParticipantsLength}/${maxParticipants})`
         }
-        disabled={currentParticipants >= maxParticipants || isClose}
+        disabled={currentParticipantsLength >= maxParticipants || isClose}
         onClick={isOwner ? handleLinkEdit : isParticipated ? handleLinkChatting : handleApply}
       >
         <button

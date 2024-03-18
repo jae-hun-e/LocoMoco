@@ -6,7 +6,7 @@ const FCMPush = () => {
   const { sendPush } = useSendPush();
 
   // TODO: userIds를 실제 사용자의 id들로 변경[24/03/17]
-  const userIds = ['87'];
+  const userIds = [87];
 
   const sendWebPush = () => {
     // TODO: 실제 넣을 데이터로 변경[24/03/17]
