@@ -9,7 +9,17 @@ interface ChangeMyInfoProps {
 
 const changeMyInfo = async ({ changeMyData, userId }: ChangeMyInfoProps) => {
   try {
-    return await client.patch({ url: `/users/${userId}`, data: changeMyData });
+    const formData = new FormData();
+    formData.append('requestDto', JSON.stringify(changeMyData.requestDto));
+    if (changeMyData.file) {
+      formData.append('file', changeMyData.file);
+    }
+
+    return await client.patch({
+      url: `/users/${userId}`,
+      data: formData,
+      headers: { 'Content-Type': `multipart/form-data` },
+    });
   } catch (error) {
     console.error('내 정보 변경에 실패했습니다.', error);
   }
