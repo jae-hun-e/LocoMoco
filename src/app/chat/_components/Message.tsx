@@ -1,8 +1,8 @@
 import { Fragment, useEffect, useRef } from 'react';
+import { ChatType } from '@/types/chat';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
-import { ChatType } from '../[id]/page';
 
 interface Props {
   notMe: boolean;
