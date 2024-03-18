@@ -5,10 +5,9 @@ import { MGCTypes } from '@/constants/types';
 import { MGCSummary } from '@/types/MGCList';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
+import { formatDistance } from 'date-fns';
+import { ko } from 'date-fns/locale';
 import { useRouter } from 'next/navigation';
-
-// import { formatDistance } from 'date-fns';
-// import { ko } from 'date-fns/locale';
 
 interface MGCListItemPropsType {
   data: MGCSummary;
@@ -68,9 +67,10 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
       <div className="text-layer-5">
         {data.location.address}
         <span className="mx-1">·</span>
-        {/* TODO: 서버 데이터에 createdAt생기면 Date연산 하기 [24.02.24] */}
-        {/* {formatDistance(data.createAt, new Date(), { addSuffix: true, locale: ko })} */}
-        {'ex)0시간 전'}
+        {data.updatedAt && data.updatedAt > data.createdAt
+          ? '(수정됨) ' +
+            formatDistance(data.updatedAt, new Date(), { addSuffix: true, locale: ko })
+          : formatDistance(data.createdAt, new Date(), { addSuffix: true, locale: ko })}
         <span className="mx-1">·</span>조회
         {data.views}
       </div>
