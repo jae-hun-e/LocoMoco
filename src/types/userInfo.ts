@@ -3,7 +3,7 @@ export interface UserProfile {
     nickname: string;
     birth: string;
     gender: string;
-    job: string;
+    jobId: number;
   };
-  file: string | null;
+  file: string | null | File;
 }
