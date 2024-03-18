@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { MouseEvent, useState } from 'react';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
 import MainStyleButton from '@/components/MainStyleButton';
@@ -45,7 +45,8 @@ const MGCApplyArea = ({
       router.push('/signin');
     }
   };
-  const handleLike = () => {
+  const handleLike = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     handleLoginAction();
     setLike(!isLike);
   };
@@ -64,11 +65,12 @@ const MGCApplyArea = ({
     applyMGC({ MGCId, userId: userId ?? '' });
   };
 
+  console.log(currentParticipants, maxParticipants);
   return (
     <section className="fixed bottom-50pxr z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
         content={
-          maxParticipants > currentParticipants
+          currentParticipants >= maxParticipants
             ? '정원초과'
             : isClose
               ? '모집 종료된 모각코'
@@ -78,7 +80,7 @@ const MGCApplyArea = ({
                   ? `톡방으로 이동하기 (${currentParticipants}/${maxParticipants})`
                   : `참여하기 (${currentParticipants}/${maxParticipants})`
         }
-        disabled={isClose}
+        disabled={currentParticipants >= maxParticipants || isClose}
         onClick={isOwner ? handleLinkEdit : isParticipated ? handleLinkChatting : handleApply}
       >
         <button
