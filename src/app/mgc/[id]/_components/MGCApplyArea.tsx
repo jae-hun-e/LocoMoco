@@ -94,7 +94,7 @@ const MGCApplyArea = ({
       </MainStyleButton>
 
       <div className="flex justify-center text-xs">
-        <b>{format(endTime, 'M월 d일 h시')}</b>
+        <b>{format(endTime, 'M월 d일 HH시')}</b>
         <p>까지만 신청 할 수 있어요!</p>
       </div>
     </section>
