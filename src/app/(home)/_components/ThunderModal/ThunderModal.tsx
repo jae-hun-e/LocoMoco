@@ -86,10 +86,9 @@ const ThunderModal = () => {
       deadline: toKoreanTimeZone(endDate),
       maxParticipants: 10,
       content: title,
-      tags: [],
+      tags: [243],
     };
 
-    console.log(req);
     createThunderMGC(req);
     handleCloseModal();
   };
