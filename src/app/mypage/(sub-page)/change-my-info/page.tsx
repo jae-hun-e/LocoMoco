@@ -29,7 +29,7 @@ const ChangeMyInfo = () => {
   }
 
   const { myInfo } = useMypageInfo({ userId: Number(userId) });
-  console.log('myInfo', myInfo);
+
   const { changeMyInfo } = useChangeMyInfo({ userId: userId! });
   const {
     register,

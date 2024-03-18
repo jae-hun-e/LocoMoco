@@ -7,6 +7,8 @@ export interface MGCSummary {
   title: string;
   views: number;
   likeCount: number;
+  createdAt: Date;
+  updatedAt?: Date;
   maxParticipants: number;
   curParticipants: number;
   location: {

@@ -5,5 +5,5 @@ export interface UserProfile {
     gender: string;
     jobId: number;
   };
-  file: string | null | File;
+  file: File | null;
 }
