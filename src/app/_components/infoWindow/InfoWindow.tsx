@@ -9,9 +9,12 @@ interface InfoWindow {
     longitude: number;
   };
   children?: ReactNode;
+  getNewPosition: (data: Location) => void;
 }
 
-const InfoWindow = ({ map, isLoad, show, position, children }: InfoWindow) => {
+type Location = { latitude: number; longitude: number };
+
+const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: InfoWindow) => {
   const [customoverlay, setCustomoverlay] = useState<kakao.maps.CustomOverlay>();
   const ref = useRef<HTMLDivElement | null>(null);
   const startPoint = useRef({ x: 0, y: 0 });
@@ -100,6 +103,10 @@ const InfoWindow = ({ map, isLoad, show, position, children }: InfoWindow) => {
       // 계산된 픽셀 좌표를 지도 컨테이너에 해당하는 지도 좌표로 변경합니다
       const newPosition: kakao.maps.LatLng = proj.coordsFromContainerPoint(newPoint);
       console.log('인포윈도우의 좌표', newPosition);
+      getNewPosition({
+        latitude: newPosition.getLat(),
+        longitude: newPosition.getLng(),
+      });
 
       // 커스텀오버레이에서 마우스 관련 이벤트가 발생해도 지도가 움직이지 않도록 합니다
       kakao.maps.event.preventMap();
@@ -117,7 +124,7 @@ const InfoWindow = ({ map, isLoad, show, position, children }: InfoWindow) => {
       document.addEventListener('mousemove', onMouseMove);
       document.addEventListener('touchmove', onMouseMove);
     },
-    [map, customoverlay, onMouseMove],
+    [map, customoverlay, getNewPosition, onMouseMove],
   );
 
   const onMouseUp = useCallback(() => {
