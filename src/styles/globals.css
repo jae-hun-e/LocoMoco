@@ -108,6 +108,17 @@
   [vaul-drawer][vaul-drawer-direction='bottom']:after {
     height: 0px !important;
   }
+
+  .bubble-tail:after {
+    content: '';
+    position: absolute;
+    bottom: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 13px solid white;
+  }
 }
 
 @layer base {

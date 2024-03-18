@@ -1,7 +1,7 @@
 import { ForwardedRef, forwardRef, useCallback, useEffect, useState } from 'react';
 import { CreateMarkerParams, MovePositionParams } from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
-import markerImg from '../../../../public/oh.png';
+import useInfoWindowPosition from '@/store/useInfoWindowPosition';
 
 interface MapProps {
   map?: kakao.maps.Map;
@@ -35,11 +35,12 @@ const Map = forwardRef(
     }: MapProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
-    const [createdPositionCoordinates, setCreatedPositionCoordinates] =
-      useState<kakao.maps.Marker>();
+    useState<kakao.maps.Marker>();
     const [currentPositionMarker, setCurrentPositionMarker] = useState<kakao.maps.Marker>();
 
     const location = useGeolocation();
+
+    const { setInfoWindowPosition } = useInfoWindowPosition();
 
     useEffect(() => {
       if (location.loaded && currentPositionMarker) {
@@ -53,20 +54,6 @@ const Map = forwardRef(
 
     useEffect(() => {
       if (isLoad) {
-        setCreatedPositionCoordinates(
-          createMarker({
-            latitude: 35.1543440473172,
-            longitude: 128.686892962301,
-            draggble: true,
-            none: true,
-            markerSrc: markerImg.src,
-            markerSize: {
-              width: 40,
-              height: 40,
-            },
-          }),
-        );
-
         setCurrentPositionMarker(
           createMarker({
             latitude: 35.1543440473172,
@@ -81,20 +68,12 @@ const Map = forwardRef(
     const handleMouseDown = useCallback(
       (e: kakao.maps.event.MouseEvent) => {
         timerRef.current = setTimeout(() => {
-          if (createdPositionCoordinates) {
-            const latLng = e.latLng;
+          const latLng = e.latLng;
 
-            if (createdPositionCoordinates && map) {
-              movePosition({
-                marker: createdPositionCoordinates,
-                latitude: latLng.getLat(),
-                longitude: latLng.getLng(),
-              });
-            }
-          }
+          setInfoWindowPosition({ latitude: latLng.getLat(), longitude: latLng.getLng() });
         }, 1000);
       },
-      [timerRef, createdPositionCoordinates, map, movePosition],
+      [timerRef, setInfoWindowPosition],
     );
 
     const handleTouchStart = useCallback(
@@ -106,18 +85,11 @@ const Map = forwardRef(
             const mapProjection = map.getProjection();
             const point = new kakao.maps.Point(e.touches[0].clientX, e.touches[0].clientY - 120);
             const latLng = mapProjection.coordsFromContainerPoint(point);
-
-            if (createdPositionCoordinates && map) {
-              movePosition({
-                marker: createdPositionCoordinates,
-                latitude: latLng.getLat(),
-                longitude: latLng.getLng(),
-              });
-            }
+            setInfoWindowPosition({ latitude: latLng.getLat(), longitude: latLng.getLng() });
           }, 1000);
         }
       },
-      [createdPositionCoordinates, map, movePosition, timerRef],
+      [map, setInfoWindowPosition, timerRef],
     );
 
     useEffect(() => {
