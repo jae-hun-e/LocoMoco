@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
 
 interface InfoWindow {
   map?: kakao.maps.Map;
@@ -8,9 +8,10 @@ interface InfoWindow {
     latitude: number;
     longitude: number;
   };
+  children: ReactNode;
 }
 
-const InfoWindow = ({ map, isLoad, show, position }: InfoWindow) => {
+const InfoWindow = ({ map, isLoad, show, position, children }: InfoWindow) => {
   const [customoverlay, setCustomoverlay] = useState<kakao.maps.CustomOverlay>();
   const ref = useRef<HTMLDivElement | null>(null);
   const startPoint = useRef({ x: 0, y: 0 });
@@ -20,9 +21,13 @@ const InfoWindow = ({ map, isLoad, show, position }: InfoWindow) => {
   });
 
   useEffect(() => {
-    if (map && customoverlay && show) {
-      customoverlay?.setMap(map);
-      customoverlay.setPosition(new kakao.maps.LatLng(position.latitude, position.longitude));
+    if (map && customoverlay) {
+      if (show) {
+        customoverlay.setMap(map);
+        customoverlay.setPosition(new kakao.maps.LatLng(position.latitude, position.longitude));
+      } else {
+        customoverlay.setMap(null);
+      }
     }
   }, [customoverlay, map, position.latitude, position.longitude, show]);
 
@@ -133,9 +138,9 @@ const InfoWindow = ({ map, isLoad, show, position }: InfoWindow) => {
       ref={ref}
       onMouseDown={onMouseDown}
       onTouchStart={onMouseDown}
-      id="custom-test"
+      id="infowindow"
     >
-      인포윈도우
+      {children}
     </div>
   );
 };
