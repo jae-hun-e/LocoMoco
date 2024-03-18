@@ -8,47 +8,46 @@ import UserList from '@/app/_components/UserInfoAndButton/UserList';
 import ChatInput from '@/app/chat/_components/ChatInput';
 import Messages from '@/app/chat/_components/Messages';
 import { Button } from '@/components/ui/button';
+import { toast } from '@/components/ui/use-toast';
 import { useThunderModalStore } from '@/store/thunderModalStore';
+import { ChatType } from '@/types/chat';
 import { getItem } from '@/utils/storage';
 import { Client } from '@stomp/stompjs';
-import { useInfiniteQuery } from '@tanstack/react-query';
+import { useInfiniteQuery, useQuery } from '@tanstack/react-query';
 import { X } from 'lucide-react';
 import SockJS from 'sockjs-client';
 import Review from '../_components/review/Review';
 
-export interface ChatType {
-  isNotice: boolean;
-  chatMessageId: number;
-  chatRoomId: number;
-  createdAt: string;
-  message: string;
-  senderId: number;
-  senderNickName: string;
-  senderProfileImage: string | null;
-}
-
-const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
+const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
   const [talks, setTalks] = useState<ChatType[]>([]);
   const [stop, setStop] = useState(false);
+  const [chatRoomId, setChatRoomId] = useState(0);
   const stomp = useRef<Client>(new Client());
   const input = useRef<HTMLTextAreaElement>(null);
 
   const [isUserList, setIsUserList] = useState(true);
   const [selectedUserId, setSelectedUserId] = useState(0);
 
-  // TODO: params에 들어갈 값 모각코id로 할지 회의 후 수정(현재 id는 모각코 id) [24.03.15]
-  const { mgcDetail } = useGetMGCDetail(parseInt(id, 10));
-
+  const { mgcDetail } = useGetMGCDetail(parseInt(mgcId, 10));
+  console.log(mgcDetail, 'test');
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
     console.log('fetching chat...');
     const data = await client.get<ChatType[]>({
-      url: `/chats/room/${id}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
+      url: `/chats/room/${chatRoomId}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
     });
     setTalks([...data, ...talks]);
-    console.log(data);
     if (data.length < 20) setStop(true);
     return data;
   };
+
+  useQuery({
+    queryKey: ['mgc2chat', mgcId],
+    queryFn: async () => {
+      const id = await client.get<number>({ url: `/chats/room/mogakko/${mgcId}` });
+      setChatRoomId(id);
+      return id;
+    },
+  });
 
   const { hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['moreChat'],
@@ -58,6 +57,7 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
       if (stop || talks.length === 0) return undefined;
       return talks[0].chatMessageId;
     },
+    enabled: !!chatRoomId,
   });
 
   const disconnect = () => {
@@ -67,9 +67,8 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
 
   useEffect(() => {
     const subscribe = () => {
-      stomp.current.subscribe(`/sub/chat/room/${id}`, (body) => {
+      stomp.current.subscribe(`/sub/chat/room/${chatRoomId}`, (body) => {
         const parsedBody = JSON.parse(body.body);
-        console.log(parsedBody, 'subscribe');
         if (!talks || !parsedBody.senderNickName) return;
         setTalks((prev) => [...prev, parsedBody]);
       });
@@ -91,20 +90,20 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
 
     return () => disconnect();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id]);
+  }, [chatRoomId]);
 
   const sendMessage = () => {
     const text = input.current!.value;
     if (!text.trim()) return;
     if (text.length > 255) {
-      alert(`채팅은 255자를 넘길 수 없습니다. (현재: ${text.length}자)`);
+      toast({ description: `채팅은 255자를 넘길 수 없습니다. (현재: ${text.length}자)` });
       return;
     }
     input.current?.value.length;
     stomp.current.publish({
       destination: '/pub/chats/message',
       body: JSON.stringify({
-        chatRoomId: id, // 채팅방 ID
+        chatRoomId: chatRoomId, // 채팅방 Id
         senderId: getItem(localStorage, 'userId'),
         message: input.current!.value, // 메시지 내용
       }),
@@ -152,7 +151,7 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
             <button onClick={handleCloseModal}>
               <X />
             </button>
-            {isUserList ? (
+            {isUserList && mgcDetail ? (
               <UserList
                 data={[...mgcDetail.participants, mgcDetail.creatorInfo]}
                 onClick={handleButtonClick}
@@ -160,7 +159,7 @@ const ChatRoom = ({ params: { id } }: { params: { id: string } }) => {
               />
             ) : (
               <Review
-                MGCId={id}
+                MGCId={mgcId}
                 revieweeId={selectedUserId}
                 onCancel={() => setIsUserList(true)}
               />
