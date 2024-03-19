@@ -35,14 +35,6 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
     return filterCategoryList;
   };
 
-  const allCategory = [
-    {
-      categoryName: '',
-      tagId: 0,
-      tagName: '전체',
-    },
-  ];
-
   const MGCTypes = getFilterList('모각코 유형');
   const languageTypes = getFilterList('개발 언어');
   const studyTypes = getFilterList('개발 유형');
@@ -68,17 +60,17 @@ const FilterContent = ({ onSubmit }: { onSubmit: (data: SearchFilterForm) => voi
         >
           <div className="flex h-120pxr flex-row justify-between pt-10pxr">
             <TypeCheckList
-              types={allCategory.concat(MGCTypes)}
+              types={MGCTypes}
               control={form.control}
               type="mgc"
             />
             <TypeCheckList
-              types={allCategory.concat(languageTypes)}
+              types={languageTypes}
               control={form.control}
               type="language"
             />
             <TypeCheckList
-              types={allCategory.concat(studyTypes)}
+              types={studyTypes}
               control={form.control}
               type="study"
             />

@@ -17,19 +17,9 @@ const TypeCheckList = ({ types, control, type }: TypeCheckListProps) => {
     item: number,
     field: ControllerRenderProps<SearchFilterForm, keyof SearchFilterForm>,
   ) => {
-    if (item === 0) {
-      return checked ? field.onChange([...types.map((type) => type.tagId)]) : field.onChange([]);
-    } else {
-      if (field.value.includes(0)) {
-        return checked
-          ? field.onChange([...field.value])
-          : field.onChange(field.value?.filter((value) => value !== item && value !== 0));
-      } else {
-        return checked
-          ? field.onChange([...field.value, item])
-          : field.onChange(field.value?.filter((value) => value !== item));
-      }
-    }
+    return checked
+      ? field.onChange([...field.value, item])
+      : field.onChange(field.value?.filter((value) => value !== item));
   };
 
   return (
