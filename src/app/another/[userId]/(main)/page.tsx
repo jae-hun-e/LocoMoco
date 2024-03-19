@@ -3,6 +3,7 @@
 import React from 'react';
 import useGetUserInfo from '@/apis/user/useGetUserInfo';
 import UserProfileInfo from '@/app/_components/UserProfileInfo';
+import ReportCreateModal from '@/app/mgc/[id]/_components/ReportCreateModal';
 import { Separator } from '@/components/ui/separator';
 import { userInfoDummy } from '@/constants/mypageDummyData';
 import { ChevronRightIcon } from 'lucide-react';
@@ -42,6 +43,7 @@ const AnotherPage = ({ params }: { params: { userId: string } }) => {
           <Separator />
         </section>
       </section>
+      <ReportCreateModal reportedId={parseInt(params.userId, 10)} />
     </div>
   );
 };
