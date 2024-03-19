@@ -1,4 +1,3 @@
-import React from 'react';
 import { routes } from '@/constants/routeURL';
 import { MapIcon, MessageCircleIcon, SearchIcon, UserRoundIcon } from 'lucide-react';
 import Link from 'next/link';

@@ -8,13 +8,12 @@ interface UserListProps {
 }
 
 const UserList = ({ data, onClick, buttonName }: UserListProps) => {
-  if (data.length === 0) {
-    return <div>신고 목록이 없습니다!</div>;
-  }
   return (
-    <section>
-      <ul>
-        {data.map((el) => (
+    <ul>
+      {data.length === 0 ? (
+        <div>신고 목록이 없습니다!</div>
+      ) : (
+        data.map((el) => (
           <div key={el.userId}>
             <UserListItem
               data={el}
@@ -23,9 +22,9 @@ const UserList = ({ data, onClick, buttonName }: UserListProps) => {
             />
             <Separator />
           </div>
-        ))}
-      </ul>
-    </section>
+        ))
+      )}
+    </ul>
   );
 };
 

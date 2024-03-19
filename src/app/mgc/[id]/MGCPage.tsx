@@ -20,6 +20,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
     author: mgcDetail.creatorInfo,
     hits: mgcDetail.MogakkoInfo.views,
     createdAt: mgcDetail.MogakkoInfo.createdAt,
+    updatedAt: mgcDetail.MogakkoInfo.updatedAt,
   };
 
   const MGCInfoData = {

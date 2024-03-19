@@ -10,6 +10,7 @@ import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
 import { useFilterTagsByIds } from '@/hooks/useFilterTagByIds';
+import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { getTimeString } from '@/utils/getTimeString';
 import { getItem } from '@/utils/storage';
@@ -42,6 +43,8 @@ interface Props {
 }
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = ({ initData, MGCId }: Props) => {
+  const { createdPositionInfo } = useCreatedPositionInfo();
+
   const {
     register,
     handleSubmit,
@@ -54,12 +57,7 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     mode: 'onTouched',
     defaultValues: {
       title: initData?.title,
-      location: {
-        address: initData?.location.address,
-        latitude: initData?.location.latitude,
-        longitude: initData?.location.longitude,
-        city: initData?.location.city,
-      },
+      location: initData ? initData.location : createdPositionInfo,
       date: initData?.startTime ? new Date(initData?.startTime) : undefined,
       startTime: initData?.startTime && getTimeString(initData?.startTime),
       endTime: initData?.endTime && getTimeString(initData?.endTime),

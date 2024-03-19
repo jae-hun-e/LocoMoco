@@ -1,7 +1,9 @@
 'use client';
 
+import { useEffect } from 'react';
 import useChatList from '@/apis/chat/useChatList';
-import ProgressBar from '@/app/(auth)/signup/_components/ProgressBar';
+import ProgressBar from '@/components/ProgressBar';
+import { getItem } from '@/utils/storage';
 import { differenceInDays, format, getYear } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import Image from 'next/image';
@@ -20,6 +22,10 @@ const ChatList = () => {
   };
 
   const { data: chatRooms, isLoading } = useChatList();
+
+  useEffect(() => {
+    if (!getItem(localStorage, 'token')) router.replace('/signin');
+  }, [router]);
 
   return (
     <ul className="flex flex-col gap-2">

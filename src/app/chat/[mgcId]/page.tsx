@@ -29,7 +29,6 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
   const [selectedUserId, setSelectedUserId] = useState(0);
 
   const { mgcDetail } = useGetMGCDetail(parseInt(mgcId, 10));
-  console.log(mgcDetail, 'test');
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
     console.log('fetching chat...');
     const data = await client.get<ChatType[]>({
@@ -153,7 +152,7 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
             </button>
             {isUserList && mgcDetail ? (
               <UserList
-                data={[...mgcDetail.participants, mgcDetail.creatorInfo]}
+                data={[...mgcDetail.participants]}
                 onClick={handleButtonClick}
                 buttonName="후기 보내기"
               />
@@ -162,6 +161,7 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
                 MGCId={mgcId}
                 revieweeId={selectedUserId}
                 onCancel={() => setIsUserList(true)}
+                isEnd={new Date(mgcDetail.MogakkoInfo.endTime) <= new Date()}
               />
             )}
           </div>
