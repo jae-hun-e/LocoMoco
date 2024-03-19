@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
 import AuthorInfo from '@/app/mgc/[id]/_components/AuthorInfo';
 import Inquiry from '@/app/mgc/[id]/_components/Inquiry';
@@ -7,9 +8,13 @@ import MGCApplyArea from '@/app/mgc/[id]/_components/MGCApplyArea';
 import MGCInfo from '@/app/mgc/[id]/_components/MGCInfo';
 import MGCParticipants from '@/app/mgc/[id]/_components/MGCParticipants';
 import { Separator } from '@/components/ui/separator';
+import useMGCCreateUserId from '@/store/useMGCCreateUserId';
+import ReportCreateModal from './_components/ReportCreateModal';
 
 const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
   const { mgcDetail } = useGetMGCDetail(MGCId);
+
+  const { setMGCCreateUserId } = useMGCCreateUserId();
 
   const AuthorInfoData = {
     author: mgcDetail.creatorInfo,
@@ -35,6 +40,10 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
     createUserId: mgcDetail.creatorInfo.userId,
   };
 
+  useEffect(() => {
+    setMGCCreateUserId(mgcDetail.creatorInfo.userId);
+  }, [mgcDetail.creatorInfo.userId, setMGCCreateUserId]);
+
   return (
     <div>
       <AuthorInfo {...AuthorInfoData} />
@@ -48,6 +57,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
       <Inquiry MGCId={mgcDetail.MogakkoInfo.mogakkoId} />
 
       <MGCApplyArea {...MGCApplyAreaData} />
+      <ReportCreateModal />
     </div>
   );
 };

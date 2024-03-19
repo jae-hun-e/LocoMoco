@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import HeaderLeft from '@/app/_components/header/HeaderLeft';
-import { MoreVerticalIcon } from 'lucide-react';
 import MenuBtn from './MenuBtn';
+import OptionBtn from './OptionBtn';
 import ShareBtn from './ShareBtn';
 
 interface Props {
@@ -28,13 +28,13 @@ const Right = ({ children }: Props) => {
 
 interface ButtonProps {
   onClick?: () => void;
+  children?: ReactNode;
 }
 
-// TODO: 안에 내용이 정해지면 수정[24/02/14]
 const Menu = (props: ButtonProps) => <MenuBtn {...props} />;
 
 const Share = (props: ButtonProps) => <ShareBtn {...props} />;
-const Option = () => <MoreVerticalIcon />;
+const Option = (props: ButtonProps) => <OptionBtn {...props} />;
 
 const Header = Object.assign(HeaderContainer, {
   Right,
