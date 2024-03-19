@@ -3,10 +3,11 @@
 import client from '@/apis/core';
 import UserInfo from '@/app/mypage/_components/UserInfo';
 import { useMypageInfo } from '@/app/mypage/_hooks/useMypageInfo';
+import ProgressBar from '@/components/ProgressBar';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { routes } from '@/constants/routeURL';
-import { getItem, removeItem } from '@/utils/storage';
+import { clearItem, getItem, removeItem } from '@/utils/storage';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -17,7 +18,7 @@ const MyPage = () => {
   let userId;
   if (typeof window !== 'undefined') userId = getItem(localStorage, 'userId');
 
-  const { myInfo } = useMypageInfo({ userId: Number(userId) });
+  const { myInfo, isLoading } = useMypageInfo({ userId: Number(userId) });
 
   const router = useRouter();
   const handleLogout = async () => {
@@ -26,9 +27,7 @@ const MyPage = () => {
       if (provider === 'KAKAO') {
         const res = await client.post({
           url: 'https://kapi.kakao.com/v1/user/logout',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-          },
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         });
         console.log(res);
       } else if (provider === 'GITHUB') {
@@ -38,12 +37,8 @@ const MyPage = () => {
             username: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID!,
             password: process.env.NEXT_PUBLIC_GITHUB_SECRET!,
           },
-          data: {
-            access_token: getItem(localStorage, 'token'),
-          },
-          headers: {
-            Accept: 'application/json',
-          },
+          data: { access_token: getItem(localStorage, 'token') },
+          headers: { Accept: 'application/json' },
         });
         console.log(res);
       }
@@ -72,13 +67,18 @@ const MyPage = () => {
   };
 
   // TODO: 로딩처리 스켈레톤 추가[24/03/15]
-
   if (!myInfo) {
     return (
       <div className="flex h-svh w-full items-center justify-center">
-        <Link href={routes.signin}>
-          <Button>회원가입 시에만 사용할 수 있습니다.</Button>
-        </Link>
+        {!isLoading ? (
+          <Link href={routes.signin}>
+            <Button onClick={() => clearItem(localStorage)}>
+              회원가입 시에만 사용할 수 있습니다.
+            </Button>
+          </Link>
+        ) : (
+          <ProgressBar />
+        )}
       </div>
     );
   }

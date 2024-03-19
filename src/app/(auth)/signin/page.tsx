@@ -16,7 +16,7 @@ const Signin = () => {
       router.replace('/');
     }
   }, [router]);
-  console.log(process.env.NODE_ENV);
+
   return (
     <section className="mx-auto flex h-svh flex-col items-center justify-center gap-3">
       <div className="mb-5 text-3xl font-bold">LocoMoco</div>

@@ -2,9 +2,9 @@
 
 import { useEffect } from 'react';
 import client from '@/apis/core';
+import ProgressBar from '@/components/ProgressBar';
 import { clearItem, getItem, setItem } from '@/utils/storage';
 import { useRouter, useSearchParams } from 'next/navigation';
-import ProgressBar from '../../signup/_components/ProgressBar';
 
 interface ResponseType {
   isNewUser: boolean;

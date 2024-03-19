@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useCreateReview from '@/apis/review/useCreateReview';
 import useGetUserInfo from '@/apis/user/useGetUserInfo';
@@ -14,6 +14,7 @@ interface ReviewProps {
   MGCId: string;
   revieweeId: number;
   onCancel: () => void;
+  isEnd: boolean;
 }
 
 export interface ReviewForm {
@@ -23,7 +24,7 @@ export interface ReviewForm {
   content: string;
 }
 
-const Review = ({ MGCId, revieweeId, onCancel }: ReviewProps) => {
+const Review = ({ MGCId, revieweeId, onCancel, isEnd }: ReviewProps) => {
   const { mutate: createReview } = useCreateReview();
   const [selectedRating, setSelectedRating] = useState(0);
 
@@ -32,6 +33,12 @@ const Review = ({ MGCId, revieweeId, onCancel }: ReviewProps) => {
   const { data: userInfoData } = useGetUserInfo(revieweeId);
 
   const userInfo = userInfoData?.userInfo;
+
+  useEffect(() => {
+    if (!isEnd) {
+      toast({ description: '모각코 종료이후 다시 시도해주세요.' });
+    }
+  }, [isEnd]);
 
   const {
     formState: { errors },
@@ -142,7 +149,12 @@ const Review = ({ MGCId, revieweeId, onCancel }: ReviewProps) => {
           >
             취소
           </Button>
-          <Button className="grow bg-main-1 hover:bg-hover hover:font-bold">생성</Button>
+          <Button
+            className="grow bg-main-1 hover:bg-hover hover:font-bold"
+            disabled={!isEnd}
+          >
+            {isEnd ? '완료' : '비활성'}
+          </Button>
         </div>
       </div>
     </form>
