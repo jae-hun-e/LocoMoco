@@ -48,9 +48,9 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
   return (
     <li
       onClick={handleMGCItemClick}
-      className="flex w-full flex-col gap-3pxr py-22pxr"
+      className="flex w-full  flex-col gap-3pxr py-22pxr"
     >
-      <div className="flex items-center justify-between">
+      <div className="flex cursor-pointer items-center justify-between">
         <div className="flex items-center">
           <span className="mr-10pxr font-bold">
             {data.tags.includes(thunderMGCId!) ? '⚡️ ' : ''}

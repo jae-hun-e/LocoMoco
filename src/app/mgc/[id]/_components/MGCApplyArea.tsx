@@ -33,12 +33,10 @@ const MGCApplyArea = ({
   const [isLike, setLike] = useState(false);
   const userId = getItem<string | undefined>(localStorage, 'userId');
 
-  const isOwner = Number(userId) === createUserId;
   const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
 
   const { sendPush } = useSendPush();
-  const isClose = new Date() > new Date(endTime);
 
   const router = useRouter();
 
@@ -80,22 +78,45 @@ const MGCApplyArea = ({
 
   const currentParticipantsLength = currentParticipants.length;
 
+  const handleButtonState = () => {
+    const currentUserIds = currentParticipants.map((user) => user.userId);
+
+    const isParticipants = currentUserIds.includes(Number(userId));
+    const isCapacityExceeded = currentParticipantsLength >= maxParticipants;
+    const isOwner = Number(userId) === createUserId;
+    const isClose = new Date() > new Date(endTime);
+
+    // 참여자임
+    if (isParticipants) {
+      if (isClose) return buttonVariants[1];
+      if (isOwner) return buttonVariants[2];
+      if (isParticipated) return buttonVariants[3];
+      if (isCapacityExceeded) return buttonVariants[0];
+      else return buttonVariants[4];
+    } else {
+      if (isCapacityExceeded) return buttonVariants[0];
+      if (isClose) return buttonVariants[1];
+      else return buttonVariants[4];
+    }
+  };
+
+  const buttonVariants = [
+    { content: '정원초과', disabled: true },
+    { content: '모집 종료된 모각코', disabled: true },
+    { content: '수정하기', action: handleLinkEdit },
+    {
+      content: `톡방으로 이동하기 (${currentParticipantsLength}/${maxParticipants})`,
+      action: handleLinkChatting,
+    },
+    { content: `참여하기 (${currentParticipantsLength}/${maxParticipants})`, action: handleApply },
+  ];
+
   return (
     <section className="fixed bottom-50pxr z-50 w-[calc(100%-2.5rem)] bg-layer-1">
       <MainStyleButton
-        content={
-          currentParticipantsLength >= maxParticipants
-            ? '정원초과'
-            : isClose
-              ? '모집 종료된 모각코'
-              : isOwner
-                ? '수정하기'
-                : isParticipated
-                  ? `톡방으로 이동하기 (${currentParticipantsLength}/${maxParticipants})`
-                  : `참여하기 (${currentParticipantsLength}/${maxParticipants})`
-        }
-        disabled={currentParticipantsLength >= maxParticipants || isClose}
-        onClick={isOwner ? handleLinkEdit : isParticipated ? handleLinkChatting : handleApply}
+        content={handleButtonState().content}
+        disabled={handleButtonState().disabled}
+        onClick={handleButtonState().action}
       >
         <button
           className="flex flex-col items-center"

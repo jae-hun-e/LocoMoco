@@ -45,7 +45,7 @@ const ChangeMyInfo = () => {
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
-    setImageUrl(myInfo?.userInfo.profileImage.path ?? '/oh.png');
+    setImageUrl(myInfo?.userInfo?.profileImage?.path ?? '/oh.png');
   }, [myInfo]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
