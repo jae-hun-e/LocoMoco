@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import Header from '@/app/_components/header/Header';
+import HeaderOptionContent from '../_components/HeaderOptionContent';
 
 interface Props {
   readonly children: ReactNode;
@@ -9,7 +10,9 @@ const AnotherMainLayout = ({ children }: Props) => {
     <>
       <Header>
         <Header.Right>
-          <Header.Option />
+          <Header.Option>
+            <HeaderOptionContent />
+          </Header.Option>
         </Header.Right>
       </Header>
       {children}

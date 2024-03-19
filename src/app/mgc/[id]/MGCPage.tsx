@@ -14,7 +14,7 @@ import ReportCreateModal from './_components/ReportCreateModal';
 const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
   const { mgcDetail } = useGetMGCDetail(MGCId);
 
-  const { setMGCCreateUserId } = useMGCCreateUserId();
+  const { createUserId, setMGCCreateUserId } = useMGCCreateUserId();
 
   const AuthorInfoData = {
     author: mgcDetail.creatorInfo,
@@ -57,7 +57,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
       <Inquiry MGCId={mgcDetail.MogakkoInfo.mogakkoId} />
 
       <MGCApplyArea {...MGCApplyAreaData} />
-      <ReportCreateModal />
+      <ReportCreateModal reportedId={createUserId} />
     </div>
   );
 };
