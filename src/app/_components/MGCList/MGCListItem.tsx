@@ -68,8 +68,8 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
         {data.location.address}
         <span className="mx-1">·</span>
         {data.updatedAt && data.updatedAt > data.createdAt
-          ? '(수정됨) ' +
-            formatDistance(data.updatedAt, new Date(), { addSuffix: true, locale: ko })
+          ? formatDistance(data.updatedAt, new Date(), { addSuffix: true, locale: ko }) +
+            ' (수정됨)'
           : formatDistance(data.createdAt, new Date(), { addSuffix: true, locale: ko })}
         <span className="mx-1">·</span>조회
         {data.views}

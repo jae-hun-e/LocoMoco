@@ -17,6 +17,7 @@ export interface MogakkoInfo {
   endTime: string;
   deadline: string;
   createdAt: string;
+  updatedAt: string;
   location: LocationInfo;
   maxParticipants: number;
   likeCount: number;
