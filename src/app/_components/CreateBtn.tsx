@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 
 const CreateBtn = () => {
   let token;
-  if (typeof window !== 'undefined') getItem<string | undefined>(localStorage, 'token');
+  if (typeof window !== 'undefined') token = getItem<string | undefined>(localStorage, 'token');
 
   const router = useRouter();
   const [isCreateBtnOpen, setIsCreateBtnOpen] = useState(false);
