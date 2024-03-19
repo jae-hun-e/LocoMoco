@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useRef } from 'react';
 import { ChatType } from '@/types/chat';
 import { format } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 
 interface Props {
@@ -57,11 +56,11 @@ const Message = ({
       <div className="flex items-center gap-1">
         {notMe && (
           <Image
-            className="rounded-3xl"
+            className="h-8 w-8 rounded-3xl"
             src={senderProfileImage || '/oh.png'}
             alt="profile image"
-            width={30}
-            height={30}
+            width={32}
+            height={32}
             priority
           />
         )}
@@ -77,9 +76,7 @@ const Message = ({
         >
           {handleLineFeed(message)}
         </p>
-        <p className="self-end text-xs text-slate-500">
-          {format(createdAt, 'bh:mm', { locale: ko })}
-        </p>
+        <p className="self-end text-xs text-slate-500">{format(createdAt, 'bh:mm')}</p>
       </div>
     </div>
   );
