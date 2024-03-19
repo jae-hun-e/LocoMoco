@@ -78,7 +78,7 @@ const Message = ({
           {handleLineFeed(message)}
         </p>
         <p className="self-end text-xs text-slate-500">
-          {format(createdAt, 'bHH:mm', { locale: ko })}
+          {format(createdAt, 'bh:mm', { locale: ko })}
         </p>
       </div>
     </div>

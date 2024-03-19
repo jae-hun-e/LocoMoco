@@ -132,23 +132,23 @@ const MyPage = () => {
       {/*내 정보 관리*/}
       <section className="mb-10 flex flex-col gap-4 font-bold">
         <p className="text-xl text-main-1">내 정보 관리</p>
-        <section
-          className="flex cursor-pointer flex-col gap-3 text-sm"
-          onClick={handleLogout}
-        >
+        <section className="flex flex-col gap-3 text-sm">
           <div className="flex justify-between">
             <p>로그아웃</p>
-            <ChevronRightIcon />
+            <ChevronRightIcon
+              className="cursor-pointer"
+              onClick={handleLogout}
+            />
           </div>
           <Separator />
         </section>
-        <section
-          className="flex cursor-pointer flex-col gap-3 text-sm"
-          onClick={handleDeleteAccount}
-        >
+        <section className="flex flex-col gap-3 text-sm">
           <div className="flex justify-between transition-all duration-500 hover:text-red-500">
             <p>회원탈퇴</p>
-            <ChevronRightIcon />
+            <ChevronRightIcon
+              className="cursor-pointer "
+              onClick={handleDeleteAccount}
+            />
           </div>
           <Separator />
         </section>
