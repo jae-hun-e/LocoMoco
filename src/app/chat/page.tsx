@@ -5,7 +5,6 @@ import useChatList from '@/apis/chat/useChatList';
 import ProgressBar from '@/components/ProgressBar';
 import { getItem } from '@/utils/storage';
 import { differenceInDays, format, getYear } from 'date-fns';
-import { ko } from 'date-fns/locale';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
@@ -13,7 +12,7 @@ const ChatList = () => {
   const router = useRouter();
   const handleDate = (date: string) => {
     const dateDiff = differenceInDays(new Date(), date);
-    if (dateDiff === 0) return format(date, 'bHH:mm', { locale: ko });
+    if (dateDiff === 0) return format(date, 'bh:mm');
     else if (dateDiff === 1) return '어제';
     else {
       if (getYear(date) === getYear(new Date())) return format(date, 'MM-dd');
