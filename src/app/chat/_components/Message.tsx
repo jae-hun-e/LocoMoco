@@ -57,11 +57,11 @@ const Message = ({
       <div className="flex items-center gap-1">
         {notMe && (
           <Image
-            className="rounded-3xl"
+            className="h-8 w-8 rounded-3xl"
             src={senderProfileImage || '/oh.png'}
             alt="profile image"
-            width={30}
-            height={30}
+            width={32}
+            height={32}
             priority
           />
         )}

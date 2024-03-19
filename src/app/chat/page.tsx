@@ -43,7 +43,7 @@ const ChatList = () => {
               width={48}
               height={48}
               alt="profile"
-              className="rounded-xl"
+              className="h-12 w-12 rounded-xl"
               priority
             />
             <div className="flex w-48 grow flex-col">
