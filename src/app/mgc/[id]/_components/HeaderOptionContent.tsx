@@ -8,7 +8,6 @@ const HeaderOptionContent = ({ isOwner }: { isOwner: boolean }) => {
   const { mutate: deleteMGC } = useDeleteMGC();
 
   const MGCId = window.location.pathname.split('/').at(-1);
-  console.log(MGCId);
 
   const handleClick = () => {
     if (isOwner) {
