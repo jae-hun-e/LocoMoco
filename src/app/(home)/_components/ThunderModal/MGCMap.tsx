@@ -5,24 +5,22 @@ import AddressList from '@/app/(home)/_components/AddressList';
 import MapCustomControl from '@/app/_components/MapCustomControl';
 import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useGeolocation from '@/hooks/useGeolocation';
+import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import { Search } from 'lucide-react';
-import { LocationProps, ThunderFormData } from './ThunderModal';
+import { ThunderFormData } from './ThunderModal';
 import markerImg from '/public/oh.png';
 
 import Marker = kakao.maps.Marker;
 
-/* TODO : [24/03/13]
-  1. Link로 보내줄 때 위치 정보 && 동 정보 받아와야함
- */
-
 interface Props {
   setValue: UseFormSetValue<ThunderFormData>;
   trigger: UseFormTrigger<ThunderFormData>;
-  defaultAddress?: LocationProps | undefined;
 }
-const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
+const MGCMap = ({ trigger, setValue }: Props) => {
   const [createdPositionCoordinates, setCreatedPositionCoordinates] = useState<kakao.maps.Marker>();
   const location = useGeolocation();
+  const { createdPositionInfo } = useCreatedPositionInfo();
+  const defaultAddress = createdPositionInfo;
 
   const {
     map,
@@ -74,13 +72,18 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
   );
 
   useEffect(() => {
-    if (defaultAddress && createdPositionCoordinates) {
+    if (defaultAddress.address && createdPositionCoordinates) {
       changeCenter(defaultAddress.latitude, defaultAddress.longitude);
       const marker = createMarker({
         latitude: defaultAddress.latitude,
         longitude: defaultAddress.longitude,
       });
       setDeaultMarker(marker);
+      setValue('location.address', defaultAddress.address);
+      setValue('location.latitude', defaultAddress.latitude);
+      setValue('location.longitude', defaultAddress.longitude);
+      setValue('location.city', defaultAddress.city);
+      trigger('location');
     } else if (location?.coordinates && createdPositionCoordinates) {
       changeCenter(location.coordinates?.lat, location.coordinates?.lng);
       const marker = createMarker({
