@@ -10,15 +10,14 @@ export const routes = {
   likeMGC: '/mypage/like-mgc',
   currentJoinMGC: '/mypage/current-join-mgc',
   endJoinMGC: '/mypage/end-join-mgc',
+  receivedReviews: '/mypage/end-join-mgc/received-reviews',
+  sendReviews: '/mypage/end-join-mgc/send-reviews',
   receivedReviewsAssessment: '/mypage/received-reviews-assessment',
-  // TODO: 종료된 모각코에서 갈 수 있게 경로 수정해야함 [24.03.06]
-  sendReviews: '/mypage/send-reviews',
   reportList: '/mypage/report-list',
   blackList: '/mypage/black-list',
   withdrawal: '/mypage/withdrawal',
 } as const;
 
-// TODO: 헤더에 필요한 타이틀 url과 맵핑[24/02/14]
 export const titleMap = {
   chat: '채팅',
   create: '모각코 생성',
@@ -28,6 +27,8 @@ export const titleMap = {
   'end-join-mgc': '종료된 모각코',
   'like-mgc': '내가 찜한 모각코',
   'received-reviews-assessment': '받은 리뷰 평가',
+  'received-reviews': '받은 리뷰',
+  'send-reviews': '보낸 리뷰',
   another: '프로필',
   'join-mgc': '참여한 모각코',
   'change-my-info': '개인정보 수정',

@@ -32,7 +32,7 @@ const UserInfo = ({ myInfo }: { myInfo: UserInfoProps }) => {
           <div className="mx-auto flex flex-col justify-center">
             <p>닉네임 : {myInfo.nickname}</p>
             <div className="flex gap-6">
-              <p>성별 : {myInfo.gender ? '남성' : '여성'}</p>
+              <p>성별 : {myInfo.gender === 'MALE' ? '남성' : '여성'}</p>
               <p>나이 : {new Date().getFullYear() - Number(myInfo.birth.split('-')[0])}세</p>
             </div>
             <p>직업 : {tagMapping.get(myInfo.jobId)?.tagName}</p>

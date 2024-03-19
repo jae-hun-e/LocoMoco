@@ -10,9 +10,12 @@ import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
 import { useFilterTagsByIds } from '@/hooks/useFilterTagByIds';
+import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
+import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { getTimeString } from '@/utils/getTimeString';
 import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
+import { useQueryClient } from '@tanstack/react-query';
 
 export interface LocationProps {
   address: string;
@@ -40,6 +43,8 @@ interface Props {
 }
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = ({ initData, MGCId }: Props) => {
+  const { createdPositionInfo } = useCreatedPositionInfo();
+
   const {
     register,
     handleSubmit,
@@ -52,12 +57,7 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     mode: 'onTouched',
     defaultValues: {
       title: initData?.title,
-      location: {
-        address: initData?.location.address,
-        latitude: initData?.location.latitude,
-        longitude: initData?.location.longitude,
-        city: initData?.location.city,
-      },
+      location: initData ? initData.location : createdPositionInfo,
       date: initData?.startTime ? new Date(initData?.startTime) : undefined,
       startTime: initData?.startTime && getTimeString(initData?.startTime),
       endTime: initData?.endTime && getTimeString(initData?.endTime),
@@ -69,6 +69,12 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
 
   const { createMGC } = useCreateMGC();
   const { patchMGC } = usePatchMGC(MGCId);
+
+  const queryClient = useQueryClient();
+  const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
+  const defaultTags = categoryList
+    ?.find(({ category_name }) => category_name === '모각코 유형')
+    ?.tags.find(({ tag_name }) => tag_name === '일반')?.tag_id;
 
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
@@ -102,6 +108,7 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     });
 
     const tags = Object.values(rest).flatMap((v) => v.map((v) => v.tag_id));
+    tags.push(defaultTags as number);
 
     const userId = getItem(localStorage, 'userId');
 
@@ -116,6 +123,20 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
       content,
       tags,
     };
+
+    // //test
+    // const req = {
+    //   creatorId: Number(userId),
+    //   title,
+    //   location,
+    //   startTime: '2024-03-19T21:44:00.000Z',
+    //   endTime: '2024-03-18T21:46:00.000Z',
+    //   deadline: '2024-03-19T21:45:00.000Z',
+    //   maxParticipants: Number(maxParticipants),
+    //   content,
+    //   tags,
+    // };
+    // console.log('req', req);
 
     MGCId ? patchMGC(req) : createMGC(req);
   };

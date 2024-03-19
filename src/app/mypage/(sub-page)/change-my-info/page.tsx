@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import DatePick from '@/app/(auth)/signup/_components/DatePick';
 import NickName from '@/app/(auth)/signup/_components/Nickname';
@@ -43,6 +43,10 @@ const ChangeMyInfo = () => {
   // image 임시저장
   const [imageUrl, setImageUrl] = useState('/oh.png');
   const [imageFile, setImageFile] = useState<File | null>(null);
+
+  useEffect(() => {
+    setImageUrl(myInfo?.userInfo.profileImage.path ?? '/oh.png');
+  }, [myInfo]);
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return;
