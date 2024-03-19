@@ -7,11 +7,10 @@ const nextConfig = {
   },
 };
 
-const withPWA = withPWAInit({
+const withPWA = withPWAInit([{
   dest: "public",
   runtimeCaching
-});
+}, nextConfig]);
 
-export default { ...withPWA, ...nextConfig };
+export default withPWA;
 
-// export default nextConfig;
