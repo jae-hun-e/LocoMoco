@@ -1,12 +1,12 @@
 'use client';
 
 import ReviewAssessment from '@/app/_components/ReviewAssessment/ReviewAssessment';
+import { USER_ID_KEY, getItem } from '@/utils/storage';
 
 const ReceivedReviews = () => {
-  // TODO: 로컬스토리지 유틸함수가 머지되면 그걸로 로컬스토리지값 받아오게 수정하기 [24.03.06]
-  const userId = '77';
+  const userId = getItem<string>(localStorage, USER_ID_KEY);
 
-  return <ReviewAssessment userId={userId} />;
+  return <ReviewAssessment userId={userId!} />;
 };
 
 export default ReceivedReviews;
