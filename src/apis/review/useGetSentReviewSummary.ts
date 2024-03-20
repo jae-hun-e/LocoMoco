@@ -26,7 +26,7 @@ export const useGetSentReviewSummary = (userId: number, reviews?: Reviews[]) => 
       ? reviews.map((review) => ({
           queryKey: ['sentReviews', review],
           queryFn: async () => {
-            return await getUserInfo(review.reviewerId);
+            return await getUserInfo(review.revieweeId);
           },
           select: (userInfo: UserInfo): ReviewSummary => {
             const { reviewId, reviewContentId, content, score, createdAt } = review;
