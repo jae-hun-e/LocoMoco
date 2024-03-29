@@ -17,7 +17,7 @@ const UserProfileInfo = ({ userInfo, children, flexDirection = 'row' }: UserProf
       <div className={`flex gap-4 flex-${flexDirection} items-center`}>
         <Avatar className="h-100pxr w-100pxr rounded-full">
           <AvatarImage
-            src="https://github.com/shadcn.png"
+            src={userInfo.userInfo.profileImage?.path ?? 'https://github.com/shadcn.png'}
             alt="유저 이미지"
           />
           <AvatarFallback>

@@ -1,29 +1,19 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Image from 'next/image';
+import ProfileImg from '@/app/_components/ProfileImg';
 
 interface PropfileProps {
   profileImg: string;
   nickname: string;
   job: string;
+  userId: number;
 }
 
-const Profile = ({ profileImg, nickname, job }: PropfileProps) => {
+const Profile = ({ profileImg, userId, nickname, job }: PropfileProps) => {
   return (
     <div className="border-layout-3 flex gap-11pxr border-b border-solid py-10pxr">
-      <Avatar className="h-32pxr w-32pxr rounded-full ">
-        <AvatarImage
-          src={profileImg}
-          alt="profile image"
-        />
-        <AvatarFallback>
-          <Image
-            src={'/oh.png'}
-            alt={'cn'}
-            width={32}
-            height={32}
-          />
-        </AvatarFallback>
-      </Avatar>
+      <ProfileImg
+        userId={userId}
+        imgUrl={profileImg}
+      />
 
       <div className="flex flex-col gap-3pxr text-sm">
         <p>{nickname}</p>

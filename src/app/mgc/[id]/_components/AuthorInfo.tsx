@@ -1,8 +1,7 @@
 import { UserInfo } from '@/apis/mgc/useGetMGCDetail';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import ProfileImg from '@/app/_components/ProfileImg';
 import { formatDistance } from 'date-fns';
 import { ko } from 'date-fns/locale';
-import Image from 'next/image';
 
 interface Props {
   author: UserInfo;
@@ -10,24 +9,18 @@ interface Props {
   createdAt: string;
   updatedAt: string;
 }
-const AuthorInfo = ({ author: { nickname, profileImage }, hits, createdAt, updatedAt }: Props) => {
+const AuthorInfo = ({
+  author: { nickname, profileImage, userId },
+  hits,
+  createdAt,
+  updatedAt,
+}: Props) => {
   return (
     <section className="my-10pxr flex gap-11pxr">
-      <Avatar className="h-32pxr w-32pxr rounded-full ">
-        <AvatarImage
-          src={profileImage?.path || 'https://github.com/shadcn.png'}
-          alt="유저 이미지"
-        />
-        <AvatarFallback>
-          <Image
-            src={'/oh.png'}
-            alt={'cn'}
-            width={32}
-            height={32}
-          />
-        </AvatarFallback>
-      </Avatar>
-
+      <ProfileImg
+        userId={userId}
+        imgUrl={profileImage?.path}
+      />
       <div className="flex flex-col gap-3pxr">
         <p>{nickname}</p>
         <p className="font-extralight">
