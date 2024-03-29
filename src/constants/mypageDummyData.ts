@@ -5,12 +5,6 @@ const gender = {
   MALE: 'MALE',
 } as const;
 
-const job = {
-  JOB_SEEKER: 'JOB_SEEKER',
-  DEVELOPER: 'DEVELOPER',
-  ETC: 'ETC',
-} as const;
-
 const provider = {
   KAKAO: 'KAKAO',
   GITHUB: 'GITHUB',
@@ -23,7 +17,7 @@ export const userInfoDummy: UserInfo = {
     birth: '2023-12-12',
     gender: gender.FEMALE,
     temperature: 39,
-    job: job.DEVELOPER,
+    jobId: 241,
     email: 'naver.com',
     provider: provider.KAKAO,
     profileImage: null,
