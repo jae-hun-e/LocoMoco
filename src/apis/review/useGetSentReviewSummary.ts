@@ -29,11 +29,11 @@ export const useGetSentReviewSummary = (userId: number, reviews?: Reviews[]) => 
             return await getUserInfo(review.revieweeId);
           },
           select: (userInfo: UserInfo): ReviewSummary => {
-            const { reviewId, reviewContentId, content, score, createdAt } = review;
+            const { reviewId, reviewContentId, content, score, createdAt, revieweeId } = review;
             const { nickname, job, profileImage } = userInfo.userInfo;
 
             return {
-              userId,
+              userId: revieweeId,
               reviewId,
               reviewContentId,
               content,
