@@ -4,7 +4,7 @@ import useCreateReview from '@/apis/review/useCreateReview';
 import useGetUserInfo from '@/apis/user/useGetUserInfo';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
-import { job } from '@/constants/userInfo';
+import { useTagMapping } from '@/hooks/useTagMapping';
 import { USER_ID_KEY, getItem } from '@/utils/storage';
 import Profile from './Profile';
 import Rating from './Rating';
@@ -33,6 +33,8 @@ const Review = ({ MGCId, revieweeId, onCancel, isEnd }: ReviewProps) => {
   const { data: userInfoData } = useGetUserInfo(revieweeId);
 
   const userInfo = userInfoData?.userInfo;
+
+  const tagMapping = useTagMapping();
 
   useEffect(() => {
     if (!isEnd) {
@@ -118,9 +120,10 @@ const Review = ({ MGCId, revieweeId, onCancel, isEnd }: ReviewProps) => {
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="relative flex h-full flex-col gap-30pxr pb-50pxr">
         <Profile
+          userId={userInfo.userId}
           profileImg={userInfo?.profileImage?.path ?? ''}
           nickname={userInfo?.nickname ?? ''}
-          job={userInfo?.job ? job[userInfo?.job] : ''}
+          job={tagMapping.get(userInfo.jobId)?.tagName ?? ''}
         />
 
         <Rating

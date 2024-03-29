@@ -30,7 +30,7 @@ export const useGetReceivedReviewSummary = (userId: number, reviews?: Reviews[])
           },
           select: (userInfo: UserInfo): ReviewSummary => {
             const { reviewId, reviewContentId, content, score, createdAt, reviewerId } = review;
-            const { nickname, job, profileImage } = userInfo.userInfo;
+            const { nickname, jobId, profileImage } = userInfo.userInfo;
 
             return {
               userId: reviewerId,
@@ -39,7 +39,7 @@ export const useGetReceivedReviewSummary = (userId: number, reviews?: Reviews[])
               content,
               score,
               nickname,
-              job,
+              jobId,
               profileImage,
               createdAt,
             };

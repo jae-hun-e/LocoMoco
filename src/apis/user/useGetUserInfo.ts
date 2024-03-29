@@ -8,7 +8,7 @@ export interface UserInfo {
     birth: string;
     gender: 'FEMALE' | 'MALE';
     temperature: number;
-    job: 'DEVELOPER' | 'JOB_SEEKER' | 'ETC';
+    jobId: number;
     email: string;
     provider: 'KAKAO' | 'GITHUB';
     profileImage: {
