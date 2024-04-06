@@ -1,17 +1,23 @@
+import { useDeleteInquiry } from '@/app/mgc/[id]/_hooks/useDeleteInquiry';
 import { Button } from '@/components/ui/button';
 
 interface InquiryTooltipProps {
-  inquiryId: number;
+  inquiryAuthorId: number;
   authorId: number;
   userId: number;
+  MGCId: number;
+  inquiryId: number;
   onModifyInquiryId: () => void;
 }
 const InquiryTooltip = ({
+  inquiryAuthorId,
   inquiryId,
   userId,
   authorId,
   onModifyInquiryId,
+  MGCId,
 }: InquiryTooltipProps) => {
+  const { deleteInquiry } = useDeleteInquiry();
   // TODO: 문의 신고는 어떻게 처리되는가? [24/04/06]
   const handleReport = () => {
     console.log('신고');
@@ -19,16 +25,17 @@ const InquiryTooltip = ({
 
   const handleModify = () => {
     onModifyInquiryId();
-    console.log('수정');
   };
 
+  // TODO: 삭제 API 500에러뜸 [24/04/06]
   const handleDelete = () => {
+    deleteInquiry({ inquiryId, userId, mogakkoId: MGCId });
     console.log('삭제');
   };
 
   return (
     <div className="absolute right-0  hidden cursor-pointer gap-1 group-hover:flex">
-      {inquiryId === userId ? (
+      {inquiryAuthorId === userId ? (
         <>
           <TooltipButton
             onClick={handleModify}

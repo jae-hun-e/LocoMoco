@@ -74,9 +74,11 @@ const Inquiry = ({ MGCId, authorId }: Props) => {
                 </div>
 
                 <InquiryTooltip
-                  inquiryId={inquiryAuthorId}
+                  inquiryAuthorId={inquiryAuthorId}
+                  inquiryId={inquiryId}
                   userId={Number(userId)}
                   authorId={authorId}
+                  MGCId={MGCId}
                   onModifyInquiryId={() => setEditingInquiryId(inquiryId)}
                 />
               </>
