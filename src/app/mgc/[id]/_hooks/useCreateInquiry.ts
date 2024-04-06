@@ -8,7 +8,7 @@ export interface InquiryReq {
 }
 
 const createInquiry = async (inquiryData: InquiryReq) => {
-  return await client.put({ url: `/inquries`, data: inquiryData });
+  return await client.put({ url: `/inquiries`, data: inquiryData });
 };
 
 export const useCreateInquiry = () => {

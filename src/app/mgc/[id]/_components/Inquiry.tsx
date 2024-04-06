@@ -1,6 +1,7 @@
 'use client';
 
 import { useForm } from 'react-hook-form';
+import InquiryTooltip from '@/app/mgc/[id]/_components/InquiryTooltip';
 import { InquiryReq, useCreateInquiry } from '@/app/mgc/[id]/_hooks/useCreateInquiry';
 import { useGetInquiry } from '@/app/mgc/[id]/_hooks/useGetInquiry';
 import { useMypageInfo } from '@/app/mypage/_hooks/useMypageInfo';
@@ -12,24 +13,25 @@ import Image from 'next/image';
 
 interface Props {
   MGCId: number;
+  authorId: number;
 }
 
 // TODO: 문의 API 완성 되면 CRUD연결 - 다음 PR [24/03/04]
 // TODO: 모각코 생성자만 답글 가능한 툴바 생성 - 다음 PR [24/03/04]
-const Inquiry = ({ MGCId }: Props) => {
+const Inquiry = ({ MGCId, authorId }: Props) => {
   let userId: string | undefined;
   if (typeof window !== 'undefined') {
     userId = getItem<string | undefined>(localStorage, 'userId');
   }
 
   const { myInfo } = useMypageInfo({ userId: Number(userId) });
-
   const { inquiryData } = useGetInquiry({ MGCId });
   const { createInquiry } = useCreateInquiry();
   console.log('inquiryData', inquiryData);
 
   const { register, handleSubmit, resetField } = useForm<InquiryReq>();
   const onSubmit = ({ content }: InquiryReq) => {
+    console.log('content', content);
     userId && createInquiry({ userId: Number(userId), mogakkoId: MGCId, content });
     resetField('content');
   };
@@ -65,14 +67,14 @@ const Inquiry = ({ MGCId }: Props) => {
         />
       </form>
 
-      {inquiryData?.map(({ nickname, content, createdAt }, idx) => (
+      {inquiryData?.map(({ nickname, content, createdAt, profileImage, userId: inquiryId }) => (
         <div
-          key={idx}
-          className="flex gap-11pxr text-sm"
+          key={createdAt}
+          className="group relative flex gap-11pxr text-sm"
         >
           <Avatar className="h-32pxr w-32pxr rounded-full">
             <AvatarImage
-              src="https://github.com/shadcn.png"
+              src={profileImage?.path ?? '/oh.png'}
               alt="문의 작성자 이미지"
             />
             <AvatarFallback>
@@ -87,9 +89,15 @@ const Inquiry = ({ MGCId }: Props) => {
 
           <div className="flex flex-col gap-3pxr">
             <p>{nickname}</p>
-            <p className="text-xs font-extralight">{format(createdAt, 'M월 d일 h시')}</p>
+            <p className="text-xs font-extralight">{format(createdAt, 'M월 d일 HH시')}</p>
             <p>{content}</p>
           </div>
+
+          <InquiryTooltip
+            inquiryId={inquiryId}
+            userId={Number(userId)}
+            authorId={authorId}
+          />
         </div>
       ))}
     </section>

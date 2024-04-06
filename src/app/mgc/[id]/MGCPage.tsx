@@ -55,7 +55,10 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
       <MGCParticipants joinUsers={mgcDetail.participants} />
       <Separator className="my-15pxr" />
 
-      <Inquiry MGCId={mgcDetail.MogakkoInfo.mogakkoId} />
+      <Inquiry
+        MGCId={mgcDetail.MogakkoInfo.mogakkoId}
+        authorId={mgcDetail.creatorInfo.userId}
+      />
 
       <MGCApplyArea {...MGCApplyAreaData} />
       <ReportCreateModal reportedId={createUserId} />

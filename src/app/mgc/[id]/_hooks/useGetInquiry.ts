@@ -18,7 +18,7 @@ interface InquiryData {
 }
 
 const getInquiryData = async ({ MGCId }: { MGCId: number }) => {
-  return await client.get<InquiryData>({ url: `/inquiries`, params: { MGCId } });
+  return await client.get<InquiryData>({ url: `/inquiries`, params: { mogakkoId: MGCId } });
 };
 
 export const useGetInquiry = ({ MGCId }: { MGCId: number }) => {
