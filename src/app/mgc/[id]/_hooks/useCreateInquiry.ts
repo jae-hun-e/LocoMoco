@@ -16,8 +16,8 @@ export const useCreateInquiry = () => {
   const queryClient = useQueryClient();
   const { mutate, ...rest } = useMutation({
     mutationFn: createInquiry,
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['inquiry', variables.mogakkoId] });
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ['inquiry', variables.mogakkoId] });
     },
   });
 

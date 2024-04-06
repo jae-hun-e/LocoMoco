@@ -13,11 +13,13 @@ export const useApplyMGC = () => {
     onError: (error) => {
       console.log('mgc apply error', error);
     },
-    onSuccess: (_, variables) => {
+    onSuccess: async (_, variables) => {
       const { MGCId, userId } = variables;
 
-      queryClient.invalidateQueries({ queryKey: getMGCDetailQueryOption(MGCId).queryKey });
-      queryClient.invalidateQueries({ queryKey: getCurrentApplyMGC({ MGCId, userId }).queryKey });
+      await queryClient.invalidateQueries({ queryKey: getMGCDetailQueryOption(MGCId).queryKey });
+      await queryClient.invalidateQueries({
+        queryKey: getCurrentApplyMGC({ MGCId, userId }).queryKey,
+      });
     },
   });
 

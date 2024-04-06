@@ -14,8 +14,8 @@ export const usePatchMGC = (mgcId: number | undefined) => {
     onError: (error) => {
       console.log('error', error);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mgc', mgcId] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['mgc', mgcId] });
       router.push(`/mgc/${mgcId}`);
     },
   });

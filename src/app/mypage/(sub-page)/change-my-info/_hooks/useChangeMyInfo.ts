@@ -32,8 +32,8 @@ export const useChangeMyInfo = ({ userId }: { userId: string }) => {
     onError: (error) => {
       console.log('error', error);
     },
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ['mypage', userId] });
+    onSuccess: async () => {
+      await queryClient.invalidateQueries({ queryKey: ['mypage', userId] });
       alert('내 정보가 변경되었습니다.');
     },
   });

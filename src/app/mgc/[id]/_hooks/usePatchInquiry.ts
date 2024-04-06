@@ -13,8 +13,8 @@ export const usePatchInquiry = () => {
   const queryClient = useQueryClient();
   const { mutate, ...rest } = useMutation({
     mutationFn: patchInquiry,
-    onSuccess: (_, variables) => {
-      queryClient.invalidateQueries({ queryKey: ['inquiry', variables.mogakkoId] });
+    onSuccess: async (_, variables) => {
+      await queryClient.invalidateQueries({ queryKey: ['inquiry', variables.mogakkoId] });
     },
   });
 
