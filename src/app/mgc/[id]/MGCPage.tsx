@@ -3,10 +3,10 @@
 import { useEffect } from 'react';
 import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
 import AuthorInfo from '@/app/mgc/[id]/_components/AuthorInfo';
-import Inquiry from '@/app/mgc/[id]/_components/Inquiry';
 import MGCApplyArea from '@/app/mgc/[id]/_components/MGCApplyArea';
 import MGCInfo from '@/app/mgc/[id]/_components/MGCInfo';
 import MGCParticipants from '@/app/mgc/[id]/_components/MGCParticipants';
+import Inquiry from '@/app/mgc/[id]/_components/inquiry/Inquiry';
 import { Separator } from '@/components/ui/separator';
 import useMGCCreateUserId from '@/store/useMGCCreateUserId';
 import ReportCreateModal from './_components/ReportCreateModal';

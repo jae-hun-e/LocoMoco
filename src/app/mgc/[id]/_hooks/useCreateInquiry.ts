@@ -5,6 +5,7 @@ export interface InquiryReq {
   userId: number;
   mogakkoId: number;
   content: string;
+  inquiryId?: number;
 }
 
 const createInquiry = async (inquiryData: InquiryReq) => {

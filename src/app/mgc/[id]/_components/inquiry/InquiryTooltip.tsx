@@ -4,13 +4,21 @@ interface InquiryTooltipProps {
   inquiryId: number;
   authorId: number;
   userId: number;
+  onModifyInquiryId: () => void;
 }
-const InquiryTooltip = ({ inquiryId, userId, authorId }: InquiryTooltipProps) => {
+const InquiryTooltip = ({
+  inquiryId,
+  userId,
+  authorId,
+  onModifyInquiryId,
+}: InquiryTooltipProps) => {
+  // TODO: 문의 신고는 어떻게 처리되는가? [24/04/06]
   const handleReport = () => {
     console.log('신고');
   };
 
   const handleModify = () => {
+    onModifyInquiryId();
     console.log('수정');
   };
 
@@ -22,10 +30,6 @@ const InquiryTooltip = ({ inquiryId, userId, authorId }: InquiryTooltipProps) =>
     <div className="absolute right-0  hidden cursor-pointer gap-1 group-hover:flex">
       {inquiryId === userId ? (
         <>
-          <TooltipButton
-            onClick={handleReport}
-            content="신고"
-          />
           <TooltipButton
             onClick={handleModify}
             content="수정"
