@@ -1,21 +1,22 @@
-'use client';
+import { getMGCDetail } from '@/apis/mgc/useGetMGCDetail';
+import { Metadata } from 'next';
+import EditPage from './EditPage';
 
-import { useGetMGCDetail } from '@/apis/mgc/useGetMGCDetail';
-import CreateMGC from '@/app/create/_components/CreateMGC';
+export async function generateMetadata({ params }: { params: { id: number } }): Promise<Metadata> {
+  const id = params.id;
+
+  const MGCDetail = await getMGCDetail(id);
+
+  return {
+    title: `(수정중) ${MGCDetail.MogakkoInfo.title}`,
+    openGraph: {
+      title: `(수정중) ${MGCDetail.MogakkoInfo.title}`,
+    },
+  };
+}
 
 const MGCEdit = ({ params }: { params: { id: number } }) => {
-  const {
-    mgcDetail: { MogakkoInfo },
-  } = useGetMGCDetail(params.id);
-
-  return (
-    <div>
-      <CreateMGC
-        initData={MogakkoInfo}
-        MGCId={params.id}
-      />
-    </div>
-  );
+  return <EditPage id={params.id} />;
 };
 
 export default MGCEdit;
