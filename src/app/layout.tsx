@@ -20,8 +20,17 @@ const APP_DEFAULT_TITLE = 'LocoMoco :D';
 const APP_DESCRIPTION = '위치기반 모각코!';
 
 export const metadata: Metadata = {
-  title: APP_DEFAULT_TITLE,
+  title: {
+    template: `%s | LocoMoco`,
+    default: APP_DEFAULT_TITLE,
+  },
   description: APP_DESCRIPTION,
+  openGraph: {
+    title: APP_DEFAULT_TITLE,
+    description: APP_DESCRIPTION,
+    // TODO: 임시 썸네일 [24.04.08]
+    images: '/oh.png',
+  },
   icons: {
     other: [
       {
