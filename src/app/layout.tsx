@@ -26,7 +26,10 @@ export const metadata: Metadata = {
   },
   description: APP_DESCRIPTION,
   openGraph: {
-    title: APP_DEFAULT_TITLE,
+    title: {
+      template: `%s | LocoMoco`,
+      default: APP_DEFAULT_TITLE,
+    },
     description: APP_DESCRIPTION,
     // TODO: 임시 썸네일 [24.04.08]
     images: 'https://avatars.githubusercontent.com/u/66080362?v=4',
