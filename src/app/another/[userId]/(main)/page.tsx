@@ -5,22 +5,18 @@ import useGetUserInfo from '@/apis/user/useGetUserInfo';
 import UserProfileInfo from '@/app/_components/UserProfileInfo';
 import ReportCreateModal from '@/app/mgc/[id]/_components/ReportCreateModal';
 import { Separator } from '@/components/ui/separator';
-import { userInfoDummy } from '@/constants/mypageDummyData';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 
 const AnotherPage = ({ params }: { params: { userId: string } }) => {
   const { data: userInfo } = useGetUserInfo(parseInt(params.userId));
 
-  // TODO: suspense 적용 후 더미 제거 [24.03.14]
-  const joinMGCCount = userInfo
-    ? userInfo.completeMogakkoCount + userInfo.ongoingMogakkoCount
-    : userInfoDummy.completeMogakkoCount + userInfoDummy.ongoingMogakkoCount;
+  const joinMGCCount = userInfo.completeMogakkoCount + userInfo.ongoingMogakkoCount;
 
   return (
     <div>
       <UserProfileInfo
-        userInfo={userInfo ?? userInfoDummy}
+        userInfo={userInfo}
         flexDirection="col"
       />
       <section className="mb-10 mt-50pxr flex flex-col gap-4 font-bold">

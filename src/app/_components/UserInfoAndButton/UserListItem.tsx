@@ -1,6 +1,6 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import { getItem } from '@/utils/storage';
+import ProfileImg from '../ProfileImg';
 
 export interface UserInfo {
   userId: number;
@@ -23,13 +23,10 @@ const UserListItem = ({ data, onClick, buttonName }: UserListItemProps) => {
   return (
     <li className="flex w-full items-center justify-between border-b border-solid py-14pxr">
       <div className="flex items-center gap-4">
-        <Avatar className="ml-1 rounded-3xl">
-          <AvatarImage
-            src={data.profileImage ? data.profileImage.path : '/oh.png'}
-            alt="프로필 사진"
-          />
-          <AvatarFallback>{data.nickname}</AvatarFallback>
-        </Avatar>
+        <ProfileImg
+          userId={data.userId}
+          imgUrl={data.profileImage?.path}
+        />
         <p>{data.nickname}</p>
       </div>
 

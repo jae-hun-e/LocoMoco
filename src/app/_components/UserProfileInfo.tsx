@@ -10,14 +10,14 @@ interface UserProfileInfoProps {
 }
 
 const UserProfileInfo = ({ userInfo, children, flexDirection = 'row' }: UserProfileInfoProps) => {
-  const { nickname, gender, birth, temperature } = userInfo.userInfo;
+  const { nickname, gender, birth, temperature, profileImage } = userInfo.userInfo;
 
   return (
     <section className="my-5">
       <div className={`flex gap-4 flex-${flexDirection} items-center`}>
         <Avatar className="h-100pxr w-100pxr rounded-full">
           <AvatarImage
-            src="https://github.com/shadcn.png"
+            src={profileImage?.path ?? 'https://github.com/shadcn.png'}
             alt="유저 이미지"
           />
           <AvatarFallback>
@@ -33,7 +33,7 @@ const UserProfileInfo = ({ userInfo, children, flexDirection = 'row' }: UserProf
           <div className="mx-auto flex flex-col justify-center">
             <p>닉네임 : {nickname}</p>
             <div className="flex gap-6">
-              <p>성별 : {gender ? '남성' : '여성'}</p>
+              <p>성별 : {gender === 'MALE' ? '남성' : '여성'}</p>
               <p>나이 : {new Date().getFullYear() - Number(birth.split('-')[0])}세</p>
             </div>
             <p>온도 : {temperature}</p>
