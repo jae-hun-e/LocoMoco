@@ -10,14 +10,14 @@ interface UserProfileInfoProps {
 }
 
 const UserProfileInfo = ({ userInfo, children, flexDirection = 'row' }: UserProfileInfoProps) => {
-  const { nickname, gender, birth, temperature } = userInfo.userInfo;
+  const { nickname, gender, birth, temperature, profileImage } = userInfo.userInfo;
 
   return (
     <section className="my-5">
       <div className={`flex gap-4 flex-${flexDirection} items-center`}>
         <Avatar className="h-100pxr w-100pxr rounded-full">
           <AvatarImage
-            src={userInfo.userInfo.profileImage?.path ?? 'https://github.com/shadcn.png'}
+            src={profileImage?.path ?? 'https://github.com/shadcn.png'}
             alt="유저 이미지"
           />
           <AvatarFallback>
