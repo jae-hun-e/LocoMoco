@@ -1,22 +1,21 @@
 /** @type {import('next').NextConfig} */
-import withPWAInit,{ runtimeCaching  } from '@ducanh2912/next-pwa';
+import withPWAInit, { runtimeCaching } from '@ducanh2912/next-pwa';
 
 const nextConfig = {
   images: {
     remotePatterns: [
       {
-        protocol: "https",
-        hostname: "locomoco-image.s3.ap-northeast-2.amazonaws.com",
+        protocol: 'https',
+        hostname: 'locomoco-image.s3.ap-northeast-2.amazonaws.com',
       },
     ],
   },
+  reactStrictMode: false,
 };
 
 const withPWA = withPWAInit({
-  dest: "public",
+  dest: 'public',
   runtimeCaching,
 });
 
-
-export default withPWA( nextConfig );
-
+export default withPWA(nextConfig);
