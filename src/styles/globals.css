@@ -120,7 +120,7 @@
     border-top: 13px solid white;
   }
 
-  #map > div:nth-child(4) > div > div:nth-child(5) > svg {
+  .no-select {
     -webkit-touch-callout: none; /* 콘텍스트 메뉴 방지 (Safari) */
     -webkit-user-select: none; /* 텍스트 선택 방지 (Safari, Chrome 등) */
     -moz-user-select: none; /* 텍스트 선택 방지 (Firefox) */
