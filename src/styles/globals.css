@@ -121,11 +121,11 @@
   }
 
   .no-select {
-    -webkit-touch-callout: none; /* 콘텍스트 메뉴 방지 (Safari) */
-    -webkit-user-select: none; /* 텍스트 선택 방지 (Safari, Chrome 등) */
-    -moz-user-select: none; /* 텍스트 선택 방지 (Firefox) */
-    -ms-user-select: none; /* 텍스트 선택 방지 (Internet Explorer/Edge) */
-    user-select: none; /* 텍스트 선택 방지 (기타 브라우저) */
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
   }
 }
 
