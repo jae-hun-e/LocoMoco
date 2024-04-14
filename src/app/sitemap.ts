@@ -11,27 +11,34 @@ type Sitemap = Array<{
 const MGCDatas: Sitemap = [];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  let cursor = undefined;
+  // TODO: 에러 중앙화 후 수정 [24.04.14]
+  try {
+    let cursor = undefined;
 
-  do {
-    const data = await getMGCTotalList({ searchType: 'TOTAL', pageSize: 50, cursor });
+    do {
+      const data = await getMGCTotalList({ searchType: 'TOTAL', pageSize: 50, cursor });
 
-    MGCDatas.push(
-      ...data.map((mgc) => ({
-        url: `${process.env.NEXT_PUBLIC_SITE_BASE_URL}/mgc/${mgc.id}`,
-        lastModified: mgc.updatedAt,
-        changeFrequency: 'daily' as const,
-        priority: 0.7,
-      })),
-    );
+      if (!data) break;
 
-    if (data.length > 0) {
-      const ids = data.map((item) => item.id);
-      cursor = Math.min(...ids);
-    } else {
-      cursor = undefined;
-    }
-  } while (cursor !== undefined);
+      MGCDatas.push(
+        ...data.map((mgc) => ({
+          url: `${process.env.NEXT_PUBLIC_SITE_BASE_URL}/mgc/${mgc.id}`,
+          lastModified: mgc.updatedAt,
+          changeFrequency: 'daily' as const,
+          priority: 0.7,
+        })),
+      );
+
+      if (data.length > 0) {
+        const ids = data.map((item) => item.id);
+        cursor = Math.min(...ids);
+      } else {
+        cursor = undefined;
+      }
+    } while (cursor !== undefined);
+  } catch (e) {
+    console.log('에러', e);
+  }
 
   const offset = new Date().getTimezoneOffset() * 60000;
 
