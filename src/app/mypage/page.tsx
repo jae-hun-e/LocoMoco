@@ -11,21 +11,8 @@ import { clearItem, getItem } from '@/utils/storage';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { UserInfoProps } from './_hooks/useMypageInfo';
 
-export interface UserInfoProps {
-  userId: number;
-  nickname: string;
-  birth: string;
-  gender: string;
-  temperature: number;
-  jobId: number;
-  email: string;
-  profileImage: {
-    imageId: number;
-    path: string;
-  };
-  provider: string;
-}
 interface MyPageInfoProps {
   userInfo: UserInfoProps;
   completeMogakkoCount: number;
