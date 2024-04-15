@@ -16,6 +16,7 @@ interface Props {
   maxParticipants: number;
   currentParticipants: UserInfo[];
   endTime: string;
+  deadline: string;
   like: number;
   MGCId: number;
   createUserId: number;
@@ -26,6 +27,7 @@ const MGCApplyArea = ({
   maxParticipants,
   currentParticipants,
   endTime,
+  deadline,
   like,
   MGCId,
   createUserId,
@@ -84,7 +86,7 @@ const MGCApplyArea = ({
     const isParticipants = currentUserIds.includes(Number(userId));
     const isCapacityExceeded = currentParticipantsLength >= maxParticipants;
     const isOwner = Number(userId) === createUserId;
-    const isClose = new Date() > new Date(endTime);
+    const isClose = new Date() > new Date(endTime) || new Date() > new Date(deadline);
 
     // 참여자임
     if (isParticipants) {
