@@ -31,8 +31,6 @@ export const metadata: Metadata = {
       default: APP_DEFAULT_TITLE,
     },
     description: APP_DESCRIPTION,
-    // TODO: 임시 썸네일 [24.04.08]
-    images: 'https://avatars.githubusercontent.com/u/66080362?v=4',
     url: process.env.NEXT_PUBLIC_SITE_BASE_URL,
     siteName: '로코모코',
   },
