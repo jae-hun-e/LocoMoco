@@ -7,11 +7,8 @@ import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import CreateBtn from '../_components/CreateBtn';
 import MGCList from '../_components/MGCList/MGCList';
-import Clusterer from '../_components/Map/Clusterer';
-import Geocoder from '../_components/Map/Geocoder';
-import Markers from '../_components/Map/Markers';
 import BottomSheet from './_components/BottomSheet';
-import SearchBarFilter from './_components/SearchBarFilter';
+import HomeMap from './_components/HomeMap';
 
 const Home = () => {
   const [MGCDataList, setMGCDataList] = useState<MGCSummary[]>([]);
@@ -51,18 +48,11 @@ const Home = () => {
   return (
     <div className="relative -left-20pxr w-[100vw]">
       <Map>
-        <Geocoder>
-          <section className="flex w-full flex-col items-center">
-            <SearchBarFilter />
-          </section>
-          <Clusterer>
-            <Markers
-              mapMGCData={data ?? []}
-              onMarkerClick={handleMarkerClick}
-              onClustererClick={openBottomSheetAndUpdate}
-            />
-          </Clusterer>
-        </Geocoder>
+        <HomeMap
+          data={data}
+          handleMarkerClick={handleMarkerClick}
+          openBottomSheetAndUpdate={openBottomSheetAndUpdate}
+        />
       </Map>
 
       <div className="absolute bottom-0 right-24pxr z-30">
