@@ -2,6 +2,7 @@
 
 import { ReactNode, createContext, useEffect, useRef, useState } from 'react';
 import { cn } from '@/libs/utils';
+import useKakaoMapLoad from '@/store/useKakaoMapLoad';
 
 interface MapProps {
   width?: string;
@@ -16,9 +17,10 @@ export const MapContext = createContext<kakao.maps.Map | undefined>(undefined);
 const Map = ({ width, height, isCustomlevelController = false, children, level }: MapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
   const mapRef = useRef<HTMLDivElement>(null);
+  const { isLoad } = useKakaoMapLoad();
 
   useEffect(() => {
-    window.kakao.maps.load(function () {
+    if (isLoad) {
       if (mapRef && mapRef.current != null) {
         const mapOption = {
           center: new window.kakao.maps.LatLng(37.492074, 127.029781),
@@ -34,8 +36,8 @@ const Map = ({ width, height, isCustomlevelController = false, children, level }
 
         setMap(createdMap);
       }
-    });
-  }, [isCustomlevelController, level]);
+    }
+  }, [isCustomlevelController, isLoad, level]);
 
   return (
     <MapContext.Provider value={map}>

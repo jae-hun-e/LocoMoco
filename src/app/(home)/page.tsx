@@ -2,11 +2,12 @@
 
 import { useEffect, useRef, useState } from 'react';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
-import Map from '@/app/_components/Map/Map';
+import useKakaoMapLoad from '@/store/useKakaoMapLoad';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import CreateBtn from '../_components/CreateBtn';
 import MGCList from '../_components/MGCList/MGCList';
+import Map from '../_components/Map/Map';
 import BottomSheet from './_components/BottomSheet';
 import HomeMap from './_components/HomeMap';
 
@@ -44,6 +45,14 @@ const Home = () => {
     openBottomSheetAndUpdate(mapData);
     handleMouseUp();
   };
+
+  const { setIsLoad } = useKakaoMapLoad();
+
+  useEffect(() => {
+    window.kakao.maps.load(function () {
+      setIsLoad(true);
+    });
+  }, [setIsLoad]);
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
