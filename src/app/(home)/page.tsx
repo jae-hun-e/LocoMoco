@@ -8,6 +8,7 @@ import { MGCSummary } from '@/types/MGCList';
 import CreateBtn from '../_components/CreateBtn';
 import MGCList from '../_components/MGCList/MGCList';
 import Map from '../_components/Map/Map';
+import MapViewer from '../_components/Map/MapViewer';
 import BottomSheet from './_components/BottomSheet';
 import HomeMap from './_components/HomeMap';
 
@@ -54,9 +55,14 @@ const Home = () => {
     });
   }, [setIsLoad]);
 
+  const mapRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="relative -left-20pxr w-[100vw]">
-      <Map>
+      <Map
+        render={() => <MapViewer ref={mapRef} />}
+        mapRef={mapRef}
+      >
         <HomeMap
           data={data}
           handleMarkerClick={handleMarkerClick}

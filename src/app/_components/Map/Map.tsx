@@ -1,22 +1,21 @@
 'use client';
 
-import { ReactNode, createContext, useEffect, useRef, useState } from 'react';
-import { cn } from '@/libs/utils';
+import { ReactNode, RefObject, createContext, useEffect, useState } from 'react';
+// import { cn } from '@/libs/utils';
 import useKakaoMapLoad from '@/store/useKakaoMapLoad';
 
 interface MapProps {
-  width?: string;
-  height?: string;
   isCustomlevelController?: boolean;
   children?: ReactNode;
   level?: number;
+  render: () => ReactNode;
+  mapRef: RefObject<HTMLDivElement>;
 }
 
 export const MapContext = createContext<kakao.maps.Map | undefined>(undefined);
 
-const Map = ({ width, height, isCustomlevelController = false, children, level }: MapProps) => {
+const Map = ({ isCustomlevelController, children, level, render, mapRef }: MapProps) => {
   const [map, setMap] = useState<kakao.maps.Map>();
-  const mapRef = useRef<HTMLDivElement>(null);
   const { isLoad } = useKakaoMapLoad();
 
   useEffect(() => {
@@ -37,16 +36,12 @@ const Map = ({ width, height, isCustomlevelController = false, children, level }
         setMap(createdMap);
       }
     }
-  }, [isCustomlevelController, isLoad, level]);
+  }, [isCustomlevelController, isLoad, level, mapRef]);
 
   return (
     <MapContext.Provider value={map}>
       {children}
-      <div
-        id="map"
-        ref={mapRef}
-        className={cn(`h-${height ?? '[calc(100svh-3.125rem-7.5rem)]'} w-${width ?? 'full'}`)}
-      ></div>
+      {render()}
     </MapContext.Provider>
   );
 };
