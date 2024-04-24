@@ -130,8 +130,6 @@ const MapSection = ({ data }: MGCListType) => {
       />
       {isLoad ? (
         <InfoWindow
-          map={map}
-          isLoad={isLoad}
           show={infoWindowPosition.latitude !== 0 && infoWindowPosition.longitude !== 0}
           position={infoWindowPosition}
           getNewPosition={getNewPosition}
