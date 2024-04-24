@@ -1,8 +1,7 @@
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { MapContext } from '../Map/Map';
 
 interface InfoWindow {
-  map?: kakao.maps.Map;
-  isLoad: boolean;
   show: boolean;
   position: {
     latitude: number;
@@ -14,7 +13,7 @@ interface InfoWindow {
 
 type Location = { latitude: number; longitude: number };
 
-const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: InfoWindow) => {
+const InfoWindow = ({ show, position, children, getNewPosition }: InfoWindow) => {
   const [customoverlay, setCustomoverlay] = useState<kakao.maps.CustomOverlay>();
   const ref = useRef<HTMLDivElement | null>(null);
   const startPoint = useRef({ x: 0, y: 0 });
@@ -22,6 +21,8 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
     x: 0,
     y: 0,
   });
+
+  const map = useContext(MapContext);
 
   useEffect(() => {
     if (map && customoverlay) {
@@ -35,7 +36,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
   }, [customoverlay, map, position.latitude, position.longitude, show]);
 
   useEffect(() => {
-    if (isLoad) {
+    if (map) {
       const customoverlay = new kakao.maps.CustomOverlay({
         content: ref.current!,
         position: new kakao.maps.LatLng(37.4767616, 126.9170176),
@@ -44,7 +45,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
 
       setCustomoverlay(customoverlay);
     }
-  }, [isLoad, map]);
+  }, [map]);
 
   const isMouseEvent = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>,
