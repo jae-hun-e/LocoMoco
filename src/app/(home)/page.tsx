@@ -5,7 +5,6 @@ import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
 import { Separator } from '@/components/ui/separator';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 import useInfoWindowPosition from '@/store/useInfoWindowPosition';
-import useKakaoMapLoad from '@/store/useKakaoMapLoad';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import { X } from 'lucide-react';
@@ -29,8 +28,6 @@ const Home = () => {
   const { toggleModal } = useThunderModalStore();
 
   const { searchValue } = useSearchInputValueStore();
-
-  const { setIsLoad } = useKakaoMapLoad();
 
   const { data } = useMGCTotalList({
     search: searchValue.address,
@@ -67,12 +64,6 @@ const Home = () => {
   const closeInfoWindow = () => {
     setInfoWindowPosition({ latitude: 0, longitude: 0 });
   };
-
-  useEffect(() => {
-    window.kakao.maps.load(function () {
-      setIsLoad(true);
-    });
-  }, [setIsLoad]);
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
