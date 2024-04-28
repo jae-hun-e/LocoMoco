@@ -78,6 +78,10 @@ const Map = forwardRef(
 
     const handleTouchStart = useCallback(
       (e: TouchEvent) => {
+        const target = e.target as HTMLElement;
+
+        if (target.closest('#infowindow')) return;
+
         if (!(e.target instanceof SVGElement)) return;
 
         if (map) {
