@@ -36,6 +36,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
     maxParticipants: mgcDetail.MogakkoInfo.maxParticipants,
     currentParticipants: mgcDetail.participants,
     endTime: mgcDetail.MogakkoInfo.endTime,
+    deadline: mgcDetail.MogakkoInfo.deadline,
     like: mgcDetail.MogakkoInfo.likeCount,
     MGCId,
     createUserId: mgcDetail.creatorInfo.userId,
