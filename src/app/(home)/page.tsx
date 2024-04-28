@@ -67,20 +67,16 @@ const Home = () => {
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
-      <Map
-        render={() => (
-          <HomeMapViewer
-            ref={mapRef}
-            timerRef={timerRef}
-            onMouseUp={handleMouseUp}
-          />
-        )}
-        mapRef={mapRef}
-      >
+      <Map mapRef={mapRef}>
         <HomeMap
           data={data}
           handleMarkerClick={handleMarkerClick}
           openBottomSheetAndUpdate={openBottomSheetAndUpdate}
+        />
+        <HomeMapViewer
+          ref={mapRef}
+          timerRef={timerRef}
+          onMouseUp={handleMouseUp}
         />
         <InfoWindow
           show={infoWindowPosition.latitude !== 0 && infoWindowPosition.longitude !== 0}
