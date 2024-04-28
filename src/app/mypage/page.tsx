@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import client from '@/apis/core';
 import UserInfo from '@/app/mypage/_components/UserInfo';
 import ProgressBar from '@/components/ProgressBar';
@@ -11,36 +10,15 @@ import { clearItem, getItem } from '@/utils/storage';
 import { ChevronRightIcon } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { UserInfoProps } from './_hooks/useMypageInfo';
-
-interface MyPageInfoProps {
-  userInfo: UserInfoProps;
-  completeMogakkoCount: number;
-  likeMogakkoCount: number;
-  ongoingMogakkoCount: number;
-}
+import { useMypageInfo } from './_hooks/useMypageInfo';
 
 const MyPage = () => {
-  const [myInfo, setMyInfo] = useState<MyPageInfoProps | undefined>();
-  const [isLoading, setIsLoading] = useState(true);
-  const getMyPageInfo = async (userId: string) =>
-    await client.get<MyPageInfoProps>({ url: `/users/${userId}` });
-
-  useEffect(() => {
-    const isLogin = async () => {
-      setIsLoading(true);
-      const userId = getItem<string | undefined>(localStorage, 'userId');
-      if (userId) {
-        const res = await getMyPageInfo(userId);
-        setMyInfo(res);
-        console.log(res);
-      }
-      setIsLoading(false);
-    };
-    isLogin();
-  }, []);
+  let userId;
+  if (typeof window !== 'undefined') userId = getItem(localStorage, 'userId');
+  const { myInfo, isLoading } = useMypageInfo({ userId: Number(userId) });
 
   const router = useRouter();
+
   const handleLogout = async () => {
     const provider = getItem(localStorage, 'provider');
     try {
@@ -48,6 +26,16 @@ const MyPage = () => {
         await client.post({
           url: 'https://kapi.kakao.com/v1/user/logout',
           headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        });
+      } else if (provider === 'GITHUB') {
+        await client.delete({
+          url: `https://api.github.com/applications/${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}/token`,
+          auth: {
+            username: process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID!,
+            password: process.env.NEXT_PUBLIC_GITHUB_SECRET!,
+          },
+          data: { access_token: getItem(localStorage, 'token') },
+          headers: { Accept: 'application/json' },
         });
       }
       alert('로그아웃 하였습니다.');
@@ -95,10 +83,10 @@ const MyPage = () => {
       {myInfo ? (
         <section>
           <UserInfo myInfo={myInfo.userInfo} />
-          <section className="mb-10 flex flex-col gap-4 font-bold">
+          <div className="mb-10 flex flex-col gap-4 font-bold">
             <p className="text-xl text-main-1">나의 활동</p>
             {myActivities.map(({ link, title, count }) => (
-              <section
+              <div
                 key={link}
                 className="flex flex-col gap-3 text-sm "
               >
@@ -111,12 +99,12 @@ const MyPage = () => {
                   </Link>
                 </div>
                 <Separator />
-              </section>
+              </div>
             ))}
-          </section>
-          <section className="mb-10 flex flex-col gap-4 font-bold">
+          </div>
+          <div className="mb-10 flex flex-col gap-4 font-bold">
             <p className="text-xl text-main-1">내 정보 관리</p>
-            <section className="flex flex-col gap-3 text-sm">
+            <div className="flex flex-col gap-3 text-sm">
               <div className="flex justify-between">
                 <p>로그아웃</p>
                 <ChevronRightIcon
@@ -125,8 +113,8 @@ const MyPage = () => {
                 />
               </div>
               <Separator />
-            </section>
-            <section className="flex flex-col gap-3 text-sm">
+            </div>
+            <div className="flex flex-col gap-3 text-sm">
               <div className="flex justify-between transition-all duration-500 hover:text-red-500">
                 <p>회원탈퇴</p>
                 <ChevronRightIcon
@@ -135,8 +123,8 @@ const MyPage = () => {
                 />
               </div>
               <Separator />
-            </section>
-          </section>
+            </div>
+          </div>
         </section>
       ) : (
         <div className="flex h-svh w-full items-center justify-center">

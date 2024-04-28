@@ -35,6 +35,7 @@ export const useMypageInfo = ({ userId }: { userId: number }) => {
   const { data, isLoading } = useQuery({
     queryKey: ['mypage', userId],
     queryFn: () => getMypageInfo({ userId }),
+    enabled: !!userId,
   });
 
   return { myInfo: data, isLoading };
