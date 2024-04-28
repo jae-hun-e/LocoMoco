@@ -72,19 +72,18 @@ const HomeMapViewer = forwardRef(
         kakao.maps.event.addListener(map, 'mousedown', handleMouseDown);
         kakao.maps.event.addListener(map, 'click', onMouseUp);
         kakao.maps.event.addListener(map, 'dragstart', onMouseUp);
+        mapContainer.addEventListener('touchstart', handleTouchStart);
 
         findAllSvgElements(mapContainer);
       }
-
-      mapContainer.addEventListener('touchstart', handleTouchStart);
 
       return () => {
         if (map) {
           kakao.maps.event.removeListener(map, 'mousedown', handleMouseDown);
           kakao.maps.event.removeListener(map, 'click', onMouseUp);
           kakao.maps.event.removeListener(map, 'dragstart', onMouseUp);
+          mapContainer.removeEventListener('touchstart', handleTouchStart);
         }
-        mapContainer.removeEventListener('touchstart', handleTouchStart);
       };
     }, [handleMouseDown, onMouseUp, handleTouchStart, map, findAllSvgElements]);
 
