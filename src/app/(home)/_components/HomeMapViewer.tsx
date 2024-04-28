@@ -33,6 +33,10 @@ const HomeMapViewer = forwardRef(
 
     const handleTouchStart = useCallback(
       (e: TouchEvent) => {
+        const target = e.target as HTMLElement;
+
+        if (target.closest('#infowindow')) return;
+
         if (!(e.target instanceof SVGElement)) return;
 
         if (map) {
@@ -47,6 +51,20 @@ const HomeMapViewer = forwardRef(
       [map, setInfoWindowPosition, timerRef],
     );
 
+    const findAllSvgElements = useCallback((parentElement: Element | SVGElement) => {
+      for (let i = 0; i < parentElement.children.length; i++) {
+        const child = parentElement.children[i];
+
+        if (child.tagName === 'svg' && child instanceof SVGElement) {
+          child.classList.add('no-select');
+        }
+
+        if (child.children.length > 0) {
+          findAllSvgElements(child);
+        }
+      }
+    }, []);
+
     useEffect(() => {
       const mapContainer = document.getElementById('map')!;
 
@@ -54,7 +72,10 @@ const HomeMapViewer = forwardRef(
         kakao.maps.event.addListener(map, 'mousedown', handleMouseDown);
         kakao.maps.event.addListener(map, 'click', onMouseUp);
         kakao.maps.event.addListener(map, 'dragstart', onMouseUp);
+
+        findAllSvgElements(mapContainer);
       }
+
       mapContainer.addEventListener('touchstart', handleTouchStart);
 
       return () => {
@@ -65,7 +86,7 @@ const HomeMapViewer = forwardRef(
         }
         mapContainer.removeEventListener('touchstart', handleTouchStart);
       };
-    }, [handleMouseDown, onMouseUp, handleTouchStart, map]);
+    }, [handleMouseDown, onMouseUp, handleTouchStart, map, findAllSvgElements]);
 
     return <MapViewer ref={mapRef} />;
   },
