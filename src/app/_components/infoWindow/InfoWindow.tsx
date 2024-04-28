@@ -141,7 +141,7 @@ const InfoWindow = ({ show, position, children, getNewPosition }: InfoWindow) =>
     };
   }, [onMouseUp, map, customoverlay]);
 
-  return (
+  return map ? (
     <div
       ref={ref}
       onMouseDown={onMouseDown}
@@ -150,7 +150,7 @@ const InfoWindow = ({ show, position, children, getNewPosition }: InfoWindow) =>
     >
       {children}
     </div>
-  );
+  ) : null;
 };
 
 export default InfoWindow;
