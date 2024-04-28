@@ -1,9 +1,20 @@
 'use client';
 
 import { ReactNode } from 'react';
+import client from '@/apis/core';
+import { clearItem, setItem } from '@/utils/storage';
 import { initializeApp } from '@firebase/app';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { AxiosError } from 'axios';
+
+interface RefreshTokenResponse {
+  access_token: string;
+  token_type: string;
+  refresh_token: string;
+  expires_in: number;
+  refresh_token_expires_in: number;
+}
 
 const Provider = ({
   children,
@@ -11,6 +22,20 @@ const Provider = ({
   children: ReactNode;
 }>) => {
   const queryClient = new QueryClient({
+    queryCache: new QueryCache({
+      onError: (error) => {
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 401) {
+            alert('인증이 만료되었습니다. 다시 로그인해주세요.');
+            clearItem(localStorage);
+          } else if (error.response?.status === 1401) {
+            client
+              .get<RefreshTokenResponse>({ url: '/users/refresh/kakao' })
+              .then((res) => setItem(localStorage, 'token', res.access_token));
+          }
+        }
+      },
+    }),
     defaultOptions: {
       queries: {
         refetchOnWindowFocus: false,
