@@ -1,4 +1,4 @@
-import { ReactNode, useCallback, useContext, useEffect } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { MGCSummary } from '@/types/MGCList';
 import { clustererContext } from './Clusterer';
 import { MapContext } from './Map';
@@ -10,7 +10,6 @@ interface MakerInfo {
 
 interface MarkersProps {
   mapMGCData: MGCSummary[];
-  children?: ReactNode;
   onMarkerClick: (mapData: MGCSummary[]) => void;
   onClustererClick: (mapData: MGCSummary[]) => void;
 }
