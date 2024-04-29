@@ -5,7 +5,6 @@ import { toast } from '@/components/ui/use-toast';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useClickAway from '@/hooks/useClickaway';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
-import useCenterPosition from '@/store/useCenterPosition';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { Search } from 'lucide-react';
 import AddressList from './AddressList';
@@ -21,7 +20,10 @@ const SearchBarFilter = () => {
 
   const clickAwayRef = useClickAway<HTMLDivElement>(handleClickAway);
 
-  const { setCenterPosition } = useCenterPosition();
+  const [centerPosition, setCenterPosition] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
 
   const handleAddressClick = (data: Address) => {
     setCenterPosition({ latitude: Number(data.latitude), longitude: Number(data.longitude) });
@@ -48,7 +50,6 @@ const SearchBarFilter = () => {
   );
 
   const { changeCenter } = useChangeMapCenter();
-  const { centerPosition } = useCenterPosition();
 
   useEffect(() => {
     const { latitude, longitude } = centerPosition;
