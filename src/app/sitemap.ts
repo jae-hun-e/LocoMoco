@@ -21,9 +21,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       if (!data) break;
 
       MGCDatas.push(
-        ...data.map((mgc) => ({
-          url: `${process.env.NEXT_PUBLIC_SITE_BASE_URL}/mgc/${mgc.id}`,
-          lastModified: mgc.updatedAt,
+        ...data.map(({ id, updatedAt }) => ({
+          url: `${process.env.NEXT_PUBLIC_SITE_BASE_URL}/mgc/${id}`,
+          lastModified: updatedAt,
           changeFrequency: 'daily' as const,
           priority: 0.7,
         })),
