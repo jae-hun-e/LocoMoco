@@ -10,8 +10,8 @@ interface MakerInfo {
 
 interface MarkersProps {
   mapMGCData: MGCSummary[];
-  onMarkerClick: (mapData: MGCSummary[]) => void;
-  onClustererClick: (mapData: MGCSummary[]) => void;
+  onMarkerClick?: (mapData: MGCSummary[]) => void;
+  onClustererClick?: (mapData: MGCSummary[]) => void;
 }
 
 const Markers = ({ mapMGCData, onMarkerClick, onClustererClick }: MarkersProps) => {
@@ -36,7 +36,7 @@ const Markers = ({ mapMGCData, onMarkerClick, onClustererClick }: MarkersProps) 
       });
 
       kakao.maps.event.addListener(marker, 'click', () => {
-        onMarkerClick([mgc]);
+        onMarkerClick?.([mgc]);
       });
 
       const newMarkerInfo = { data: mgc, marker: marker };
@@ -63,7 +63,7 @@ const Markers = ({ mapMGCData, onMarkerClick, onClustererClick }: MarkersProps) 
         }
       }
 
-      onClustererClick(markerList);
+      onClustererClick?.(markerList);
     });
   }, [clusterer, onClustererClick, setMarker]);
 
@@ -77,7 +77,7 @@ const Markers = ({ mapMGCData, onMarkerClick, onClustererClick }: MarkersProps) 
       });
 
       kakao.maps.event.addListener(marker, 'click', () => {
-        onMarkerClick([markerInfo.data]);
+        onMarkerClick?.([markerInfo.data]);
       });
     }
   }, [map, onMarkerClick, setMarker]);

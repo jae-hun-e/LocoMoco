@@ -3,14 +3,9 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
 import { MapContext } from './Map';
 
-interface GeocoderProps {
-  minLevel?: number;
-  children: ReactNode;
-}
-
 export const geocoderContext = createContext<kakao.maps.services.Geocoder | undefined>(undefined);
 
-const Geocoder = ({ minLevel, children }: GeocoderProps) => {
+const Geocoder = ({ children }: { children: ReactNode }) => {
   const map = useContext(MapContext);
   const [geocoder, setGeocoder] = useState<kakao.maps.services.Geocoder>();
 
@@ -20,7 +15,7 @@ const Geocoder = ({ minLevel, children }: GeocoderProps) => {
 
       setGeocoder(geocoder);
     }
-  }, [map, minLevel]);
+  }, [map]);
 
   return <geocoderContext.Provider value={geocoder}>{children}</geocoderContext.Provider>;
 };

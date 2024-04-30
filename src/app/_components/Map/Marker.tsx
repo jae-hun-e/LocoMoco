@@ -2,8 +2,8 @@ import { useContext, useEffect } from 'react';
 import { MapContext } from './Map';
 
 interface MarkerProps {
-  latitude?: number;
-  longitude?: number;
+  latitude: number;
+  longitude: number;
   markerSrc?: string;
   markerSize?: {
     width: number;
@@ -16,7 +16,9 @@ const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }
   const map = useContext(MapContext);
 
   useEffect(() => {
-    if (map && latitude && longitude) {
+    if (map) {
+      if (latitude === 0 || longitude === 0) return;
+
       const movePosition = new kakao.maps.LatLng(latitude, longitude);
       const imageSrc =
         markerSrc ?? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';

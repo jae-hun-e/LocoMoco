@@ -5,7 +5,7 @@ import useKakaoMapLoad from '@/store/useKakaoMapLoad';
 
 interface MapProps {
   isCustomlevelController?: boolean;
-  children?: ReactNode;
+  children: ReactNode;
   level?: number;
   mapRef: RefObject<HTMLDivElement>;
 }
