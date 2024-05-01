@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
+import { toast } from '@/components/ui/use-toast';
+import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useClickAway from '@/hooks/useClickaway';
-import useCenterPosition from '@/store/useCenterPosition';
+import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
+import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { Search } from 'lucide-react';
 import AddressList from './AddressList';
 
 const SearchBarFilter = () => {
   const [keyword, setKeyword] = useState('');
   const [show, setShow] = useState(false);
-  const { setCenterPosition } = useCenterPosition();
-
   const { data: address } = useAddress(keyword);
 
   const handleClickAway = () => {
@@ -19,10 +20,45 @@ const SearchBarFilter = () => {
 
   const clickAwayRef = useClickAway<HTMLDivElement>(handleClickAway);
 
+  const [centerPosition, setCenterPosition] = useState({
+    latitude: 0,
+    longitude: 0,
+  });
+
   const handleAddressClick = (data: Address) => {
     setCenterPosition({ latitude: Number(data.latitude), longitude: Number(data.longitude) });
     setShow(false);
   };
+
+  const { searchValue, setSearchValue } = useSearchInputValueStore();
+  const { getAddressByCoorinates } = useGetAddressByCoordinates();
+
+  const changeAddress = useCallback(
+    async (latitude: number, longitude: number) => {
+      const address = await getAddressByCoorinates(latitude, longitude);
+
+      if (!address) {
+        toast({
+          description: '오류가 발생했습니다.',
+        });
+        return;
+      }
+
+      setSearchValue({ ...searchValue, address });
+    },
+    [getAddressByCoorinates],
+  );
+
+  const { changeCenter } = useChangeMapCenter();
+
+  useEffect(() => {
+    const { latitude, longitude } = centerPosition;
+
+    if (latitude !== 0 && longitude !== 0) {
+      changeCenter(latitude, longitude);
+      changeAddress(latitude, longitude);
+    }
+  }, [centerPosition, changeCenter, changeAddress]);
 
   return (
     <div className="w-[90%] pt-20pxr">

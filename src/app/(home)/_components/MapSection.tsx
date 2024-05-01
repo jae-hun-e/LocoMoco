@@ -8,7 +8,7 @@ import useCreateKakaoMap from '@/hooks/useCreateKakaoMap';
 import useRenderMarkerByData from '@/hooks/useRenderMarkerByData';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 import useCenterPosition from '@/store/useCenterPosition';
-import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
+// import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import useInfoWindowPosition from '@/store/useInfoWindowPosition';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCList as MGCListType, MGCSummary } from '@/types/MGCList';
@@ -17,17 +17,17 @@ import { useRouter } from 'next/navigation';
 import BottomSheet from './BottomSheet';
 import Map from './Map';
 
-interface Location {
-  latitude: number;
-  longitude: number;
-}
+// interface Location {
+//   latitude: number;
+//   longitude: number;
+// }
 
 const MapSection = ({ data }: MGCListType) => {
   const [MGCDataList, setMGCDataList] = useState<MGCSummary[]>([]);
   const [open, setOpen] = useState(false);
   const { centerPosition } = useCenterPosition();
 
-  const { setCreatedPositionInfo } = useCreatedPositionInfo();
+  // const { setCreatedPositionInfo } = useCreatedPositionInfo();
   const { toggleModal } = useThunderModalStore();
 
   const router = useRouter();
@@ -103,17 +103,17 @@ const MapSection = ({ data }: MGCListType) => {
     setInfoWindowPosition({ latitude: 0, longitude: 0 });
   };
 
-  const getNewPosition = async (data: Location) => {
-    const { latitude, longitude } = data;
+  // const getNewPosition = async (data: Location) => {
+  //   const { latitude, longitude } = data;
 
-    const cityAddress = await getAddressByCoorinates(latitude, longitude);
-    setCreatedPositionInfo({
-      latitude,
-      longitude,
-      city: cityAddress!,
-      address: cityAddress!,
-    });
-  };
+  //   const cityAddress = await getAddressByCoorinates(latitude, longitude);
+  //   setCreatedPositionInfo({
+  //     latitude,
+  //     longitude,
+  //     city: cityAddress!,
+  //     address: cityAddress!,
+  //   });
+  // };
 
   return (
     <>
@@ -130,11 +130,9 @@ const MapSection = ({ data }: MGCListType) => {
       />
       {isLoad ? (
         <InfoWindow
-          map={map}
-          isLoad={isLoad}
           show={infoWindowPosition.latitude !== 0 && infoWindowPosition.longitude !== 0}
           position={infoWindowPosition}
-          getNewPosition={getNewPosition}
+          // getNewPosition={getNewPosition}
         >
           <div
             id="infowindow-content"

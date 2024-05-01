@@ -9,6 +9,7 @@ import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import MapProvider from './_components/Map/MapProvider';
 
 const pretendard = localFont({
   src: '../../public/font/PretendardVariable.ttf',
@@ -122,15 +123,17 @@ const RootLayout = async ({
         />
 
         <Provider>
-          <main className="h-[calc(100vh-50px)]">
-            <div className="overflow-y-auto px-20pxr scrollbar-hide">
-              <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
+          <MapProvider>
+            <main className="h-[calc(100vh-50px)]">
+              <div className="overflow-y-auto px-20pxr scrollbar-hide">
+                <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
 
-              <div className="mb-50pxr" />
-            </div>
-          </main>
-          <Navbar />
-          <Toaster />
+                <div className="mb-50pxr" />
+              </div>
+            </main>
+            <Navbar />
+            <Toaster />
+          </MapProvider>
         </Provider>
       </body>
     </html>
