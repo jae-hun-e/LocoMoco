@@ -6,6 +6,7 @@ import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import CreateBtn from '../_components/CreateBtn';
 import MGCList from '../_components/MGCList/MGCList';
+import Geocoder from '../_components/Map/Geocoder';
 import Map from '../_components/Map/Map';
 import BottomSheet from './_components/BottomSheet';
 import HomeMap from './_components/HomeMap';
@@ -21,8 +22,7 @@ const Home = () => {
 
   const { data } = useMGCTotalList({
     search: searchValue.address,
-    // TODO: 처음 위치의 주소를 받아오는 기능을 추가한 다음 LOCATION으로 변경하기 [24.04.20]
-    searchType: 'TOTAL',
+    searchType: 'LOCATION',
   });
 
   useEffect(() => {
@@ -52,16 +52,18 @@ const Home = () => {
   return (
     <div className="relative -left-20pxr w-[100vw]">
       <Map mapRef={mapRef}>
-        <HomeMap
-          data={data}
-          handleMarkerClick={handleMarkerClick}
-          openBottomSheetAndUpdate={openBottomSheetAndUpdate}
-        />
-        <HomeMapViewer
-          ref={mapRef}
-          timerRef={timerRef}
-          onMouseUp={handleMouseUp}
-        />
+        <Geocoder>
+          <HomeMap
+            data={data}
+            handleMarkerClick={handleMarkerClick}
+            openBottomSheetAndUpdate={openBottomSheetAndUpdate}
+          />
+          <HomeMapViewer
+            ref={mapRef}
+            timerRef={timerRef}
+            onMouseUp={handleMouseUp}
+          />
+        </Geocoder>
       </Map>
 
       <div className="absolute bottom-0 right-24pxr z-30">

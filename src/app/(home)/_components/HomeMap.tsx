@@ -1,13 +1,14 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Clusterer from '@/app/_components/Map/Clusterer';
-import Geocoder from '@/app/_components/Map/Geocoder';
 import Marker from '@/app/_components/Map/Marker';
 import Markers from '@/app/_components/Map/Markers';
 import InfoWindow from '@/app/_components/infoWindow/InfoWindow';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useGeolocation from '@/hooks/useGeolocation';
+import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 import useInfoWindowPosition from '@/store/useInfoWindowPosition';
+import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import { Separator } from '@radix-ui/react-separator';
 import { X } from 'lucide-react';
@@ -35,17 +36,29 @@ const HomeMap = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: HomeMap)
   const location = useGeolocation();
   const { changeCenter } = useChangeMapCenter();
 
+  const { getAddressByCoorinates } = useGetAddressByCoordinates();
+  const { setSearchValue, searchValue } = useSearchInputValueStore();
+
+  const updateSearchValueAddress = useCallback(
+    async (latitude: number, longitude: number) => {
+      const address = await getAddressByCoorinates(latitude, longitude);
+      setSearchValue({ ...searchValue, address });
+    },
+    [getAddressByCoorinates],
+  );
+
   useEffect(() => {
     if (location.loaded) {
       const { lat, lng } = location.coordinates!;
 
       setCurrentCoordinates({ latitude: lat, longitude: lng });
       changeCenter(lat, lng);
+      updateSearchValueAddress(lat, lng);
     }
-  }, [changeCenter, location.coordinates, location.loaded]);
+  }, [changeCenter, location.coordinates, location.loaded, updateSearchValueAddress]);
 
   return (
-    <Geocoder>
+    <>
       <section className="flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
@@ -104,7 +117,7 @@ const HomeMap = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: HomeMap)
           </div>
         </div>
       </InfoWindow>
-    </Geocoder>
+    </>
   );
 };
 
