@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { MapContext } from './Map';
 
 interface MarkerProps {
@@ -14,10 +14,15 @@ interface MarkerProps {
 
 const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }: MarkerProps) => {
   const map = useContext(MapContext);
+  const [mapMarker, setMapMarker] = useState<kakao.maps.Marker>();
 
   useEffect(() => {
     if (map) {
       if (latitude === 0 || longitude === 0) return;
+
+      if (mapMarker) {
+        mapMarker.setMap(null);
+      }
 
       const movePosition = new kakao.maps.LatLng(latitude, longitude);
       const imageSrc =
@@ -36,8 +41,9 @@ const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }
         image: markerImage,
       });
 
-      marker.setMap(map!);
+      marker.setMap(map);
       marker.setDraggable(draggble);
+      setMapMarker(marker);
     }
   }, [draggble, latitude, longitude, map, markerSize?.height, markerSize?.width, markerSrc]);
 
