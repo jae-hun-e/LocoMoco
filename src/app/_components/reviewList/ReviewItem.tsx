@@ -11,7 +11,7 @@ interface ReviewItemProps {
 export interface UserInfoData {
   userId: number;
   nickname: string;
-  job: string;
+  jobId: number;
   profileImage: {
     imageId: number;
     path: string;

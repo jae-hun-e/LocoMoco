@@ -9,6 +9,7 @@ import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import MapProvider from './_components/Map/MapProvider';
 
 const pretendard = localFont({
   src: '../../public/font/PretendardVariable.ttf',
@@ -20,8 +21,20 @@ const APP_DEFAULT_TITLE = 'LocoMoco :D';
 const APP_DESCRIPTION = '위치기반 모각코!';
 
 export const metadata: Metadata = {
-  title: APP_DEFAULT_TITLE,
+  title: {
+    template: `%s | LocoMoco`,
+    default: APP_DEFAULT_TITLE,
+  },
   description: APP_DESCRIPTION,
+  openGraph: {
+    title: {
+      template: `%s | LocoMoco`,
+      default: APP_DEFAULT_TITLE,
+    },
+    description: APP_DESCRIPTION,
+    url: process.env.NEXT_PUBLIC_SITE_BASE_URL,
+    siteName: '로코모코',
+  },
   icons: {
     other: [
       {
@@ -110,15 +123,17 @@ const RootLayout = async ({
         />
 
         <Provider>
-          <main className="h-[calc(100vh-50px)]">
-            <div className="overflow-y-auto px-20pxr scrollbar-hide">
-              <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
+          <MapProvider>
+            <main className="h-[calc(100vh-50px)]">
+              <div className="overflow-y-auto px-20pxr scrollbar-hide">
+                <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
 
-              <div className="mb-50pxr" />
-            </div>
-          </main>
-          <Navbar />
-          <Toaster />
+                <div className="mb-50pxr" />
+              </div>
+            </main>
+            <Navbar />
+            <Toaster />
+          </MapProvider>
         </Provider>
       </body>
     </html>

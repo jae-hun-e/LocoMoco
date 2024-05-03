@@ -6,16 +6,20 @@ export interface TotalSearchProps {
   search?: string;
   searchType: 'TOTAL' | 'LOCATION';
   tags?: number[];
+  cursor?: number;
+  pageSize?: number;
 }
 
 export const getMGCTotalList = async ({
   search,
   searchType = 'LOCATION',
   tags,
+  cursor,
+  pageSize,
 }: TotalSearchProps) => {
   const { data } = await client.get<MGCList>({
     url: `/mogakko/map`,
-    params: { tags, search, searchType },
+    params: { tags, search, searchType, cursor, pageSize },
   });
 
   return data;

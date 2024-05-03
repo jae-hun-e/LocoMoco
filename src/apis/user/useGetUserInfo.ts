@@ -1,5 +1,5 @@
 import client from '@/apis/core';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 
 export interface UserInfo {
   userInfo: {
@@ -8,7 +8,7 @@ export interface UserInfo {
     birth: string;
     gender: 'FEMALE' | 'MALE';
     temperature: number;
-    job: 'DEVELOPER' | 'JOB_SEEKER' | 'ETC';
+    jobId: number;
     email: string;
     provider: 'KAKAO' | 'GITHUB';
     profileImage: {
@@ -30,7 +30,7 @@ export const getUserInfo = async (userId: number) => {
 };
 
 const useGetUserInfo = (userId: number) => {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: ['userInfo', userId] as const,
     queryFn: () => getUserInfo(userId),
   });

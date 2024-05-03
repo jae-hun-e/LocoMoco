@@ -32,7 +32,8 @@ export interface MGCData {
   MogakkoInfo: MogakkoInfo;
 }
 
-const getMGCDetail = async (id: number) => await client.get<MGCData>({ url: `/mogakko/map/${id}` });
+export const getMGCDetail = async (id: number) =>
+  await client.get<MGCData>({ url: `/mogakko/map/${id}` });
 
 export const getMGCDetailQueryOption = (id: number) =>
   queryOptions({

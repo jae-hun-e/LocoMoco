@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useRef } from 'react';
+import ProfileImg from '@/app/_components/ProfileImg';
 import { ChatType } from '@/types/chat';
 import { format } from 'date-fns';
-import Image from 'next/image';
 
 interface Props {
   notMe: boolean;
@@ -12,7 +12,7 @@ interface Props {
 const Message = ({
   notMe,
   commonBorder,
-  talk: { chatMessageId, senderProfileImage, senderNickName, message, createdAt },
+  talk: { chatMessageId, senderProfileImage, senderNickName, message, createdAt, senderId },
 }: Props) => {
   const scroll = useRef<HTMLDivElement>(null);
 
@@ -55,13 +55,9 @@ const Message = ({
     >
       <div className="flex items-center gap-1">
         {notMe && (
-          <Image
-            className="h-8 w-8 rounded-3xl"
-            src={senderProfileImage || '/oh.png'}
-            alt="profile image"
-            width={32}
-            height={32}
-            priority
+          <ProfileImg
+            userId={senderId}
+            imgUrl={senderProfileImage!}
           />
         )}
         <p>{notMe && senderNickName}</p>

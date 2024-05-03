@@ -1,12 +1,14 @@
 'use client';
 
-import { UserInfoProps } from '@/app/mypage/_hooks/useMypageInfo';
 import MainStyleButton from '@/components/MainStyleButton';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { routes } from '@/constants/routeURL';
 import { useTagMapping } from '@/hooks/useTagMapping';
 import Image from 'next/image';
 import Link from 'next/link';
+import { UserInfoProps } from '../_hooks/useMypageInfo';
+
+// import { UserInfoProps } from '../page';
 
 const UserInfo = ({ myInfo }: { myInfo: UserInfoProps }) => {
   const tagMapping = useTagMapping();

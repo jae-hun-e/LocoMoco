@@ -6,6 +6,7 @@ export const routes = {
   search: '/search',
   signin: '/signin',
   mypage: '/mypage',
+  editMGC: '/edit-mgc',
   changeMyInfo: '/mypage/change-my-info',
   likeMGC: '/mypage/like-mgc',
   currentJoinMGC: '/mypage/current-join-mgc',

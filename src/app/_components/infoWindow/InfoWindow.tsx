@@ -1,20 +1,22 @@
-import React, { ReactNode, useCallback, useEffect, useRef, useState } from 'react';
+import React, { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
+import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
+import { MapContext } from '../Map/Map';
 
 interface InfoWindow {
-  map?: kakao.maps.Map;
-  isLoad: boolean;
   show: boolean;
   position: {
     latitude: number;
     longitude: number;
   };
   children?: ReactNode;
-  getNewPosition: (data: Location) => void;
 }
 
 type Location = { latitude: number; longitude: number };
 
-const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: InfoWindow) => {
+const InfoWindow = ({ show, position, children }: InfoWindow) => {
+  const map = useContext(MapContext);
+
   const [customoverlay, setCustomoverlay] = useState<kakao.maps.CustomOverlay>();
   const ref = useRef<HTMLDivElement | null>(null);
   const startPoint = useRef({ x: 0, y: 0 });
@@ -22,6 +24,24 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
     x: 0,
     y: 0,
   });
+
+  const { setCreatedPositionInfo } = useCreatedPositionInfo();
+  const { getAddressByCoorinates } = useGetAddressByCoordinates();
+
+  const getNewPosition = useCallback(
+    async (data: Location) => {
+      const { latitude, longitude } = data;
+
+      const cityAddress = await getAddressByCoorinates(latitude, longitude);
+      setCreatedPositionInfo({
+        latitude,
+        longitude,
+        city: cityAddress!,
+        address: cityAddress!,
+      });
+    },
+    [getAddressByCoorinates, setCreatedPositionInfo],
+  );
 
   useEffect(() => {
     if (map && customoverlay) {
@@ -35,7 +55,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
   }, [customoverlay, map, position.latitude, position.longitude, show]);
 
   useEffect(() => {
-    if (isLoad) {
+    if (map) {
       const customoverlay = new kakao.maps.CustomOverlay({
         content: ref.current!,
         position: new kakao.maps.LatLng(37.4767616, 126.9170176),
@@ -44,7 +64,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
 
       setCustomoverlay(customoverlay);
     }
-  }, [isLoad, map]);
+  }, [map]);
 
   const isMouseEvent = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent> | React.TouchEvent<HTMLDivElement>,
@@ -87,7 +107,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
   );
 
   const onMouseDown = useCallback(
-    (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
+    async (e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>) => {
       e.preventDefault();
 
       if (!map || !customoverlay) return;
@@ -103,6 +123,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
       // 계산된 픽셀 좌표를 지도 컨테이너에 해당하는 지도 좌표로 변경합니다
       const newPosition: kakao.maps.LatLng = proj.coordsFromContainerPoint(newPoint);
       console.log('인포윈도우의 좌표', newPosition);
+
       getNewPosition({
         latitude: newPosition.getLat(),
         longitude: newPosition.getLng(),
@@ -140,7 +161,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
     };
   }, [onMouseUp, map, customoverlay]);
 
-  return (
+  return map ? (
     <div
       ref={ref}
       onMouseDown={onMouseDown}
@@ -149,7 +170,7 @@ const InfoWindow = ({ map, isLoad, show, position, children, getNewPosition }: I
     >
       {children}
     </div>
-  );
+  ) : null;
 };
 
 export default InfoWindow;

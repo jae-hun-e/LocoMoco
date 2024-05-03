@@ -1,23 +1,21 @@
-'use client';
-
 import { ReactNode } from 'react';
 import Header from '@/app/_components/header/Header';
-import { useThunderModalStore } from '@/store/thunderModalStore';
+import { Metadata } from 'next';
 
-const ChatLayout = ({
-  children,
-}: Readonly<{
-  children: ReactNode;
-}>) => {
-  const { toggleModal } = useThunderModalStore();
+export const metadata: Metadata = {
+  title: '채팅',
+  openGraph: {
+    title: '채팅',
+  },
+};
 
+interface Props {
+  readonly children: ReactNode;
+}
+const ChatLayout = ({ children }: Props) => {
   return (
     <>
-      <Header>
-        <Header.Right>
-          <Header.Menu onClick={() => toggleModal()} />
-        </Header.Right>
-      </Header>
+      <Header />
       {children}
     </>
   );

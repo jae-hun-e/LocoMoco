@@ -1,6 +1,5 @@
 import { UserInfo } from '@/apis/mgc/useGetMGCDetail';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import Image from 'next/image';
+import ProfileImg from '@/app/_components/ProfileImg';
 
 interface Props {
   joinUsers: UserInfo[];
@@ -18,20 +17,10 @@ const MGCParticipants = ({ joinUsers }: Props) => {
               key={userId}
               className="flex flex-col items-center justify-center"
             >
-              <Avatar className="h-32pxr w-32pxr rounded-full ">
-                <AvatarImage
-                  src={profileImage?.path || 'https://github.com/shadcn.png'}
-                  alt="참가자 정보"
-                />
-                <AvatarFallback>
-                  <Image
-                    src={'/oh.png'}
-                    alt={'cn'}
-                    width={32}
-                    height={32}
-                  />
-                </AvatarFallback>
-              </Avatar>
+              <ProfileImg
+                userId={userId}
+                imgUrl={profileImage?.path}
+              />
               <p className="text-sm">{nickname}</p>
             </div>
           ))

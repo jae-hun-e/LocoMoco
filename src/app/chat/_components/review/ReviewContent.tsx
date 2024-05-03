@@ -1,4 +1,5 @@
 import { FieldErrors, UseFormRegister } from 'react-hook-form';
+import useGetReviewContents from '@/apis/review/useGetReviewContents';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Textarea } from '@/components/ui/textarea';
 import { ReviewForm } from './Review';
@@ -18,6 +19,8 @@ const ReviewContent = ({
   onDeselected,
   errors,
 }: ReviewContentProps) => {
+  const { data: reviewContent } = useGetReviewContents();
+
   const isGood = (rating: number) => {
     return rating < 3 ? 'bad' : 'good';
   };
@@ -26,30 +29,14 @@ const ReviewContent = ({
     checked ? onSelected(id) : onDeselected(id);
   };
 
-  const goodCheckList = [
-    { id: 1, content: '예시1' },
-    { id: 2, content: '예시2' },
-    { id: 3, content: '예시3' },
-    { id: 4, content: '예시4' },
-    { id: 5, content: '예시5' },
-  ];
-
-  const badCheckList = [
-    { id: 1, content: '별로 예시1' },
-    { id: 2, content: '별로 예시2' },
-    { id: 3, content: '별로 예시3' },
-    { id: 4, content: '별로 예시4' },
-    { id: 5, content: '별로 예시5' },
-  ];
-
   const checkListTitle = {
     good: '좋았나요',
     bad: '별로였나요',
   };
 
   const checkList = {
-    good: goodCheckList,
-    bad: badCheckList,
+    good: reviewContent?.filter((content) => content.isPositive) ?? [],
+    bad: reviewContent?.filter((content) => !content.isPositive) ?? [],
   };
 
   const addTextTitle = {
@@ -67,17 +54,19 @@ const ReviewContent = ({
       <section className="relative">
         <p className="font-bold ">어떤 점이{checkListTitle[isGood(selectedRating)]}?</p>
         <ul className="mt-13pxr flex flex-col gap-10pxr">
-          {checkList[isGood(selectedRating)].map(({ content, id }) => (
+          {checkList[isGood(selectedRating)].map(({ content, reviewContentId }) => (
             <li
-              key={id}
+              key={reviewContentId}
               className="flex items-center space-x-2"
             >
               <Checkbox
-                id={`checkList-${id}`}
-                onCheckedChange={(checked) => handleCheckedChange(checked as boolean, id)}
+                id={`checkList-${reviewContentId}`}
+                onCheckedChange={(checked) =>
+                  handleCheckedChange(checked as boolean, reviewContentId)
+                }
               />
               <label
-                htmlFor={`checkList-${id}`}
+                htmlFor={`checkList-${reviewContentId}`}
                 className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
               >
                 {content}

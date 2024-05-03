@@ -119,6 +119,14 @@
     border-right: 7px solid transparent;
     border-top: 13px solid white;
   }
+
+  .no-select {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
 }
 
 @layer base {

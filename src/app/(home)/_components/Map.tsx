@@ -78,6 +78,10 @@ const Map = forwardRef(
 
     const handleTouchStart = useCallback(
       (e: TouchEvent) => {
+        const target = e.target as HTMLElement;
+
+        if (target.closest('#infowindow')) return;
+
         if (!(e.target instanceof SVGElement)) return;
 
         if (map) {
@@ -92,6 +96,20 @@ const Map = forwardRef(
       [map, setInfoWindowPosition, timerRef],
     );
 
+    const findAllSvgElements = useCallback((parentElement: Element | SVGElement) => {
+      for (let i = 0; i < parentElement.children.length; i++) {
+        const child = parentElement.children[i];
+
+        if (child.tagName === 'svg' && child instanceof SVGElement) {
+          child.classList.add('no-select');
+        }
+
+        if (child.children.length > 0) {
+          findAllSvgElements(child);
+        }
+      }
+    }, []);
+
     useEffect(() => {
       const mapContainer = document.getElementById('map')!;
 
@@ -99,6 +117,8 @@ const Map = forwardRef(
         kakao.maps.event.addListener(map, 'mousedown', handleMouseDown);
         kakao.maps.event.addListener(map, 'click', handleMouseUp);
         kakao.maps.event.addListener(map, 'dragstart', handleMouseUp);
+
+        findAllSvgElements(mapContainer);
       }
       mapContainer.addEventListener('touchstart', handleTouchStart);
 
@@ -110,7 +130,7 @@ const Map = forwardRef(
         }
         mapContainer.removeEventListener('touchstart', handleTouchStart);
       };
-    }, [handleMouseDown, handleMouseUp, handleTouchStart, map]);
+    }, [findAllSvgElements, handleMouseDown, handleMouseUp, handleTouchStart, map]);
 
     return (
       <div

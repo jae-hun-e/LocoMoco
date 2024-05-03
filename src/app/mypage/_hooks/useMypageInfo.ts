@@ -15,6 +15,7 @@ export interface UserInfoProps {
   };
   provider: string;
 }
+
 interface MypageInfoProps {
   userInfo: UserInfoProps;
   completeMogakkoCount: number;
@@ -31,11 +32,11 @@ const getMypageInfo = async ({ userId }: { userId: number }) => {
 };
 
 export const useMypageInfo = ({ userId }: { userId: number }) => {
-  // Todo: undefined를 리턴하게 하지 말라고 에러가 뜨지만 일단 동작이 되니 나중에 꼭 고치기 03.18
-  const { data, ...rest } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['mypage', userId],
     queryFn: () => getMypageInfo({ userId }),
+    enabled: !!userId,
   });
 
-  return { myInfo: data, ...rest };
+  return { myInfo: data, isLoading };
 };
