@@ -1,9 +1,11 @@
 'use client';
 
-import { MouseEvent, useState } from 'react';
+import { MouseEvent } from 'react';
 import { UserInfo } from '@/apis/mgc/useGetMGCDetail';
 import { useApplyMGC } from '@/app/mgc/[id]/_hooks/useApplyMGC';
 import { useIsApply } from '@/app/mgc/[id]/_hooks/useIsApply';
+import { useIsLikeMGC } from '@/app/mgc/[id]/_hooks/useIsLikeMGC';
+import { useLikeToggleMGC } from '@/app/mgc/[id]/_hooks/useLikeMGC';
 import MainStyleButton from '@/components/MainStyleButton';
 import { toast } from '@/components/ui/use-toast';
 import useSendPush from '@/hooks/useSendPush';
@@ -32,8 +34,12 @@ const MGCApplyArea = ({
   MGCId,
   createUserId,
 }: Props) => {
-  const [isLike, setLike] = useState(false);
   const userId = getItem<string | undefined>(localStorage, 'userId');
+
+  // TODO: 모각코 디테일의 찜하기데이터 안에 userId도 들어가 있다면 isLike, setIsLike가 아닌 캐시 값으로 판단할 것 [24/04/07]
+  const { isLike, setIsLike } = useIsLikeMGC({ userId: Number(userId), MGCId });
+
+  const { likeToggleMGC } = useLikeToggleMGC({ isLike, setIsLike });
 
   const { isParticipated } = useIsApply({ MGCId, userId: userId ?? '' });
   const { applyMGC } = useApplyMGC();
@@ -51,7 +57,8 @@ const MGCApplyArea = ({
   const handleLike = (e: MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     handleLoginAction();
-    setLike(!isLike);
+
+    likeToggleMGC({ MGCId, userId: userId ?? '' });
   };
 
   const handleLinkChatting = () => {
