@@ -1,12 +1,26 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Minus, Plus } from 'lucide-react';
+import { MapContext } from './Map/Map';
 
-interface MapCustomControlProps {
-  zoomIn: () => void;
-  zoomOut: () => void;
-}
+const MapCustomControl = () => {
+  const map = useContext(MapContext);
 
-const MapCustomControl = ({ zoomIn, zoomOut }: MapCustomControlProps) => {
+  const zoomIn = () => {
+    if (map) {
+      const level = map.getLevel();
+
+      map.setLevel(level - 1);
+    }
+  };
+
+  const zoomOut = () => {
+    if (map) {
+      const level = map.getLevel();
+
+      map.setLevel(level + 1);
+    }
+  };
+
   return (
     <div className="absolute right-10pxr top-10pxr z-30 rounded shadow-md">
       <button
