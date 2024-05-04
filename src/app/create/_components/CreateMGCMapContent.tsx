@@ -6,6 +6,7 @@ import { LocationProps } from '@/app/create/_components/CreateMGC';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';
+import marker from '../../../../public/mgc_marker.svg';
 import { Location } from '../../_components/Map/MGCMap';
 
 interface CreateMGCMapProps {
@@ -77,7 +78,7 @@ const CreateMGCMap = ({
         </div>
       </div>
       <Marker
-        markerSrc="mgc_marker.svg"
+        markerSrc={marker.src}
         latitude={currentCoordinates.latitude}
         longitude={currentCoordinates.longitude}
         draggble
