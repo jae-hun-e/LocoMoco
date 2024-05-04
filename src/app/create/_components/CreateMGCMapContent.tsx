@@ -6,7 +6,7 @@ import { LocationProps } from '@/app/create/_components/CreateMGC';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';
-import { Location } from './MGCMap';
+import { Location } from '../../_components/Map/MGCMap';
 
 interface CreateMGCMapProps {
   currentCoordinates: Location;

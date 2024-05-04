@@ -5,8 +5,8 @@ import Geocoder from '@/app/_components/Map/Geocoder';
 import Map from '@/app/_components/Map/Map';
 import MapCustomControl from '@/app/_components/MapCustomControl';
 import { LocationProps, MGCCreateForm } from '@/app/create/_components/CreateMGC';
-import CreateMGCMapContent from './CreateMGCMapContent';
-import CreateMGCMapViewer from './CreateMGCMapViewer';
+import CreateMGCMapContent from '../../create/_components/CreateMGCMapContent';
+import CreateMGCMapViewer from '../../create/_components/CreateMGCMapViewer';
 
 /* TODO : [24/03/13]
   1. Link로 보내줄 때 위치 정보 && 동 정보 받아와야함

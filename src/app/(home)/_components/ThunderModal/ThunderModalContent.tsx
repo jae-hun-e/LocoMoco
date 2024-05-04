@@ -1,5 +1,7 @@
+import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
 import { useCreateThunderMGC } from '@/apis/thunderMGC/useCreateThunderMGC';
+import MGCMap from '@/app/_components/Map/MGCMap';
 import Modal from '@/app/_components/Modal';
 import { Button } from '@/components/ui/button';
 import {
@@ -13,7 +15,6 @@ import { useThunderModalStore } from '@/store/thunderModalStore';
 import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
-import MGCMap from './MGCMap';
 
 export interface ThunderFormData {
   endTime: string;
@@ -40,7 +41,7 @@ const ThunderModalContent = ({
     userId = getItem<string | undefined>(localStorage, 'userId');
   }
 
-  const { setCreatedPositionInfo } = useCreatedPositionInfo();
+  const { createdPositionInfo, setCreatedPositionInfo } = useCreatedPositionInfo();
 
   const {
     register,
@@ -48,7 +49,7 @@ const ThunderModalContent = ({
     setValue,
     reset,
     trigger,
-    // watch,
+    watch,
     formState: { errors },
   } = useForm<ThunderFormData>({
     mode: 'onSubmit',
@@ -63,6 +64,26 @@ const ThunderModalContent = ({
       },
     },
   });
+
+  useEffect(() => {
+    if (!watch('location').address) {
+      const location = {
+        address: createdPositionInfo.address,
+        latitude: createdPositionInfo.latitude,
+        longitude: createdPositionInfo.longitude,
+        city: createdPositionInfo.city,
+      };
+
+      setValue('location', location);
+    }
+  }, [
+    createdPositionInfo.address,
+    createdPositionInfo.city,
+    createdPositionInfo.latitude,
+    createdPositionInfo.longitude,
+    setValue,
+    watch,
+  ]);
 
   const { createThunderMGC } = useCreateThunderMGC();
 
@@ -157,7 +178,7 @@ const ThunderModalContent = ({
             <MGCMap
               trigger={trigger}
               setValue={setValue}
-              // defaultAddress={watch('location.address') ? watch('location') : undefined}
+              defaultAddress={watch('location.address') ? watch('location') : undefined}
             />
             {errors.location?.address && (
               <span className="text-sm text-red-1">장소를 선택해야 합니다.</span>

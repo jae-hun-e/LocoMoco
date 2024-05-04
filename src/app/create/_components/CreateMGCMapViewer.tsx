@@ -9,7 +9,7 @@ import React, {
 import { MapContext } from '@/app/_components/Map/Map';
 import MapViewer from '@/app/_components/Map/MapViewer';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
-import { Location } from './MGCMap';
+import { Location } from '../../_components/Map/MGCMap';
 
 interface CreateMGCMapViewerProps {
   onMouseUp: () => void;
