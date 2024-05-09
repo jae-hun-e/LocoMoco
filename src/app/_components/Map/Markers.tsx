@@ -1,7 +1,7 @@
 import { useCallback, useContext, useEffect } from 'react';
 import { MGCSummary } from '@/types/MGCList';
-import { clustererContext } from './Clusterer';
-import { MapContext } from './Map';
+import { clustererContext } from './ClustererProvider';
+import { MapContext } from './MapProvider';
 
 interface MakerInfo {
   marker: kakao.maps.Marker;

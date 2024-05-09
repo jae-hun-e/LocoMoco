@@ -1,7 +1,7 @@
 import React, { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
-import { MapContext } from '../Map/Map';
+import { MapContext } from '../Map/MapProvider';
 
 interface InfoWindow {
   show: boolean;
