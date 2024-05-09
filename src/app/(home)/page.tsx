@@ -9,7 +9,7 @@ import MGCList from '../_components/MGCList/MGCList';
 import GeocoderProvider from '../_components/Map/GeocoderProvider';
 import MapProvider from '../_components/Map/MapProvider';
 import BottomSheet from './_components/BottomSheet';
-import HomeMap from './_components/HomeMap';
+import HomeMapContent from './_components/HomeMapContent';
 import HomeMapViewer from './_components/HomeMapViewer';
 
 const Home = () => {
@@ -53,7 +53,7 @@ const Home = () => {
     <div className="relative -left-20pxr w-[100vw]">
       <MapProvider mapRef={mapRef}>
         <GeocoderProvider>
-          <HomeMap
+          <HomeMapContent
             data={data}
             handleMarkerClick={handleMarkerClick}
             openBottomSheetAndUpdate={openBottomSheetAndUpdate}

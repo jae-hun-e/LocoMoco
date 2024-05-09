@@ -21,7 +21,7 @@ interface HomeMap {
   openBottomSheetAndUpdate: (mapData: MGCSummary[]) => void;
 }
 
-const HomeMap = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: HomeMap) => {
+const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: HomeMap) => {
   const router = useRouter();
   const [currentCoordinates, setCurrentCoordinates] = useState({ latitude: 0, longitude: 0 });
 
@@ -121,4 +121,4 @@ const HomeMap = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: HomeMap)
   );
 };
 
-export default HomeMap;
+export default HomeMapContent;
