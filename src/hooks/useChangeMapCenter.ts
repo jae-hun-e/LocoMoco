@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { MapContext } from '@/app/_components/Map/Map';
+import { MapContext } from '@/app/_components/Map/MapProvider';
 
 const useChangeMapCenter = () => {
   const map = useContext(MapContext);

@@ -1,5 +1,5 @@
 import { useCallback, useContext } from 'react';
-import { geocoderContext } from '@/app/_components/Map/Geocoder';
+import { geocoderContext } from '@/app/_components/Map/GeocoderProvider';
 
 const useGetAddressByCoordinates = () => {
   const geocoder = useContext(geocoderContext);
