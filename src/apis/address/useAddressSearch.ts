@@ -3,8 +3,8 @@ import { getAddress } from './queryFn';
 
 export interface Address {
   address_name: string;
-  latitude: string;
-  longitude: string;
+  latitude: number;
+  longitude: number;
 }
 
 const useAddress = (keyword: string) => {
@@ -15,8 +15,8 @@ const useAddress = (keyword: string) => {
       const response = data.documents.map((document) => {
         return {
           address_name: document.address_name,
-          latitude: document.y,
-          longitude: document.x,
+          latitude: Number(document.y),
+          longitude: Number(document.x),
         };
       });
 
