@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Minus, Plus } from 'lucide-react';
-import { MapContext } from './Map/Map';
+import { MapContext } from './Map/MapProvider';
 
 const MapCustomControl = () => {
   const map = useContext(MapContext);

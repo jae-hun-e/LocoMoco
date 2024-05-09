@@ -1,5 +1,5 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from 'react';
-import { MapContext } from './Map';
+import { MapContext } from './MapProvider';
 
 interface ClustererProps {
   minLevel?: number;
@@ -8,7 +8,7 @@ interface ClustererProps {
 
 export const clustererContext = createContext<kakao.maps.MarkerClusterer | undefined>(undefined);
 
-const Clusterer = ({ minLevel, children }: ClustererProps) => {
+const ClustererProvider = ({ minLevel, children }: ClustererProps) => {
   const map = useContext(MapContext);
   const [clusterer, setClusterer] = useState<kakao.maps.MarkerClusterer>();
 
@@ -31,4 +31,4 @@ const Clusterer = ({ minLevel, children }: ClustererProps) => {
   return <clustererContext.Provider value={clusterer}>{children}</clustererContext.Provider>;
 };
 
-export default Clusterer;
+export default ClustererProvider;

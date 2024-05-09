@@ -6,8 +6,8 @@ import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import CreateBtn from '../_components/CreateBtn';
 import MGCList from '../_components/MGCList/MGCList';
-import Geocoder from '../_components/Map/Geocoder';
-import Map from '../_components/Map/Map';
+import GeocoderProvider from '../_components/Map/GeocoderProvider';
+import MapProvider from '../_components/Map/MapProvider';
 import BottomSheet from './_components/BottomSheet';
 import HomeMap from './_components/HomeMap';
 import HomeMapViewer from './_components/HomeMapViewer';
@@ -51,8 +51,8 @@ const Home = () => {
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
-      <Map mapRef={mapRef}>
-        <Geocoder>
+      <MapProvider mapRef={mapRef}>
+        <GeocoderProvider>
           <HomeMap
             data={data}
             handleMarkerClick={handleMarkerClick}
@@ -63,8 +63,8 @@ const Home = () => {
             timerRef={timerRef}
             onMouseUp={handleMouseUp}
           />
-        </Geocoder>
-      </Map>
+        </GeocoderProvider>
+      </MapProvider>
 
       <div className="absolute bottom-0 right-24pxr z-30">
         <CreateBtn />

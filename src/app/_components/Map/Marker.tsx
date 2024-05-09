@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { MapContext } from './Map';
+import { MapContext } from './MapProvider';
 
 interface MarkerProps {
   latitude: number;

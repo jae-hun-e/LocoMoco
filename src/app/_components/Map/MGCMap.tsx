@@ -1,12 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import { ThunderFormData } from '@/app/(home)/_components/ThunderModal/ThunderModalContent';
-import Geocoder from '@/app/_components/Map/Geocoder';
-import Map from '@/app/_components/Map/Map';
+import MapProvider from '@/app/_components/Map/MapProvider';
 import MapCustomControl from '@/app/_components/MapCustomControl';
 import { LocationProps, MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import CreateMGCMapContent from '../../create/_components/CreateMGCMapContent';
 import CreateMGCMapViewer from '../../create/_components/CreateMGCMapViewer';
+import GeocoderProvider from './GeocoderProvider';
 
 /* TODO : [24/03/13]
   1. Link로 보내줄 때 위치 정보 && 동 정보 받아와야함
@@ -61,11 +61,11 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
 
   return (
     <section className="mb-10pxr flex w-full flex-col gap-2">
-      <Map
+      <MapProvider
         mapRef={mapRef}
         isCustomlevelController
       >
-        <Geocoder>
+        <GeocoderProvider>
           <CreateMGCMapContent
             setCurrentCoordinates={setCurrentCoordinates}
             currentCoordinates={currentCoordinates}
@@ -80,8 +80,8 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
             <MapCustomControl />
           </CreateMGCMapViewer>
           <p className="text-sm">{currentAddress}</p>
-        </Geocoder>
-      </Map>
+        </GeocoderProvider>
+      </MapProvider>
     </section>
   );
 };

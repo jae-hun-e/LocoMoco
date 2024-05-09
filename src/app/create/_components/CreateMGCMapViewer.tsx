@@ -6,7 +6,7 @@ import React, {
   useContext,
   useEffect,
 } from 'react';
-import { MapContext } from '@/app/_components/Map/Map';
+import { MapContext } from '@/app/_components/Map/MapProvider';
 import MapViewer from '@/app/_components/Map/MapViewer';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import { Location } from '../../_components/Map/MGCMap';

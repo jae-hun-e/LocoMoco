@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from 'react';
-import Clusterer from '@/app/_components/Map/Clusterer';
+import ClustererProvider from '@/app/_components/Map/ClustererProvider';
 import Marker from '@/app/_components/Map/Marker';
 import Markers from '@/app/_components/Map/Markers';
 import InfoWindow from '@/app/_components/infoWindow/InfoWindow';
@@ -62,13 +62,13 @@ const HomeMap = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: HomeMap)
       <section className="flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
-      <Clusterer>
+      <ClustererProvider>
         <Markers
           mapMGCData={data ?? []}
           onMarkerClick={handleMarkerClick}
           onClustererClick={openBottomSheetAndUpdate}
         />
-      </Clusterer>
+      </ClustererProvider>
       <Marker
         latitude={currentCoordinates.latitude}
         longitude={currentCoordinates.longitude}
