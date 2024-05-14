@@ -20,6 +20,7 @@ module.exports = {
         'modify',
         'merge',
         'bug',
+        'test',
       ],
     ],
     'subject-case': [0],
