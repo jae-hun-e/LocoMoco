@@ -1,13 +1,22 @@
-import { HttpResponse, http } from 'msw';
+import { api } from '@/constants/mswPath';
+import { http } from 'msw';
+import response from './response';
 
 export const handlers = [
-  // 공식문서 예제
-  http.get('https://example.com/user', () => {
-    // ...and respond to them using this JSON response.
-    return HttpResponse.json({
-      id: 'c7b3d8e0-5e0b-4b0f-8b3a-3b9f4b3d3b3d',
-      firstName: 'John',
-      lastName: 'Maverick',
+  ...[api.category, api.mgc].map((path) =>
+    http.get(`${path}`, () => {
+      return new Response(JSON.stringify(response[path]), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }),
+  ),
+  http.get(api.address, () => {
+    return new Response(JSON.stringify(response[api.address]), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
     });
   }),
 ];

@@ -1,0 +1,74 @@
+{
+  "documents": [
+    {
+      "address_name": "서울 서초구 서초동",
+      "b_code": "1165010800",
+      "h_code": "",
+      "main_address_no": "",
+      "mountain_yn": "N",
+      "region_1depth_name": "서울",
+      "region_2depth_name": "서초구",
+      "region_3depth_h_name": "",
+      "region_3depth_name": "서초동",
+      "sub_address_no": "",
+      "x": "127.01953478052",
+      "y": "37.4900861966504"
+    },
+    {
+      "address_name": "서울 서초구 서초1동",
+      "b_code": "",
+      "h_code": "1165051000",
+      "main_address_no": "",
+      "mountain_yn": "N",
+      "region_1depth_name": "서울",
+      "region_2depth_name": "서초구",
+      "region_3depth_h_name": "서초1동",
+      "region_3depth_name": "",
+      "sub_address_no": "",
+      "x": "127.019530273485",
+      "y": "37.4901474659139"
+    },
+    {
+      "address_name": "서울 서초구 서초2동",
+      "b_code": "",
+      "h_code": "1165052000",
+      "main_address_no": "",
+      "mountain_yn": "N",
+      "region_1depth_name": "서울",
+      "region_2depth_name": "서초구",
+      "region_3depth_h_name": "서초2동",
+      "region_3depth_name": "",
+      "sub_address_no": "",
+      "x": "127.025076125816",
+      "y": "37.4921394474613"
+    },
+    {
+      "address_name": "서울 서초구 서초3동",
+      "b_code": "",
+      "h_code": "1165053000",
+      "main_address_no": "",
+      "mountain_yn": "N",
+      "region_1depth_name": "서울",
+      "region_2depth_name": "서초구",
+      "region_3depth_h_name": "서초3동",
+      "region_3depth_name": "",
+      "sub_address_no": "",
+      "x": "127.01200750943",
+      "y": "37.4837080639576"
+    },
+    {
+      "address_name": "서울 서초구 서초4동",
+      "b_code": "",
+      "h_code": "1165053100",
+      "main_address_no": "",
+      "mountain_yn": "N",
+      "region_1depth_name": "서울",
+      "region_2depth_name": "서초구",
+      "region_3depth_h_name": "서초4동",
+      "region_3depth_name": "",
+      "sub_address_no": "",
+      "x": "127.022170883244",
+      "y": "37.5026854085131"
+    }
+  ]
+}
