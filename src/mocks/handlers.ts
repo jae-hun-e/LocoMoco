@@ -12,11 +12,14 @@ export const handlers = [
       });
     }),
   ),
-  http.get(api.address, () => {
-    return new Response(JSON.stringify(response[api.address]), {
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+  http.get(api.address, ({ request }: { request: Request }) => {
+    const query = new URL(request.url).searchParams.get('query');
+    if (query === '서초동') {
+      return new Response(JSON.stringify(response[api.address]), {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+    }
   }),
 ];
