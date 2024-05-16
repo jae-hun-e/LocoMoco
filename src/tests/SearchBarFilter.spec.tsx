@@ -56,6 +56,12 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
     });
   });
 
+  it('결과값이 없는 주소를 검색했을 시 "검색 결과가 없어요"가 나타난다.', async () => {
+    await user.type(textInput, '없음');
+    const item = screen.getByText('검색 결과가 없어요');
+    expect(item).toBeInTheDocument();
+  });
+
   it('주소 리스트에서 "서울 서초구 서초동" 텍스트 클릭하면 handleAddressClick이 호출된다.', async () => {
     const mockChangeCenter = vi.fn();
     const mockChangeAddress = vi.fn();
