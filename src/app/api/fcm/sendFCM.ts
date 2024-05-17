@@ -12,7 +12,9 @@ interface NotificationData {
 }
 
 const getTokens = async (userId: string) => {
-  const { data } = await axios(`http://localhost:3000/api/db?id=${userId}`);
+  const { data } = await axios(
+    `${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locomoco.kro.kr'}/api/db?id=${userId}`,
+  );
 
   return data;
 };

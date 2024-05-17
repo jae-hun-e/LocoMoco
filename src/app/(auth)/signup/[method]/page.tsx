@@ -90,7 +90,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
         clearItem(sessionStorage);
         // TODO: 푸시 알림 권한 요청 진입점 다시 생각해야함(현재는 회원가입한 디바이스만 저장하게 됨)[24/03/19]
         requestPermission({ userId });
-        router.replace('/');
+        // router.replace('/');
       })
       .catch(alert);
   }, [getValues, isDuplicated, method, router, trigger]);

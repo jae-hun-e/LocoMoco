@@ -8,7 +8,11 @@ interface PostTokenProps {
 }
 
 const postToken = async (data: PostTokenProps) =>
-  await axios({ method: 'POST', url: 'http://localhost:3000/api/db', data });
+  await axios({
+    method: 'POST',
+    url: `${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locomoco.kro.kr'}/api/db`,
+    data,
+  });
 export const useSaveTokenToDB = () => {
   const { mutate, ...rest } = useMutation({ mutationFn: postToken });
 
