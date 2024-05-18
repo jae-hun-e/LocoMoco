@@ -28,7 +28,7 @@
 - 마커 클릭 시 모각코 정보 확인
 - 주소 검색 및 필터링으로 원하는 모각코만 확인 가능
 
-### 🌀 모각코 생성하기 (편지)
+### 🌀 모각코 생성하기
 ![image](https://github.com/kimyou1102/alarm-app/assets/66080362/4ffba89f-ad20-4213-bcd4-f882f7e06803)
 
 - 번개 모각코/ 일반 모각코 생성하기
@@ -50,7 +50,6 @@
 
 
 ## 🔨 기술 스택
-
 ![Next](https://img.shields.io/badge/Next-%2320232a.svg?style=for-the-badge&logo=nextdotjs&logoColor=%#000000)
 ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white)
 
@@ -58,9 +57,13 @@
 ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-%23EC5990.svg?style=for-the-badge&logo=reacthookform&logoColor=white)
 
 ![shadcnui](https://img.shields.io/badge/shadcnui-black.svg?style=for-the-badge&logo=shadcnui&logoColor=white)
-![tailwindcss](https://img.shields.io/badge/tailwindcss-white.svg?style=for-the-badge&logo=tailwindcss&logoColor=#06B6D4)
+![tailwindcss](https://img.shields.io/badge/tailwindcss-F6F6F7.svg?style=for-the-badge&logo=tailwindcss&logoColor=#06B6D4)
+
+![vitest](https://img.shields.io/badge/vitest-6E9F18.svg?style=for-the-badge&logo=vitest&logoColor=white)
+![testinglibrary](https://img.shields.io/badge/testinglibrary-F6F6F7.svg?style=for-the-badge&logo=testinglibrary&logoColor=#E33332)
 
 ![Vercel](https://img.shields.io/badge/vercel-%23000000.svg?style=for-the-badge&logo=vercel&logoColor=white)
+
 
 <br /> 
 
