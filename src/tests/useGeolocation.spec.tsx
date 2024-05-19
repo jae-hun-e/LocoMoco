@@ -64,8 +64,9 @@ describe('위치 접근 권한을 허용한 경우', () => {
   let hookResult: HookResult = {} as HookResult;
 
   beforeEach(async () => {
+    mockGeolocationPermission('granted');
+
     await act(async () => {
-      mockGeolocationPermission('granted');
       const { result } = renderHook(() => useGeolocation());
       hookResult = result;
     });
@@ -86,8 +87,9 @@ describe('위치 접근 권한을 허용한 경우', () => {
 
 describe('위치 접근 권한을 허용하지 않은 경우', () => {
   it("'💡 위치정보를 허용하지 않으면 현재 위치가 표시되지 않습니다!'문구의 toast메시지가 나타난다.", async () => {
+    mockGeolocationPermission('denied');
+
     await act(async () => {
-      mockGeolocationPermission('denied');
       renderHook(() => useGeolocation());
     });
 
