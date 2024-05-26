@@ -4,7 +4,6 @@ import { getDeviceType } from '@/utils/getDeviceType';
 import { getMessaging, getToken } from '@firebase/messaging';
 
 export const useRequestPermission = () => {
-  console.log(process.env.NODE_ENV);
   const { saveToken } = useSaveTokenToDB();
   const uploadToken = ({ token, userId }: { token: string; userId: string }) => {
     if (!userId) {
