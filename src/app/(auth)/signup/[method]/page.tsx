@@ -4,7 +4,6 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import client from '@/apis/core';
 import { Button } from '@/components/ui/button';
-import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { UserProfile } from '@/types/userInfo';
 import { clearItem, getItem, setItem } from '@/utils/storage';
 import { useRouter } from 'next/navigation';
@@ -37,8 +36,6 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
   const router = useRouter();
-
-  const { requestPermission } = useRequestPermission();
 
   useEffect(() => {
     const token = getItem(localStorage, 'token');
@@ -89,8 +86,7 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
         setItem(localStorage, 'provider', method.toUpperCase());
         clearItem(sessionStorage);
         // TODO: 푸시 알림 권한 요청 진입점 다시 생각해야함(현재는 회원가입한 디바이스만 저장하게 됨)[24/03/19]
-        requestPermission({ userId });
-        // router.replace('/');
+        router.replace('/');
       })
       .catch(alert);
   }, [getValues, isDuplicated, method, router, trigger]);
