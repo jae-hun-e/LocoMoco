@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
 import { toast } from '@/components/ui/use-toast';
@@ -20,16 +20,7 @@ const SearchBarFilter = () => {
 
   const clickAwayRef = useClickAway<HTMLDivElement>(handleClickAway);
 
-  const [centerPosition, setCenterPosition] = useState({
-    latitude: 0,
-    longitude: 0,
-  });
-
-  const handleAddressClick = (data: Address) => {
-    setCenterPosition({ latitude: Number(data.latitude), longitude: Number(data.longitude) });
-    setShow(false);
-  };
-
+  const { changeCenter } = useChangeMapCenter();
   const { searchValue, setSearchValue } = useSearchInputValueStore();
   const { getAddressByCoorinates } = useGetAddressByCoordinates();
 
@@ -49,16 +40,12 @@ const SearchBarFilter = () => {
     [getAddressByCoorinates],
   );
 
-  const { changeCenter } = useChangeMapCenter();
-
-  useEffect(() => {
-    const { latitude, longitude } = centerPosition;
-
-    if (latitude !== 0 && longitude !== 0) {
-      changeCenter(latitude, longitude);
-      changeAddress(latitude, longitude);
-    }
-  }, [centerPosition, changeCenter, changeAddress]);
+  const handleAddressClick = (data: Address) => {
+    const { latitude, longitude } = data;
+    changeCenter(latitude, longitude);
+    changeAddress(latitude, longitude);
+    setShow(false);
+  };
 
   return (
     <div className="w-[90%] pt-20pxr">

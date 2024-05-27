@@ -1,0 +1,111 @@
+{
+  "data": [
+    {
+      "category_id": 115,
+      "category_name": "개발 언어",
+      "input_type": "COMBOBOX",
+      "tags": [
+        {
+          "tag_id": 238,
+          "tag_name": "JS"
+        },
+        {
+          "tag_id": 239,
+          "tag_name": "python"
+        },
+        {
+          "tag_id": 251,
+          "tag_name": "Java"
+        },
+        {
+          "tag_id": 252,
+          "tag_name": "Ruby"
+        },
+        {
+          "tag_id": 253,
+          "tag_name": "Rust"
+        },
+        {
+          "tag_id": 254,
+          "tag_name": "Go"
+        }
+      ]
+    },
+    {
+      "category_id": 116,
+      "category_name": "개발 유형",
+      "input_type": "COMBOBOX",
+      "tags": [
+        {
+          "tag_id": 240,
+          "tag_name": "코딩테스트"
+        },
+        {
+          "tag_id": 241,
+          "tag_name": "BE"
+        },
+        {
+          "tag_id": 255,
+          "tag_name": "FE"
+        }
+      ]
+    },
+    {
+      "category_id": 117,
+      "category_name": "모각코 유형",
+      "input_type": "RADIOGROUP",
+      "tags": [
+        {
+          "tag_id": 242,
+          "tag_name": "일반"
+        },
+        {
+          "tag_id": 243,
+          "tag_name": "번개"
+        }
+      ]
+    },
+    {
+      "category_id": 118,
+      "category_name": "직업",
+      "input_type": "RADIOGROUP",
+      "tags": [
+        {
+          "tag_id": 244,
+          "tag_name": "취준생"
+        },
+        {
+          "tag_id": 245,
+          "tag_name": "현직자"
+        },
+        {
+          "tag_id": 250,
+          "tag_name": "기타"
+        }
+      ]
+    },
+    {
+      "category_id": 119,
+      "category_name": "연령대",
+      "input_type": "CHECKBOX",
+      "tags": [
+        {
+          "tag_id": 246,
+          "tag_name": "10대"
+        },
+        {
+          "tag_id": 247,
+          "tag_name": "20대"
+        },
+        {
+          "tag_id": 248,
+          "tag_name": "30대"
+        },
+        {
+          "tag_id": 249,
+          "tag_name": "40대 이상"
+        }
+      ]
+    }
+  ]
+}

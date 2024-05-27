@@ -1,0 +1,72 @@
+{
+  "data": [
+    {
+      "id": 232,
+      "title": "서초동 모각코",
+      "views": 2,
+      "likeCount": 0,
+      "createdAt": "2024-05-13T15:59:31",
+      "updatedAt": "2024-05-13T15:59:31",
+      "maxParticipants": 7,
+      "curParticipants": 1,
+      "location": {
+        "address": "서울특별시 서초구 서초1동",
+        "latitude": 37.4924832674,
+        "longitude": 127.0170069743,
+        "city": "서울특별시 서초구 서초1동"
+      },
+      "tags": [241, 242, 244, 247, 251]
+    },
+    {
+      "id": 231,
+      "title": "파이썬 모각코",
+      "views": 3,
+      "likeCount": 0,
+      "createdAt": "2024-05-13T15:57:12",
+      "updatedAt": "2024-05-13T15:57:12",
+      "maxParticipants": 8,
+      "curParticipants": 1,
+      "location": {
+        "address": "경상남도 창원시 진해구 석동",
+        "latitude": 35.1562585789,
+        "longitude": 128.7019449219,
+        "city": "경상남도 창원시 진해구 석동"
+      },
+      "tags": [239, 241, 242, 245, 247]
+    },
+    {
+      "id": 230,
+      "title": "모각코",
+      "views": 2,
+      "likeCount": 0,
+      "createdAt": "2024-05-13T15:56:08",
+      "updatedAt": "2024-05-13T15:56:08",
+      "maxParticipants": 10,
+      "curParticipants": 1,
+      "location": {
+        "address": "경상남도 창원시 진해구 석동",
+        "latitude": 35.1567891055,
+        "longitude": 128.7020300465,
+        "city": "경상남도 창원시 진해구 석동"
+      },
+      "tags": [238, 240, 242, 244, 247]
+    },
+    {
+      "id": 228,
+      "title": "모각코",
+      "views": 78,
+      "likeCount": 0,
+      "createdAt": "2024-05-09T15:51:16",
+      "updatedAt": "2024-05-09T15:51:45",
+      "maxParticipants": 10,
+      "curParticipants": 2,
+      "location": {
+        "address": "경상남도 창원시 진해구 석동",
+        "latitude": 35.158305423,
+        "longitude": 128.6993017131,
+        "city": "경상남도 창원시 진해구 석동"
+      },
+      "tags": [238, 240, 242, 244, 247]
+    }
+  ]
+}

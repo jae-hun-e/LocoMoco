@@ -9,7 +9,7 @@ import { LockKeyhole, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
 const CreateBtn = () => {
-  let token;
+  let token: string | undefined;
   if (typeof window !== 'undefined') token = getItem<string | undefined>(localStorage, 'token');
 
   const router = useRouter();
@@ -24,6 +24,12 @@ const CreateBtn = () => {
     }
   };
 
+  const handleButtonClick = () => {
+    if (token === undefined) {
+      router.push('/signin');
+    }
+  };
+
   return (
     <Popover
       onOpenChange={(open) => {
@@ -31,7 +37,11 @@ const CreateBtn = () => {
       }}
     >
       <PopoverTrigger asChild>
-        <Button className="h-50pxr w-50pxr rounded-full bg-main-1 hover:bg-hover">
+        <Button
+          onClick={handleButtonClick}
+          role="button"
+          className="h-50pxr w-50pxr rounded-full bg-main-1 hover:bg-hover"
+        >
           {token ? (
             <Plus
               className={`lucide lucide-plus ${isCreateBtnOpen ? 'rotate-45' : 'rotate-0'} transition`}
@@ -40,7 +50,7 @@ const CreateBtn = () => {
             <TooltipProvider>
               <Tooltip>
                 <TooltipTrigger asChild>
-                  <LockKeyhole onClick={() => router.push('/signin')} />
+                  <LockKeyhole />
                 </TooltipTrigger>
                 <TooltipContent>
                   <p>Login</p>
