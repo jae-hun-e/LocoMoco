@@ -3,7 +3,7 @@ import { http } from 'msw';
 import response from './response';
 
 export const handlers = [
-  ...[api.category, api.mgc].map((path) =>
+  ...[api.category, api.mgc, api.users, api.reviewContents].map((path) =>
     http.get(`${path}`, () => {
       return new Response(JSON.stringify(response[path]), {
         headers: {

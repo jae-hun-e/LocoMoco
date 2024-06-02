@@ -1,0 +1,19 @@
+{
+  "userInfo": {
+    "userId": 116,
+    "nickname": "ZZAMBA",
+    "birth": "1998-01-26",
+    "gender": "MALE",
+    "temperature": 36.5,
+    "jobId": 244,
+    "email": "rksidksrksi@naver.com",
+    "profileImage": {
+      "imageId": 27,
+      "path": "https://locomoco-bucket-free.s3.ap-northeast-2.amazonaws.com/upload/2024/989110da-bd62-4ed5-a3f9-88a8765ff2531000997160271251761.png"
+    },
+    "provider": "KAKAO"
+  },
+  "likeMogakkoCount": 0,
+  "ongoingMogakkoCount": 1,
+  "completeMogakkoCount": 4
+}
