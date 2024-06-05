@@ -5,4 +5,5 @@ export const api = {
   mgcList: '/mogakko/map?searchType=LOCATION',
   users: '/users/116',
   reviewContents: 'reviews/contents',
+  createReview: '/reviews/:MGCId/:reviewerId',
 };

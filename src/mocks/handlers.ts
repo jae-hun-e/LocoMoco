@@ -22,4 +22,11 @@ export const handlers = [
       });
     }
   }),
+  http.post(api.createReview, async () => {
+    return new Response(JSON.stringify(response[api.createReview]), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+  }),
 ];
