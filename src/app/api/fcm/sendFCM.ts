@@ -13,7 +13,8 @@ interface NotificationData {
 
 const getTokens = async (userId: string) => {
   const { data } = await axios(
-    `${process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID}&redirect_uri=${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locomoco.kro.kr'}/api/db?id=${userId}`,
+    // `${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locomoco.kro.kr'}/api/db?id=${userId}`,
+    `${process.env.NEXT_PUBLIC_BASE_URL}/users/${userId}/device-keys`,
   );
 
   return data;
@@ -38,7 +39,9 @@ const sendFCMNotification = async ({ data, userIds }: NotificationData) => {
 
   for (const userId of userIds) {
     const getTokenData = await getTokens(userId);
-    tokens.push(...getTokenData.data);
+    if (getTokenData.phone) tokens.push(getTokenData.phone);
+    if (getTokenData.pad) tokens.push(getTokenData.pad);
+    if (getTokenData.desktop) tokens.push(getTokenData.desktop);
   }
 
   const notificationData = {

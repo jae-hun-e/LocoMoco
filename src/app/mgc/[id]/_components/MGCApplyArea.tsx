@@ -72,7 +72,6 @@ const MGCApplyArea = ({
 
   const handleApply = () => {
     handleLoginAction();
-
     sendPush({
       data: {
         title: `모각코에 새로운 멤버가 참여했습니다.`,

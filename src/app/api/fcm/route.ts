@@ -10,5 +10,6 @@ export async function POST(req: NextRequest) {
   } catch (e) {
     console.log('FCM Error: ', e);
   }
-  return;
+
+  return Response;
 }

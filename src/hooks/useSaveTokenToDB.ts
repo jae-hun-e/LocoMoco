@@ -9,10 +9,12 @@ interface PostTokenProps {
 
 const postToken = async (data: PostTokenProps) =>
   await axios({
-    method: 'POST',
-    url: `${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locomoco.kro.kr'}/api/db`,
+    method: 'patch',
+    // url: `${process.env.NODE_ENV === 'development' ? 'http://localhost:3000' : 'https://locomoco.kro.kr'}/api/db`,
+    url: `${process.env.NEXT_PUBLIC_BASE_URL}/users/${data.id}/device-keys`,
     data,
   });
+
 export const useSaveTokenToDB = () => {
   const { mutate, ...rest } = useMutation({ mutationFn: postToken });
 
