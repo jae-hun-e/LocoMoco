@@ -33,16 +33,6 @@ async function setup() {
   const clickRatingStar = async (ratingStars: HTMLElement[], index: number) =>
     await user.click(ratingStars[index]);
 
-  const checkStartColor = (afterRatingStars: HTMLElement[], selectIndex: number) => {
-    for (const [index, star] of afterRatingStars.entries()) {
-      if (index <= selectIndex) {
-        expect(star).toHaveAttribute('fill', '#58C694');
-      } else {
-        expect(star).toHaveAttribute('fill', '#D9D9D9');
-      }
-    }
-  };
-
   const clickCompleteButton = async () => await user.click(completeButton);
 
   const clickCancelButton = async () => await user.click(cancelButton);
@@ -53,7 +43,6 @@ async function setup() {
     clickRatingStar,
     completeButton,
     cancelButton,
-    checkStartColor,
     clickCompleteButton,
     clickCancelButton,
   };
@@ -104,19 +93,19 @@ describe('모각코가 끝난 후인 경우', () => {
   });
 
   it('별점을 클릭하면 0점부터 클릭한 별점까지 색이 칠해진다.', async () => {
-    const { ratingStars, clickRatingStar, checkStartColor } = await setup();
+    const { ratingStars, clickRatingStar } = await setup();
 
-    let selectIndex = 0;
-    let afterRatingStars: HTMLElement[] = [];
+    const checkStarColor = (stars: HTMLElement[], index: number) => {
+      for (const [i, star] of stars.entries()) {
+        expect(star).toHaveAttribute('fill', i <= index ? '#58C694' : '#D9D9D9');
+      }
+    };
 
-    await clickRatingStar(ratingStars, selectIndex);
-    afterRatingStars = await screen.findAllByLabelText('star');
-    checkStartColor(afterRatingStars, selectIndex);
+    await clickRatingStar(ratingStars, 0);
+    checkStarColor(await screen.findAllByLabelText('star'), 0);
 
-    selectIndex = 1;
-    await clickRatingStar(ratingStars, selectIndex);
-    afterRatingStars = await screen.findAllByLabelText('star');
-    checkStartColor(afterRatingStars, selectIndex);
+    await clickRatingStar(ratingStars, 1);
+    checkStarColor(await screen.findAllByLabelText('star'), 1);
   });
 
   it('별점 2점 이하 클릭 시 부정적인 후기를 남기는 컨텐츠가 뜬다.', async () => {
