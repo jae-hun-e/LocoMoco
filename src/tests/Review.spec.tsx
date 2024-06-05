@@ -74,7 +74,7 @@ describe('모각코가 끝나기 전인 경우', async () => {
 });
 
 describe('모각코가 끝난 후인 경우', () => {
-  it('후기 작성 화면이 나타난다.', async () => {
+  it('후기 작성 화면이 정상적으로 표시된다.', async () => {
     const { cancelButton, completeButton } = await setup();
 
     const text = await screen.findByText(
@@ -91,7 +91,7 @@ describe('모각코가 끝난 후인 경우', () => {
     expect(completeButton).toBeInTheDocument();
   });
 
-  it('별점을 클릭하면 0점부터 클릭한 별점까지 색이 칠해진다.', async () => {
+  it('별점을 클릭하면 클릭한 별점까지의 색상이 채워진다.', async () => {
     const { ratingStars, clickRatingStar } = await setup();
 
     const checkStarColor = (stars: HTMLElement[], index: number) => {
@@ -107,7 +107,7 @@ describe('모각코가 끝난 후인 경우', () => {
     checkStarColor(await screen.findAllByLabelText('star'), 1);
   });
 
-  it('별점 2점 이하 클릭 시 부정적인 후기를 남기는 컨텐츠가 뜬다.', async () => {
+  it('별점 2점 이하를 클릭하면 부정적인 후기를 작성할 수 있는 입력 양식이 표시된다.', async () => {
     const { clickRatingStar, ratingStars } = await setup();
 
     await clickRatingStar(ratingStars[1]);
@@ -123,7 +123,7 @@ describe('모각코가 끝난 후인 경우', () => {
     }
   });
 
-  it('별점 3점이상 클릭 시 긍정적인 후기를 남기는 컨텐츠가 뜬다.', async () => {
+  it('별점 3점 이상을 클릭하면 긍정적인 후기를 작성할 수 있는 입력 양식이 표시된다.', async () => {
     const { clickRatingStar, ratingStars } = await setup();
 
     await clickRatingStar(ratingStars[2]);
@@ -139,7 +139,7 @@ describe('모각코가 끝난 후인 경우', () => {
     }
   });
 
-  it('아무것도 선택 하지 않고 완료 버튼을 누를 시 "하나 이상 선택해주세요." 라는 문구가 나타난다.', async () => {
+  it('아무런 선택을 하지 않고 완료 버튼을 클릭할 경우, "하나 이상 선택해주세요."라는 경고 메시지가 표시된다.', async () => {
     const { clickRatingStar, clickCompleteButton, ratingStars } = await setup();
 
     await clickRatingStar(ratingStars[0]);
@@ -151,7 +151,7 @@ describe('모각코가 끝난 후인 경우', () => {
     expect(waringText).toHaveStyle('color: rgb(239 68 68)');
   });
 
-  it('텍스트 입력창에 300자 이상 입력 시 "입력가능한 글자수는 300자입니다." 라는 문구가 나타난다.', async () => {
+  it('텍스트 입력창에 300자 이상 입력하면, "입력 가능한 글자수는 300자입니다."라는 경고 메시지가 표시된다.', async () => {
     const { user, clickRatingStar, completeButton, ratingStars } = await setup();
 
     const longText =
@@ -167,7 +167,7 @@ describe('모각코가 끝난 후인 경우', () => {
     expect(waringText).toHaveStyle('color: rgb(239 68 68)');
   });
 
-  it('리뷰 체크박스들 중 하나 이상 선택 후 완료 버튼 클릭 시 "후기 작성이 완료되었습니다." 라는 toast 메시지가 나타난다.', async () => {
+  it('리뷰 체크박스 중 하나 이상을 선택한 후 완료 버튼을 클릭하면, "후기 작성이 완료되었습니다."라는 toast 메시지가 나타난다.', async () => {
     const { user, clickRatingStar, ratingStars, completeButton } = await setup();
 
     setItem(localStorage, USER_ID_KEY, 105);
@@ -182,7 +182,7 @@ describe('모각코가 끝난 후인 경우', () => {
     expect(mockOnCancel).toBeCalled();
   });
 
-  it('취소 버튼 클릭 시 모달이 꺼진다.', async () => {
+  it('취소 버튼을 클릭하면, 모달이 꺼진다.', async () => {
     const { user, cancelButton } = await setup();
 
     await user.click(cancelButton);
