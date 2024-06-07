@@ -22,6 +22,7 @@ const useAddress = (keyword: string) => {
 
       return response;
     },
+    enabled: !!keyword,
   });
 };
 
