@@ -1,10 +1,9 @@
 import React, { useCallback, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
-import { toast } from '@/components/ui/use-toast';
+import { metroGovernments } from '@/constants/metroGovernments';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useClickAway from '@/hooks/useClickaway';
-import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { Search } from 'lucide-react';
 import AddressList from './AddressList';
@@ -22,28 +21,20 @@ const SearchBarFilter = () => {
 
   const { changeCenter } = useChangeMapCenter();
   const { searchValue, setSearchValue } = useSearchInputValueStore();
-  const { getAddressByCoorinates } = useGetAddressByCoordinates();
 
-  const changeAddress = useCallback(
-    async (latitude: number, longitude: number) => {
-      const address = await getAddressByCoorinates(latitude, longitude);
+  const changeAddress = useCallback(async (addressName: string) => {
+    const isIncluded = Object.keys(metroGovernments).includes(addressName);
 
-      if (!address) {
-        toast({
-          description: '오류가 발생했습니다.',
-        });
-        return;
-      }
-
-      setSearchValue({ ...searchValue, address });
-    },
-    [getAddressByCoorinates],
-  );
+    setSearchValue({
+      ...searchValue,
+      address: isIncluded ? metroGovernments[addressName] : addressName,
+    });
+  }, []);
 
   const handleAddressClick = (data: Address) => {
-    const { latitude, longitude } = data;
+    const { latitude, longitude, addressName } = data;
     changeCenter(latitude, longitude);
-    changeAddress(latitude, longitude);
+    changeAddress(addressName);
     setShow(false);
   };
 
