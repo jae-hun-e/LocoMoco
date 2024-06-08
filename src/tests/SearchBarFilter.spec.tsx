@@ -24,7 +24,7 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
     await user.type(textInput, '서초동');
 
     seochodongList.forEach((addressItem) => {
-      const item = screen.getByText(addressItem.address_name);
+      const item = screen.getByText(addressItem.addressName);
       expect(item).toBeInTheDocument();
     });
   });
@@ -41,9 +41,9 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
     const mockSetShow = vi.fn();
 
     const mockHandleAddressClick = (data: Address) => {
-      const { latitude, longitude } = data;
+      const { latitude, longitude, addressName } = data;
       mockChangeCenter(latitude, longitude);
-      mockChangeAddress(latitude, longitude);
+      mockChangeAddress(addressName);
       mockSetShow(false);
     };
 
@@ -55,11 +55,11 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
     );
 
     for (const addressItem of seochodongList) {
-      const item = screen.getByText(addressItem.address_name);
+      const item = screen.getByText(addressItem.addressName);
       await user.click(item);
 
       expect(mockChangeCenter).toHaveBeenCalledWith(addressItem.latitude, addressItem.longitude);
-      expect(mockChangeAddress).toHaveBeenCalledWith(addressItem.latitude, addressItem.longitude);
+      expect(mockChangeAddress).toHaveBeenCalledWith(addressItem.addressName);
       expect(mockSetShow).toHaveBeenCalledWith(false);
     }
   });
