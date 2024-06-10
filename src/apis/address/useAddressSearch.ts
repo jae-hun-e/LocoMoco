@@ -12,11 +12,11 @@ const useAddress = (keyword: string) => {
     queryKey: ['address', keyword] as const,
     queryFn: () => getAddress(keyword),
     select: (data): Address[] => {
-      const response = data.documents.map((document) => {
+      const response = data.documents.map(({ address_name, x, y }) => {
         return {
-          addressName: document.address_name,
-          latitude: Number(document.y),
-          longitude: Number(document.x),
+          addressName: address_name,
+          latitude: Number(y),
+          longitude: Number(x),
         };
       });
 
