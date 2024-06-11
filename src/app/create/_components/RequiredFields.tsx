@@ -53,6 +53,30 @@ const RequiredFields = ({
     });
   }, []);
 
+  const date = watch('date');
+  const deadLine = watch('deadLine');
+
+  useEffect(() => {
+    const validateDates = () => {
+      if (!date || !deadLine) return true;
+
+      const errorMessage = '신청 마감일은 모각코 날짜보다 늦을 수 없습니다.';
+      const startDate = new Date(date);
+      const endDate = new Date(deadLine);
+
+      if (endDate > startDate) {
+        setError('deadLine', {
+          type: 'validate',
+          message: errorMessage,
+        });
+      } else {
+        clearErrors('deadLine');
+      }
+    };
+
+    validateDates();
+  }, [date, deadLine, setError, clearErrors]);
+
   return (
     <>
       <input
