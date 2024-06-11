@@ -1,31 +1,58 @@
-import { ChangeEvent, useId, useState } from 'react';
-import { UseFormWatch } from 'react-hook-form';
+import { useId } from 'react';
+import {
+  FieldErrors,
+  UseFormClearErrors,
+  UseFormRegister,
+  UseFormSetError,
+  UseFormWatch,
+} from 'react-hook-form';
 import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 interface Props {
   watch: UseFormWatch<MGCCreateForm>;
-  onChangeInput: (key: keyof MGCCreateForm, value: string) => void;
-  startErrormessage: string | undefined;
-  endErrormessage: string | undefined;
+  register: UseFormRegister<MGCCreateForm>;
+  errors: FieldErrors<MGCCreateForm>;
+  setError: UseFormSetError<MGCCreateForm>;
+  clearErrors: UseFormClearErrors<MGCCreateForm>;
 }
 
-const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: Props) => {
+const MGCTime = ({ watch, register, errors, setError, clearErrors }: Props) => {
   const startId = useId();
-  const [errorMessage, setErrorMessage] = useState(endErrormessage);
 
-  // TODO: 유효성 체크 오류있음 [24/02/22]
-  const handelEndTimeValidation = (e: ChangeEvent<HTMLInputElement>) => {
-    const startTime = new Date();
-    const endTime = new Date();
-    const [hours1, minutes1] = watch('startTime').split(':');
-    startTime.setHours(parseInt(hours1, 10), parseInt(minutes1, 10));
-    const [hours2, minutes2] = e.currentTarget.value.split(':');
-    endTime.setHours(parseInt(hours2, 10), parseInt(minutes2, 10));
+  const parseTime = (time: string): Date => {
+    const date = new Date();
 
-    if (startTime > endTime) setErrorMessage('시작시간보다 빠를 수 없습니다.');
-    else onChangeInput('endTime', e.currentTarget.value);
+    const [hours, minutes] = time.split(':');
+    date.setHours(parseInt(hours, 10), parseInt(minutes, 10));
+    return date;
+  };
+
+  const endTime = watch('endTime');
+  const startTime = watch('startTime');
+
+  const validateTimes = (type: 'start' | 'end'): boolean | string => {
+    if (!startTime || !endTime) return true;
+
+    const errorMessage = '종료시간은 시작시간보다 빨리 설정될 수 없습니다.';
+    const startDate = parseTime(startTime);
+    const endDate = parseTime(endTime);
+
+    if (endDate < startDate) {
+      if (type === 'start') {
+        setError('endTime', {
+          type: 'validate',
+          message: errorMessage,
+        });
+      } else {
+        return errorMessage;
+      }
+    } else if (type === 'start') {
+      clearErrors('endTime');
+    }
+
+    return true;
   };
 
   return (
@@ -44,12 +71,16 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
               id={startId}
               type="time"
               step="600"
-              onChange={(e) => onChangeInput('startTime', e.currentTarget.value)}
+              {...register('startTime', {
+                validate: () => validateTimes('start'),
+              })}
               className="w-100pxr text-xs"
               defaultValue={watch('startTime')}
             />
-            {startErrormessage && (
-              <span className="absolute top-11 text-xs text-red-1">{startErrormessage}</span>
+            {errors.startTime && (
+              <span className="absolute -bottom-5 text-xs text-red-1">
+                {errors.startTime.message}
+              </span>
             )}
           </div>
         </Label>
@@ -59,12 +90,16 @@ const MGCTime = ({ watch, onChangeInput, startErrormessage, endErrormessage }: P
             <Input
               type="time"
               step="600"
-              onChange={handelEndTimeValidation}
+              {...register('endTime', {
+                validate: () => validateTimes('end'),
+              })}
               className="w-100pxr text-xs"
               defaultValue={watch('endTime')}
             />
-            {errorMessage && (
-              <span className="absolute top-11 text-xs text-red-1">{errorMessage}</span>
+            {errors.endTime && (
+              <span className="absolute -bottom-5 text-xs text-red-1">
+                {errors.endTime.message}
+              </span>
             )}
           </div>
         </Label>

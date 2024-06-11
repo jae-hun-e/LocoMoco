@@ -53,6 +53,8 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     formState: { errors, isValid },
     watch,
     trigger,
+    setError,
+    clearErrors,
   } = useForm<MGCCreateForm>({
     mode: 'onTouched',
     defaultValues: {
@@ -149,6 +151,8 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
         setValue={setValue}
         trigger={trigger}
         watch={watch}
+        setError={setError}
+        clearErrors={clearErrors}
       />
 
       <OptionFields
