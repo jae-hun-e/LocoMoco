@@ -63,7 +63,9 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
       date: initData?.startTime ? new Date(initData?.startTime) : undefined,
       startTime: initData?.startTime && getTimeString(initData?.startTime),
       endTime: initData?.endTime && getTimeString(initData?.endTime),
-      deadLine: initData?.endTime ? new Date(initData?.endTime) : undefined,
+      deadLine: initData?.endTime
+        ? new Date(new Date(initData?.endTime).setHours(0, 0, 0, 0))
+        : undefined,
       maxParticipants: initData?.maxParticipants ?? 10,
       content: initData?.content,
     },
