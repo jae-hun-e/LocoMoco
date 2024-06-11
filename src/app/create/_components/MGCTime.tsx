@@ -35,7 +35,7 @@ const MGCTime = ({ watch, register, errors, setError, clearErrors }: Props) => {
   const validateTimes = (type: 'start' | 'end'): boolean | string => {
     if (!startTime || !endTime) return true;
 
-    const errorMessage = '종료시간은 시작시간보다 빨리 설정될 수 없습니다.';
+    const errorMessage = '종료시간은 시작시간보다 빠를 수 없습니다.';
     const startDate = parseTime(startTime);
     const endDate = parseTime(endTime);
 
@@ -78,7 +78,7 @@ const MGCTime = ({ watch, register, errors, setError, clearErrors }: Props) => {
               defaultValue={watch('startTime')}
             />
             {errors.startTime && (
-              <span className="absolute -bottom-5 text-xs text-red-1">
+              <span className="absolute bottom-0 translate-y-full text-xs text-red-1">
                 {errors.startTime.message}
               </span>
             )}
@@ -97,7 +97,7 @@ const MGCTime = ({ watch, register, errors, setError, clearErrors }: Props) => {
               defaultValue={watch('endTime')}
             />
             {errors.endTime && (
-              <span className="absolute -bottom-5 text-xs text-red-1">
+              <span className="absolute bottom-0 translate-y-full text-xs text-red-1">
                 {errors.endTime.message}
               </span>
             )}
