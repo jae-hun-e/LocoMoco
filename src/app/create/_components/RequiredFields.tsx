@@ -1,7 +1,9 @@
 import { useEffect } from 'react';
 import {
   FieldErrors,
+  UseFormClearErrors,
   UseFormRegister,
+  UseFormSetError,
   UseFormSetValue,
   UseFormTrigger,
   UseFormWatch,
@@ -19,8 +21,18 @@ interface Props {
   setValue: UseFormSetValue<MGCCreateForm>;
   trigger: UseFormTrigger<MGCCreateForm>;
   watch: UseFormWatch<MGCCreateForm>;
+  setError: UseFormSetError<MGCCreateForm>;
+  clearErrors: UseFormClearErrors<MGCCreateForm>;
 }
-const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) => {
+const RequiredFields = ({
+  register,
+  errors,
+  setValue,
+  trigger,
+  watch,
+  clearErrors,
+  setError,
+}: Props) => {
   const requiredFields: { field: keyof MGCCreateForm; message: string }[] = [
     { field: 'title', message: '제목을 입력해주세요.' },
     { field: 'date', message: '모각코 날짜를 선택해주세요.' },
@@ -35,16 +47,35 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
     trigger(field);
   };
 
-  const handleMGCTime = (field: keyof MGCCreateForm, value: string) => {
-    setValue(field, value);
-    trigger(field);
-  };
-
   useEffect(() => {
     requiredFields.forEach(({ field, message }) => {
       register(field, { required: message });
     });
   }, []);
+
+  const date = watch('date');
+  const deadLine = watch('deadLine');
+
+  useEffect(() => {
+    const validateDates = () => {
+      if (!date || !deadLine) return true;
+
+      const errorMessage = '신청 마감일은 모각코 날짜보다 늦을 수 없습니다.';
+      const startDate = new Date(date);
+      const endDate = new Date(deadLine);
+
+      if (endDate > startDate) {
+        setError('deadLine', {
+          type: 'validate',
+          message: errorMessage,
+        });
+      } else {
+        clearErrors('deadLine');
+      }
+    };
+
+    validateDates();
+  }, [date, deadLine, setError, clearErrors]);
 
   return (
     <>
@@ -81,10 +112,11 @@ const RequiredFields = ({ register, errors, setValue, trigger, watch }: Props) =
       />
 
       <MGCTime
-        onChangeInput={(field, selectedTime) => handleMGCTime(field, selectedTime)}
-        startErrormessage={errors.startTime?.message}
-        endErrormessage={errors.endTime?.message}
         watch={watch}
+        register={register}
+        errors={errors}
+        setError={setError}
+        clearErrors={clearErrors}
       />
 
       <MGCDate

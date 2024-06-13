@@ -8,6 +8,8 @@ import React, {
 } from 'react';
 import { MapContext } from '@/app/_components/Map/MapProvider';
 import MapViewer from '@/app/_components/Map/MapViewer';
+import { LocationProps } from '@/app/create/_components/CreateMGC';
+import useGeolocation from '@/hooks/useGeolocation';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import { Location } from '../../_components/Map/MGCMap';
 
@@ -15,36 +17,62 @@ interface CreateMGCMapViewerProps {
   onMouseUp: () => void;
   children?: ReactNode;
   setCurrentCoordinates: ({ latitude, longitude }: Location) => void;
+  defaultAddress: LocationProps | undefined;
   updateAddress: ({
     newAddress,
-    latLng,
+    latitude,
+    longitude,
   }: {
     newAddress: string;
-    latLng: kakao.maps.LatLng;
+    latitude: number;
+    longitude: number;
   }) => void;
 }
 
 const CreateMGCMapViewer = forwardRef(
   (
-    { onMouseUp, children, setCurrentCoordinates, updateAddress }: CreateMGCMapViewerProps,
+    {
+      onMouseUp,
+      children,
+      setCurrentCoordinates,
+      defaultAddress,
+      updateAddress,
+    }: CreateMGCMapViewerProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
     const map = useContext(MapContext);
 
+    const location = useGeolocation();
     const { getAddressByCoorinates } = useGetAddressByCoordinates();
+
+    useEffect(() => {
+      const changeAddress = async (latitude: number, longitude: number) => {
+        const newAddress = await getAddressByCoorinates(latitude, longitude);
+        if (newAddress) {
+          updateAddress({ newAddress, latitude, longitude });
+        }
+      };
+
+      if (!defaultAddress && location?.coordinates) {
+        changeAddress(location.coordinates.lat, location.coordinates.lng);
+      }
+    }, [defaultAddress, getAddressByCoorinates, location.coordinates, updateAddress]);
 
     const handleMapClick = useCallback(
       async (e: kakao.maps.event.MouseEvent) => {
         const latLng = e.latLng;
+        const latitude = latLng.getLat();
+        const longitude = latLng.getLng();
+
         if (map) {
           setCurrentCoordinates({
-            latitude: latLng.getLat(),
-            longitude: latLng.getLng(),
+            latitude,
+            longitude,
           });
 
           const newAddress = await getAddressByCoorinates(latLng.getLat(), latLng.getLng());
           if (newAddress) {
-            updateAddress({ newAddress, latLng });
+            updateAddress({ newAddress, latitude, longitude });
           }
         }
       },
