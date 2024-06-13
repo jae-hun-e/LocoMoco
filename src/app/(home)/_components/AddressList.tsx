@@ -17,10 +17,10 @@ const AddressList = ({ address, onClick }: AddressListProps) => {
           {address.map((data) => (
             <li
               className="cursor-pointer hover:font-bold"
-              key={data.address_name}
+              key={data.addressName}
               onClick={() => onClick(data)}
             >
-              {data.address_name}
+              {data.addressName}
             </li>
           ))}
         </ul>

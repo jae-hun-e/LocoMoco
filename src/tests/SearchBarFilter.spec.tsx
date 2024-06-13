@@ -3,7 +3,7 @@ import AddressList from '@/app/(home)/_components/AddressList';
 import SearchBarFilter from '@/app/(home)/_components/SearchBarFilter';
 import { seochodongList } from '@/constants/searchResultAddressList';
 import render from '@/libs/test/render';
-import { screen } from '@testing-library/react';
+import { screen, waitFor } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event';
 
 let user: UserEvent;
@@ -23,9 +23,11 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
   it('"서초동" 검색 시 서초동에 해당하는 주소리스트가 나타난다.', async () => {
     await user.type(textInput, '서초동');
 
-    seochodongList.forEach((addressItem) => {
-      const item = screen.getByText(addressItem.address_name);
-      expect(item).toBeInTheDocument();
+    await waitFor(() => {
+      seochodongList.forEach((addressItem) => {
+        const item = screen.getByText(addressItem.addressName);
+        expect(item).toBeInTheDocument();
+      });
     });
   });
 
@@ -41,9 +43,9 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
     const mockSetShow = vi.fn();
 
     const mockHandleAddressClick = (data: Address) => {
-      const { latitude, longitude } = data;
+      const { latitude, longitude, addressName } = data;
       mockChangeCenter(latitude, longitude);
-      mockChangeAddress(latitude, longitude);
+      mockChangeAddress(addressName);
       mockSetShow(false);
     };
 
@@ -55,11 +57,11 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
     );
 
     for (const addressItem of seochodongList) {
-      const item = screen.getByText(addressItem.address_name);
+      const item = screen.getByText(addressItem.addressName);
       await user.click(item);
 
       expect(mockChangeCenter).toHaveBeenCalledWith(addressItem.latitude, addressItem.longitude);
-      expect(mockChangeAddress).toHaveBeenCalledWith(addressItem.latitude, addressItem.longitude);
+      expect(mockChangeAddress).toHaveBeenCalledWith(addressItem.addressName);
       expect(mockSetShow).toHaveBeenCalledWith(false);
     }
   });
