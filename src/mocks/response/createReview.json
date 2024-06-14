@@ -1,0 +1,11 @@
+{
+  "reviewId": 1,
+  "reviewerId": 5,
+  "revieweeId": 2,
+  "mogakkoId": 1,
+  "score": 4,
+  "createdAt": "2024-06-03T10:32:01.591Z",
+  "updatedAt": "2024-06-03T10:32:01.591Z",
+  "reviewContentId": [1, 2, 3],
+  "content": "좋았습니다~"
+}

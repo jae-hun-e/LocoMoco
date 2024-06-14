@@ -19,11 +19,13 @@ const StarList = ({ rating, fisrtNumber, color, onClick, size }: StarListProps) 
     <>
       {getArrayFromCount(rating, fisrtNumber).map((number) => (
         <button
+          type="button"
           id={`${number}`}
           key={number}
           onClick={() => onClick?.(number)}
         >
           <Star
+            aria-label="star"
             width={size ?? 40}
             height={size ?? 40}
             stroke="transparent"
