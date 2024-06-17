@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import ThunderModal from '@/app/(home)/_components/ThunderModal/ThunderModal';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { useThunderModalStore } from '@/store/thunderModalStore';
+import useModal from '@/hooks/useModal';
 import { getItem } from '@/utils/storage';
 import { LockKeyhole, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import ThunderModalContent from '../(home)/_components/ThunderModal/ThunderModalContent';
 
 const CreateBtn = () => {
   let token: string | undefined;
@@ -14,11 +14,21 @@ const CreateBtn = () => {
 
   const router = useRouter();
   const [isCreateBtnOpen, setIsCreateBtnOpen] = useState(false);
-  const { toggleModal } = useThunderModalStore();
+  const { open, close } = useModal();
+
+  const openModal = async () => {
+    await open({
+      children: (
+        <div>
+          <ThunderModalContent close={close}></ThunderModalContent>
+        </div>
+      ),
+    });
+  };
 
   const handleCreateClick = (type: 'thunder' | 'normal') => {
     if (type === 'thunder') {
-      toggleModal();
+      openModal();
     } else {
       router.push('/create');
     }
@@ -79,7 +89,6 @@ const CreateBtn = () => {
           </div>
         </PopoverContent>
       )}
-      <ThunderModal />
     </Popover>
   );
 };
