@@ -1,6 +1,7 @@
 import { api } from '@/constants/mswPath';
 import { http } from 'msw';
 import response from './response';
+import addressList from './response/addressList.json';
 import mgcList from './response/mgcList.json';
 
 export const handlers = [
@@ -36,8 +37,13 @@ export const handlers = [
 
   http.get(api.address, ({ request }: { request: Request }) => {
     const query = new URL(request.url).searchParams.get('query');
-    if (query === '서초동') {
-      return new Response(JSON.stringify(response[api.address]), {
+
+    if (query) {
+      const address = addressList.documents.filter((e) =>
+        e.address_name.replace(/\d+/g, '').includes(query),
+      );
+
+      return new Response(JSON.stringify({ documents: address }), {
         headers: {
           'Content-Type': 'application/json',
         },
