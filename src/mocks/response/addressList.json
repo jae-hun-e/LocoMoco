@@ -69,6 +69,48 @@
       "sub_address_no": "",
       "x": "127.022170883244",
       "y": "37.5026854085131"
+    },
+    {
+      "address": {
+        "address_name": "경기 성남시 분당구 판교동",
+        "b_code": "4113510800",
+        "h_code": "4113565000",
+        "main_address_no": "",
+        "mountain_yn": "N",
+        "region_1depth_name": "경기",
+        "region_2depth_name": "성남시 분당구",
+        "region_3depth_h_name": "판교동",
+        "region_3depth_name": "판교동",
+        "sub_address_no": "",
+        "x": "127.09878136729",
+        "y": "37.3898680691971"
+      },
+      "address_name": "경기 성남시 분당구 판교동",
+      "address_type": "REGION",
+      "road_address": null,
+      "x": "127.09878136729",
+      "y": "37.3898680691971"
+    },
+    {
+      "address": {
+        "address_name": "충남 서천군 판교면",
+        "b_code": "4477038000",
+        "h_code": "4477038000",
+        "main_address_no": "",
+        "mountain_yn": "N",
+        "region_1depth_name": "충남",
+        "region_2depth_name": "서천군",
+        "region_3depth_h_name": "판교면",
+        "region_3depth_name": "판교면",
+        "sub_address_no": "",
+        "x": "126.689081928214",
+        "y": "36.1578198174349"
+      },
+      "address_name": "충남 서천군 판교면",
+      "address_type": "REGION",
+      "road_address": null,
+      "x": "126.689081928214",
+      "y": "36.1578198174349"
     }
   ]
 }

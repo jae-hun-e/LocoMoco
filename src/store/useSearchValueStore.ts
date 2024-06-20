@@ -6,7 +6,7 @@ interface SearchValueStore {
   setSearchValue: (newSearchValue: Position) => void;
 }
 
-interface Position {
+export interface Position {
   address?: string;
   tags?: number[];
 }
