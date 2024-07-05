@@ -1,7 +1,7 @@
 import Home from '@/app/(home)/page';
 import { geocodeAddressConversion } from '@/constants/geocodeAddressConversion';
 import { mockUseKakaoMapLoadStore, mockuseSearchValueStore } from '@/libs/test/mockZustandStore';
-import render from '@/libs/test/render';
+import setupRender from '@/libs/test/render';
 import { screen, waitFor } from '@testing-library/react';
 import categoryList from '../mocks/response/categories.json';
 import addressList from '../mocks/response/mgcList.json';
@@ -120,7 +120,7 @@ const setup = async (geocodeAddress: string) => {
 
   mockUseKakaoMapLoadStore({ isLoad: true });
 
-  const { user } = await render(<Home />);
+  const { user } = await setupRender(<Home />);
 
   const textInput = screen.getByPlaceholderText('동명(읍, 면)으로 검색(ex. 서초동).');
   const ListShowButton = screen.getByText('목록보기');

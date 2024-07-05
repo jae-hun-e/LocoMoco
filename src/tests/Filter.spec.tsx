@@ -1,5 +1,5 @@
 import Filter from '@/app/_components/filter/Filter';
-import render from '@/libs/test/render';
+import setupRender from '@/libs/test/render';
 import useSearchValueStore from '@/store/useSearchValueStore';
 import { screen } from '@testing-library/react';
 import categoryList from '../mocks/response/categories.json';
@@ -11,7 +11,7 @@ global.ResizeObserver = class MockedResizeObserver {
 };
 
 const setup = async () => {
-  const { user } = await render(<Filter />);
+  const { user } = await setupRender(<Filter />);
   const accordionTriggerButton = screen.getByRole('button', { name: 'accordion trigger' });
 
   return {

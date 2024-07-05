@@ -2,7 +2,7 @@ import { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
 import SearchBarFilter from '@/app/(home)/_components/SearchBarFilter';
 import { seochodongList } from '@/constants/searchResultAddressList';
-import render from '@/libs/test/render';
+import setupRender from '@/libs/test/render';
 import { screen, waitFor } from '@testing-library/react';
 import { UserEvent } from '@testing-library/user-event';
 
@@ -11,7 +11,7 @@ let textInput: HTMLElement;
 
 describe('SearchBarFilter 컴포넌트 테스트', () => {
   beforeEach(async () => {
-    const { user: currentUser } = await render(<SearchBarFilter />);
+    const { user: currentUser } = await setupRender(<SearchBarFilter />);
     user = currentUser;
     textInput = screen.getByPlaceholderText('동명(읍, 면)으로 검색(ex. 서초동).');
   });
@@ -49,7 +49,7 @@ describe('SearchBarFilter 컴포넌트 테스트', () => {
       mockSetShow(false);
     };
 
-    await render(
+    await setupRender(
       <AddressList
         address={seochodongList}
         onClick={mockHandleAddressClick}
