@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
-import useSearchInputValueStore from '@/store/useSearchValueStore';
+import useSearchValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import CreateBtn from '../_components/CreateBtn';
 import MGCList from '../_components/MGCList/MGCList';
@@ -18,11 +18,12 @@ const Home = () => {
 
   const mapRef = useRef<HTMLDivElement>(null);
 
-  const { searchValue } = useSearchInputValueStore();
+  const { searchValue } = useSearchValueStore();
 
   const { data } = useMGCTotalList({
     search: searchValue.address,
     searchType: 'LOCATION',
+    tags: searchValue.tags,
   });
 
   useEffect(() => {
