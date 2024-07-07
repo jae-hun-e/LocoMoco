@@ -1,12 +1,17 @@
 {
   "root": true,
-  "env": { "browser": true, "es2021": true, "node": true },
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "node": true
+  },
   "extends": [
     "next/core-web-vitals",
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:prettier/recommended",
-    "plugin:@tanstack/eslint-plugin-query/recommended"
+    "plugin:@tanstack/eslint-plugin-query/recommended",
+    "plugin:storybook/recommended"
   ],
   "parserOptions": {
     "parser": "typescript-eslint/parser"
@@ -40,13 +45,23 @@
         "selector": "typeAlias"
       }
     ],
-    "import/newline-after-import": ["error", { "count": 1 }],
+    "import/newline-after-import": [
+      "error",
+      {
+        "count": 1
+      }
+    ],
     "padding-line-between-statements": [
       "error",
-      { "blankLine": "always", "prev": "const", "next": "return" }
+      {
+        "blankLine": "always",
+        "prev": "const",
+        "next": "return"
+      }
     ],
     "@tanstack/query/exhaustive-deps": "error",
     "@tanstack/query/no-rest-destructuring": "warn",
     "@tanstack/query/stable-query-client": "error"
-  }
+  },
+  "ignorePatterns": ["!.storybook"]
 }

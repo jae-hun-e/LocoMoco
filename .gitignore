@@ -42,3 +42,5 @@ sw.*
 workbox-*
 swe-worker-*
 firebasePrivateKey.json
+
+*storybook.log

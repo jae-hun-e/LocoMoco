@@ -1,7 +1,8 @@
-import React, { useCallback, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
 import { toast } from '@/components/ui/use-toast';
+import { metroGovernments } from '@/constants/metroGovernments';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useClickAway from '@/hooks/useClickaway';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
@@ -24,27 +25,43 @@ const SearchBarFilter = () => {
   const { searchValue, setSearchValue } = useSearchInputValueStore();
   const { getAddressByCoorinates } = useGetAddressByCoordinates();
 
-  const changeAddress = useCallback(
-    async (latitude: number, longitude: number) => {
-      const address = await getAddressByCoorinates(latitude, longitude);
+  const changeAddress = async (latitude: number, longitude: number, addressName: string) => {
+    const address = await getAddressByCoorinates(latitude, longitude);
 
-      if (!address) {
-        toast({
-          description: '오류가 발생했습니다.',
-        });
-        return;
-      }
+    if (!address) {
+      toast({
+        description: '오류가 발생했습니다.',
+      });
+      return;
+    }
 
-      setSearchValue({ ...searchValue, address });
-    },
-    [getAddressByCoorinates],
-  );
+    const isIncluded = Object.keys(metroGovernments).includes(addressName);
+
+    setSearchValue({
+      ...searchValue,
+      address: isIncluded ? metroGovernments[addressName] : address,
+    });
+  };
 
   const handleAddressClick = (data: Address) => {
-    const { latitude, longitude } = data;
+    const { latitude, longitude, addressName } = data;
     changeCenter(latitude, longitude);
-    changeAddress(latitude, longitude);
+    changeAddress(latitude, longitude, addressName);
     setShow(false);
+  };
+
+  const typingTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const handleKeywordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+
+    if (typingTimer.current) {
+      clearTimeout(typingTimer.current);
+    }
+
+    typingTimer.current = setTimeout(() => {
+      setKeyword(value);
+    }, 500);
   };
 
   return (
@@ -66,7 +83,7 @@ const SearchBarFilter = () => {
           />
           <input
             onFocus={() => setShow(true)}
-            onChange={(e) => setKeyword(e.target.value)}
+            onChange={handleKeywordChange}
             placeholder="동명(읍, 면)으로 검색(ex. 서초동)."
             className="h-10 w-full text-sm focus:outline-none"
           />
