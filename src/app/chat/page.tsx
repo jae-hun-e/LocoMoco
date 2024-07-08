@@ -24,7 +24,7 @@ const ChatList = () => {
 
   useEffect(() => {
     if (!getItem(localStorage, 'token')) router.replace('/signin');
-  }, [router]);
+  }, [router, chatRooms]);
 
   return (
     <ul className="flex flex-col gap-2">
