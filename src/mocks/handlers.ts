@@ -5,7 +5,7 @@ import addressList from './response/addressList.json';
 import mgcList from './response/mgcList.json';
 
 export const handlers = [
-  ...[api.category, api.mgc].map((path) =>
+  ...[api.category, api.mgc, api.users, api.reviewContents].map((path) =>
     http.get(`${path}`, () => {
       return new Response(JSON.stringify(response[path]), {
         headers: {
@@ -49,5 +49,12 @@ export const handlers = [
         },
       });
     }
+  }),
+  http.post(api.createReview, async () => {
+    return new Response(JSON.stringify(response[api.createReview]), {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
   }),
 ];
