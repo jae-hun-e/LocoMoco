@@ -6,6 +6,7 @@ import { clearItem, setItem } from '@/utils/storage';
 import { initializeApp } from '@firebase/app';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { OverlayProvider } from '@toss/use-overlay';
 import { AxiosError } from 'axios';
 
 interface RefreshTokenResponse {
@@ -83,8 +84,10 @@ const Provider = ({
   initFireBase();
   return (
     <QueryClientProvider client={queryClient}>
-      {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      <OverlayProvider>
+        {children}
+        <ReactQueryDevtools initialIsOpen={false} />
+      </OverlayProvider>
     </QueryClientProvider>
   );
 };
