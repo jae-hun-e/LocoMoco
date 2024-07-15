@@ -146,21 +146,6 @@ describe('Home컴포넌트', () => {
         selectedTagIds.every((tag) => e.tags.includes(tag)),
     );
 
-    const markers = [];
-    for (const address of resultAddress) {
-      markers.push({
-        options: {
-          image: {
-            imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-          },
-          position: { lat: address.location.latitude, lng: address.location.longitude },
-        },
-        setDraggable: mockSetDraggable,
-        setMap: mockSetMap,
-        getPosition: mockGetPosition,
-      });
-    }
-
     const { user, textInput } = await setup('경기도 성남시 분당구 판교동');
 
     await user.type(textInput, '판교');
@@ -171,16 +156,25 @@ describe('Home컴포넌트', () => {
     const selectedStudyArea = screen.getByText(studyAreaCategory);
     const selectedMgcType = screen.getByText(mgcTypeCategory);
 
-    mockLatLng.mockClear();
-    mockMarker.mockClear();
-    mockAddClustererMarkers.mockClear();
+    mockAddMarkersInClusterer.mockClear();
 
     await user.click(selectedLanguage);
     await user.click(selectedStudyArea);
     await user.click(selectedMgcType);
     await user.click(screen.getByText('적용'));
 
-    expect(mockAddClustererMarkers).toBeCalledWith(markers);
+    expect(mockAddMarkersInClusterer).toHaveBeenCalledWith(
+      expect.arrayContaining(
+        resultAddress.map((address) =>
+          expect.objectContaining({
+            position: {
+              latitude: address.location.latitude,
+              longitude: address.location.longitude,
+            },
+          }),
+        ),
+      ),
+    );
   });
 
   it('해당 지역에 있는 모각코 리스트가 나타난다.', async () => {
