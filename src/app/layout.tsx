@@ -9,6 +9,7 @@ import { HydrationBoundary, QueryClient, dehydrate } from '@tanstack/react-query
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import Script from 'next/script';
+import GoogleAnalyticsTracker from './_components/GoogleAnalyticsTracker';
 import MapLoaderProvider from './_components/Map/MapLoaderProvider';
 
 const pretendard = localFont({
@@ -135,6 +136,7 @@ const RootLayout = async ({
             <Toaster />
           </MapLoaderProvider>
         </Provider>
+        <GoogleAnalyticsTracker />
       </body>
     </html>
   );
