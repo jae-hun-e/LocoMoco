@@ -25,6 +25,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        xs: { max: '380px' },
+      },
       fontFamily: {
         sans: ['var(--pretendard)', ...fontFamily.sans],
       },
@@ -132,6 +135,9 @@ const config = {
           display: '-webkit-box',
           '-webkit-box-orient': 'vertical',
           '-webkit-line-clamp': '2',
+        },
+        '.map-height': {
+          height: 'calc(100svh - 3.125rem)',
         },
       });
     }),
