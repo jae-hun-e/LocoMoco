@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { Minus, Plus } from 'lucide-react';
 import { MapContext } from './Map/MapProvider';
 
-const MapCustomControl = () => {
+const MapCustomControl = ({ topGap }: { topGap: 'large' | 'small' }) => {
   const map = useContext(MapContext);
 
   const zoomIn = () => {
@@ -21,8 +21,13 @@ const MapCustomControl = () => {
     }
   };
 
+  const topVariants = {
+    large: 'top-120pxr',
+    small: 'top-10pxr',
+  };
+
   return (
-    <div className="absolute right-10pxr top-10pxr z-30 rounded shadow-md">
+    <div className={`${topVariants[topGap]} absolute right-10pxr top-10pxr z-10 rounded shadow-md`}>
       <button
         onClick={zoomIn}
         className="flex h-32pxr w-32pxr items-center justify-center rounded-t-[3px] border-b border-solid border-gray-300 bg-white"

@@ -1,5 +1,4 @@
 import { ForwardedRef, ReactNode, forwardRef } from 'react';
-import { cn } from '@/libs/utils';
 
 interface MapViewerProps {
   width?: string;
@@ -9,13 +8,14 @@ interface MapViewerProps {
 
 const MapViewer = forwardRef(
   ({ width, height, children }: MapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
+    const heightVariant = height ? `h-${height}` : 'map-height';
+    const widthVariant = width ? `w-${width}` : 'w-full';
+
     return (
       <div
         id="map"
         ref={mapRef}
-        className={cn(
-          `h-${height ?? '[calc(100svh-3.125rem-7.5rem)]'} w-${width ?? 'full'} relative`,
-        )}
+        className={`${heightVariant} ${widthVariant} relative`}
       >
         {children}
       </div>
