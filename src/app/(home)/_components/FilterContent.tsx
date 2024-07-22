@@ -1,3 +1,5 @@
+import { useRef, useState } from 'react';
+import { MouseEvent } from 'react';
 import { category } from '@/constants/categoryFilter';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
@@ -16,6 +18,10 @@ interface FilterContentProps {
 }
 
 const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) => {
+  const [isDrag, setIsDrag] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const scrollRef = useRef<HTMLDivElement | null>(null);
+
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
 
@@ -36,9 +42,58 @@ const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) 
 
   const categorys = categoryName ? getFilterList(category[categoryName]) : [];
 
+  const handleDragStart = (e: MouseEvent<HTMLDivElement>) => {
+    setIsDrag(true);
+    setStartX(e.clientX);
+  };
+
+  const timer = useRef<NodeJS.Timeout | null>(null);
+
+  const handleDragMove = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
+
+    if (!isDrag || !scrollRef.current) return;
+
+    const maxScrollLeft = scrollRef.current.scrollWidth - scrollRef.current.clientWidth;
+    const newScrollLeft = scrollRef.current.scrollLeft + startX - e.clientX;
+
+    if (
+      (scrollRef.current.scrollLeft === 0 && newScrollLeft < 0) ||
+      (Math.floor(scrollRef.current.scrollLeft) === Math.floor(maxScrollLeft) &&
+        newScrollLeft > maxScrollLeft)
+    ) {
+      return;
+    }
+
+    if (newScrollLeft >= -50 && newScrollLeft <= maxScrollLeft + 50) {
+      scrollRef.current.scrollLeft = newScrollLeft;
+    }
+  };
+
+  const throttle = (callback: (e: MouseEvent<HTMLDivElement>) => void, delayTime: number) => {
+    return (e: MouseEvent<HTMLDivElement>) => {
+      if (timer.current) return;
+      timer.current = setTimeout(() => {
+        callback(e);
+        timer.current = null;
+      }, delayTime);
+    };
+  };
+
+  const handleDragEnd = () => {
+    setIsDrag(false);
+  };
+
   return (
     <div className="mx-auto w-[90%] py-20pxr">
-      <div className="flex gap-1.5 overflow-x-scroll whitespace-nowrap scrollbar-hide">
+      <div
+        ref={scrollRef}
+        onMouseDown={handleDragStart}
+        onMouseMove={throttle(handleDragMove, 100)}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        className="flex gap-1.5 overflow-x-scroll whitespace-nowrap scrollbar-hide"
+      >
         {categorys.map((item) => (
           <button
             className="rounded-[30px] border border-layer-3 bg-layer-1 px-20pxr py-9pxr text-sm text-gray-600 xs:text-xs"
