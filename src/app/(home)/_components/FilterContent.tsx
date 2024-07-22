@@ -1,11 +1,15 @@
 import { useRef, useState } from 'react';
 import { MouseEvent } from 'react';
+import { Control, UseFormWatch } from 'react-hook-form';
+import { Controller } from 'react-hook-form';
 import { category } from '@/constants/categoryFilter';
+import { SelectedCategoryData } from '@/types/searchFilterCategory';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
 import Reset from '../../../../public/reset.svg';
+import CategoryCheckbox from './CategoryCheckbox';
 
-interface FilterCategoryList {
+export interface FilterCategoryList {
   tagId: number;
   tagName: string;
   categoryName: string;
@@ -15,9 +19,11 @@ interface FilterContentProps {
   categoryName: 'mgcType' | 'language' | 'area' | undefined;
   onSubmit: () => void;
   onReset: () => void;
+  control: Control<SelectedCategoryData>;
+  watch: UseFormWatch<SelectedCategoryData>;
 }
 
-const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) => {
+const FilterContent = ({ categoryName, onSubmit, onReset, control, watch }: FilterContentProps) => {
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -50,6 +56,16 @@ const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) 
 
   const timer = useRef<NodeJS.Timeout | null>(null);
 
+  const throttle = (callback: (e: MouseEvent<HTMLDivElement>) => void, delayTime: number) => {
+    return (e: MouseEvent<HTMLDivElement>) => {
+      if (timer.current) return;
+      timer.current = setTimeout(() => {
+        callback(e);
+        timer.current = null;
+      }, delayTime);
+    };
+  };
+
   const handleDragMove = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
 
@@ -71,22 +87,20 @@ const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) 
     }
   };
 
-  const throttle = (callback: (e: MouseEvent<HTMLDivElement>) => void, delayTime: number) => {
-    return (e: MouseEvent<HTMLDivElement>) => {
-      if (timer.current) return;
-      timer.current = setTimeout(() => {
-        callback(e);
-        timer.current = null;
-      }, delayTime);
-    };
-  };
-
   const handleDragEnd = () => {
     setIsDrag(false);
   };
 
+  const isOnlyMgcTypeSelected =
+    categoryName !== 'mgcType' &&
+    watch('mgcType').length === 1 &&
+    watch('mgcType')[0]?.tagName === '번개';
+
   return (
-    <div className="mx-auto w-[90%] py-20pxr">
+    <form
+      className="mx-auto w-[90%] py-20pxr"
+      onSubmit={onSubmit}
+    >
       <div
         ref={scrollRef}
         onMouseDown={handleDragStart}
@@ -95,31 +109,47 @@ const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) 
         onMouseLeave={handleDragEnd}
         className="flex gap-1.5 overflow-x-scroll whitespace-nowrap scrollbar-hide"
       >
-        {categorys.map((item) => (
-          <button
-            className="rounded-[30px] border border-layer-3 bg-layer-1 px-20pxr py-9pxr text-sm text-gray-600 xs:text-xs"
-            key={item.tagId}
-          >
-            {item.tagName}
-          </button>
+        {categorys.map((category) => (
+          <Controller
+            key={category.tagId}
+            control={control}
+            render={({ field: { onChange, value } }) => (
+              <>
+                <CategoryCheckbox
+                  disabled={isOnlyMgcTypeSelected}
+                  category={category}
+                  onChange={onChange}
+                  key={category.tagId}
+                  value={value}
+                />
+              </>
+            )}
+            name={categoryName!}
+          />
         ))}
       </div>
 
+      {isOnlyMgcTypeSelected ? (
+        <span className="text-xs text-red-1">
+          번개모각코만 선택했을 시 다른 태그들을 선택할 수 없어요
+        </span>
+      ) : null}
       <div className="mt-20pxr grid grid-cols-[1fr_3fr] gap-7pxr">
         <button
+          type="button"
           onClick={onReset}
           className="flex items-center justify-center rounded-[6px] border border-layer-3 bg-white py-10pxr text-white"
         >
           <Reset />
         </button>
         <button
+          type="submit"
           className=" rounded-[6px] bg-main-1 py-10pxr text-white"
-          onClick={onSubmit}
         >
           적용하기
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 
