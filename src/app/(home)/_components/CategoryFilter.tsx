@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { selectionStatus } from '@/constants/categoryFilter';
 import Lightning from '../../../../public/Lightning.svg';
 import LanguageCategory from '../../../../public/language-category-icon.svg';
@@ -40,23 +40,25 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
     setOpen(true);
     setCategory(buttonType);
     setBtnSelectionData((pev) => ({ ...pev, [buttonType]: selectionStatus.IN }));
-
-    for (const dataKey in selectedCategoryData) {
-      if (dataKey === buttonType) continue;
-
-      const key = dataKey as 'mgcType' | 'language' | 'area';
-
-      if (selectedCategoryData[key].length > 0) {
-        setBtnSelectionData((pev) => ({ ...pev, [key]: selectionStatus.COMPLETE }));
-      } else if (selectedCategoryData[key].length === 0) {
-        setBtnSelectionData((pev) => ({ ...pev, [key]: selectionStatus.BEFORE }));
-      }
-    }
   };
 
   const handleSubmit = () => {
     setOpen(false);
   };
+
+  useEffect(() => {
+    if (!open) {
+      for (const dataKey in selectedCategoryData) {
+        const key = dataKey as 'mgcType' | 'language' | 'area';
+
+        if (selectedCategoryData[key].length > 0) {
+          setBtnSelectionData((pev) => ({ ...pev, [key]: selectionStatus.COMPLETE }));
+        } else if (selectedCategoryData[key].length === 0) {
+          setBtnSelectionData((pev) => ({ ...pev, [key]: selectionStatus.BEFORE }));
+        }
+      }
+    }
+  }, [open, selectedCategoryData]);
 
   const handleResetClick = () => {
     setOpen(false);

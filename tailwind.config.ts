@@ -96,6 +96,7 @@ const config = {
         'red-1': '#FF5A5A',
         'red-2': '#FF7A7A',
         'red-3': '#FF9A9A',
+        shadow: 'rgba(0, 0, 0, 0.4)',
       },
       borderRadius: {
         lg: 'var(--radius)',

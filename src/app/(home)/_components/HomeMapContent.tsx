@@ -59,7 +59,7 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
 
   return (
     <>
-      <section className="flex w-full flex-col items-center">
+      <section className="absolute z-40 flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
       <ClustererProvider>
