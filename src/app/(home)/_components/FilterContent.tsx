@@ -43,6 +43,7 @@ const FilterContent = ({ categoryName, onSubmit, onReset }: FilterContentProps) 
   const categorys = categoryName ? getFilterList(category[categoryName]) : [];
 
   const handleDragStart = (e: MouseEvent<HTMLDivElement>) => {
+    e.preventDefault();
     setIsDrag(true);
     setStartX(e.clientX);
   };
