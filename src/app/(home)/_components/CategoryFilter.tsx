@@ -21,7 +21,7 @@ interface CategoryFilterProp {
 }
 
 const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
-  const { control, handleSubmit, watch, reset } = useForm<SelectedCategoryData>({
+  const { control, handleSubmit, watch, reset, resetField } = useForm<SelectedCategoryData>({
     defaultValues: {
       mgcType: [],
       language: [],
@@ -73,9 +73,10 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
     const tagInfo = Object.values(data) as TagInfo[][];
 
     const arr = [] as TagInfo[];
-    const tags = arr.concat(...tagInfo).map((tag) => tag.tagId);
+    const filterdAll = arr.concat(...tagInfo).filter((tag) => tag.tagName !== '전체');
+    const tagIds = filterdAll.map((tag) => tag.tagId);
 
-    setSearchValue({ ...searchValue, tags: tags.filter((tagId) => tagId !== 0) });
+    setSearchValue({ ...searchValue, tags: tagIds });
 
     setOpen(false);
   };
@@ -92,7 +93,9 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
   };
 
   const convertCategoriesToText = (type: 'mgcType' | 'language' | 'area') => {
-    const arr = watch(type).map((item) => item.tagName);
+    const arr = watch(type)
+      .map((tagInfo) => tagInfo.tagName)
+      .filter((tagInfo) => tagInfo !== '전체');
 
     if (arr.length > 3) {
       const addCount = arr.length - 3;
@@ -139,6 +142,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
           categoryName={category}
           onSubmit={handleSubmit(onSubmit)}
           onReset={handleResetClick}
+          resetField={resetField}
         />
       ) : null}
     </>

@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { MouseEvent } from 'react';
-import { Control, UseFormWatch } from 'react-hook-form';
+import { Control, UseFormResetField, UseFormWatch } from 'react-hook-form';
 import { Controller } from 'react-hook-form';
 import { category } from '@/constants/categoryFilter';
 import { SelectedCategoryData } from '@/types/searchFilterCategory';
@@ -21,9 +21,17 @@ interface FilterContentProps {
   onReset: () => void;
   control: Control<SelectedCategoryData>;
   watch: UseFormWatch<SelectedCategoryData>;
+  resetField: UseFormResetField<SelectedCategoryData>;
 }
 
-const FilterContent = ({ categoryName, onSubmit, onReset, control, watch }: FilterContentProps) => {
+const FilterContent = ({
+  categoryName,
+  onSubmit,
+  onReset,
+  control,
+  watch,
+  resetField,
+}: FilterContentProps) => {
   const [isDrag, setIsDrag] = useState(false);
   const [startX, setStartX] = useState(0);
   const scrollRef = useRef<HTMLDivElement | null>(null);
@@ -46,7 +54,13 @@ const FilterContent = ({ categoryName, onSubmit, onReset, control, watch }: Filt
     return filterCategoryList;
   };
 
-  const categorys = categoryName ? getFilterList(category[categoryName]) : [];
+  const categories = categoryName ? getFilterList(category[categoryName]) : [];
+
+  const allSelect = {
+    tagId: 1000 + categories[0]?.tagId,
+    tagName: '전체',
+    categoryName: category[categoryName!],
+  };
 
   const handleDragStart = (e: MouseEvent<HTMLDivElement>) => {
     e.preventDefault();
@@ -96,6 +110,21 @@ const FilterContent = ({ categoryName, onSubmit, onReset, control, watch }: Filt
     watch('mgcType').length === 1 &&
     watch('mgcType')[0]?.tagName === '번개';
 
+  console.log(
+    '종류',
+    watch('mgcType').map((item) => item.tagName),
+  );
+  console.log(
+    '언어',
+    watch('language').map((item) => item.tagName),
+  );
+  console.log(
+    '분야',
+    watch('area').map((item) => item.tagName),
+  );
+  console.log(allSelect);
+  console.log('=================');
+
   return (
     <form
       className="mx-auto w-[90%] py-20pxr"
@@ -109,18 +138,38 @@ const FilterContent = ({ categoryName, onSubmit, onReset, control, watch }: Filt
         onMouseLeave={handleDragEnd}
         className="flex gap-1.5 overflow-x-scroll whitespace-nowrap scrollbar-hide"
       >
-        {categorys.map((category) => (
+        <Controller
+          key={categoryName}
+          control={control}
+          render={({ field: { onChange, value } }) => (
+            <>
+              <CategoryCheckbox
+                category={allSelect}
+                categories={[...categories, allSelect]}
+                onChange={onChange}
+                value={value}
+                disabled={isOnlyMgcTypeSelected}
+                resetField={resetField}
+              />
+            </>
+          )}
+          name={categoryName!}
+        />
+        {categories.map((category) => (
           <Controller
             key={category.tagId}
             control={control}
             render={({ field: { onChange, value } }) => (
               <>
                 <CategoryCheckbox
-                  disabled={isOnlyMgcTypeSelected}
                   category={category}
+                  categories={categories}
+                  allSelectTag={allSelect}
                   onChange={onChange}
                   key={category.tagId}
                   value={value}
+                  disabled={isOnlyMgcTypeSelected}
+                  resetField={resetField}
                 />
               </>
             )}
