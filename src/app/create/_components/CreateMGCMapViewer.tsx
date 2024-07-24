@@ -11,6 +11,7 @@ import MapViewer from '@/app/_components/Map/MapViewer';
 import { LocationProps } from '@/app/create/_components/CreateMGC';
 import useGeolocation from '@/hooks/useGeolocation';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
+import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import { Location } from '../../_components/Map/MGCMap';
 
 interface CreateMGCMapViewerProps {
@@ -41,6 +42,7 @@ const CreateMGCMapViewer = forwardRef(
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
     const map = useContext(MapContext);
+    const mapService = useKakaoMapService();
 
     const location = useGeolocation();
     const { getAddressByCoorinates } = useGetAddressByCoordinates();
@@ -81,14 +83,14 @@ const CreateMGCMapViewer = forwardRef(
 
     useEffect(() => {
       if (map) {
-        kakao.maps.event.addListener(map, 'click', handleMapClick);
-        kakao.maps.event.addListener(map, 'dragstart', onMouseUp);
+        mapService.addListener(map, 'click', handleMapClick);
+        mapService.addListener(map, 'dragstart', onMouseUp);
       }
 
       return () => {
         if (map) {
-          kakao.maps.event.removeListener(map, 'click', handleMapClick);
-          kakao.maps.event.removeListener(map, 'dragstart', onMouseUp);
+          mapService.removeListener(map, 'click', handleMapClick);
+          mapService.removeListener(map, 'dragstart', onMouseUp);
         }
       };
     }, [handleMapClick, map, onMouseUp]);
