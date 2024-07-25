@@ -13021,7 +13021,7 @@ magic-string@^0.25.0, magic-string@^0.25.7:
   dependencies:
     sourcemap-codec "^1.4.8"
 
-magic-string@^0.30.5:
+magic-string@^0.30.10, magic-string@^0.30.5:
   version "0.30.10"
   resolved "https://registry.yarnpkg.com/magic-string/-/magic-string-0.30.10.tgz#123d9c41a0cb5640c892b041d4cfb3bd0aa4b39e"
   integrity sha512-iIRwTIf0QKV3UAnYK4PU8uiEc4SRh5jX0mwpIwETPpHdhVM4f53RSwS/vXvN1JhGX+Cs7B8qIq3d6AH49O5fAQ==
@@ -15142,6 +15142,11 @@ sass-loader@^12.4.0:
     klona "^2.0.4"
     neo-async "^2.6.2"
 
+sax@>=0.6.0:
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/sax/-/sax-1.4.1.tgz#44cc8988377f126304d3b3fc1010c733b929ef0f"
+  integrity sha512-+aWOz7yVScEGoKNd4PA10LZ8sk0A/z5+nXQG5giUO5rprX9jgYsTdov9qCchZiPIZezbZH+jRut8nPodFAX4Jg==
+
 saxes@^6.0.0:
   version "6.0.0"
   resolved "https://registry.yarnpkg.com/saxes/-/saxes-6.0.0.tgz#fe5b4a4768df4f14a201b1ba6a65c1f3d9988cc5"
@@ -15919,7 +15924,7 @@ svg-parser@^2.0.4:
   resolved "https://registry.yarnpkg.com/svg-parser/-/svg-parser-2.0.4.tgz#fdc2e29e13951736140b76cb122c8ee6630eb6b5"
   integrity sha512-e4hG1hRwoOdRb37cIMSgzNsxyzKfayW6VOflrwvR+/bzrkyxY/31WkbgnQpgtrNp1SdpJvpUAGTa/ZoiPNDuRQ==
 
-svgo@^3.0.2:
+svgo@^3.0.2, svgo@^3.3.2:
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/svgo/-/svgo-3.3.2.tgz#ad58002652dffbb5986fc9716afe52d869ecbda8"
   integrity sha512-OoohrmuUlBs8B8o6MB2Aevn+pRIH9zDALSR+6hhqVfa6fRwG/Qw9VUMSMW9VNg2CFc/MTIfabtdOVl9ODIJjpw==
@@ -16704,6 +16709,15 @@ vite-node@1.6.0:
     picocolors "^1.0.0"
     vite "^5.0.0"
 
+vite-plugin-magical-svg@^1.3.0:
+  version "1.3.0"
+  resolved "https://registry.yarnpkg.com/vite-plugin-magical-svg/-/vite-plugin-magical-svg-1.3.0.tgz#6aee77da62a3b2519bf32923702cf58db6a06e34"
+  integrity sha512-uUxFEq+qHtNXRmGuF5TJxjn4fO0AKM9DCc0jp5WNxyx76FFvyiVcrhS8J3bi3N5DGHeawE+D9OO9/Xf8BHE5qA==
+  dependencies:
+    magic-string "^0.30.10"
+    svgo "^3.3.2"
+    xml2js "^0.6.2"
+
 vite@^5.0.0:
   version "5.2.11"
   resolved "https://registry.yarnpkg.com/vite/-/vite-5.2.11.tgz#726ec05555431735853417c3c0bfb36003ca0cbd"
@@ -17225,6 +17239,19 @@ xml-name-validator@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/xml-name-validator/-/xml-name-validator-5.0.0.tgz#82be9b957f7afdacf961e5980f1bf227c0bf7673"
   integrity sha512-EvGK8EJ3DhaHfbRlETOWAS5pO9MZITeauHKJyb8wyajUfQUenkIg2MvLDTZ4T/TgIcm3HU0TFBgWWboAZ30UHg==
+
+xml2js@^0.6.2:
+  version "0.6.2"
+  resolved "https://registry.yarnpkg.com/xml2js/-/xml2js-0.6.2.tgz#dd0b630083aa09c161e25a4d0901e2b2a929b499"
+  integrity sha512-T4rieHaC1EXcES0Kxxj4JWgaUQHDk+qwHcYOCFHfiwKz7tOVPLq7Hjq9dM1WCMhylqMEfP7hMcOIChvotiZegA==
+  dependencies:
+    sax ">=0.6.0"
+    xmlbuilder "~11.0.0"
+
+xmlbuilder@~11.0.0:
+  version "11.0.1"
+  resolved "https://registry.yarnpkg.com/xmlbuilder/-/xmlbuilder-11.0.1.tgz#be9bae1c8a046e76b31127726347d0ad7002beb3"
+  integrity sha512-fDlsI/kFEx7gLvbecc0/ohLG50fugQp8ryHzMTuW9vSa1GJ0XYWKnhsUx7oie3G98+r56aTQIUB4kht42R3JvA==
 
 xmlchars@^2.2.0:
   version "2.2.0"
