@@ -75,7 +75,7 @@ const CategoryCheckbox = ({
           checked && 'border border-black-2 font-bold text-black-2',
         )}
       >
-        <span>{category.tagName}</span>
+        {category.tagName}
       </label>
     </>
   );

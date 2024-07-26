@@ -110,25 +110,11 @@ const FilterContent = ({
     watch('mgcType').length === 1 &&
     watch('mgcType')[0]?.tagName === '번개';
 
-  console.log(
-    '종류',
-    watch('mgcType').map((item) => item.tagName),
-  );
-  console.log(
-    '언어',
-    watch('language').map((item) => item.tagName),
-  );
-  console.log(
-    '분야',
-    watch('area').map((item) => item.tagName),
-  );
-  console.log(allSelect);
-  console.log('=================');
-
   return (
     <form
       className="mx-auto w-[90%] py-20pxr"
       onSubmit={onSubmit}
+      aria-label="filter content"
     >
       <div
         ref={scrollRef}
@@ -138,44 +124,48 @@ const FilterContent = ({
         onMouseLeave={handleDragEnd}
         className="flex gap-1.5 overflow-x-scroll whitespace-nowrap scrollbar-hide"
       >
-        <Controller
-          key={categoryName}
-          control={control}
-          render={({ field: { onChange, value } }) => (
-            <>
-              <CategoryCheckbox
-                category={allSelect}
-                categories={[...categories, allSelect]}
-                onChange={onChange}
-                value={value}
-                disabled={isOnlyMgcTypeSelected}
-                resetField={resetField}
+        {categoryName ? (
+          <>
+            <Controller
+              key={categoryName}
+              control={control}
+              render={({ field: { onChange, value } }) => (
+                <>
+                  <CategoryCheckbox
+                    category={allSelect}
+                    categories={[...categories, allSelect]}
+                    onChange={onChange}
+                    value={value}
+                    disabled={isOnlyMgcTypeSelected}
+                    resetField={resetField}
+                  />
+                </>
+              )}
+              name={categoryName!}
+            />
+            {categories.map((category) => (
+              <Controller
+                key={category.tagId}
+                control={control}
+                render={({ field: { onChange, value } }) => (
+                  <>
+                    <CategoryCheckbox
+                      category={category}
+                      categories={categories}
+                      allSelectTag={allSelect}
+                      onChange={onChange}
+                      key={category.tagId}
+                      value={value}
+                      disabled={isOnlyMgcTypeSelected}
+                      resetField={resetField}
+                    />
+                  </>
+                )}
+                name={categoryName!}
               />
-            </>
-          )}
-          name={categoryName!}
-        />
-        {categories.map((category) => (
-          <Controller
-            key={category.tagId}
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <>
-                <CategoryCheckbox
-                  category={category}
-                  categories={categories}
-                  allSelectTag={allSelect}
-                  onChange={onChange}
-                  key={category.tagId}
-                  value={value}
-                  disabled={isOnlyMgcTypeSelected}
-                  resetField={resetField}
-                />
-              </>
-            )}
-            name={categoryName!}
-          />
-        ))}
+            ))}
+          </>
+        ) : null}
       </div>
 
       {isOnlyMgcTypeSelected ? (

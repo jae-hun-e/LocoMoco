@@ -34,7 +34,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
     language: selectionStatus.BEFORE,
     area: selectionStatus.BEFORE,
   });
-  const [category, setCategory] = useState<'mgcType' | 'language' | 'area' | undefined>();
+  const [categoryName, setCategoryName] = useState<'mgcType' | 'language' | 'area' | undefined>();
 
   const ChangeBtnColor = useCallback(
     (buttonType?: 'mgcType' | 'language' | 'area') => {
@@ -61,7 +61,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
 
   const handleBtnClick = (buttonType: 'mgcType' | 'language' | 'area') => {
     setOpen(true);
-    setCategory(buttonType);
+    setCategoryName(buttonType);
     setBtnSelectionData((pev) => ({ ...pev, [buttonType]: selectionStatus.IN }));
 
     ChangeBtnColor(buttonType);
@@ -120,6 +120,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
           onClick={() => handleBtnClick('mgcType')}
           icon={<Lightning />}
           selectionStep={btnSelectionData.mgcType}
+          label="mgcType buttons category"
         />
 
         <CategorySelectBtn
@@ -127,19 +128,21 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
           onClick={() => handleBtnClick('language')}
           icon={<LanguageCategory />}
           selectionStep={btnSelectionData.language}
+          label="language buttons category"
         />
         <CategorySelectBtn
           name={watch('area').length === 0 ? '공부 분야' : convertCategoriesToText('area')}
           onClick={() => handleBtnClick('area')}
           icon={<StudyArea />}
           selectionStep={btnSelectionData.area}
+          label="area buttons category"
         />
       </div>
       {open ? (
         <FilterContent
           watch={watch}
           control={control}
-          categoryName={category}
+          categoryName={categoryName}
           onSubmit={handleSubmit(onSubmit)}
           onReset={handleResetClick}
           resetField={resetField}
