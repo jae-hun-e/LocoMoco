@@ -1,6 +1,11 @@
 name: 'Deploy Storybook with Chromatic'
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - '**/*.stories.ts'
+      - '**/*.stories.tsx'
+      - '.storybook/**'
 
 jobs:
   chromatic:
