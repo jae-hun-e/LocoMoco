@@ -140,10 +140,12 @@ global.ResizeObserver = class MockedResizeObserver {
 
 describe('Home컴포넌트', () => {
   it('검색어 입력 후 주소를 선택하고 필터를 선택하면 해당하는 마커가 나타난다.', async () => {
-    const languageCategory = 'JS';
-    const studyAreaCategory = '코딩테스트';
     const mgcTypeCategory = '일반';
-    const categorys = [languageCategory, studyAreaCategory, mgcTypeCategory];
+    const languageCategory = 'JS';
+    const languageCategory2 = 'Java';
+    const studyAreaCategory = '코딩테스트';
+
+    const categorys = [languageCategory, languageCategory2, studyAreaCategory, mgcTypeCategory];
 
     const categoryTags = categoryList.data.flatMap((category) => category.tags);
     const selectedTagIds = categoryTags
@@ -175,20 +177,15 @@ describe('Home컴포넌트', () => {
 
     await user.type(textInput, '판교');
     await user.click(await screen.findByText('경기 성남시 분당구 판교동'));
-    await user.click(screen.getByRole('button', { name: 'accordion trigger' }));
 
-    const selectedLanguage = screen.getByText(languageCategory);
-    const selectedStudyArea = screen.getByText(studyAreaCategory);
-    const selectedMgcType = screen.getByText(mgcTypeCategory);
+    await user.click(screen.getByRole('button', { name: 'mgcType buttons category' }));
+    await user.click(screen.getByText(mgcTypeCategory));
+    await user.click(screen.getByRole('button', { name: 'language buttons category' }));
+    await user.click(screen.getByText(languageCategory));
+    await user.click(screen.getByRole('button', { name: 'area buttons category' }));
+    await user.click(screen.getByText(studyAreaCategory));
 
-    mockLatLng.mockClear();
-    mockMarker.mockClear();
-    mockAddClustererMarkers.mockClear();
-
-    await user.click(selectedLanguage);
-    await user.click(selectedStudyArea);
-    await user.click(selectedMgcType);
-    await user.click(screen.getByText('적용'));
+    await user.click(screen.getByText('적용하기'));
 
     expect(mockAddClustererMarkers).toBeCalledWith(markers);
   });
