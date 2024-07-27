@@ -6,6 +6,13 @@ import { screen, waitFor } from '@testing-library/react';
 import categoryList from '../mocks/response/categories.json';
 import addressList from '../mocks/response/mgcList.json';
 
+interface Marker {
+  position: {
+    latitude: number;
+    longitude: number;
+  };
+}
+
 vi.mock('next/navigation', async () => {
   const original = await vi.importActual('next/navigation');
 
@@ -53,64 +60,47 @@ Object.defineProperty(window, 'scrollTo', {
   writable: true,
 });
 
-const mockAddClustererMarkers = vi.fn().mockImplementation((markers) => markers);
-const mockSetMap = vi.fn();
-const mockSetDraggable = vi.fn();
-const mockGetPosition = vi.fn();
-const mockMarker = vi.fn().mockImplementation((options) => ({
-  setMap: mockSetMap,
-  setDraggable: mockSetDraggable,
-  getPosition: mockGetPosition,
-  options,
-}));
 const mockCoord2RegionCode = vi.fn();
-const mockSetCenter = vi.fn();
-const mockMarkerImage = vi.fn().mockImplementation((imageSrc) => ({ imageSrc }));
-const mockSize = vi.fn();
-const mockLatLng = vi.fn().mockImplementation((lat, lng) => ({ lat, lng }));
-const mockGeocoder = vi.fn().mockImplementation(() => ({
-  coord2RegionCode: mockCoord2RegionCode,
-}));
+const mockAddMarkersInClusterer = vi.fn().mockImplementation((markers) =>
+  markers.map((marker: Marker) => ({
+    latitude: marker.position.latitude,
+    longitude: marker.position.longitude,
+  })),
+);
 
-const cmarker = vi.fn();
-const mockMarkerClusterer = vi.fn().mockImplementation(() => ({
-  clear: vi.fn(),
-  addMarkers: mockAddClustererMarkers,
-  markers: cmarker,
-}));
+vi.mock('@/libs/kakaoMapWrapper', () => {
+  const createMockKakaoMapService = () => ({
+    createLatLng: vi.fn().mockImplementation((latitude, longitude) => ({
+      latitude,
+      longitude,
+    })),
+    createMap: vi.fn().mockImplementation(() => ({
+      setCenter: vi.fn(),
+    })),
+    addZoomControl: vi.fn(),
+    createGeocoder: vi.fn().mockImplementation(() => ({
+      coord2RegionCode: mockCoord2RegionCode,
+    })),
+    createMarkerClusterer: vi.fn().mockImplementation(() => ({
+      clear: vi.fn(),
+    })),
+    createSize: vi.fn(),
+    createMarkerImage: vi.fn(),
+    createCustomOverlay: vi.fn(),
+    addListener: vi.fn(),
+    removeListener: vi.fn(),
+    addMarkersInClusterer: mockAddMarkersInClusterer,
+    createMarker: vi.fn().mockImplementation((marker) => marker),
+    getServicesStatus: vi.fn().mockImplementation((status) => status),
+  });
 
-global.kakao = {
-  maps: {
-    Map: vi.fn().mockImplementation(() => ({
-      setCenter: mockSetCenter,
-      addControl: vi.fn(),
-    })),
-    services: {
-      Geocoder: mockGeocoder,
-      Status: {
-        OK: 'OK',
-      },
-    },
-    MarkerClusterer: mockMarkerClusterer,
-    CustomOverlay: vi.fn().mockImplementation(() => ({
-      setMap: vi.fn(),
-    })),
-    LatLng: mockLatLng,
-    Marker: mockMarker,
-    Size: mockSize,
-    MarkerImage: mockMarkerImage,
-    Point: vi.fn(),
-    event: {
-      addListener: vi.fn(),
-      removeListener: vi.fn(),
-    },
-    ZoomControl: vi.fn(),
-    ControlPosition: {
-      TOPRIGHT: 'TOPRIGHT',
-    },
-  },
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-} as any;
+  const mockKakaoMapService = vi.fn().mockImplementation(createMockKakaoMapService);
+
+  return {
+    default: mockKakaoMapService,
+    KakaoMapService: mockKakaoMapService,
+  };
+});
 
 const setup = async (geocodeAddress: string) => {
   mockCoord2RegionCode.mockImplementation((longitude, latitude, callback) => {
@@ -158,21 +148,6 @@ describe('Home컴포넌트', () => {
         selectedTagIds.every((tag) => e.tags.includes(tag)),
     );
 
-    const markers = [];
-    for (const address of resultAddress) {
-      markers.push({
-        options: {
-          image: {
-            imageSrc: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png',
-          },
-          position: { lat: address.location.latitude, lng: address.location.longitude },
-        },
-        setDraggable: mockSetDraggable,
-        setMap: mockSetMap,
-        getPosition: mockGetPosition,
-      });
-    }
-
     const { user, textInput } = await setup('경기도 성남시 분당구 판교동');
 
     await user.type(textInput, '판교');
@@ -185,9 +160,21 @@ describe('Home컴포넌트', () => {
     await user.click(screen.getByRole('button', { name: 'area buttons category' }));
     await user.click(screen.getByText(studyAreaCategory));
 
+    mockAddMarkersInClusterer.mockClear();
     await user.click(screen.getByText('적용하기'));
 
-    expect(mockAddClustererMarkers).toBeCalledWith(markers);
+    expect(mockAddMarkersInClusterer).toHaveBeenCalledWith(
+      expect.arrayContaining(
+        resultAddress.map((address) =>
+          expect.objectContaining({
+            position: {
+              latitude: address.location.latitude,
+              longitude: address.location.longitude,
+            },
+          }),
+        ),
+      ),
+    );
   });
 
   it('해당 지역에 있는 모각코 리스트가 나타난다.', async () => {

@@ -9,6 +9,7 @@ import React, {
 } from 'react';
 import { MapContext } from '@/app/_components/Map/MapProvider';
 import MapViewer from '@/app/_components/Map/MapViewer';
+import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import useInfoWindowPosition from '@/store/useInfoWindowPosition';
 
 interface HomeMapViewerProps {
@@ -20,6 +21,7 @@ interface HomeMapViewerProps {
 const HomeMapViewer = forwardRef(
   ({ timerRef, onMouseUp, children }: HomeMapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
     const map = useContext(MapContext);
+    const mapService = useKakaoMapService();
 
     const { setInfoWindowPosition } = useInfoWindowPosition();
 
@@ -44,7 +46,7 @@ const HomeMapViewer = forwardRef(
         if (map) {
           timerRef.current = setTimeout(() => {
             const mapProjection = map.getProjection();
-            const point = new kakao.maps.Point(e.touches[0].clientX, e.touches[0].clientY - 120);
+            const point = mapService.createPoint(e.touches[0].clientX, e.touches[0].clientY - 120);
             const latLng = mapProjection.coordsFromContainerPoint(point);
             setInfoWindowPosition({ latitude: latLng.getLat(), longitude: latLng.getLng() });
           }, 1000);
@@ -71,9 +73,9 @@ const HomeMapViewer = forwardRef(
       const mapContainer = document.getElementById('map')!;
 
       if (map) {
-        kakao.maps.event.addListener(map, 'mousedown', handleMouseDown);
-        kakao.maps.event.addListener(map, 'click', onMouseUp);
-        kakao.maps.event.addListener(map, 'dragstart', onMouseUp);
+        mapService.addListener(map, 'mousedown', handleMouseDown);
+        mapService.addListener(map, 'click', onMouseUp);
+        mapService.addListener(map, 'dragstart', onMouseUp);
         mapContainer.addEventListener('touchstart', handleTouchStart);
 
         findAllSvgElements(mapContainer);
@@ -81,9 +83,9 @@ const HomeMapViewer = forwardRef(
 
       return () => {
         if (map) {
-          kakao.maps.event.removeListener(map, 'mousedown', handleMouseDown);
-          kakao.maps.event.removeListener(map, 'click', onMouseUp);
-          kakao.maps.event.removeListener(map, 'dragstart', onMouseUp);
+          mapService.removeListener(map, 'mousedown', handleMouseDown);
+          mapService.removeListener(map, 'click', onMouseUp);
+          mapService.removeListener(map, 'dragstart', onMouseUp);
           mapContainer.removeEventListener('touchstart', handleTouchStart);
         }
       };
