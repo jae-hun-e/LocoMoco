@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
+import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import { MapContext } from './MapProvider';
 
 interface MarkerProps {
@@ -15,6 +16,7 @@ interface MarkerProps {
 const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }: MarkerProps) => {
   const map = useContext(MapContext);
   const [mapMarker, setMapMarker] = useState<kakao.maps.Marker>();
+  const mapService = useKakaoMapService();
 
   useEffect(() => {
     if (map) {
@@ -24,19 +26,19 @@ const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }
         mapMarker.setMap(null);
       }
 
-      const movePosition = new kakao.maps.LatLng(latitude, longitude);
+      const movePosition = mapService.createLatLng(latitude, longitude);
       const imageSrc =
         markerSrc ?? 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png';
-      const imageSize = new kakao.maps.Size(markerSize?.width ?? 64, markerSize?.height ?? 69);
+      const imageSize = mapService.createSize(markerSize?.width ?? 64, markerSize?.height ?? 69);
       const imageOption = {
-        offset: new kakao.maps.Point(
+        offset: mapService.createPoint(
           markerSize?.width ? markerSize?.width / 2 : 32,
           markerSize?.height ? markerSize?.height / 2 : 69 / 2,
         ),
       };
 
-      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-      const marker = new kakao.maps.Marker({
+      const markerImage = mapService.createMarkerImage(imageSrc, imageSize, imageOption);
+      const marker = mapService.createMarker({
         position: movePosition,
         image: markerImage,
       });

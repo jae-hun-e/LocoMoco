@@ -1,5 +1,6 @@
 import React, { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
+import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import { MapContext } from '../Map/MapProvider';
 
@@ -16,6 +17,7 @@ type Location = { latitude: number; longitude: number };
 
 const InfoWindow = ({ show, position, children }: InfoWindow) => {
   const map = useContext(MapContext);
+  const mapService = useKakaoMapService();
 
   const [customoverlay, setCustomoverlay] = useState<kakao.maps.CustomOverlay>();
   const ref = useRef<HTMLDivElement | null>(null);
@@ -47,7 +49,8 @@ const InfoWindow = ({ show, position, children }: InfoWindow) => {
     if (map && customoverlay) {
       if (show) {
         customoverlay.setMap(map);
-        customoverlay.setPosition(new kakao.maps.LatLng(position.latitude, position.longitude));
+        const latLng = mapService.createLatLng(position.latitude, position.longitude);
+        customoverlay.setPosition(latLng);
       } else {
         customoverlay.setMap(null);
       }
@@ -56,11 +59,12 @@ const InfoWindow = ({ show, position, children }: InfoWindow) => {
 
   useEffect(() => {
     if (map) {
-      const customoverlay = new kakao.maps.CustomOverlay({
+      const customoverlayOption = {
         content: ref.current!,
-        position: new kakao.maps.LatLng(37.4767616, 126.9170176),
+        position: mapService.createLatLng(37.4767616, 126.9170176),
         clickable: true,
-      });
+      };
+      const customoverlay = mapService.createCustomOverlay(customoverlayOption);
 
       setCustomoverlay(customoverlay);
     }
@@ -94,7 +98,7 @@ const InfoWindow = ({ show, position, children }: InfoWindow) => {
       }
 
       // mousedown됐을 때의 커스텀 오버레이의 좌표에 실제로 마우스가 이동된 픽셀좌표를 반영합니다
-      const newPoint = new kakao.maps.Point(
+      const newPoint = mapService.createPoint(
         startOverlayPoint.current.x - deltaX,
         startOverlayPoint.current.y - deltaY,
       );
@@ -115,7 +119,7 @@ const InfoWindow = ({ show, position, children }: InfoWindow) => {
       const proj = map.getProjection(); // 지도 객체로 부터 화면픽셀좌표, 지도좌표간 변환을 위한 MapProjection 객체를 얻어옵니다
       const overlayPos = customoverlay.getPosition(); // 커스텀 오버레이의 현재 위치를 가져옵니다
 
-      const newPoint = new kakao.maps.Point(
+      const newPoint = mapService.createPoint(
         startOverlayPoint.current.x,
         startOverlayPoint.current.y,
       );
