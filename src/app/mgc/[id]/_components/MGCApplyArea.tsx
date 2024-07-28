@@ -13,6 +13,7 @@ import { getItem } from '@/utils/storage';
 import { format } from 'date-fns';
 import { HeartIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import { event } from '../../../../libs/gtag';
 
 interface Props {
   maxParticipants: number;
@@ -82,6 +83,13 @@ const MGCApplyArea = ({
     });
 
     applyMGC({ MGCId, userId: userId ?? '' });
+
+    event({
+      action: 'apply_click',
+      category: 'Button',
+      label: 'Participate',
+      value: '참여하기',
+    });
   };
 
   const currentParticipantsLength = currentParticipants.length;
