@@ -9,6 +9,10 @@ export async function POST(req: NextRequest) {
     return Response.json({ res });
   } catch (e) {
     console.log('FCM Error: ', e);
+    return new Response(JSON.stringify({ error: 'FCM notification failed' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   return Response.json({});
