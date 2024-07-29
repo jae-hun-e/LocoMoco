@@ -2,7 +2,7 @@ import { useCallback, useContext } from 'react';
 import { geocoderContext } from '@/app/_components/Map/GeocoderProvider';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 
-const useGetAddressByCoordinates = () => {
+const useGetRegionCodeByCoordinates = () => {
   const geocoder = useContext(geocoderContext);
   const mapService = useKakaoMapService();
 
@@ -10,9 +10,15 @@ const useGetAddressByCoordinates = () => {
     (longitude: number, latitude: number): Promise<string> => {
       return new Promise((resolve, reject) => {
         if (geocoder) {
-          geocoder.coord2Address(longitude, latitude, (result, status) => {
+          geocoder.coord2RegionCode(longitude, latitude, (result, status) => {
             if (status === mapService.getServicesStatus('OK')) {
-              const addressName = result[0].address.address_name;
+              let addressName = '';
+              for (let i = 0; i < result.length; i++) {
+                if (result[i].region_type === 'H') {
+                  addressName = result[i].address_name;
+                  break;
+                }
+              }
               resolve(addressName);
             } else {
               reject(new Error('Geocoder failed'));
@@ -26,7 +32,7 @@ const useGetAddressByCoordinates = () => {
     [geocoder],
   );
 
-  const getAddressByCoorinates = useCallback(
+  const getRegionCodeByCoorinates = useCallback(
     async (latitude: number, longitude: number) => {
       try {
         const addressName = await coord2RegionCodePromise(longitude, latitude);
@@ -41,8 +47,8 @@ const useGetAddressByCoordinates = () => {
   );
 
   return {
-    getAddressByCoorinates,
+    getRegionCodeByCoorinates,
   };
 };
 
-export default useGetAddressByCoordinates;
+export default useGetRegionCodeByCoordinates;

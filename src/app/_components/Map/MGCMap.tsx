@@ -45,8 +45,10 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
     newAddress,
     latitude,
     longitude,
+    newRegionCode,
   }: {
     newAddress: string;
+    newRegionCode: string;
     latitude: number;
     longitude: number;
   }) => {
@@ -56,7 +58,7 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
     assertedSetValue('location.address', newAddress);
     assertedSetValue('location.latitude', latitude);
     assertedSetValue('location.longitude', longitude);
-    assertedSetValue('location.city', newAddress);
+    assertedSetValue('location.city', newRegionCode);
     trigger('location');
   };
 

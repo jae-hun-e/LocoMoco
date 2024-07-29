@@ -11,6 +11,7 @@ import MapViewer from '@/app/_components/Map/MapViewer';
 import { LocationProps } from '@/app/create/_components/CreateMGC';
 import useGeolocation from '@/hooks/useGeolocation';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
+import useGetRegionCodeByCoordinates from '@/hooks/useGetRegionCodeByCoordinates';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import { Location } from '../../_components/Map/MGCMap';
 
@@ -21,10 +22,12 @@ interface CreateMGCMapViewerProps {
   defaultAddress: LocationProps | undefined;
   updateAddress: ({
     newAddress,
+    newRegionCode,
     latitude,
     longitude,
   }: {
     newAddress: string;
+    newRegionCode: string;
     latitude: number;
     longitude: number;
   }) => void;
@@ -45,20 +48,30 @@ const CreateMGCMapViewer = forwardRef(
     const mapService = useKakaoMapService();
 
     const location = useGeolocation();
+
     const { getAddressByCoorinates } = useGetAddressByCoordinates();
+    const { getRegionCodeByCoorinates } = useGetRegionCodeByCoordinates();
 
     useEffect(() => {
       const changeAddress = async (latitude: number, longitude: number) => {
         const newAddress = await getAddressByCoorinates(latitude, longitude);
-        if (newAddress) {
-          updateAddress({ newAddress, latitude, longitude });
+        const newRegionCode = await getRegionCodeByCoorinates(latitude, longitude);
+
+        if (newAddress && newRegionCode) {
+          updateAddress({ newAddress, newRegionCode, latitude, longitude });
         }
       };
 
       if (!defaultAddress && location?.coordinates) {
         changeAddress(location.coordinates.lat, location.coordinates.lng);
       }
-    }, [defaultAddress, getAddressByCoorinates, location.coordinates, updateAddress]);
+    }, [
+      defaultAddress,
+      getAddressByCoorinates,
+      getRegionCodeByCoorinates,
+      location.coordinates,
+      updateAddress,
+    ]);
 
     const handleMapClick = useCallback(
       async (e: kakao.maps.event.MouseEvent) => {
@@ -73,12 +86,20 @@ const CreateMGCMapViewer = forwardRef(
           });
 
           const newAddress = await getAddressByCoorinates(latLng.getLat(), latLng.getLng());
-          if (newAddress) {
-            updateAddress({ newAddress, latitude, longitude });
+          const newRegionCode = await getRegionCodeByCoorinates(latitude, longitude);
+
+          if (newAddress && newRegionCode) {
+            updateAddress({ newAddress, newRegionCode, latitude, longitude });
           }
         }
       },
-      [getAddressByCoorinates, map, setCurrentCoordinates, updateAddress],
+      [
+        getAddressByCoorinates,
+        getRegionCodeByCoorinates,
+        map,
+        setCurrentCoordinates,
+        updateAddress,
+      ],
     );
 
     useEffect(() => {
