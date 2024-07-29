@@ -22,19 +22,17 @@ const ReceivedReviews = ({ params: { mgcId } }: { params: { mgcId: number } }) =
   const { data: reviewSummary, pending } = useGetReceivedReviewSummary(parseInt(userId, 10), data);
 
   return (
-    <>
-      <ReviewList
-        reviews={
-          !pending
-            ? reviewSummary.filter(
-                (reviewData): reviewData is ReviewSummary =>
-                  reviewData !== undefined && reviewData.score >= 3,
-              )
-            : []
-        }
-        title="받은"
-      />
-    </>
+    <ReviewList
+      reviews={
+        !pending
+          ? reviewSummary.filter(
+              (reviewData): reviewData is ReviewSummary =>
+                reviewData !== undefined && reviewData.score >= 3,
+            )
+          : []
+      }
+      title="받은"
+    />
   );
 };
 

@@ -20,7 +20,7 @@ const InquiryTooltip = ({
   const { deleteInquiry } = useDeleteInquiry();
   // TODO: 문의 신고는 어떻게 처리되는가? [24/04/06]
   const handleReport = () => {
-    console.log('신고');
+    console.log(userId);
   };
 
   const handleModify = () => {
@@ -30,7 +30,6 @@ const InquiryTooltip = ({
   // TODO: 삭제 API 500에러뜸 [24/04/06]
   const handleDelete = () => {
     deleteInquiry({ inquiryId, userId, mogakkoId: MGCId });
-    console.log('삭제');
   };
 
   return (

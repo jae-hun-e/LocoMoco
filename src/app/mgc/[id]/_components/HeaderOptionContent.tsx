@@ -19,11 +19,7 @@ const HeaderOptionContent = ({ isOwner }: { isOwner: boolean }) => {
     }
   };
 
-  return (
-    <div>
-      <button onClick={handleClick}>{title}</button>
-    </div>
-  );
+  return <button onClick={handleClick}>{title}</button>;
 };
 
 export default HeaderOptionContent;

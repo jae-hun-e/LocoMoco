@@ -29,8 +29,6 @@ const Inquiry = ({ MGCId, authorId }: Props) => {
   const { myInfo } = useMypageInfo({ userId: Number(userId) });
   const { inquiryData } = useGetInquiry({ MGCId });
 
-  console.log('inquiryData', inquiryData);
-
   return (
     <section className="mb-150pxr">
       <div className="mb-20pxr flex gap-1">
