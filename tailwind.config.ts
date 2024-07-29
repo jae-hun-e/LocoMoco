@@ -103,6 +103,8 @@ const config = {
         'black-5': '#B0B0B0',
         'black-6': '#D9D9D9',
         shadow: 'rgba(0, 0, 0, 0.4)',
+        'sub-1': '#FFB600',
+        'sub-2': '#7C88FF',
       },
       borderRadius: {
         lg: 'var(--radius)',

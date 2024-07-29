@@ -2,10 +2,12 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { selectionStatus } from '@/constants/categoryFilter';
 import useHorizontalScroll from '@/hooks/useHorizontalScroll';
+import { cn } from '@/libs/utils';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
 import Lightning from '../../../../public/Lightning.svg';
 import LanguageCategory from '../../../../public/language-category-icon.svg';
+import Reset from '../../../../public/reset.svg';
 import StudyArea from '../../../../public/study-area-icon.svg';
 import CategorySelectBtn from './CategorySelectBtn';
 import FilterContent from './FilterContent';
@@ -39,6 +41,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
     area: selectionStatus.BEFORE,
   });
   const [categoryName, setCategoryName] = useState<'mgcType' | 'language' | 'area' | undefined>();
+  const [isSubmit, setIsSubmit] = useState(false);
 
   const ChangeBtnColor = useCallback(
     (buttonType?: 'mgcType' | 'language' | 'area') => {
@@ -54,13 +57,16 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
         const key = dataKey as 'mgcType' | 'language' | 'area';
 
         if (selectedCategoryData[key].length > 0) {
-          setBtnSelectionData((pev) => ({ ...pev, [key]: selectionStatus.COMPLETE }));
+          setBtnSelectionData((pev) => ({
+            ...pev,
+            [key]: isSubmit ? selectionStatus.SUBMIT : selectionStatus.COMPLETE,
+          }));
         } else if (selectedCategoryData[key].length === 0) {
           setBtnSelectionData((pev) => ({ ...pev, [key]: selectionStatus.BEFORE }));
         }
       }
     },
-    [watch],
+    [isSubmit, watch],
   );
 
   const handleBtnClick = (buttonType: 'mgcType' | 'language' | 'area') => {
@@ -74,6 +80,12 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
   const { searchValue, setSearchValue } = useSearchInputValueStore();
 
   const onSubmit = (data: SelectedCategoryData) => {
+    setBtnSelectionData({
+      mgcType: selectionStatus.SUBMIT,
+      language: selectionStatus.SUBMIT,
+      area: selectionStatus.SUBMIT,
+    });
+
     const tagInfo = Object.values(data) as TagInfo[][];
 
     const arr = [] as TagInfo[];
@@ -83,6 +95,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
     setSearchValue({ ...searchValue, tags: tagIds });
 
     setOpen(false);
+    setIsSubmit(true);
   };
 
   const handleResetClick = () => {
@@ -94,6 +107,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
     });
 
     reset();
+    setIsSubmit(false);
   };
 
   const convertCategoriesToText = (type: 'mgcType' | 'language' | 'area') => {
@@ -124,7 +138,10 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
         onMouseMove={throttle(handleDragMove, 100)}
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
-        className="mx-auto flex w-[90%] flex-row justify-between gap-10pxr overflow-x-scroll whitespace-nowrap scrollbar-hide"
+        className={cn(
+          'scrollbar-hide" mx-auto flex w-[90%] flex-row justify-between gap-10pxr overflow-x-scroll whitespace-nowrap',
+          isSubmit && 'w-[95%]',
+        )}
       >
         <CategorySelectBtn
           name={watch('mgcType').length === 0 ? '모각코 종류' : convertCategoriesToText('mgcType')}
@@ -132,14 +149,15 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
           icon={<Lightning />}
           selectionStep={btnSelectionData.mgcType}
           label="mgcType buttons category"
+          catetory="mgcType"
         />
-
         <CategorySelectBtn
           name={watch('language').length === 0 ? '개발 언어' : convertCategoriesToText('language')}
           onClick={() => handleBtnClick('language')}
           icon={<LanguageCategory />}
           selectionStep={btnSelectionData.language}
           label="language buttons category"
+          catetory="language"
         />
         <CategorySelectBtn
           name={watch('area').length === 0 ? '공부 분야' : convertCategoriesToText('area')}
@@ -147,7 +165,15 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
           icon={<StudyArea />}
           selectionStep={btnSelectionData.area}
           label="area buttons category"
+          catetory="area"
         />
+        {isSubmit ? (
+          <button className="itmain-1nter flex justify-center rounded-[20px] border border-layer-3 bg-white px-14pxr py-10pxr text-white">
+            <div className="h-16pxr w-16pxr">
+              <Reset />
+            </div>
+          </button>
+        ) : null}
       </div>
       {open ? (
         <FilterContent
