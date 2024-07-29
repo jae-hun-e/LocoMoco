@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-import withPWAInit, { runtimeCaching } from '@ducanh2912/next-pwa';
+// import withPWAInit, { runtimeCaching } from '@ducanh2912/next-pwa';
 
 const nextConfig = {
   images: {
@@ -10,12 +10,20 @@ const nextConfig = {
       },
     ],
   },
-  reactStrictMode: false,
+  webpack(config) {
+    config.module.rules.push({
+      test: /\.svg$/,
+      use: ['@svgr/webpack'],
+    });
+
+    return config;
+  },
 };
 
-const withPWA = withPWAInit({
-  dest: 'public',
-  runtimeCaching,
-});
+// const withPWA = withPWAInit({
+//   dest: 'public',
+//   runtimeCaching,
+// });
 
-export default withPWA(nextConfig);
+export default nextConfig;
+// export default withPWA(nextConfig);

@@ -25,6 +25,9 @@ const config = {
       },
     },
     extend: {
+      screens: {
+        xs: { max: '380px' },
+      },
       fontFamily: {
         sans: ['var(--pretendard)', ...fontFamily.sans],
       },
@@ -93,6 +96,15 @@ const config = {
         'red-1': '#FF5A5A',
         'red-2': '#FF7A7A',
         'red-3': '#FF9A9A',
+        'black-1': '#282828',
+        'black-2': '#454545',
+        'black-3': '#5B5B5B',
+        'black-4': '#737373',
+        'black-5': '#B0B0B0',
+        'black-6': '#D9D9D9',
+        shadow: 'rgba(0, 0, 0, 0.4)',
+        'sub-1': '#FFB600',
+        'sub-2': '#7C88FF',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -132,6 +144,9 @@ const config = {
           display: '-webkit-box',
           '-webkit-box-orient': 'vertical',
           '-webkit-line-clamp': '2',
+        },
+        '.map-height': {
+          height: 'calc(100svh - 3.125rem)',
         },
       });
     }),
