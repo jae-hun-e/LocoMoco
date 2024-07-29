@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { selectionStatus } from '@/constants/categoryFilter';
+import useHorizontalScroll from '@/hooks/useHorizontalScroll';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
 import Lightning from '../../../../public/Lightning.svg';
@@ -21,6 +22,9 @@ interface CategoryFilterProp {
 }
 
 const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
+  const { scrollRef, handleDragStart, handleDragMove, handleDragEnd, throttle } =
+    useHorizontalScroll();
+
   const { control, handleSubmit, watch, reset, resetField } = useForm<SelectedCategoryData>({
     defaultValues: {
       mgcType: [],
@@ -114,7 +118,14 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
 
   return (
     <>
-      <div className="mx-auto flex w-[90%] flex-row justify-between">
+      <div
+        ref={scrollRef}
+        onMouseDown={handleDragStart}
+        onMouseMove={throttle(handleDragMove, 100)}
+        onMouseUp={handleDragEnd}
+        onMouseLeave={handleDragEnd}
+        className="mx-auto flex w-[90%] flex-row justify-between gap-10pxr overflow-x-scroll whitespace-nowrap scrollbar-hide"
+      >
         <CategorySelectBtn
           name={watch('mgcType').length === 0 ? '모각코 종류' : convertCategoriesToText('mgcType')}
           onClick={() => handleBtnClick('mgcType')}
