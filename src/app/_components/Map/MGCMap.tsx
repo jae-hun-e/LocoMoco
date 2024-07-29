@@ -38,21 +38,24 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
       setAddress(defaultAddress?.address ?? '');
     }
   }, [currentAddress, defaultAddress?.address]);
+
   const [currentCoordinates, setCurrentCoordinates] = useState({ latitude: 0, longitude: 0 });
 
   const updateAddress = ({
     newAddress,
-    latLng,
+    latitude,
+    longitude,
   }: {
     newAddress: string;
-    latLng: kakao.maps.LatLng;
+    latitude: number;
+    longitude: number;
   }) => {
     setAddress(newAddress);
     const assertedSetValue = setValue as UseFormSetValue<MGCCreateForm | ThunderFormData>;
 
     assertedSetValue('location.address', newAddress);
-    assertedSetValue('location.latitude', latLng.getLat());
-    assertedSetValue('location.longitude', latLng.getLng());
+    assertedSetValue('location.latitude', latitude);
+    assertedSetValue('location.longitude', longitude);
     assertedSetValue('location.city', newAddress);
     trigger('location');
   };
@@ -72,6 +75,7 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
             defaultAddress={defaultAddress}
           />
           <CreateMGCMapViewer
+            defaultAddress={defaultAddress}
             updateAddress={updateAddress}
             setCurrentCoordinates={setCurrentCoordinates}
             onMouseUp={handleMouseUp}

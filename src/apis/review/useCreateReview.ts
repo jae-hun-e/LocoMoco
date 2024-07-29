@@ -26,7 +26,7 @@ const useCreateReview = () => {
     mutationFn: createReview,
     onSuccess() {
       toast({
-        description: '후기를 작성이 완료되었습니다.',
+        description: '후기 작성이 완료되었습니다.',
       });
     },
     onError() {

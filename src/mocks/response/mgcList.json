@@ -27,16 +27,16 @@
       "maxParticipants": 8,
       "curParticipants": 1,
       "location": {
-        "address": "경상남도 창원시 진해구 석동",
-        "latitude": 35.1562585789,
-        "longitude": 128.7019449219,
-        "city": "경상남도 창원시 진해구 석동"
+        "address": "경기도 성남시 분당구 판교동",
+        "latitude": 37.38943118140635,
+        "longitude": 127.09756573957004,
+        "city": "경기도 성남시 분당구 판교동"
       },
       "tags": [239, 241, 242, 245, 247]
     },
     {
       "id": 230,
-      "title": "모각코",
+      "title": "모각코!",
       "views": 2,
       "likeCount": 0,
       "createdAt": "2024-05-13T15:56:08",
@@ -44,16 +44,16 @@
       "maxParticipants": 10,
       "curParticipants": 1,
       "location": {
-        "address": "경상남도 창원시 진해구 석동",
-        "latitude": 35.1567891055,
-        "longitude": 128.7020300465,
-        "city": "경상남도 창원시 진해구 석동"
+        "address": "경기도 성남시 분당구 판교동",
+        "latitude": 37.39119673991264,
+        "longitude": 127.09810442584084,
+        "city": "경기도 성남시 분당구 판교동"
       },
       "tags": [238, 240, 242, 244, 247]
     },
     {
       "id": 228,
-      "title": "모각코",
+      "title": "모각코~",
       "views": 78,
       "likeCount": 0,
       "createdAt": "2024-05-09T15:51:16",
@@ -61,10 +61,10 @@
       "maxParticipants": 10,
       "curParticipants": 2,
       "location": {
-        "address": "경상남도 창원시 진해구 석동",
-        "latitude": 35.158305423,
-        "longitude": 128.6993017131,
-        "city": "경상남도 창원시 진해구 석동"
+        "address": "경기도 성남시 분당구 판교동",
+        "latitude": 37.39091660412717,
+        "longitude": 127.0990865127028,
+        "city": "경기도 성남시 분당구 판교동"
       },
       "tags": [238, 240, 242, 244, 247]
     }

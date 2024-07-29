@@ -53,6 +53,8 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
     formState: { errors, isValid },
     watch,
     trigger,
+    setError,
+    clearErrors,
   } = useForm<MGCCreateForm>({
     mode: 'onTouched',
     defaultValues: {
@@ -61,7 +63,9 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
       date: initData?.startTime ? new Date(initData?.startTime) : undefined,
       startTime: initData?.startTime && getTimeString(initData?.startTime),
       endTime: initData?.endTime && getTimeString(initData?.endTime),
-      deadLine: initData?.endTime ? new Date(initData?.endTime) : undefined,
+      deadLine: initData?.endTime
+        ? new Date(new Date(initData?.endTime).setHours(0, 0, 0, 0))
+        : undefined,
       maxParticipants: initData?.maxParticipants ?? 10,
       content: initData?.content,
     },
@@ -149,6 +153,8 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
         setValue={setValue}
         trigger={trigger}
         watch={watch}
+        setError={setError}
+        clearErrors={clearErrors}
       />
 
       <OptionFields

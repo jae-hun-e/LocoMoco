@@ -52,7 +52,7 @@ const ReviewContent = ({
   return (
     <>
       <section className="relative">
-        <p className="font-bold ">어떤 점이{checkListTitle[isGood(selectedRating)]}?</p>
+        <p className="font-bold ">어떤 점이 {checkListTitle[isGood(selectedRating)]}?</p>
         <ul className="mt-13pxr flex flex-col gap-10pxr">
           {checkList[isGood(selectedRating)].map(({ content, reviewContentId }) => (
             <li
