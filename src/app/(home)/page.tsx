@@ -4,12 +4,10 @@ import { useEffect, useRef, useState } from 'react';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
 import useSearchValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
-import CreateBtn from '../_components/CreateBtn';
-import MGCList from '../_components/MGCList/MGCList';
 import GeocoderProvider from '../_components/Map/GeocoderProvider';
 import MapProvider from '../_components/Map/MapProvider';
-import BottomSheet from './_components/BottomSheet';
 import HomeMapContent from './_components/HomeMapContent';
+import HomeMapFooter from './_components/HomeMapFooter ';
 import HomeMapViewer from './_components/HomeMapViewer';
 
 const Home = () => {
@@ -67,17 +65,11 @@ const Home = () => {
         </GeocoderProvider>
       </MapProvider>
 
-      <div className="absolute bottom-0 right-24pxr z-30">
-        <CreateBtn />
-      </div>
-      <div className="absolute bottom-15pxr z-10 flex w-full justify-center">
-        <BottomSheet
-          open={open}
-          setOpen={setOpen}
-        >
-          <MGCList data={MGCDataList} />
-        </BottomSheet>
-      </div>
+      <HomeMapFooter
+        open={open}
+        setOpen={setOpen}
+        MGCDataList={MGCDataList}
+      />
     </div>
   );
 };
