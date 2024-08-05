@@ -127,6 +127,10 @@
     -ms-user-select: none;
     user-select: none;
   }
+
+  .pointer-auto {
+    pointer-events: auto !important;
+  }
 }
 
 @layer base {
