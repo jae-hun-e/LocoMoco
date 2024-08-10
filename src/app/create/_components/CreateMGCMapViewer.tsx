@@ -64,8 +64,12 @@ const CreateMGCMapViewer = forwardRef(
         }
       };
 
-      if (!defaultAddress && location?.coordinates) {
-        changeAddress(location.coordinates.lat, location.coordinates.lng);
+      if (!defaultAddress) {
+        if (location?.coordinates) {
+          changeAddress(location.coordinates.lat, location.coordinates.lng);
+        } else {
+          changeAddress(37.492074, 127.029781);
+        }
       }
     }, [
       defaultAddress,
