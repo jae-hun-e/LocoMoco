@@ -9,6 +9,7 @@ import ChatInput from '@/app/chat/_components/ChatInput';
 import Messages from '@/app/chat/_components/Messages';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
+import useSendPush from '@/hooks/useSendPush';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 import { ChatType } from '@/types/chat';
 import { getItem } from '@/utils/storage';
@@ -29,8 +30,10 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
   const [selectedUserId, setSelectedUserId] = useState(0);
 
   const { mgcDetail } = useGetMGCDetail(parseInt(mgcId, 10));
+  const { sendPush } = useSendPush();
+
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
-    console.log('fetching chat...');
+    console.log('===== fetching chat... =====');
     const data = await client.get<ChatType[]>({
       url: `/chats/room/${chatRoomId}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
     });
@@ -61,13 +64,13 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
 
   const disconnect = () => {
     stomp.current.deactivate();
-    console.log('채팅이 종료되었습니다.');
+    console.log('===== Disconnected =====');
   };
 
   useEffect(() => {
     const subscribe = () => {
-      stomp.current.subscribe(`/sub/chat/room/${chatRoomId}`, (body) => {
-        const parsedBody = JSON.parse(body.body);
+      stomp.current.subscribe(`/sub/chat/room/${chatRoomId}`, ({ body }) => {
+        const parsedBody = JSON.parse(body);
         if (!talks || !parsedBody.senderNickName) return;
         setTalks((prev) => [...prev, parsedBody]);
       });
@@ -77,7 +80,7 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
       stomp.current = new Client({
         webSocketFactory: () => new SockJS(`${process.env.NEXT_PUBLIC_BASE_URL}/stomp/chat`),
         onConnect: () => {
-          console.log('Connection success');
+          console.log('===== Connected =====');
           subscribe();
         },
       });
@@ -93,20 +96,37 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
 
   const sendMessage = () => {
     const text = input.current!.value;
+
     if (!text.trim()) return;
     if (text.length > 255) {
       toast({ description: `채팅은 255자를 넘길 수 없습니다. (현재: ${text.length}자)` });
       return;
     }
-    input.current?.value.length;
+
+    const myId = getItem(localStorage, 'userId');
+
     stomp.current.publish({
       destination: '/pub/chats/message',
       body: JSON.stringify({
         chatRoomId: chatRoomId, // 채팅방 Id
-        senderId: getItem(localStorage, 'userId'),
-        message: input.current!.value, // 메시지 내용
+        senderId: myId,
+        message: text, // 메시지 내용
       }),
     });
+    const { participants } = mgcDetail;
+    if (participants.length > 1) {
+      const sender = participants.filter((e) => e === myId)[0];
+      sendPush({
+        data: {
+          image: sender.profileImage.path,
+          title: `${sender.nickname}의 메세지`,
+          body: text,
+          click_action: window.location.href,
+        },
+        userIds: participants.map(({ userId }) => userId + '').filter((e) => e !== myId),
+      });
+    }
+
     input.current!.value = '';
   };
 
