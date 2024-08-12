@@ -54,21 +54,19 @@ const ReportModifyModal = ({
   };
 
   return (
-    <>
-      <Modal
-        isOpen={isOpen}
-        onClose={handleCloseModal}
-      >
-        <ReportForm
-          handleSubmit={handleSubmit}
-          register={register}
-          defaultContent={defaultContent}
-          errors={errors}
-          handleCloseModal={handleCloseModal}
-          onSubmit={onSubmit}
-        />
-      </Modal>
-    </>
+    <Modal
+      isOpen={isOpen}
+      onClose={handleCloseModal}
+    >
+      <ReportForm
+        handleSubmit={handleSubmit}
+        register={register}
+        defaultContent={defaultContent}
+        errors={errors}
+        handleCloseModal={handleCloseModal}
+        onSubmit={onSubmit}
+      />
+    </Modal>
   );
 };
 
