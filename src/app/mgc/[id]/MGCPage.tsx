@@ -18,26 +18,26 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
 
   const AuthorInfoData = {
     author: mgcDetail.creatorInfo,
-    hits: mgcDetail.MogakkoInfo.views,
-    createdAt: mgcDetail.MogakkoInfo.createdAt,
-    updatedAt: mgcDetail.MogakkoInfo.updatedAt,
+    hits: mgcDetail.mogakkoInfo.views,
+    createdAt: mgcDetail.mogakkoInfo.createdAt,
+    updatedAt: mgcDetail.mogakkoInfo.updatedAt,
   };
 
   const MGCInfoData = {
-    title: mgcDetail.MogakkoInfo.title,
-    location: mgcDetail.MogakkoInfo.location,
-    startTime: mgcDetail.MogakkoInfo.startTime,
-    endTime: mgcDetail.MogakkoInfo.endTime,
-    content: mgcDetail.MogakkoInfo.content,
-    tagIds: mgcDetail.MogakkoInfo.tagIds,
+    title: mgcDetail.mogakkoInfo.title,
+    location: mgcDetail.mogakkoInfo.location,
+    startTime: mgcDetail.mogakkoInfo.startTime,
+    endTime: mgcDetail.mogakkoInfo.endTime,
+    content: mgcDetail.mogakkoInfo.content,
+    tagIds: mgcDetail.mogakkoInfo.tagIds,
   };
 
   const MGCApplyAreaData = {
-    maxParticipants: mgcDetail.MogakkoInfo.maxParticipants,
+    maxParticipants: mgcDetail.mogakkoInfo.maxParticipants,
     currentParticipants: mgcDetail.participants,
-    endTime: mgcDetail.MogakkoInfo.endTime,
-    deadline: mgcDetail.MogakkoInfo.deadline,
-    like: mgcDetail.MogakkoInfo.likeCount,
+    endTime: mgcDetail.mogakkoInfo.endTime,
+    deadline: mgcDetail.mogakkoInfo.deadline,
+    like: mgcDetail.mogakkoInfo.likeCount,
     MGCId,
     createUserId: mgcDetail.creatorInfo.userId,
   };
@@ -57,7 +57,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
       <Separator className="my-15pxr" />
 
       <Inquiry
-        MGCId={mgcDetail.MogakkoInfo.mogakkoId}
+        MGCId={mgcDetail.mogakkoInfo.mogakkoId}
         authorId={mgcDetail.creatorInfo.userId}
       />
 

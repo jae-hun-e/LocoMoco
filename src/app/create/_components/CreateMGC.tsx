@@ -89,7 +89,7 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
         tags.map(({ tag_name, tag_id }) => ({ tag_name, tag_id })),
       );
     });
-  }, []);
+  }, [options, setValue]);
 
   const handleMGCRequest = ({
     title,
@@ -127,20 +127,6 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
       content,
       tags,
     };
-
-    // //test
-    // const req = {
-    //   creatorId: Number(userId),
-    //   title,
-    //   location,
-    //   startTime: '2024-03-19T21:44:00.000Z',
-    //   endTime: '2024-03-18T21:46:00.000Z',
-    //   deadline: '2024-03-19T21:45:00.000Z',
-    //   maxParticipants: Number(maxParticipants),
-    //   content,
-    //   tags,
-    // };
-    // console.log('req', req);
 
     MGCId ? patchMGC(req) : createMGC(req);
   };

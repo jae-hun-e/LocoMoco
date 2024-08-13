@@ -1,4 +1,3 @@
-// import MGCDetailPage from '@/app/mgc/[id]/MGCPage';
 import { getMGCDetail } from '@/apis/mgc/useGetMGCDetail';
 import { Metadata } from 'next';
 import dynamic from 'next/dynamic';
@@ -9,11 +8,11 @@ export async function generateMetadata({ params }: { params: { id: number } }): 
   const MGCDetail = await getMGCDetail(id);
 
   return {
-    title: MGCDetail.MogakkoInfo.title,
-    description: MGCDetail.MogakkoInfo.content,
+    title: MGCDetail.mogakkoInfo.title,
+    description: MGCDetail.mogakkoInfo.content,
     openGraph: {
-      title: MGCDetail.MogakkoInfo.title,
-      description: MGCDetail.MogakkoInfo.content,
+      title: MGCDetail.mogakkoInfo.title,
+      description: MGCDetail.mogakkoInfo.content,
     },
   };
 }
