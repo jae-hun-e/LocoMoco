@@ -25,7 +25,10 @@ const ChatList = () => {
   const router = useRouter();
   const [chatRooms, setChatRooms] = useState<ChatRoomInfo[]>([]);
   const [stop, setStop] = useState(false);
-  const userId = getItem(localStorage, 'userId');
+  let userId: string | undefined;
+  if (typeof window !== 'undefined') {
+    userId = getItem<string | undefined>(localStorage, 'userId');
+  }
 
   const handleDate = (date: string) => {
     const dateDiff = differenceInDays(new Date(), date);
