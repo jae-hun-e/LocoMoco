@@ -75,10 +75,10 @@ const MGCApplyArea = ({
     sendPush({
       data: {
         title: `모각코에 새로운 멤버가 참여했습니다.`,
-        body: '즐거운 모각코 시간을 보내세요!',
+        body: '과연 누가 왔을까 두근두근',
         click_action: window.location.href,
       },
-      userIds: currentParticipants.map((user) => user.userId + ''),
+      userIds: currentParticipants.map(({ userId }) => userId + ''),
     });
 
     applyMGC({ MGCId, userId: userId ?? '' });
