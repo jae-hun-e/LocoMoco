@@ -4,6 +4,7 @@ import useCreateReview from '@/apis/review/useCreateReview';
 import useGetUserInfo from '@/apis/user/useGetUserInfo';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/use-toast';
+import useSendPush from '@/hooks/useSendPush';
 import { useTagMapping } from '@/hooks/useTagMapping';
 import { USER_ID_KEY, getItem } from '@/utils/storage';
 import Profile from './Profile';
@@ -31,6 +32,7 @@ const Review = ({ MGCId, revieweeId, onCancel, isEnd }: ReviewProps) => {
   const reviewerId = getItem<string>(localStorage, USER_ID_KEY);
 
   const { data: userInfoData } = useGetUserInfo(revieweeId);
+  const { sendPush } = useSendPush();
 
   const userInfo = userInfoData?.userInfo;
 
@@ -79,6 +81,15 @@ const Review = ({ MGCId, revieweeId, onCancel, isEnd }: ReviewProps) => {
         revieweeId,
       },
     };
+
+    sendPush({
+      data: {
+        title: '리뷰가 도착했습니다.',
+        body: '과연 어떤 리뷰가 왔을까 두근두근',
+        click_action: '/mypage/received-reviews-assessment',
+      },
+      userIds: [revieweeId + ''],
+    });
 
     createReview(reviewData);
     onCancel();
