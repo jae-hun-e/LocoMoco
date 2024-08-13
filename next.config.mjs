@@ -6,7 +6,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'locomoco-image.s3.ap-northeast-2.amazonaws.com',
+        hostname: 'locomoco-bucket-free.s3.ap-northeast-2.amazonaws.com',
       },
     ],
   },
