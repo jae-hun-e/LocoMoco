@@ -2,24 +2,34 @@ import { useCallback, useContext } from 'react';
 import { geocoderContext } from '@/app/_components/Map/GeocoderProvider';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 
+interface RegionCode {
+  city: string | undefined;
+  hCity: string | undefined;
+}
+
 const useGetRegionCodeByCoordinates = () => {
   const geocoder = useContext(geocoderContext);
   const mapService = useKakaoMapService();
 
   const coord2RegionCodePromise = useCallback(
-    (longitude: number, latitude: number): Promise<string> => {
+    (longitude: number, latitude: number): Promise<RegionCode> => {
       return new Promise((resolve, reject) => {
         if (geocoder) {
           geocoder.coord2RegionCode(longitude, latitude, (result, status) => {
             if (status === mapService.getServicesStatus('OK')) {
-              let addressName = '';
+              const address: RegionCode = {
+                city: undefined,
+                hCity: undefined,
+              };
               for (let i = 0; i < result.length; i++) {
                 if (result[i].region_type === 'H') {
-                  addressName = result[i].address_name;
-                  break;
+                  address['hCity'] = result[i].address_name;
+                }
+                if (result[i].region_type === 'B') {
+                  address['city'] = result[i].address_name;
                 }
               }
-              resolve(addressName);
+              resolve(address);
             } else {
               reject(new Error('Geocoder failed'));
             }

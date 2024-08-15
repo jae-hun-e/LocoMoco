@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TagType } from '@/apis/mgc/queryFn';
+import { LocationInfo } from '@/apis/mgc/queryFn';
 import { useCreateMGC } from '@/apis/mgc/useCreateMGC';
 import { MogakkoInfo } from '@/apis/mgc/useGetMGCDetail';
 import { usePatchMGC } from '@/apis/mgc/usePatchMGC';
@@ -17,15 +18,9 @@ import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 import { useQueryClient } from '@tanstack/react-query';
 
-export interface LocationProps {
-  address: string;
-  latitude: number;
-  longitude: number;
-  city: string;
-}
 export interface MGCCreateForm {
   title: string;
-  location: LocationProps;
+  location: LocationInfo;
   date: Date | undefined;
   startTime: string;
   endTime: string;

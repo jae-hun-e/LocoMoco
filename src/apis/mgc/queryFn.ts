@@ -25,6 +25,7 @@ export interface LocationInfo {
   latitude: number;
   longitude: number;
   city: string;
+  hCity: string;
 }
 export interface CreateMGCReq {
   creatorId: number;

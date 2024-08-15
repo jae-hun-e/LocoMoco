@@ -1,16 +1,10 @@
+import { LocationInfo } from '@/apis/mgc/queryFn';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
 interface CreatedPositionInfoStore {
-  createdPositionInfo: Position;
-  setCreatedPositionInfo: (newCreatedPositionInfo: Position) => void;
-}
-
-interface Position {
-  address: string;
-  latitude: number;
-  longitude: number;
-  city: string;
+  createdPositionInfo: LocationInfo;
+  setCreatedPositionInfo: (newCreatedPositionInfo: LocationInfo) => void;
 }
 
 export const useCreatedPositionInfo = create<CreatedPositionInfoStore>()(
@@ -21,8 +15,9 @@ export const useCreatedPositionInfo = create<CreatedPositionInfoStore>()(
         latitude: 0,
         longitude: 0,
         city: '',
+        hCity: '',
       },
-      setCreatedPositionInfo: (newCreatedPositionInfo: Position) =>
+      setCreatedPositionInfo: (newCreatedPositionInfo: LocationInfo) =>
         set({ createdPositionInfo: newCreatedPositionInfo }),
     }),
     {

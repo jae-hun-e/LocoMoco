@@ -7,16 +7,15 @@ const useGetAddressByCoordinates = () => {
   const mapService = useKakaoMapService();
 
   const coord2RegionCodePromise = useCallback(
-    (longitude: number, latitude: number, isInit: boolean): Promise<string> => {
+    (longitude: number, latitude: number): Promise<string> => {
       return new Promise((resolve, reject) => {
         if (geocoder) {
           geocoder.coord2Address(longitude, latitude, (result, status) => {
             if (status === mapService.getServicesStatus('OK')) {
-              if (!isInit && result[0].road_address === null) {
-                resolve('');
+              if (result[0].road_address) {
+                resolve(result[0].road_address.address_name);
               } else {
-                const addressName = result[0].address.address_name;
-                resolve(addressName);
+                resolve('');
               }
             } else {
               reject(new Error('Geocoder failed'));
@@ -31,9 +30,9 @@ const useGetAddressByCoordinates = () => {
   );
 
   const getAddressByCoorinates = useCallback(
-    async (latitude: number, longitude: number, isInit?: boolean) => {
+    async (latitude: number, longitude: number) => {
       try {
-        const addressName = await coord2RegionCodePromise(longitude, latitude, isInit ?? true);
+        const addressName = await coord2RegionCodePromise(longitude, latitude);
 
         return addressName;
       } catch (error) {
