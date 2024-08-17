@@ -24,6 +24,8 @@ const DatePick = ({ register, setDate, defaultValue, className }: Props) => {
             min: 1,
             validate: {
               lessThanToday: (date) => new Date(date) < new Date(),
+              moreThan1900: (date) => new Date(date).getFullYear() > 1900,
+              olderThan0: (date) => new Date(date).getFullYear() < new Date().getFullYear(),
             },
             onChange: (e: ChangeEvent<HTMLInputElement>) =>
               setDate('requestDto.birth', e.target.value),

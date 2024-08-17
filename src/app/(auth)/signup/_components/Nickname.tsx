@@ -15,8 +15,11 @@ interface Props {
   setNickname: UseFormSetValue<UserProfile>;
   getNickname: UseFormGetValues<UserProfile>;
   trigger: UseFormTrigger<UserProfile>;
+  isValid: boolean;
   setIsDuplicated: (isDuplicated: boolean) => void;
   setDuplicateWarning: (text: string) => void;
+  setIsValid: (isDuplicated: boolean) => void;
+  setValidationWarning: (text: string) => void;
   defaultValue?: string;
   className?: string;
 }
@@ -26,8 +29,11 @@ const NickName = ({
   setNickname,
   getNickname,
   trigger,
+  isValid,
   setIsDuplicated,
   setDuplicateWarning,
+  setIsValid,
+  setValidationWarning,
   defaultValue,
   className,
 }: Props) => {
@@ -47,6 +53,17 @@ const NickName = ({
       });
   };
 
+  const checkNicknameValidation = async (nickname: string) => {
+    const regex = /[^\p{L}\p{N}]/u;
+    if (regex.test(nickname)) {
+      setValidationWarning('특수기호는 포함할 수 없습니다.');
+      setIsValid(false);
+    } else if (nickname.length > 20) {
+      setValidationWarning('닉네임의 길이는 20자를 넘을 수 없습니다.');
+      setIsValid(false);
+    } else setIsValid(true);
+  };
+
   return (
     <div className="flex flex-col gap-1">
       <p className={className}>닉네임</p>
@@ -58,6 +75,7 @@ const NickName = ({
               required: true,
               min: 1,
               onChange: (e: ChangeEvent<HTMLInputElement>) => {
+                checkNicknameValidation(e.target.value);
                 setNickname('requestDto.nickname', e.target.value);
                 setDuplicateWarning('');
                 setIsDuplicated(true);
@@ -68,6 +86,7 @@ const NickName = ({
           />
         </div>
         <Button
+          disabled={!isValid}
           className="bg-main-1"
           onClick={checkDuplication}
           type="button"

@@ -33,7 +33,6 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
   const { sendPush } = useSendPush();
 
   const fetchChats = async ({ pageParam }: { pageParam: number }) => {
-    console.log('===== fetching chat... =====');
     const data = await client.get<ChatType[]>({
       url: `/chats/room/${chatRoomId}/messages?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=20`,
     });
@@ -181,7 +180,7 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
                 MGCId={mgcId}
                 revieweeId={selectedUserId}
                 onCancel={() => setIsUserList(true)}
-                isEnd={new Date(mgcDetail.MogakkoInfo.endTime) <= new Date()}
+                isEnd={new Date(mgcDetail.mogakkoInfo.endTime) <= new Date()}
               />
             )}
           </div>

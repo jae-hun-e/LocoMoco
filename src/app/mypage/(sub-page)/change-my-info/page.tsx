@@ -61,6 +61,8 @@ const ChangeMyInfo = () => {
   // nickName부분..
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
+  const [isValid, setIsValid] = useState(false);
+  const [validationWarning, setValidationWarning] = useState('');
 
   const queryClient = useQueryClient();
   const categoryList = queryClient.getQueryData(getCategoryOptions().queryKey);
@@ -121,11 +123,14 @@ const ChangeMyInfo = () => {
         <section className="relative">
           <NickName
             register={register}
-            getNickname={getValues}
             setNickname={setValue}
+            getNickname={getValues}
             trigger={trigger}
+            isValid={isValid}
+            setIsValid={setIsValid}
             setIsDuplicated={setIsDuplicated}
             setDuplicateWarning={setDuplicateWarning}
+            setValidationWarning={setValidationWarning}
             defaultValue={myInfo.userInfo.nickname}
             className="text-xs"
           />
@@ -145,6 +150,7 @@ const ChangeMyInfo = () => {
               {duplicateWarning}
             </Warning>
           )}
+          {!isValid && <Warning good={false}>{validationWarning}</Warning>}
         </section>
 
         <Label>
