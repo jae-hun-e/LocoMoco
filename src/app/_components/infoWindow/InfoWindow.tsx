@@ -1,8 +1,10 @@
 import React, { ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { toast } from '@/components/ui/use-toast';
 import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import useGetRegionCodeByCoordinates from '@/hooks/useGetRegionCodeByCoordinates';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
+import useInfoWindowPosition from '@/store/useInfoWindowPosition';
 import { MapContext } from '../Map/MapProvider';
 
 interface InfoWindow {
@@ -30,7 +32,9 @@ const InfoWindow = ({ show, position, children }: InfoWindow) => {
     y: 0,
   });
 
+  const { setInfoWindowPosition } = useInfoWindowPosition();
   const { setCreatedPositionInfo } = useCreatedPositionInfo();
+
   const { getAddressByCoorinates } = useGetAddressByCoordinates();
   const { getRegionCodeByCoorinates } = useGetRegionCodeByCoordinates();
 
@@ -41,7 +45,12 @@ const InfoWindow = ({ show, position, children }: InfoWindow) => {
       const newAddress = await getAddressByCoorinates(latitude, longitude);
       const newRegionCode = await getRegionCodeByCoorinates(latitude, longitude);
 
-      if (newAddress && newRegionCode) {
+      if (!newAddress) {
+        setInfoWindowPosition({ latitude: 0, longitude: 0 });
+        toast({
+          description: '건물이 아닌 곳에 모각코를 생성할 수 없습니다.',
+        });
+      } else if (newAddress && newRegionCode) {
         setCreatedPositionInfo({
           latitude,
           longitude,
