@@ -80,7 +80,10 @@ const CreateMGCMapViewer = forwardRef(
 
           if (newAddress !== undefined && newRegionCode !== undefined) {
             if (newAddress === '') {
-              toast({ description: '건물이 아닌 곳에 모각코를 생성할 수 없습니다.' });
+              toast({
+                className: 'create-prevent-toast',
+                description: '건물이 아닌 곳에 모각코를 생성할 수 없습니다.',
+              });
               return;
             }
 
