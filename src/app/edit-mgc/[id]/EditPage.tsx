@@ -5,13 +5,13 @@ import CreateMGC from '@/app/create/_components/CreateMGC';
 
 const EditPage = ({ id }: { id: number }) => {
   const {
-    mgcDetail: { MogakkoInfo },
+    mgcDetail: { mogakkoInfo },
   } = useGetMGCDetail(id);
 
   return (
     <div>
       <CreateMGC
-        initData={MogakkoInfo}
+        initData={mogakkoInfo}
         MGCId={id}
       />
     </div>

@@ -35,11 +35,14 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
 
   const [isDuplicated, setIsDuplicated] = useState(true);
   const [duplicateWarning, setDuplicateWarning] = useState('');
+  const [isValid, setIsValid] = useState(false);
+  const [validationWarning, setValidationWarning] = useState('');
   const router = useRouter();
 
   useEffect(() => {
     const token = getItem(localStorage, 'token');
     const tempToken = getItem(sessionStorage, 'token');
+
     if (token) {
       alert('잘못된 접근입니다. 홈으로 돌아갑니다');
       clearItem(sessionStorage);
@@ -48,20 +51,19 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
       alert('인증이 만료되었습니다. 다시 시도해주세요');
       router.replace('/signin');
     }
-    addEventListener('beforeunload', () => {
-      clearItem(sessionStorage);
-    });
-    return () =>
-      removeEventListener('beforeunload', () => {
-        clearItem(sessionStorage);
-      });
   }, [router]);
 
   const onSubmit = useCallback(async () => {
     const valid = await trigger();
     if (!valid) return;
+
     if (isDuplicated) {
       alert('닉네임 중복체크를 해주세요');
+      return;
+    }
+
+    if (!isValid) {
+      alert('닉네임에 특수문자가 들어갈 수 없습니다.');
       return;
     }
 
@@ -85,11 +87,10 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
         setItem(localStorage, 'userId', userId);
         setItem(localStorage, 'provider', method.toUpperCase());
         clearItem(sessionStorage);
-        // TODO: 푸시 알림 권한 요청 진입점 다시 생각해야함(현재는 회원가입한 디바이스만 저장하게 됨)[24/03/19]
         router.replace('/');
       })
       .catch(alert);
-  }, [getValues, isDuplicated, method, router, trigger]);
+  }, [getValues, isDuplicated, isValid, method, router, trigger]);
 
   return (
     <section className="flex flex-col justify-center gap-8 p-6">
@@ -100,11 +101,15 @@ const Signup = ({ params: { method } }: { params: { method: string } }) => {
           getNickname={getValues}
           setNickname={setValue}
           trigger={trigger}
+          isValid={isValid}
           setIsDuplicated={setIsDuplicated}
           setDuplicateWarning={setDuplicateWarning}
+          setIsValid={setIsValid}
+          setValidationWarning={setValidationWarning}
         />
         {errors.requestDto?.nickname && <Warning good={false}>닉네임을 입력해주세요</Warning>}
         {!errors.requestDto?.nickname && <Warning good={!isDuplicated}>{duplicateWarning}</Warning>}
+        {!isValid && <Warning good={false}>{validationWarning}</Warning>}
       </div>
       <div className="relative">
         <DatePick

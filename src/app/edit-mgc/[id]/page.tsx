@@ -8,9 +8,9 @@ export async function generateMetadata({ params }: { params: { id: number } }): 
   const MGCDetail = await getMGCDetail(id);
 
   return {
-    title: `(수정중) ${MGCDetail.MogakkoInfo.title}`,
+    title: `(수정중) ${MGCDetail.mogakkoInfo.title}`,
     openGraph: {
-      title: `(수정중) ${MGCDetail.MogakkoInfo.title}`,
+      title: `(수정중) ${MGCDetail.mogakkoInfo.title}`,
     },
   };
 }
