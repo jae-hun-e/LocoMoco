@@ -77,6 +77,11 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
 
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
+  const preventClose = (e: BeforeUnloadEvent) => {
+    e.preventDefault();
+    e.returnValue = '';
+  };
+
   useEffect(() => {
     options.map(({ categoryName, tags }) => {
       setValue(
@@ -84,6 +89,12 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
         tags.map(({ tag_name, tag_id }) => ({ tag_name, tag_id })),
       );
     });
+
+    window.addEventListener('beforeunload', preventClose);
+
+    return () => {
+      window.removeEventListener('beforeunload', preventClose);
+    };
   }, []);
 
   const handleMGCRequest = ({
