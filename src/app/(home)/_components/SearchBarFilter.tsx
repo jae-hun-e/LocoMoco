@@ -2,10 +2,9 @@ import React, { useRef, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import Filter from '@/app/_components/filter/Filter';
 import { toast } from '@/components/ui/use-toast';
-import { metroGovernments } from '@/constants/metroGovernments';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useClickAway from '@/hooks/useClickaway';
-import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
+import useGetRegionCodeByCoordinates from '@/hooks/useGetRegionCodeByCoordinates';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { Search } from 'lucide-react';
 import AddressList from './AddressList';
@@ -23,23 +22,22 @@ const SearchBarFilter = () => {
 
   const { changeCenter } = useChangeMapCenter();
   const { searchValue, setSearchValue } = useSearchInputValueStore();
-  const { getAddressByCoorinates } = useGetAddressByCoordinates();
+  const { getRegionCodeByCoorinates } = useGetRegionCodeByCoordinates();
 
   const changeAddress = async (latitude: number, longitude: number, addressName: string) => {
-    const address = await getAddressByCoorinates(latitude, longitude);
+    const newRegionCode = await getRegionCodeByCoorinates(latitude, longitude);
+    const len = addressName.split(' ').length;
 
-    if (!address) {
+    if (!newRegionCode) {
       toast({
         description: '오류가 발생했습니다.',
       });
       return;
     }
 
-    const isIncluded = Object.keys(metroGovernments).includes(addressName);
-
     setSearchValue({
       ...searchValue,
-      address: isIncluded ? metroGovernments[addressName] : address,
+      address: newRegionCode.city?.split(' ').slice(0, len).join(' '),
     });
   };
 
