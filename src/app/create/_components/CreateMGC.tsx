@@ -77,7 +77,7 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
 
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
-  const preventClose = (e: BeforeUnloadEvent) => {
+  const handleBeforeunload = (e: BeforeUnloadEvent) => {
     e.preventDefault();
     e.returnValue = '';
   };
@@ -90,10 +90,10 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
       );
     });
 
-    window.addEventListener('beforeunload', preventClose);
+    window.addEventListener('beforeunload', handleBeforeunload);
 
     return () => {
-      window.removeEventListener('beforeunload', preventClose);
+      window.removeEventListener('beforeunload', handleBeforeunload);
     };
   }, [options, setValue]);
 
