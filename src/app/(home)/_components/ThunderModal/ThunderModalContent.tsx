@@ -124,7 +124,7 @@ const ThunderModalContent = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardHeader>
             <CardTitle className="text-lg">⚡️번개 모각코를 생성해요!</CardTitle>
-            <CardDescription>생성 즉시 모각코가 시작됩니다.</CardDescription>
+            <CardDescription>생성 즉시 모각코가 시작되며, 수정이 불가합니다.</CardDescription>
           </CardHeader>
           <CardContent className="flex-col">
             <div className="mb-5pxr font-bold">끝나는 시간</div>
