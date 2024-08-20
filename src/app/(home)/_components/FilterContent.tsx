@@ -85,16 +85,14 @@ const FilterContent = ({
               key={categoryName}
               control={control}
               render={({ field: { onChange, value } }) => (
-                <>
-                  <CategoryCheckbox
-                    category={allSelect}
-                    categories={[...categories, allSelect]}
-                    onChange={onChange}
-                    value={value}
-                    disabled={isOnlyMgcTypeSelected}
-                    resetField={resetField}
-                  />
-                </>
+                <CategoryCheckbox
+                  category={allSelect}
+                  categories={[...categories, allSelect]}
+                  onChange={onChange}
+                  value={value}
+                  disabled={isOnlyMgcTypeSelected}
+                  resetField={resetField}
+                />
               )}
               name={categoryName!}
             />
@@ -103,18 +101,16 @@ const FilterContent = ({
                 key={category.tagId}
                 control={control}
                 render={({ field: { onChange, value } }) => (
-                  <>
-                    <CategoryCheckbox
-                      category={category}
-                      categories={categories}
-                      allSelectTag={allSelect}
-                      onChange={onChange}
-                      key={category.tagId}
-                      value={value}
-                      disabled={isOnlyMgcTypeSelected}
-                      resetField={resetField}
-                    />
-                  </>
+                  <CategoryCheckbox
+                    category={category}
+                    categories={categories}
+                    allSelectTag={allSelect}
+                    onChange={onChange}
+                    key={category.tagId}
+                    value={value}
+                    disabled={isOnlyMgcTypeSelected}
+                    resetField={resetField}
+                  />
                 )}
                 name={categoryName!}
               />
