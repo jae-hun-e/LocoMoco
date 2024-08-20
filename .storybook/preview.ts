@@ -5,7 +5,7 @@ import '../src/styles/globals.css';
 
 initialize({
   serviceWorker: {
-    url: './mockServiceWorker.js',
+    url: '/mockServiceWorker.js',
   },
 });
 
