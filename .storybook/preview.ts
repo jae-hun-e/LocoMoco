@@ -9,7 +9,7 @@ initialize();
 const worker = setupWorker(...handlers(true));
 worker.start({
   serviceWorker: {
-    url: './mockServiceWorker.js',
+    url: '/mockServiceWorker.js',
   },
 });
 
