@@ -36,6 +36,8 @@ const Template = () => {
   const [isLoad, setIsLoad] = useState(false);
 
   useEffect(() => {
+    console.log('NEXT_PUBLIC_BASE_URL:', process.env.NEXT_PUBLIC_BASE_URL);
+
     prefetchData().then(() => {
       setIsLoad(true);
     });
