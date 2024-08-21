@@ -22,6 +22,11 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
+      - name: Check NEXT_PUBLIC_BASE_URL
+        run: echo "NEXT_PUBLIC_BASE_URL is $NEXT_PUBLIC_BASE_URL"
+        env:
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+
       - name: Build Storybook
         env:
           NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
