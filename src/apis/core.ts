@@ -8,6 +8,7 @@ const axiosInstance: AxiosInstance = axios.create({
   headers: { 'Content-Type': 'application/json' },
   paramsSerializer: (params) => qs.stringify(params, { arrayFormat: 'repeat' }),
 });
+console.log('NEXT_PUBLIC_BASE_URL:', process.env.NEXT_PUBLIC_BASE_URL);
 
 axiosInstance.interceptors.request.use(
   (config) => {
