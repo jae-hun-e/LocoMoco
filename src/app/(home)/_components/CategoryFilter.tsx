@@ -139,7 +139,7 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
         className={cn(
-          'scrollbar-hide" mx-auto flex w-[90%] flex-row justify-between gap-10pxr overflow-x-scroll whitespace-nowrap',
+          'mx-auto flex w-[90%] flex-row justify-between gap-10pxr overflow-x-scroll whitespace-nowrap scrollbar-hide',
           isSubmit && 'w-[95%]',
         )}
       >
