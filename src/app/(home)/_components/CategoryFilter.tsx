@@ -168,7 +168,10 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
           catetory="area"
         />
         {isSubmit ? (
-          <button className="itmain-1nter flex justify-center rounded-[20px] border border-layer-3 bg-white px-14pxr py-10pxr text-white">
+          <button
+            onClick={handleResetClick}
+            className="itmain-1nter flex justify-center rounded-[20px] border border-layer-3 bg-white px-14pxr py-10pxr text-white"
+          >
             <div className="h-16pxr w-16pxr">
               <Reset />
             </div>
