@@ -89,7 +89,6 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
         tags.map(({ tag_name, tag_id }) => ({ tag_name, tag_id })),
       );
     });
-
     window.addEventListener('beforeunload', handleBeforeunload);
 
     return () => {
