@@ -37,7 +37,7 @@ const SearchBarFilter = () => {
 
     setSearchValue({
       ...searchValue,
-      address: newRegionCode.city?.split(' ').slice(0, len).join(' '),
+      address: newRegionCode.hCity?.split(' ').slice(0, len).join(' '),
     });
   };
 
