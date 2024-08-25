@@ -35,6 +35,11 @@ const HomeMapViewer = forwardRef(
 
     const handleTouchStart = useCallback(
       (e: TouchEvent) => {
+        if (e.touches.length > 1 && timerRef.current) {
+          clearTimeout(timerRef.current);
+          return;
+        }
+
         const target = e.target as HTMLElement;
 
         if (target.closest('#infowindow')) return;
