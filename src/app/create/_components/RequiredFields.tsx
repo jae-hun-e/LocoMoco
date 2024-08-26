@@ -43,7 +43,8 @@ const RequiredFields = ({
   ];
 
   const handleMGCDate = (field: keyof MGCCreateForm, selectedDay: Date) => {
-    setValue(field, selectedDay);
+    setValue(field, selectedDay, { shouldDirty: true });
+
     trigger(field);
   };
 

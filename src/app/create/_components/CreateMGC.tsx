@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useCallback, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { TagType } from '@/apis/mgc/queryFn';
 import { LocationInfo } from '@/apis/mgc/queryFn';
@@ -11,12 +11,15 @@ import OptionFields from '@/app/create/_components/OptionFields';
 import RequiredFields from '@/app/create/_components/RequiredFields';
 import MainStyleButton from '@/components/MainStyleButton';
 import { useFilterTagsByIds } from '@/hooks/useFilterTagByIds';
+import { useThunderModalStore } from '@/store/thunderModalStore';
 import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { getTimeString } from '@/utils/getTimeString';
 import { getItem } from '@/utils/storage';
 import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 import { useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import ExitWarningModal from './ExitWarningModal';
 
 export interface MGCCreateForm {
   title: string;
@@ -38,14 +41,17 @@ interface Props {
 }
 // TODO: 리렌더링 최적화하기 watch -> click시 getValue 검사 [24/02/22]
 const CreateMGC = ({ initData, MGCId }: Props) => {
+  const router = useRouter();
+
   const { createdPositionInfo } = useCreatedPositionInfo();
+  const { isOpen, toggleModal } = useThunderModalStore();
 
   const {
     register,
     handleSubmit,
     setValue,
     getValues,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isDirty },
     watch,
     trigger,
     setError,
@@ -77,11 +83,6 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
 
   const options = useFilterTagsByIds(initData?.tagIds ?? []);
 
-  const handleBeforeunload = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    e.returnValue = '';
-  };
-
   useEffect(() => {
     options.map(({ categoryName, tags }) => {
       setValue(
@@ -89,12 +90,58 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
         tags.map(({ tag_name, tag_id }) => ({ tag_name, tag_id })),
       );
     });
+  }, [setValue]);
+
+  const handleCloseModal = () => {
+    toggleModal();
+  };
+
+  const back = useCallback(() => {
+    const previousPage = getItem<string[]>(sessionStorage, 'pages')?.[0];
+
+    if (previousPage) {
+      router.push(previousPage);
+    }
+  }, [router]);
+
+  const handleBackBtnClick = () => {
+    back();
+    toggleModal();
+  };
+
+  const handleStayBtnClick = () => {
+    window.history.pushState(null, '', '');
+    toggleModal();
+  };
+
+  useEffect(() => {
+    const handlePopState = () => {
+      if (isDirty) {
+        toggleModal();
+      } else {
+        back();
+      }
+    };
+
+    const handleBeforeunload = (e: BeforeUnloadEvent) => {
+      if (isDirty) {
+        e.preventDefault();
+        e.returnValue = '';
+      }
+    };
+
+    if (typeof window !== 'undefined') {
+      window.history.pushState(null, '', '');
+    }
+
     window.addEventListener('beforeunload', handleBeforeunload);
+    window.addEventListener('popstate', handlePopState);
 
     return () => {
       window.removeEventListener('beforeunload', handleBeforeunload);
+      window.removeEventListener('popstate', handlePopState);
     };
-  }, [options, setValue]);
+  }, [back, isDirty, toggleModal]);
 
   const handleMGCRequest = ({
     title,
@@ -137,32 +184,40 @@ const CreateMGC = ({ initData, MGCId }: Props) => {
   };
 
   return (
-    <form className="flex flex-col gap-10">
-      <RequiredFields
-        register={register}
-        errors={errors}
-        setValue={setValue}
-        trigger={trigger}
-        watch={watch}
-        setError={setError}
-        clearErrors={clearErrors}
-      />
-
-      <OptionFields
-        register={register}
-        setValue={setValue}
-        getValues={getValues}
-        trigger={trigger}
-      />
-
-      <div className={'fixed bottom-0 z-50 w-[calc(100%-2.5rem)]'}>
-        <MainStyleButton
-          content="완료"
-          disabled={!isValid}
-          onClick={handleSubmit(handleMGCRequest)}
+    <>
+      <form className="flex flex-col gap-10">
+        <RequiredFields
+          register={register}
+          errors={errors}
+          setValue={setValue}
+          trigger={trigger}
+          watch={watch}
+          setError={setError}
+          clearErrors={clearErrors}
         />
-      </div>
-    </form>
+
+        <OptionFields
+          register={register}
+          setValue={setValue}
+          getValues={getValues}
+          trigger={trigger}
+        />
+
+        <div className={'fixed bottom-0 z-50 w-[calc(100%-2.5rem)]'}>
+          <MainStyleButton
+            content="완료"
+            disabled={!isValid}
+            onClick={handleSubmit(handleMGCRequest)}
+          />
+        </div>
+      </form>
+      <ExitWarningModal
+        isOpen={isOpen}
+        onClose={handleCloseModal}
+        onBackBtnClick={handleBackBtnClick}
+        onStayBtnClick={handleStayBtnClick}
+      />
+    </>
   );
 };
 

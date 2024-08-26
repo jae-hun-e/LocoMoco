@@ -11,6 +11,7 @@ import localFont from 'next/font/local';
 import Script from 'next/script';
 import GoogleAnalyticsTracker from './_components/GoogleAnalyticsTracker';
 import MapLoaderProvider from './_components/Map/MapLoaderProvider';
+import PagePathRecorder from './_components/PagePathRecorder';
 
 const pretendard = localFont({
   src: '../../public/font/PretendardVariable.ttf',
@@ -128,7 +129,7 @@ const RootLayout = async ({
             <main className="h-[calc(100vh-50px)]">
               <div className="overflow-y-auto px-20pxr scrollbar-hide">
                 <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
-
+                <PagePathRecorder />
                 <div className="mb-50pxr" />
               </div>
             </main>

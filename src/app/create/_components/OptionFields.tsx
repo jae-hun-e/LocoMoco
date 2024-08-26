@@ -48,6 +48,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
           ? selectedList
           : [...selectedList, selected]
         : [selected],
+      { shouldDirty: true },
     );
 
     trigger(field);
@@ -69,7 +70,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
 
   const handleRadioSelect = (field: keyof MGCCreateForm, selected: string, tags: TagType[]) => {
     const selectedTag = tags.filter(({ tag_name }) => tag_name === selected);
-    setValue(field, selectedTag);
+    setValue(field, selectedTag, { shouldDirty: true });
     trigger(field);
   };
 
