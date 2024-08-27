@@ -16,7 +16,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     let cursor = undefined;
 
     do {
-      const data = await getMGCTotalList({ searchType: 'TOTAL', pageSize: 50, cursor });
+      const data = await getMGCTotalList({ searchType: 'TITLE_CONTENT', pageSize: 50, cursor });
 
       if (!data) break;
 
