@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import ThunderModal from '@/app/(home)/_components/ThunderModal/ThunderModal';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -79,7 +78,6 @@ const CreateBtn = () => {
           </div>
         </PopoverContent>
       )}
-      <ThunderModal />
     </Popover>
   );
 };
