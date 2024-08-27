@@ -4,10 +4,11 @@ import client from '../core';
 
 export interface TotalSearchProps {
   search?: string;
-  searchType: 'TOTAL' | 'LOCATION';
+  searchType: 'TITLE_CONTENT' | 'LOCATION';
   tags?: number[];
   cursor?: number;
   pageSize?: number;
+  offset?: number;
 }
 
 export const getMGCTotalList = async ({
@@ -16,19 +17,20 @@ export const getMGCTotalList = async ({
   tags,
   cursor,
   pageSize,
+  offset,
 }: TotalSearchProps) => {
   const { data } = await client.get<MGCList>({
     url: `/mogakko/map`,
-    params: { tags, search, searchType, cursor, pageSize },
+    params: { tags, search, searchType, cursor, pageSize, offset },
   });
 
   return data;
 };
 
-const useMGCTotalList = ({ search, searchType, tags }: TotalSearchProps) => {
+const useMGCTotalList = ({ search, searchType, tags, pageSize, offset }: TotalSearchProps) => {
   return useQuery({
-    queryKey: ['totalSearchMGC', search, searchType, tags] as const,
-    queryFn: () => getMGCTotalList({ search, searchType, tags }),
+    queryKey: ['totalSearchMGC', search, searchType, tags, pageSize, offset] as const,
+    queryFn: () => getMGCTotalList({ search, searchType, tags, pageSize, offset }),
   });
 };
 
