@@ -6,6 +6,13 @@ const meta: Meta<typeof SearchBarFilter> = {
   title: 'Components/SearchBarFilter',
   component: SearchBarFilter,
   args: { setOpen: fn() },
+  decorators: [
+    (Story) => (
+      <div className="min-h-100pxr">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;

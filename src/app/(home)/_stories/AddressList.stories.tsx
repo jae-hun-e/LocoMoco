@@ -7,6 +7,13 @@ const meta: Meta<typeof AddressList> = {
   title: 'Components/AddressList',
   component: AddressList,
   args: { onClick: fn() },
+  decorators: [
+    (Story) => (
+      <div className="min-h-200pxr">
+        <Story />
+      </div>
+    ),
+  ],
 };
 
 export default meta;
