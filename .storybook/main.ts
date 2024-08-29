@@ -17,7 +17,16 @@ const config: StorybookConfig = {
   docs: {
     autodocs: true,
   },
-  staticDirs: ['../public'],
+  staticDirs: [
+    {
+      from: '../public/font',
+      to: '/public/font',
+    },
+    {
+      from: '../public',
+      to: '/',
+    },
+  ],
   webpackFinal: async (config) => {
     if (config.resolve) {
       config.resolve.alias = {
@@ -25,8 +34,7 @@ const config: StorybookConfig = {
         '@': path.resolve(__dirname, 'src'),
       };
     }
-
-    if (!config.module || !config.module.rules) {
+    if (!config.module || !config.module.rules || !config.plugins) {
       return config;
     }
 

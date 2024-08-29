@@ -12,7 +12,7 @@ import Script from 'next/script';
 import GoogleAnalyticsTracker from './_components/GoogleAnalyticsTracker';
 import MapLoaderProvider from './_components/Map/MapLoaderProvider';
 
-const pretendard = localFont({
+export const pretendard = localFont({
   src: '../../public/font/PretendardVariable.ttf',
   variable: '--pretendard',
   display: 'swap',

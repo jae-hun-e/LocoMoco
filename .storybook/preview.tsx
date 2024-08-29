@@ -2,6 +2,7 @@ import React from 'react';
 import type { Preview } from '@storybook/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { initialize, mswLoader } from 'msw-storybook-addon';
+import { pretendard } from '../src/app/layout';
 import { handlers } from '../src/mocks/handlers';
 import '../src/styles/globals.css';
 import { getCategoryOptions } from '../src/utils/getQueryOptions';
@@ -36,7 +37,9 @@ const preview: Preview = {
   decorators: [
     (Story) => (
       <QueryClientProvider client={queryClient}>
-        <Story />
+        <div className={pretendard.className}>
+          <Story />
+        </div>
       </QueryClientProvider>
     ),
   ],
