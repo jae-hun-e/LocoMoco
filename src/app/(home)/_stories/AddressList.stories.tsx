@@ -9,7 +9,7 @@ const meta: Meta<typeof AddressList> = {
   args: { onClick: fn() },
   decorators: [
     (Story) => (
-      <div className="min-h-200pxr">
+      <div className="relative min-h-200pxr">
         <Story />
       </div>
     ),
