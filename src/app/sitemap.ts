@@ -13,10 +13,10 @@ const MGCDatas: Sitemap = [];
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // TODO: 에러 중앙화 후 수정 [24.04.14]
   try {
-    let cursor = undefined;
+    let offset = undefined;
 
     do {
-      const data = await getMGCTotalList({ searchType: 'TOTAL', pageSize: 50, cursor });
+      const data = await getMGCTotalList({ searchType: 'TITLE_CONTENT', pageSize: 50, offset });
 
       if (!data) break;
 
@@ -31,11 +31,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
       if (data.length > 0) {
         const ids = data.map((item) => item.id);
-        cursor = Math.min(...ids);
+        offset = Math.min(...ids);
       } else {
-        cursor = undefined;
+        offset = undefined;
       }
-    } while (cursor !== undefined);
+    } while (offset !== undefined);
   } catch (e) {
     console.log('에러', e);
   }

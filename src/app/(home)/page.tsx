@@ -6,6 +6,7 @@ import useSearchValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import GeocoderProvider from '../_components/Map/GeocoderProvider';
 import MapProvider from '../_components/Map/MapProvider';
+import MapCustomControl from '../_components/MapCustomControl';
 import HomeMapContent from './_components/HomeMapContent';
 import HomeMapFooter from './_components/HomeMapFooter ';
 import HomeMapViewer from './_components/HomeMapViewer';
@@ -50,7 +51,10 @@ const Home = () => {
 
   return (
     <div className="relative -left-20pxr w-[100vw]">
-      <MapProvider mapRef={mapRef}>
+      <MapProvider
+        mapRef={mapRef}
+        isCustomlevelController
+      >
         <GeocoderProvider>
           <HomeMapContent
             data={data}
@@ -61,7 +65,9 @@ const Home = () => {
             ref={mapRef}
             timerRef={timerRef}
             onMouseUp={handleMouseUp}
-          />
+          >
+            <MapCustomControl topGap="large" />
+          </HomeMapViewer>
         </GeocoderProvider>
       </MapProvider>
 

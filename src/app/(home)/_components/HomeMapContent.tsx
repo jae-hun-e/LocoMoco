@@ -14,6 +14,7 @@ import { Separator } from '@radix-ui/react-separator';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import SearchBarFilter from './SearchBarFilter';
+import ThunderModal from './ThunderModal/ThunderModal';
 
 interface HomeMap {
   data: MGCSummary[] | undefined;
@@ -56,10 +57,9 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
       updateSearchValueAddress(lat, lng);
     }
   }, [changeCenter, location.coordinates, location.loaded, updateSearchValueAddress]);
-
   return (
     <>
-      <section className="flex w-full flex-col items-center">
+      <section className="absolute z-40 flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
       <ClustererProvider>
@@ -117,6 +117,7 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
           </div>
         </div>
       </InfoWindow>
+      <ThunderModal />
     </>
   );
 };

@@ -21,7 +21,7 @@ const SearchMGC = () => {
 
   const { data } = useMGCTotalList({
     search: searchValue.address,
-    searchType: 'TOTAL',
+    searchType: 'TITLE_CONTENT',
     tags: searchValue.tags,
   });
 

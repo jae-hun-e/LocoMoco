@@ -75,7 +75,7 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
             onMouseUp={handleMouseUp}
             ref={mapRef}
           >
-            <MapCustomControl />
+            <MapCustomControl topGap="small" />
           </CreateMGCMapViewer>
           <p className="text-sm">{currentAddress}</p>
         </GeocoderProvider>

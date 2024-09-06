@@ -1,6 +1,11 @@
 name: 'Deploy Storybook with Chromatic'
 
-on: pull_request
+on:
+  pull_request:
+    paths:
+      - '**/*.stories.ts'
+      - '**/*.stories.tsx'
+      - '.storybook/**'
 
 jobs:
   chromatic:
@@ -16,13 +21,24 @@ jobs:
           node-version: 18
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Generate environment variables
+        run: |
+          echo "NEXT_PUBLIC_BASE_URL=$NEXT_PUBLIC_BASE_URL" >> .env
+        env:
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+
+      - name: Build Storybook
+        run: yarn build-storybook
+
       - name: Run Chromatic
         id: chromatic
         uses: chromaui/action@latest
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
           token: ${{ secrets.GITHUB_TOKEN }}
-      - name: comment PR
+
+      - name: Comment PR
         uses: thollander/actions-comment-pull-request@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
