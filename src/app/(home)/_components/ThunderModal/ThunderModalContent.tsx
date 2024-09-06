@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { SubmitHandler, useForm } from 'react-hook-form';
+import { LocationInfo } from '@/apis/mgc/queryFn';
 import { useCreateThunderMGC } from '@/apis/thunderMGC/useCreateThunderMGC';
 import MGCMap from '@/app/_components/Map/MGCMap';
 import Modal from '@/app/_components/Modal';
@@ -19,20 +20,13 @@ import { toKoreanTimeZone } from '@/utils/toKoreanTimeZone';
 export interface ThunderFormData {
   endTime: string;
   title: string;
-  location: LocationProps;
-}
-
-export interface LocationProps {
-  address: string;
-  latitude: number;
-  longitude: number;
-  city: string;
+  location: LocationInfo;
 }
 
 const ThunderModalContent = ({
   initialPosition,
 }: {
-  initialPosition?: LocationProps | undefined;
+  initialPosition?: LocationInfo | undefined;
 }) => {
   const endTimeList = ['1', '2', '3', '5', 'N'];
 
@@ -61,29 +55,23 @@ const ThunderModalContent = ({
         latitude: initialPosition?.latitude || undefined,
         longitude: initialPosition?.longitude || undefined,
         city: initialPosition?.city || undefined,
+        hCity: initialPosition?.hCity || undefined,
       },
     },
   });
 
   useEffect(() => {
-    if (!watch('location').address) {
-      const location = {
-        address: createdPositionInfo.address,
-        latitude: createdPositionInfo.latitude,
-        longitude: createdPositionInfo.longitude,
-        city: createdPositionInfo.city,
-      };
+    const location = {
+      address: createdPositionInfo.address,
+      latitude: createdPositionInfo.latitude,
+      longitude: createdPositionInfo.longitude,
+      city: createdPositionInfo.city,
+      hCity: createdPositionInfo.hCity,
+    };
 
-      setValue('location', location);
-    }
-  }, [
-    createdPositionInfo.address,
-    createdPositionInfo.city,
-    createdPositionInfo.latitude,
-    createdPositionInfo.longitude,
-    setValue,
-    watch,
-  ]);
+    setValue('location', location);
+    trigger('location');
+  }, [createdPositionInfo, setValue, trigger]);
 
   const { createThunderMGC } = useCreateThunderMGC();
 
@@ -95,6 +83,7 @@ const ThunderModalContent = ({
       latitude: 0,
       longitude: 0,
       city: '',
+      hCity: '',
     });
     reset();
     toggleModal();
@@ -135,7 +124,7 @@ const ThunderModalContent = ({
         <form onSubmit={handleSubmit(onSubmit)}>
           <CardHeader>
             <CardTitle className="text-lg">⚡️번개 모각코를 생성해요!</CardTitle>
-            <CardDescription>생성 즉시 모각코가 시작됩니다.</CardDescription>
+            <CardDescription>생성 즉시 모각코가 시작되며, 수정이 불가합니다.</CardDescription>
           </CardHeader>
           <CardContent className="flex-col">
             <div className="mb-5pxr font-bold">끝나는 시간</div>

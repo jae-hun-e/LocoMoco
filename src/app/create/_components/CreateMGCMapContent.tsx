@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
+import { LocationInfo } from '@/apis/mgc/queryFn';
 import AddressList from '@/app/(home)/_components/AddressList';
 import Marker from '@/app/_components/Map/Marker';
-import { LocationProps } from '@/app/create/_components/CreateMGC';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
+import useClickAway from '@/hooks/useClickaway';
 import useGeolocation from '@/hooks/useGeolocation';
 import { Search } from 'lucide-react';
 import marker from '../../../../public/mgc_marker.svg';
@@ -11,7 +12,7 @@ import { Location } from '../../_components/Map/MGCMap';
 
 interface CreateMGCMapProps {
   currentCoordinates: Location;
-  defaultAddress: LocationProps | undefined;
+  defaultAddress: LocationInfo | undefined;
   setCurrentCoordinates: ({ latitude, longitude }: Location) => void;
 }
 
@@ -23,6 +24,12 @@ const CreateMGCMap = ({
   const [show, setShow] = useState(false);
   const [keyword, setKeyword] = useState('');
   const { data: address } = useAddress(keyword);
+
+  const handleClickAway = () => {
+    setShow(false);
+  };
+
+  const clickAwayRef = useClickAway<HTMLDivElement>(handleClickAway);
 
   const handleAddressClick = (data: Address) => {
     changeCenter(Number(data.latitude), Number(data.longitude));
@@ -53,6 +60,7 @@ const CreateMGCMap = ({
   return (
     <>
       <div
+        ref={clickAwayRef}
         id="input-wrap"
         className={`relative flex h-50pxr flex-row items-center rounded-lg ${show ? 'rounded-b-none' : 'rounded-b-lg'} border`}
       >

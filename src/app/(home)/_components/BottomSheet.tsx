@@ -12,10 +12,16 @@ interface BottomSheetProps {
 // TODO: 시간 남으면 직접 구현 [24/02/12]
 // TODO: 회의 후에 네브와 바텀시트를 함께 보일지 수정 [24/02/12]
 const BottomSheet = ({ children, open, setOpen }: BottomSheetProps) => {
+  const handleBtnClick = (open: boolean) => {
+    setOpen(open);
+    document.querySelector('#navbar')?.classList.add('pointer-auto');
+    document.querySelector('#mgc-create-btn')?.classList.add('pointer-auto');
+  };
+
   return (
     <Drawer
       open={open}
-      onOpenChange={(open) => setOpen(open)}
+      onOpenChange={(open) => handleBtnClick(open)}
     >
       <DrawerTrigger
         asChild

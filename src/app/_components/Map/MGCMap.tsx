@@ -1,9 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { UseFormSetValue, UseFormTrigger } from 'react-hook-form';
+import { LocationInfo } from '@/apis/mgc/queryFn';
 import { ThunderFormData } from '@/app/(home)/_components/ThunderModal/ThunderModalContent';
 import MapProvider from '@/app/_components/Map/MapProvider';
 import MapCustomControl from '@/app/_components/MapCustomControl';
-import { LocationProps, MGCCreateForm } from '@/app/create/_components/CreateMGC';
+import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import CreateMGCMapContent from '../../create/_components/CreateMGCMapContent';
 import CreateMGCMapViewer from '../../create/_components/CreateMGCMapViewer';
 import GeocoderProvider from './GeocoderProvider';
@@ -19,7 +20,7 @@ export interface Location {
 interface Props {
   trigger: UseFormTrigger<MGCCreateForm> | UseFormTrigger<ThunderFormData>;
   setValue: UseFormSetValue<MGCCreateForm> | UseFormSetValue<ThunderFormData>;
-  defaultAddress?: LocationProps | undefined;
+  defaultAddress?: LocationInfo | undefined;
 }
 
 const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
@@ -41,22 +42,15 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
 
   const [currentCoordinates, setCurrentCoordinates] = useState({ latitude: 0, longitude: 0 });
 
-  const updateAddress = ({
-    newAddress,
-    latitude,
-    longitude,
-  }: {
-    newAddress: string;
-    latitude: number;
-    longitude: number;
-  }) => {
-    setAddress(newAddress);
+  const updateAddress = ({ address, latitude, longitude, city, hCity }: LocationInfo) => {
+    setAddress(address);
     const assertedSetValue = setValue as UseFormSetValue<MGCCreateForm | ThunderFormData>;
 
-    assertedSetValue('location.address', newAddress);
+    assertedSetValue('location.address', address);
     assertedSetValue('location.latitude', latitude);
     assertedSetValue('location.longitude', longitude);
-    assertedSetValue('location.city', newAddress);
+    assertedSetValue('location.city', city);
+    assertedSetValue('location.hCity', hCity);
     trigger('location');
   };
 

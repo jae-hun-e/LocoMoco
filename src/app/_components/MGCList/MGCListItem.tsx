@@ -65,7 +65,7 @@ const MGCListItem = ({ data }: MGCListItemPropsType) => {
         </span>
       </div>
       <div className="text-layer-5">
-        {data.location.address}
+        {data.location.hCity ?? data.location.city}
         <span className="mx-1">·</span>
         {data.updatedAt && data.updatedAt > data.createdAt
           ? formatDistance(data.updatedAt, new Date(), { addSuffix: true, locale: ko }) +

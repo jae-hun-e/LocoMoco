@@ -14,8 +14,8 @@ interface ModalProps {
 
 const Modal = ({ isOpen, onClose, children, width, height, rounded }: ModalProps) => {
   const modalContentRef = useClickAway((e: MouseEvent | TouchEvent) => {
-    const { innerHTML } = e.target as HTMLDivElement;
-    if (innerHTML === '⚡번개 모각코') return;
+    const target = e.target as HTMLDivElement;
+    if (target.closest('.create-prevent-toast') || target.innerHTML === '⚡번개 모각코') return;
     onClose();
   });
 

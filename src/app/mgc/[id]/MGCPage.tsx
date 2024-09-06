@@ -40,6 +40,7 @@ const MGCDetailPage = ({ MGCId }: { MGCId: number }) => {
     like: mgcDetail.mogakkoInfo.likeCount,
     MGCId,
     createUserId: mgcDetail.creatorInfo.userId,
+    tagIds: mgcDetail.mogakkoInfo.tagIds,
   };
 
   useEffect(() => {

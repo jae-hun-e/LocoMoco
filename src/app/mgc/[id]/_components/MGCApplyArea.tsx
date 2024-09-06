@@ -23,6 +23,7 @@ interface Props {
   like: number;
   MGCId: number;
   createUserId: number;
+  tagIds: number[] | undefined;
 }
 
 // TODO: 찜하기 API 연결 - optimistic update [24/03/04]
@@ -34,6 +35,7 @@ const MGCApplyArea = ({
   like,
   MGCId,
   createUserId,
+  tagIds,
 }: Props) => {
   const userId = getItem<string | undefined>(localStorage, 'userId');
 
@@ -101,11 +103,18 @@ const MGCApplyArea = ({
     const isCapacityExceeded = currentParticipantsLength >= maxParticipants;
     const isOwner = Number(userId) === createUserId;
     const isClose = new Date() > new Date(endTime) || new Date() > new Date(deadline);
+    const isLightning = tagIds?.includes(243);
 
     // 참여자임
     if (isParticipants) {
       if (isClose) return buttonVariants[1];
-      if (isOwner) return buttonVariants[2];
+      if (isOwner) {
+        if (isLightning) {
+          return buttonVariants[3];
+        } else {
+          return buttonVariants[2];
+        }
+      }
       if (isParticipated) return buttonVariants[3];
       if (isCapacityExceeded) return buttonVariants[0];
       else return buttonVariants[4];

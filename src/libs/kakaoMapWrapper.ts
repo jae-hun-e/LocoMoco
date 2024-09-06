@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { clustererContext } from '@/app/_components/Map/ClustererProvider';
 import { MapContext } from '@/app/_components/Map/MapProvider';
 
 type ControlPositionKey = 'TOPLEFT' | 'TOPRIGHT' | 'BOTTOMLEFT' | 'BOTTOMRIGHT';
@@ -15,8 +16,9 @@ export class KakaoMapService {
   map: kakao.maps.Map | undefined;
   clusterer: kakao.maps.MarkerClusterer | undefined;
 
-  constructor(map: kakao.maps.Map | undefined) {
+  constructor(map: kakao.maps.Map | undefined, clusterer: kakao.maps.MarkerClusterer | undefined) {
     this.map = map;
+    this.clusterer = clusterer;
   }
 
   addListener<T extends keyof EventHandlers>(
@@ -99,8 +101,9 @@ export class KakaoMapService {
 
 const useKakaoMapService = () => {
   const map = useContext(MapContext);
+  const clusterer = useContext(clustererContext);
 
-  return new KakaoMapService(map);
+  return new KakaoMapService(map, clusterer);
 };
 
 export default useKakaoMapService;

@@ -2,21 +2,34 @@ import { useCallback, useContext } from 'react';
 import { geocoderContext } from '@/app/_components/Map/GeocoderProvider';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 
-const useGetAddressByCoordinates = () => {
+interface RegionCode {
+  city: string | undefined;
+  hCity: string | undefined;
+}
+
+const useGetRegionCodeByCoordinates = () => {
   const geocoder = useContext(geocoderContext);
   const mapService = useKakaoMapService();
 
   const coord2RegionCodePromise = useCallback(
-    (longitude: number, latitude: number): Promise<string> => {
+    (longitude: number, latitude: number): Promise<RegionCode> => {
       return new Promise((resolve, reject) => {
         if (geocoder) {
-          geocoder.coord2Address(longitude, latitude, (result, status) => {
+          geocoder.coord2RegionCode(longitude, latitude, (result, status) => {
             if (status === mapService.getServicesStatus('OK')) {
-              if (result[0].road_address) {
-                resolve(result[0].road_address.address_name);
-              } else {
-                resolve('');
+              const address: RegionCode = {
+                city: undefined,
+                hCity: undefined,
+              };
+              for (let i = 0; i < result.length; i++) {
+                if (result[i].region_type === 'H') {
+                  address['hCity'] = result[i].address_name;
+                }
+                if (result[i].region_type === 'B') {
+                  address['city'] = result[i].address_name;
+                }
               }
+              resolve(address);
             } else {
               reject(new Error('Geocoder failed'));
             }
@@ -29,7 +42,7 @@ const useGetAddressByCoordinates = () => {
     [geocoder],
   );
 
-  const getAddressByCoorinates = useCallback(
+  const getRegionCodeByCoorinates = useCallback(
     async (latitude: number, longitude: number) => {
       try {
         const addressName = await coord2RegionCodePromise(longitude, latitude);
@@ -44,8 +57,8 @@ const useGetAddressByCoordinates = () => {
   );
 
   return {
-    getAddressByCoorinates,
+    getRegionCodeByCoorinates,
   };
 };
 
-export default useGetAddressByCoordinates;
+export default useGetRegionCodeByCoordinates;

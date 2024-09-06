@@ -49,9 +49,12 @@ const SearchMGC = () => {
           onSubmit={handleSubmit(onSubmit)}
         >
           <input
-            placeholder="제목, 사용자명 또는 장소를 입력해 주세요."
+            placeholder="검색어를 두 글자 이상 입력해 주세요."
             className="h-10 w-full text-sm focus:outline-none"
-            {...register('search', { required: true })}
+            {...register('search', {
+              required: true,
+              minLength: 2,
+            })}
           />
         </form>
       </div>

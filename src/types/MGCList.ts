@@ -1,3 +1,5 @@
+import { LocationInfo } from '@/apis/mgc/queryFn';
+
 export interface MGCList {
   data: MGCSummary[];
 }
@@ -11,10 +13,6 @@ export interface MGCSummary {
   updatedAt: Date;
   maxParticipants: number;
   curParticipants: number;
-  location: {
-    address: string;
-    latitude: number;
-    longitude: number;
-  };
+  location: LocationInfo;
   tags: number[];
 }

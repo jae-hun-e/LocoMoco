@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useEffect, useId, useState } from 'react';
 import {
   UseFormGetValues,
   UseFormRegister,
@@ -48,6 +48,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
           ? selectedList
           : [...selectedList, selected]
         : [selected],
+      { shouldDirty: true },
     );
 
     trigger(field);
@@ -69,9 +70,18 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
 
   const handleRadioSelect = (field: keyof MGCCreateForm, selected: string, tags: TagType[]) => {
     const selectedTag = tags.filter(({ tag_name }) => tag_name === selected);
-    setValue(field, selectedTag);
+    setValue(field, selectedTag, { shouldDirty: true });
     trigger(field);
   };
+
+  const [radioValues, setRadioValues] = useState('');
+
+  useEffect(() => {
+    const job = initRadioSelect('직업' as keyof MGCCreateForm);
+    if (job) {
+      setRadioValues(job);
+    }
+  }, [getValues('직업' as keyof MGCCreateForm)]);
 
   return (
     <>
@@ -137,7 +147,7 @@ const OptionFields = ({ register, setValue, getValues, trigger }: Props) => {
                 <section key={category_id}>
                   <Label className="w-100pxr flex-shrink-0">{category_name}</Label>
                   <RadioGroup
-                    defaultValue={initRadioSelect(categoryNameCopy)}
+                    value={radioValues}
                     onValueChange={(value) => handleRadioSelect(categoryNameCopy, value, tags)}
                     className="mt-4 flex grow flex-wrap justify-around"
                   >
