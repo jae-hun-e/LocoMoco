@@ -30,7 +30,7 @@ export const Toaster = () => {
           </Toast>
         );
       })}
-      <ToastViewport className="bottom-50pxr" />
+      <ToastViewport className="bottom-64pxr" />
     </ToastProvider>
   );
 };
