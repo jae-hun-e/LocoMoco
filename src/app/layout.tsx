@@ -13,7 +13,7 @@ import GoogleAnalyticsTracker from './_components/GoogleAnalyticsTracker';
 import MapLoaderProvider from './_components/Map/MapLoaderProvider';
 import PagePathRecorder from './_components/PagePathRecorder';
 
-const pretendard = localFont({
+export const pretendard = localFont({
   src: '../../public/font/PretendardVariable.ttf',
   variable: '--pretendard',
   display: 'swap',

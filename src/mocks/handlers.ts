@@ -1,4 +1,4 @@
-import { api } from '@/constants/mswPath';
+import { apiFullUrl, apiPath } from '@/constants/mswPath';
 import { http } from 'msw';
 import response from './response';
 import addressList from './response/addressList.json';
@@ -10,7 +10,7 @@ const setBaseUrl = (path: string, isAbsoluteUrl: boolean) => {
 
 export const handlers = (isAbsoluteUrl: boolean) => {
   return [
-    ...[api.mgc, api.users, api.reviewContents].map((path) =>
+    ...[apiPath.mgc, apiPath.users, apiPath.reviewContents].map((path) =>
       http.get(setBaseUrl(path, isAbsoluteUrl), () => {
         return new Response(JSON.stringify(response[path]), {
           headers: {
@@ -20,17 +20,18 @@ export const handlers = (isAbsoluteUrl: boolean) => {
       }),
     ),
 
-    http.get(setBaseUrl(api.category, isAbsoluteUrl), ({ request }: { request: Request }) => {
+    http.get(setBaseUrl(apiPath.category, isAbsoluteUrl), ({ request }: { request: Request }) => {
       const type = new URL(request.url).searchParams.get('type');
+
       if (type === 'MOGAKKO') {
-        return new Response(JSON.stringify(response[api.category]), {
+        return new Response(JSON.stringify(response[apiPath.category]), {
           headers: {
             'Content-Type': 'application/json',
           },
         });
       }
     }),
-    http.get(setBaseUrl(api.mgcList, isAbsoluteUrl), ({ request }: { request: Request }) => {
+    http.get(setBaseUrl(apiPath.mgcList, isAbsoluteUrl), ({ request }: { request: Request }) => {
       const search = new URL(request.url).searchParams.get('search');
       const tags = new URL(request.url).searchParams.getAll('tags').map(Number);
 
@@ -51,7 +52,7 @@ export const handlers = (isAbsoluteUrl: boolean) => {
       }
     }),
 
-    http.get(setBaseUrl(api.address, isAbsoluteUrl), ({ request }: { request: Request }) => {
+    http.get(apiFullUrl.address, ({ request }: { request: Request }) => {
       const query = new URL(request.url).searchParams.get('query');
 
       if (query) {
@@ -66,8 +67,9 @@ export const handlers = (isAbsoluteUrl: boolean) => {
         });
       }
     }),
-    http.post(setBaseUrl(api.createReview, isAbsoluteUrl), async () => {
-      return new Response(JSON.stringify(response[api.createReview]), {
+
+    http.post(setBaseUrl(apiPath.createReview, isAbsoluteUrl), async () => {
+      return new Response(JSON.stringify(response[apiPath.createReview]), {
         headers: {
           'Content-Type': 'application/json',
         },
