@@ -8,7 +8,7 @@ interface MapViewerProps {
 
 const MapViewer = forwardRef(
   ({ width, height, children }: MapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
-    const heightVariant = height ? `h-${height}` : 'map-height';
+    const heightVariant = height ? `h-${height}` : 'body-height';
     const widthVariant = width ? `w-${width}` : 'w-full';
 
     return (

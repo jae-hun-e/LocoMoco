@@ -60,7 +60,7 @@ const Redirect = ({ params: { method } }: { params: { method: string } }) => {
   }, [code, method, router]);
 
   return (
-    <div className="flex h-svh flex-col justify-center">
+    <div className="flex flex-col justify-center body-height">
       <p className="">Redirecting...</p>
       <ProgressBar />
     </div>
