@@ -1,6 +1,7 @@
 import { useCallback, useContext, useEffect } from 'react';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import { MGCSummary } from '@/types/MGCList';
+import createdMarker from '../../../../public/created-mgc-marker.png';
 import { clustererContext } from './ClustererProvider';
 import { MapContext } from './MapProvider';
 
@@ -22,9 +23,8 @@ const Markers = ({ mapMGCData, onMarkerClick, onClustererClick }: MarkersProps) 
 
   const setMarker = useCallback(() => {
     const markersInfo: MakerInfo[] = [];
-    // TODO: 임시 아이콘 추후에 변경해야함 [24.04.21]
-    const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-    const imageSize = mapService.createSize(24, 35);
+    const imageSrc = createdMarker.src;
+    const imageSize = mapService.createSize(34, 39);
     const markerImage = mapService.createMarkerImage(imageSrc, imageSize);
 
     clusterer?.clear();
