@@ -3,10 +3,10 @@ import { useForm } from 'react-hook-form';
 import { selectionStatus } from '@/constants/categoryFilter';
 import useHorizontalScroll from '@/hooks/useHorizontalScroll';
 import { useTagMapping } from '@/hooks/useTagMapping';
-import { cn } from '@/libs/utils';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
 import Lightning from '../../../../public/Lightning.svg';
+import ArrowDownIcon from '../../../../public/arrow-down.svg';
 import LanguageCategory from '../../../../public/language-category-icon.svg';
 import Reset from '../../../../public/reset.svg';
 import StudyArea from '../../../../public/study-area-icon.svg';
@@ -22,9 +22,10 @@ interface ButtonSelectionStep {
 interface CategoryFilterProp {
   open: boolean;
   setOpen: (open: boolean) => void;
+  type: 'search' | 'map';
 }
 
-const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
+const CategoryFilter = ({ open, setOpen, type }: CategoryFilterProp) => {
   const { scrollRef, handleDragStart, handleDragMove, handleDragEnd, throttle } =
     useHorizontalScroll();
 
@@ -159,35 +160,8 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
         onMouseMove={throttle(handleDragMove, 100)}
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
-        className={cn(
-          'mx-auto flex w-[90%] flex-row justify-between gap-10pxr overflow-x-scroll whitespace-nowrap scrollbar-hide',
-          isSubmit && 'w-[95%]',
-        )}
+        className="flex flex-row justify-start gap-10pxr overflow-x-scroll whitespace-nowrap scrollbar-hide"
       >
-        <CategorySelectBtn
-          name={watch('mgcType').length === 0 ? '모각코 종류' : convertCategoriesToText('mgcType')}
-          onClick={() => handleBtnClick('mgcType')}
-          icon={<Lightning />}
-          selectionStep={btnSelectionData.mgcType}
-          label="mgcType buttons category"
-          catetory="mgcType"
-        />
-        <CategorySelectBtn
-          name={watch('language').length === 0 ? '개발 언어' : convertCategoriesToText('language')}
-          onClick={() => handleBtnClick('language')}
-          icon={<LanguageCategory />}
-          selectionStep={btnSelectionData.language}
-          label="language buttons category"
-          catetory="language"
-        />
-        <CategorySelectBtn
-          name={watch('area').length === 0 ? '공부 분야' : convertCategoriesToText('area')}
-          onClick={() => handleBtnClick('area')}
-          icon={<StudyArea />}
-          selectionStep={btnSelectionData.area}
-          label="area buttons category"
-          catetory="area"
-        />
         {isSubmit ? (
           <button
             onClick={handleResetClick}
@@ -198,6 +172,33 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
             </div>
           </button>
         ) : null}
+        <CategorySelectBtn
+          name={watch('mgcType').length === 0 ? '모각코 종류' : convertCategoriesToText('mgcType')}
+          onClick={() => handleBtnClick('mgcType')}
+          icon={type === 'map' ? <Lightning /> : <ArrowDownIcon />}
+          selectionStep={btnSelectionData.mgcType}
+          label="mgcType buttons category"
+          catetory="mgcType"
+          iconPosition={type === 'map' ? 'left' : 'right'}
+        />
+        <CategorySelectBtn
+          name={watch('language').length === 0 ? '개발 언어' : convertCategoriesToText('language')}
+          onClick={() => handleBtnClick('language')}
+          icon={type === 'map' ? <LanguageCategory /> : <ArrowDownIcon />}
+          selectionStep={btnSelectionData.language}
+          label="language buttons category"
+          catetory="language"
+          iconPosition={type === 'map' ? 'left' : 'right'}
+        />
+        <CategorySelectBtn
+          name={watch('area').length === 0 ? '공부 분야' : convertCategoriesToText('area')}
+          onClick={() => handleBtnClick('area')}
+          icon={type === 'map' ? <StudyArea /> : <ArrowDownIcon />}
+          selectionStep={btnSelectionData.area}
+          label="area buttons category"
+          catetory="area"
+          iconPosition={type === 'map' ? 'left' : 'right'}
+        />
       </div>
       {open ? (
         <FilterContent
