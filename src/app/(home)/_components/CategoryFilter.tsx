@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { selectionStatus } from '@/constants/categoryFilter';
 import useHorizontalScroll from '@/hooks/useHorizontalScroll';
+import { useTagMapping } from '@/hooks/useTagMapping';
 import { cn } from '@/libs/utils';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
@@ -27,13 +28,35 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
   const { scrollRef, handleDragStart, handleDragMove, handleDragEnd, throttle } =
     useHorizontalScroll();
 
+  const { searchValue, setSearchValue } = useSearchInputValueStore();
+
+  const tagMapping = useTagMapping();
+  const selectedTags = ([...tagMapping] ?? [])
+    .filter((e) => searchValue.tags?.includes(e[0]))
+    .map((x) => x[1]);
+
   const { control, handleSubmit, watch, reset, resetField } = useForm<SelectedCategoryData>({
     defaultValues: {
-      mgcType: [],
-      language: [],
-      area: [],
+      mgcType: selectedTags.filter((e) => e.categoryName === '모각코 유형'),
+      language: selectedTags.filter((e) => e.categoryName === '개발 언어'),
+      area: selectedTags.filter((e) => e.categoryName === '개발 유형'),
     },
   });
+
+  useEffect(() => {
+    if (watch('mgcType').length > 0 || watch('language').length > 0 || watch('area').length > 0) {
+      const mgcTypeTagIds = watch('mgcType').map((x) => x.tagId);
+      const languageTagIds = watch('language').map((x) => x.tagId);
+      const areaTagIds = watch('area').map((x) => x.tagId);
+
+      setSearchValue({
+        ...searchValue,
+        tags: [...mgcTypeTagIds, ...languageTagIds, ...areaTagIds],
+      });
+
+      setIsSubmit(true);
+    }
+  }, [setSearchValue, watch]);
 
   const [btnSelectionData, setBtnSelectionData] = useState<ButtonSelectionStep>({
     mgcType: selectionStatus.BEFORE,
@@ -76,8 +99,6 @@ const CategoryFilter = ({ open, setOpen }: CategoryFilterProp) => {
 
     ChangeBtnColor(buttonType);
   };
-
-  const { searchValue, setSearchValue } = useSearchInputValueStore();
 
   const onSubmit = (data: SelectedCategoryData) => {
     setBtnSelectionData({
