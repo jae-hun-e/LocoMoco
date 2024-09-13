@@ -3,7 +3,6 @@ import { UseFormSetValue, UseFormTrigger } from 'react-hook-form';
 import { LocationInfo } from '@/apis/mgc/queryFn';
 import { ThunderFormData } from '@/app/(home)/_components/ThunderModal/ThunderModalContent';
 import MapProvider from '@/app/_components/Map/MapProvider';
-import MapCustomControl from '@/app/_components/MapCustomControl';
 import { MGCCreateForm } from '@/app/create/_components/CreateMGC';
 import CreateMGCMapContent from '../../create/_components/CreateMGCMapContent';
 import CreateMGCMapViewer from '../../create/_components/CreateMGCMapViewer';
@@ -74,9 +73,7 @@ const MGCMap = ({ trigger, setValue, defaultAddress }: Props) => {
             setCurrentCoordinates={setCurrentCoordinates}
             onMouseUp={handleMouseUp}
             ref={mapRef}
-          >
-            <MapCustomControl topGap="small" />
-          </CreateMGCMapViewer>
+          />
           <p className="text-sm">{currentAddress}</p>
         </GeocoderProvider>
       </MapProvider>

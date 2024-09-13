@@ -1,13 +1,14 @@
-import { ForwardedRef, ReactNode, forwardRef } from 'react';
+import { ForwardedRef, forwardRef } from 'react';
+import MapCustomControl from '../MapCustomControl';
 
 interface MapViewerProps {
   width?: string;
   height?: string;
-  children?: ReactNode;
+  topGap: 'small' | 'large';
 }
 
 const MapViewer = forwardRef(
-  ({ width, height, children }: MapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
+  ({ width, height, topGap }: MapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
     const heightVariant = height ? `h-${height}` : 'map-height';
     const widthVariant = width ? `w-${width}` : 'w-full';
 
@@ -17,7 +18,7 @@ const MapViewer = forwardRef(
         ref={mapRef}
         className={`${heightVariant} ${widthVariant} relative`}
       >
-        {children}
+        <MapCustomControl topGap={topGap} />
       </div>
     );
   },
