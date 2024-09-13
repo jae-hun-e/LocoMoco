@@ -22,9 +22,9 @@ const SearchBarFilter = ({ renderComponent, type, open, setOpen }: SearchBarFilt
       <div
         ref={clickAwayRef}
         className={cn(
-          'w-full rounded-b-[30px] px-[5%] pt-20pxr',
+          'w-full rounded-b-[30px] pt-20pxr',
           open && 'bg-layer-1',
-          type === 'search' && 'bg-layer-1',
+          type === 'search' ? 'bg-layer-1 px-20pxr' : 'px-[5%]',
         )}
       >
         {renderComponent ? renderComponent() : null}
