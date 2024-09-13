@@ -14,6 +14,8 @@ const HomeSearchBarFilter = () => {
   const typingTimer = useRef<NodeJS.Timeout | null>(null);
   const [keyword, setKeyword] = useState('');
   const [show, setShow] = useState(false);
+  const [open, setOpen] = useState(false);
+
   const { data: address } = useAddress(keyword);
 
   const handleKeywordChange = () => {
@@ -59,6 +61,8 @@ const HomeSearchBarFilter = () => {
 
   return (
     <SearchBarFilter
+      open={open}
+      setOpen={setOpen}
       type="map"
       renderComponent={() => (
         <div

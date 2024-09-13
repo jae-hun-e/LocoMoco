@@ -3,7 +3,12 @@ import SearchBar from '@/app/_components/SearchBar';
 import CommonSearchBarFilter from '@/app/_components/SearchBarFilter';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 
-const SearchBarFilter = () => {
+interface SearchBarFilter {
+  open: boolean;
+  setOpen: (show: boolean) => void;
+}
+
+const SearchBarFilter = ({ open, setOpen }: SearchBarFilter) => {
   const { searchValue, setSearchValue } = useSearchInputValueStore();
   const [isFocus, setIsFocus] = useState(false);
 
@@ -22,6 +27,8 @@ const SearchBarFilter = () => {
 
   return (
     <CommonSearchBarFilter
+      open={open}
+      setOpen={setOpen}
       type="search"
       renderComponent={() => (
         <form
