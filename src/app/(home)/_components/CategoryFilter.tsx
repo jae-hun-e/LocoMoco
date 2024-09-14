@@ -128,6 +128,8 @@ const CategoryFilter = ({ open, setOpen, type }: CategoryFilterProp) => {
       area: selectionStatus.BEFORE,
     });
 
+    setSearchValue({ ...searchValue, tags: [] });
+
     reset();
     setIsSubmit(false);
   };
