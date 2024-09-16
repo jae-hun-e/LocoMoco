@@ -3,7 +3,7 @@ import useClickAway from '@/hooks/useClickaway';
 import { cn } from '@/libs/utils';
 import CategoryFilter from '../(home)/_components/CategoryFilter';
 
-interface SearchBarFilterProps {
+export interface SearchBarFilterProps {
   renderComponent: () => ReactNode;
   type: 'search' | 'map';
   open: boolean;
