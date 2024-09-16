@@ -2,7 +2,7 @@ import { MutableRefObject } from 'react';
 import { cn } from '@/libs/utils';
 import { Search } from 'lucide-react';
 
-interface SearchBarProps {
+export interface SearchBarProps {
   onInputChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder: string;
   onFocus?: () => void;
