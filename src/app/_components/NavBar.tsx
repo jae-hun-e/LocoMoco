@@ -7,7 +7,7 @@ import { usePathname } from 'next/navigation';
 import ChatIcon from '../../../public/chat.svg';
 import MapIcon from '../../../public/map.svg';
 import MypageIcon from '../../../public/mypage.svg';
-import SearchIcon from '../../../public/search.svg';
+import SearchIcon from '../../../public/search-icon.svg';
 
 const Navbar = () => {
   const pathname = usePathname();
