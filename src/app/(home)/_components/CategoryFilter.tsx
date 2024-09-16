@@ -3,6 +3,7 @@ import { useForm } from 'react-hook-form';
 import { selectionStatus } from '@/constants/categoryFilter';
 import useHorizontalScroll from '@/hooks/useHorizontalScroll';
 import { useTagMapping } from '@/hooks/useTagMapping';
+import { cn } from '@/libs/utils';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
 import Lightning from '../../../../public/Lightning.svg';
@@ -162,12 +163,15 @@ const CategoryFilter = ({ open, setOpen, type }: CategoryFilterProp) => {
         onMouseMove={throttle(handleDragMove, 100)}
         onMouseUp={handleDragEnd}
         onMouseLeave={handleDragEnd}
-        className="flex flex-row justify-start gap-10pxr overflow-x-scroll whitespace-nowrap scrollbar-hide"
+        className="flex flex-row justify-start gap-10pxr overflow-x-scroll whitespace-nowrap py-8pxr scrollbar-hide"
       >
         {isSubmit ? (
           <button
             onClick={handleResetClick}
-            className="itmain-1nter flex justify-center rounded-[20px] border border-layer-3 bg-white px-14pxr py-10pxr text-white"
+            className={cn(
+              'itmain-1nter flex justify-center rounded-[20px] border border-layer-3 bg-white px-14pxr py-10pxr text-white',
+              type === 'map' && 'shadow-md',
+            )}
           >
             <div className="h-16pxr w-16pxr">
               <Reset />
@@ -182,6 +186,7 @@ const CategoryFilter = ({ open, setOpen, type }: CategoryFilterProp) => {
           label="mgcType buttons category"
           catetory="mgcType"
           iconPosition={type === 'map' ? 'left' : 'right'}
+          className={type === 'map' && !open ? 'shadow-md' : ''}
         />
         <CategorySelectBtn
           name={watch('language').length === 0 ? '개발 언어' : convertCategoriesToText('language')}
@@ -191,6 +196,7 @@ const CategoryFilter = ({ open, setOpen, type }: CategoryFilterProp) => {
           label="language buttons category"
           catetory="language"
           iconPosition={type === 'map' ? 'left' : 'right'}
+          className={type === 'map' && !open ? 'shadow-md' : ''}
         />
         <CategorySelectBtn
           name={watch('area').length === 0 ? '공부 분야' : convertCategoriesToText('area')}
@@ -200,6 +206,7 @@ const CategoryFilter = ({ open, setOpen, type }: CategoryFilterProp) => {
           label="area buttons category"
           catetory="area"
           iconPosition={type === 'map' ? 'left' : 'right'}
+          className={type === 'map' && !open ? 'shadow-md' : ''}
         />
       </div>
       {open ? (

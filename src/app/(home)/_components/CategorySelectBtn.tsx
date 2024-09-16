@@ -10,6 +10,7 @@ interface CategorySelectBtnProps {
   label: string;
   catetory: 'mgcType' | 'language' | 'area';
   iconPosition: 'left' | 'right';
+  className?: string;
 }
 
 const CategorySelectBtn = ({
@@ -20,6 +21,7 @@ const CategorySelectBtn = ({
   label,
   catetory,
   iconPosition,
+  className,
 }: CategorySelectBtnProps) => {
   return (
     <button
@@ -30,6 +32,7 @@ const CategorySelectBtn = ({
         selectionStep === 'before' && 'border-layer-3 text-black-2',
         selectionStep === 'in' && ' bg-main-6',
         iconPosition === 'left' && selectionStep === 'submit' && 'border-layer-3 text-black-2',
+        className,
       )}
     >
       {iconPosition === 'left' ? (

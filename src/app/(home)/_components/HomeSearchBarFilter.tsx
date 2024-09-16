@@ -68,11 +68,11 @@ const HomeSearchBarFilter = () => {
         <div
           ref={clickAwayRef}
           id="input-container"
-          className="relative mb-8pxr"
+          className="relative"
         >
           <SearchBar
             type="radius"
-            className={show ? 'rounded-b-none' : ''}
+            className={`${show ? 'rounded-b-none' : ''} ${!open ? 'shadow-md' : ''}`}
             inputRef={inputRef}
             onInputChange={handleKeywordChange}
             onFocus={() => setShow(true)}

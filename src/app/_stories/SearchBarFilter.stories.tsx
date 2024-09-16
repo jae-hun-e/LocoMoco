@@ -47,13 +47,13 @@ export const 지도_페이지_서치바_필터 = (args: SearchBarFilterProps) =>
       setOpen={setOpen}
       renderComponent={() => (
         <div
-          className="relative mb-8pxr"
+          className="relative"
           ref={clickAwayRef}
         >
           <SearchBar
             type="radius"
             inputRef={inputRef}
-            className={show ? 'rounded-b-none' : ''}
+            className={`${show ? 'rounded-b-none' : ''} ${!open ? 'shadow-md' : ''}`}
             onFocus={() => setShow(true)}
             placeholder="동명(읍, 면)으로 검색(ex. 서초동)"
           />
