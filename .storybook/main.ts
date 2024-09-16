@@ -14,7 +14,19 @@ const config: StorybookConfig = {
     name: '@storybook/nextjs',
     options: {},
   },
-  staticDirs: ['../public'],
+  docs: {
+    autodocs: true,
+  },
+  staticDirs: [
+    {
+      from: '../public/font',
+      to: '/public/font',
+    },
+    {
+      from: '../public',
+      to: '/',
+    },
+  ],
   webpackFinal: async (config) => {
     if (config.resolve) {
       config.resolve.alias = {
@@ -22,8 +34,7 @@ const config: StorybookConfig = {
         '@': path.resolve(__dirname, 'src'),
       };
     }
-
-    if (!config.module || !config.module.rules) {
+    if (!config.module || !config.module.rules || !config.plugins) {
       return config;
     }
 
