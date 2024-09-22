@@ -32,25 +32,51 @@ const useGeolocation = () => {
   }, []);
 
   const handlePermissionChange = useCallback(() => {
-    navigator.permissions.query({ name: 'geolocation' }).then(() => {
+    if (navigator.permissions && typeof navigator.permissions.query === 'function') {
+      navigator.permissions
+        .query({ name: 'geolocation' })
+        .then(() => {
+          if (!('geolocation' in navigator)) {
+            onError('gps 추적이 불가능합니다.');
+          }
+          navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
+        })
+        .catch((error) => {
+          console.error('Permission query failed:', error);
+          onError('권한 확인 중 문제가 발생했습니다.');
+        });
+    } else {
       if (!('geolocation' in navigator)) {
         onError('gps 추적이 불가능합니다.');
       }
       navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
-    });
+    }
   }, [onError, onSuccess]);
 
   useEffect(() => {
-    handlePermissionChange();
+    let permissionStatus;
 
-    navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
-      permissionStatus.addEventListener('change', handlePermissionChange);
-    });
+    const checkPermission = () => {
+      if (navigator.permissions && typeof navigator.permissions.query === 'function') {
+        navigator.permissions
+          .query({ name: 'geolocation' })
+          .then((status) => {
+            permissionStatus = status;
+            permissionStatus.addEventListener('change', handlePermissionChange);
+          })
+          .catch((error) => {
+            console.error('Permission query failed in effect:', error);
+          });
+      }
+    };
+
+    handlePermissionChange();
+    checkPermission();
 
     return () => {
-      navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
+      if (permissionStatus) {
         permissionStatus.removeEventListener('change', handlePermissionChange);
-      });
+      }
     };
   }, [handlePermissionChange]);
 
