@@ -114,10 +114,11 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
     });
     const { participants } = mgcDetail;
     if (participants.length > 1) {
-      const sender = participants.filter((e) => e === myId)[0];
+      const sender = participants.filter((e) => e.userId.toString() === myId)[0];
+      console.log(participants, myId);
       sendPush({
         data: {
-          image: sender.profileImage.path,
+          image: sender.profileImage ? sender.profileImage.path : undefined,
           title: `${sender.nickname}의 메세지`,
           body: text,
           click_action: window.location.href,
