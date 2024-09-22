@@ -22,6 +22,20 @@ const ClustererProvider = ({ minLevel, children }: ClustererProps) => {
         minLevel: minLevel ?? 6, // 클러스터 할 최소 지도 레벨
         disableClickZoom: true, // 클러스터 마커를 클릭했을 때 지도가 확대되지 않도록 설정한다
         // disableClickZoom: false, // 클러스터 마커를 클릭했을 때 지도가 확대되도록 설정한다
+        styles: [
+          {
+            width: '45px',
+            height: '45px',
+            background: '#FFB600',
+            borderRadius: '50%',
+            color: 'white',
+            textAlign: 'center',
+            fontWeight: 'bold',
+            fontSize: '0.75rem',
+            lineHeight: '46px',
+            boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.3)',
+          },
+        ],
       };
       const clusterer = mapService.createMarkerClusterer(clustererOption);
 
