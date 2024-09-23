@@ -48,13 +48,14 @@ const useGeolocation = () => {
     } else {
       if (!('geolocation' in navigator)) {
         onError('gps 추적이 불가능합니다.');
+      } else {
+        navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
       }
-      navigator.geolocation.getCurrentPosition(onSuccess, () => onError());
     }
   }, [onError, onSuccess]);
 
   useEffect(() => {
-    let permissionStatus;
+    let permissionStatus: PermissionStatus | undefined;
 
     const checkPermission = () => {
       if (navigator.permissions && typeof navigator.permissions.query === 'function') {
