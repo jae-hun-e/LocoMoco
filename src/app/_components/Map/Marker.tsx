@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef } from 'react';
 import useKakaoMapService from '@/libs/kakaoMapWrapper';
 import { MapContext } from './MapProvider';
 
@@ -11,19 +11,30 @@ interface MarkerProps {
     height: number;
   };
   draggble?: boolean;
+  show?: boolean;
 }
 
-const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }: MarkerProps) => {
+const Marker = ({
+  latitude,
+  longitude,
+  markerSrc,
+  markerSize,
+  draggble = false,
+  show = true,
+}: MarkerProps) => {
   const map = useContext(MapContext);
-  const [mapMarker, setMapMarker] = useState<kakao.maps.Marker>();
+  const mapMarker = useRef<null | kakao.maps.Marker>(null);
   const mapService = useKakaoMapService();
 
   useEffect(() => {
     if (map) {
-      if (latitude === 0 || longitude === 0) return;
+      if (!show || latitude === 0 || longitude === 0) {
+        mapMarker.current?.setMap(null);
+        return;
+      }
 
-      if (mapMarker) {
-        mapMarker.setMap(null);
+      if (mapMarker.current) {
+        mapMarker.current.setMap(null);
       }
 
       const movePosition = mapService.createLatLng(latitude, longitude);
@@ -45,9 +56,9 @@ const Marker = ({ latitude, longitude, markerSrc, markerSize, draggble = false }
 
       marker.setMap(map);
       marker.setDraggable(draggble);
-      setMapMarker(marker);
+      mapMarker.current = marker;
     }
-  }, [draggble, latitude, longitude, map, markerSize?.height, markerSize?.width, markerSrc]);
+  }, [draggble, latitude, longitude, map, markerSize?.height, markerSize?.width, markerSrc, show]);
 
   return null;
 };
