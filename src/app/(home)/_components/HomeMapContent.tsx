@@ -8,6 +8,7 @@ import useGetAddressByCoordinates from '@/hooks/useGetAddressByCoordinates';
 import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
+import createPositionMarker from '../../../../public/create-position-marker.png';
 import MGCCreateBottomSheet from './MGCCreateBottomSheet';
 import SearchBarFilter from './SearchBarFilter';
 import ThunderModal from './ThunderModal/ThunderModal';
@@ -81,6 +82,13 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
       <Marker
         latitude={currentCoordinates.latitude}
         longitude={currentCoordinates.longitude}
+      />
+      <Marker
+        latitude={createdPositionInfo.latitude}
+        longitude={createdPositionInfo.longitude}
+        markerSrc={createPositionMarker.src}
+        markerSize={{ width: 65, height: 72 }}
+        show={open}
       />
       <MGCCreateBottomSheet
         open={open}
