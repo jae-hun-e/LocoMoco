@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import useA2HS from '@/hooks/useA2HS';
 import { useThunderModalStore } from '@/store/thunderModalStore';
 import { getItem } from '@/utils/storage';
 import { LockKeyhole, Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import A2HS from './A2HS';
 
 const CreateBtn = () => {
   let token: string | undefined;
@@ -14,7 +16,7 @@ const CreateBtn = () => {
   const router = useRouter();
   const [isCreateBtnOpen, setIsCreateBtnOpen] = useState(false);
   const { toggleModal } = useThunderModalStore();
-
+  const { installApp } = useA2HS();
   const handleCreateClick = (type: 'thunder' | 'normal') => {
     if (type === 'thunder') {
       toggleModal();
@@ -75,6 +77,13 @@ const CreateBtn = () => {
             >
               모각코
             </Button>
+            <Button
+              className="cursor-pointer"
+              onClick={installApp}
+            >
+              앱 설치
+            </Button>
+            <A2HS />
           </div>
         </PopoverContent>
       )}
