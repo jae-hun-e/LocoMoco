@@ -85,7 +85,7 @@ const MapSection = ({ data }: MGCListType) => {
         return;
       }
 
-      setSearchValue({ ...searchValue, address });
+      setSearchValue({ ...searchValue, search: address });
     },
     [getAddressByCoorinates],
   );

@@ -43,7 +43,7 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
   const updateSearchValueAddress = useCallback(
     async (latitude: number, longitude: number) => {
       const address = await getAddressByCoorinates(latitude, longitude);
-      setSearchValue({ ...searchValue, address });
+      setSearchValue({ ...searchValue, search: address });
     },
     [getAddressByCoorinates],
   );

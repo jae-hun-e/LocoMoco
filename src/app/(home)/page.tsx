@@ -19,7 +19,7 @@ const Home = () => {
   const { searchValue } = useSearchValueStore();
 
   const { data } = useMGCTotalList({
-    search: searchValue.address,
+    search: searchValue.search,
     searchType: 'LOCATION',
     tags: searchValue.tags,
   });
