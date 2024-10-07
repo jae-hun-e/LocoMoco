@@ -1,4 +1,4 @@
-import { FilterCategoryList } from '@/app/(home)/_components/FilterContent';
+import { FilterCategoryList } from '@/types/searchFilterCategory';
 import { getCategoryOptions } from '@/utils/getQueryOptions';
 import { useQueryClient } from '@tanstack/react-query';
 

@@ -1,11 +1,12 @@
 import { ReactNode } from 'react';
 import useClickAway from '@/hooks/useClickaway';
 import { cn } from '@/libs/utils';
+import { FilterCategoryList } from '@/types/searchFilterCategory';
 import { OpenInfo } from '../search/page';
 import CategoryFilterSection from './SearchBarFilter/CategoryFilterSection';
 
 // TODO: 나중에 api로 변경 [24.10.07]
-export const searchTypes = [
+export const searchTypes: FilterCategoryList[] = [
   {
     tagId: 1,
     tagName: '제목+내용',

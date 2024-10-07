@@ -1,8 +1,7 @@
 import { ChangeEvent } from 'react';
 import { UseFormResetField } from 'react-hook-form';
 import { cn } from '@/libs/utils';
-import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
-import { FilterCategoryList } from './CategoryDetailBtnGroup';
+import { FilterCategoryList, SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
 
 interface CategoryCheckboxProps {
   category: FilterCategoryList;

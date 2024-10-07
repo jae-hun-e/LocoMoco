@@ -2,14 +2,7 @@ import { Control, Controller, UseFormResetField } from 'react-hook-form';
 import CategoryDetailBtn from '@/app/_components/SearchBarFilter/CategoryDetailBtn';
 import { category } from '@/constants/categoryFilter';
 import useHorizontalScroll from '@/hooks/useHorizontalScroll';
-import { SelectedCategoryData } from '@/types/searchFilterCategory';
-
-export interface FilterCategoryList {
-  tagId: number;
-  tagName: string;
-  categoryName: string;
-  queryParamerter?: 'titleAndContent' | 'nickname' | 'location';
-}
+import { FilterCategoryList, SelectedCategoryData } from '@/types/searchFilterCategory';
 
 interface CategoryDetailBtnGroupProps {
   categoryName: 'mgcType' | 'language' | 'area' | 'searchType' | undefined;

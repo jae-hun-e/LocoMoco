@@ -9,3 +9,10 @@ export interface SelectedCategoryData {
   area: TagInfo[];
   searchType: TagInfo[];
 }
+
+export interface FilterCategoryList {
+  tagId: number;
+  tagName: string;
+  categoryName: string;
+  queryParamerter?: 'titleAndContent' | 'nickname' | 'location';
+}
