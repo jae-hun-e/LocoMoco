@@ -13,7 +13,7 @@ import { MGCSummary } from '@/types/MGCList';
 import { Separator } from '@radix-ui/react-separator';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import SearchBarFilter from './SearchBarFilter';
+import HomeSearchBarFilter from './HomeSearchBarFilter';
 import ThunderModal from './ThunderModal/ThunderModal';
 
 interface HomeMap {
@@ -43,7 +43,7 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
   const updateSearchValueAddress = useCallback(
     async (latitude: number, longitude: number) => {
       const address = await getAddressByCoorinates(latitude, longitude);
-      setSearchValue({ ...searchValue, address });
+      setSearchValue({ ...searchValue, search: address });
     },
     [getAddressByCoorinates],
   );
@@ -57,10 +57,11 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
       updateSearchValueAddress(lat, lng);
     }
   }, [changeCenter, location.coordinates, location.loaded, updateSearchValueAddress]);
+
   return (
     <>
       <section className="absolute z-40 flex w-full flex-col items-center">
-        <SearchBarFilter />
+        <HomeSearchBarFilter />
       </section>
       <ClustererProvider>
         <Markers

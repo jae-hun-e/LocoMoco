@@ -105,6 +105,7 @@ const config = {
         shadow: 'rgba(0, 0, 0, 0.4)',
         'sub-1': '#FFB600',
         'sub-2': '#7C88FF',
+        'opacity-main-1': 'rgba(88,198,148, 0.37)',
       },
       borderRadius: {
         lg: 'var(--radius)',

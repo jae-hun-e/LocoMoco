@@ -26,13 +26,7 @@ interface CreateMGCMapViewerProps {
 
 const CreateMGCMapViewer = forwardRef(
   (
-    {
-      onMouseUp,
-      children,
-      setCurrentCoordinates,
-      defaultAddress,
-      updateAddress,
-    }: CreateMGCMapViewerProps,
+    { onMouseUp, setCurrentCoordinates, defaultAddress, updateAddress }: CreateMGCMapViewerProps,
     mapRef: ForwardedRef<HTMLDivElement>,
   ) => {
     const map = useContext(MapContext);
@@ -132,9 +126,8 @@ const CreateMGCMapViewer = forwardRef(
       <MapViewer
         height="150pxr"
         ref={mapRef}
-      >
-        {children}
-      </MapViewer>
+        topGap="small"
+      />
     );
   },
 );

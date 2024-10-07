@@ -1,6 +1,6 @@
 import { Address } from '@/apis/address/useAddressSearch';
 import AddressList from '@/app/(home)/_components/AddressList';
-import SearchBarFilter from '@/app/(home)/_components/SearchBarFilter';
+import HomeSearchBarFilter from '@/app/(home)/_components/HomeSearchBarFilter';
 import { seochodongList } from '@/constants/searchResultAddressList';
 import setupRender from '@/libs/test/render';
 import { screen, waitFor } from '@testing-library/react';
@@ -11,9 +11,9 @@ let textInput: HTMLElement;
 
 describe('SearchBarFilter 컴포넌트 테스트', () => {
   beforeEach(async () => {
-    const { user: currentUser } = await setupRender(<SearchBarFilter />);
+    const { user: currentUser } = await setupRender(<HomeSearchBarFilter />);
     user = currentUser;
-    textInput = screen.getByPlaceholderText('동명(읍, 면)으로 검색(ex. 서초동).');
+    textInput = screen.getByPlaceholderText('동명(읍, 면)으로 검색(ex. 서초동)');
   });
 
   it('검색어 입력 전에는 AddressList 컴포넌트가 렌더되지 않는다.', () => {

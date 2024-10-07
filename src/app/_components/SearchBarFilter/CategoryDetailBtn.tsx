@@ -1,8 +1,7 @@
 import { ChangeEvent } from 'react';
 import { UseFormResetField } from 'react-hook-form';
 import { cn } from '@/libs/utils';
-import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
-import { FilterCategoryList } from './FilterContent';
+import { FilterCategoryList, SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
 
 interface CategoryCheckboxProps {
   category: FilterCategoryList;
@@ -12,9 +11,10 @@ interface CategoryCheckboxProps {
   categories: FilterCategoryList[];
   resetField: UseFormResetField<SelectedCategoryData>;
   allSelectTag?: FilterCategoryList;
+  type: 'radio' | 'checkbox';
 }
 
-const CategoryCheckbox = ({
+const CategoryDetailBtn = ({
   category,
   onChange,
   value,
@@ -22,10 +22,17 @@ const CategoryCheckbox = ({
   categories,
   resetField,
   allSelectTag,
+  type,
 }: CategoryCheckboxProps) => {
   const checked = value.map((item) => item.tagId).includes(category.tagId);
 
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
+    if (type === 'radio') {
+      onChange([{ tagId: category.tagId, tagName: category.queryParamerter ?? '' }]);
+
+      return;
+    }
+
     if (category.tagName === '전체') {
       if (e.target.checked) {
         onChange([...categories]);
@@ -62,7 +69,7 @@ const CategoryCheckbox = ({
         checked={disabled ? disabled : checked}
         onChange={handleValueChange}
         id={category.tagName}
-        type="checkbox"
+        type={type}
         name="type"
         value={category.tagId}
         className="hidden"
@@ -81,4 +88,4 @@ const CategoryCheckbox = ({
   );
 };
 
-export default CategoryCheckbox;
+export default CategoryDetailBtn;
