@@ -129,7 +129,7 @@ const Review = ({ MGCId, revieweeId, onCancel, isEnd }: ReviewProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="relative flex h-full flex-col gap-30pxr pb-50pxr">
+      <div className="relative flex h-full flex-col gap-30pxr pb-64pxr">
         <Profile
           userId={userInfo.userId}
           profileImg={userInfo?.profileImage?.path ?? ''}

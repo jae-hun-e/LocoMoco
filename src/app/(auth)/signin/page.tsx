@@ -18,7 +18,7 @@ const Signin = () => {
   }, [router]);
 
   return (
-    <section className="mx-auto flex h-svh flex-col items-center justify-center gap-3">
+    <section className="mx-auto flex flex-col items-center justify-center gap-3 body-height">
       <div className="mb-5 text-3xl font-bold">LocoMoco</div>
       <Link
         href={`https://github.com/login/oauth/authorize?client_id=${process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID}`}

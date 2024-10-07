@@ -126,11 +126,11 @@ const RootLayout = async ({
 
         <Provider>
           <MapLoaderProvider>
-            <main className="h-[calc(100vh-50px)]">
+            <main className="body-height">
               <div className="overflow-y-auto px-20pxr scrollbar-hide">
                 <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
                 <PagePathRecorder />
-                <div className="mb-50pxr" />
+                <div className="mb-64pxr" />
               </div>
             </main>
             <Navbar />
