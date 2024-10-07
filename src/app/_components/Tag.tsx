@@ -8,7 +8,7 @@ interface TagProps {
   theme?: 'green' | 'gray';
   onClick?: () => void;
   className?: string;
-  type: 'default' | 'removable';
+  type?: 'default' | 'removable';
 }
 
 const Tag = ({ children, theme, onClick, type = 'default', className }: TagProps) => {
