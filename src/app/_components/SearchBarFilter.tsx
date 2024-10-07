@@ -18,16 +18,19 @@ const searchTypes = [
     tagId: 1,
     tagName: '제목+내용',
     categoryName: '검색어 유형',
+    queryParamerter: 'titleAndContent',
   },
   {
     tagId: 2,
     tagName: '닉네임',
     categoryName: '검색어 유형',
+    queryParamerter: 'nickname',
   },
   {
     tagId: 3,
     tagName: '장소',
     categoryName: '검색어 유형',
+    queryParamerter: 'location',
   },
 ];
 
@@ -74,7 +77,7 @@ const SearchBarFilter = ({
     const arr = [] as TagInfo[];
     const filterdAll = arr.concat(...tagInfo).filter((tag) => tag.tagName !== '전체');
     const tagIds = filterdAll.map((tag) => tag.tagId);
-    const searchTypeName = searchType[0]?.tagName as '제목+내용' | '닉네임' | '장소' | undefined;
+    const searchTypeName = searchType[0]?.tagName as 'titleAndContent' | 'nickname' | 'location';
 
     setSearchValue({ ...searchValue, tags: tagIds, searchType: searchTypeName });
 

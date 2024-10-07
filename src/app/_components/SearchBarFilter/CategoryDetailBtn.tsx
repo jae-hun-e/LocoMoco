@@ -2,7 +2,7 @@ import { ChangeEvent } from 'react';
 import { UseFormResetField } from 'react-hook-form';
 import { cn } from '@/libs/utils';
 import { SelectedCategoryData, TagInfo } from '@/types/searchFilterCategory';
-import { FilterCategoryList } from '../../(home)/_components/FilterContent';
+import { FilterCategoryList } from './CategoryDetailBtnGroup';
 
 interface CategoryCheckboxProps {
   category: FilterCategoryList;
@@ -29,7 +29,7 @@ const CategoryDetailBtn = ({
 
   const handleValueChange = (e: ChangeEvent<HTMLInputElement>) => {
     if (type === 'radio') {
-      onChange([{ tagId: category.tagId, tagName: category.tagName }]);
+      onChange([{ tagId: category.tagId, tagName: category.queryParamerter ?? '' }]);
 
       return;
     }

@@ -15,7 +15,7 @@ export const category = {
 export const searchCategory = {
   location: '장소',
   titleAndContent: '제목+내용',
-  nickName: '닉네임',
+  nickname: '닉네임',
 } as const;
 
 export const iconSubmitColor = {

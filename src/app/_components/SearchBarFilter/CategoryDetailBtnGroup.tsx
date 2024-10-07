@@ -8,6 +8,7 @@ export interface FilterCategoryList {
   tagId: number;
   tagName: string;
   categoryName: string;
+  queryParamerter?: 'titleAndContent' | 'nickname' | 'location';
 }
 
 interface CategoryDetailBtnGroupProps {

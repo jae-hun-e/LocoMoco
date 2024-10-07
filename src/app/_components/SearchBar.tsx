@@ -1,4 +1,5 @@
 import { MutableRefObject } from 'react';
+import { searchCategory } from '@/constants/categoryFilter';
 import { cn } from '@/libs/utils';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import Category from '../../../public/category.svg';
@@ -57,7 +58,7 @@ const SearchBar = ({
           type="removable"
           onClick={handleRemoveBtnClick}
         >
-          {searchValue.searchType}
+          {searchCategory[searchValue.searchType]}
         </Tag>
       ) : null}
       <input
