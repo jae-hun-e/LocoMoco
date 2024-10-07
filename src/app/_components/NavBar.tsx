@@ -6,7 +6,7 @@ const Navbar = () => {
   return (
     <div
       id="navbar"
-      className="fixed bottom-0 z-20 flex h-50pxr w-full items-center justify-around bg-layer-1"
+      className="fixed bottom-0 z-40 flex h-50pxr w-full items-center justify-around bg-layer-1"
     >
       <Link href={routes.chat}>
         <MessageCircleIcon />
