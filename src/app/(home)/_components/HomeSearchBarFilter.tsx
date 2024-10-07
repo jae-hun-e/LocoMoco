@@ -2,10 +2,12 @@ import React, { useRef, useState } from 'react';
 import useAddress, { Address } from '@/apis/address/useAddressSearch';
 import SearchBar from '@/app/_components/SearchBar';
 import SearchBarFilter from '@/app/_components/SearchBarFilter';
+import { OpenInfo } from '@/app/search/page';
 import { toast } from '@/components/ui/use-toast';
 import useChangeMapCenter from '@/hooks/useChangeMapCenter';
 import useClickAway from '@/hooks/useClickaway';
 import useGetRegionCodeByCoordinates from '@/hooks/useGetRegionCodeByCoordinates';
+import { cn } from '@/libs/utils';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import AddressList from './AddressList';
 
@@ -14,7 +16,7 @@ const HomeSearchBarFilter = () => {
   const typingTimer = useRef<NodeJS.Timeout | null>(null);
   const [keyword, setKeyword] = useState('');
   const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openInfo, setOpenInfo] = useState<OpenInfo>({ isOpen: false, triggerType: 'category' });
 
   const { data: address } = useAddress(keyword);
 
@@ -61,8 +63,8 @@ const HomeSearchBarFilter = () => {
 
   return (
     <SearchBarFilter
-      open={open}
-      setOpen={setOpen}
+      openInfo={openInfo}
+      setOpenInfo={setOpenInfo}
       type="map"
       renderComponent={() => (
         <div
@@ -72,7 +74,11 @@ const HomeSearchBarFilter = () => {
         >
           <SearchBar
             type="radius"
-            className={`${show ? 'rounded-b-none' : ''} ${!open ? 'shadow-md' : ''}`}
+            className={cn(
+              'text-black-2',
+              show && 'rounded-b-none',
+              !openInfo.isOpen && 'shadow-md',
+            )}
             inputRef={inputRef}
             onInputChange={handleKeywordChange}
             onFocus={() => setShow(true)}

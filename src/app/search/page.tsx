@@ -7,36 +7,45 @@ import useSearchInputValueStore from '@/store/useSearchValueStore';
 import CreateBtn from '../_components/CreateBtn';
 import SearchBarFilter from './_components/SearchBarFilter';
 
+export interface OpenInfo {
+  isOpen: boolean;
+  triggerType: 'category' | 'searchType';
+}
+
 const SearchMGC = () => {
-  const [open, setOpen] = useState(false);
+  const [openInfo, setOpenInfo] = useState<OpenInfo>({ isOpen: false, triggerType: 'category' });
   const [paddingTop, setPaddingTop] = useState(7.5); // 기본 값
 
   const { searchValue, setSearchValue } = useSearchInputValueStore();
 
   const { data } = useMGCTotalList({
-    search: searchValue.address,
-    searchType: 'TITLE_CONTENT',
+    search: searchValue.search,
+    searchType: searchValue.searchType,
     tags: searchValue.tags,
   });
 
   useEffect(() => {
-    setSearchValue({ ...searchValue, address: '', tags: [] });
+    setSearchValue({ ...searchValue, search: '' });
   }, [setSearchValue]);
 
   useEffect(() => {
-    if (open && window.scrollY < 126) {
-      setPaddingTop((260 + window.scrollY) / 16);
+    if (openInfo.isOpen && window.scrollY < 126) {
+      if (openInfo.triggerType === 'category') {
+        setPaddingTop((260 + window.scrollY) / 16);
+      } else {
+        setPaddingTop((220 + window.scrollY) / 16);
+      }
     } else {
       setPaddingTop(7.5);
     }
-  }, [open]);
+  }, [openInfo.isOpen, openInfo.triggerType]);
 
   return (
     <>
       <section className="fixed left-0 z-40 flex w-full flex-col items-center">
         <SearchBarFilter
-          open={open}
-          setOpen={setOpen}
+          openInfo={openInfo}
+          setOpenInfo={setOpenInfo}
         />
       </section>
       <div

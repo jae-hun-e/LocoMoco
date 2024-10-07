@@ -2,13 +2,14 @@ import React, { FormEvent, useRef, useState } from 'react';
 import SearchBar from '@/app/_components/SearchBar';
 import CommonSearchBarFilter from '@/app/_components/SearchBarFilter';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
+import { OpenInfo } from '../page';
 
 interface SearchBarFilter {
-  open: boolean;
-  setOpen: (show: boolean) => void;
+  openInfo: { isOpen: boolean; triggerType: 'category' | 'searchType' };
+  setOpenInfo: ({ isOpen, triggerType }: OpenInfo) => void;
 }
 
-const SearchBarFilter = ({ open, setOpen }: SearchBarFilter) => {
+const SearchBarFilter = ({ openInfo, setOpenInfo }: SearchBarFilter) => {
   const { searchValue, setSearchValue } = useSearchInputValueStore();
   const [isFocus, setIsFocus] = useState(false);
 
@@ -21,14 +22,14 @@ const SearchBarFilter = ({ open, setOpen }: SearchBarFilter) => {
 
     const search = inputRef.current.value.trim();
     if (search.length > 1) {
-      setSearchValue({ ...searchValue, address: inputRef.current.value });
+      setSearchValue({ ...searchValue, search: inputRef.current.value });
     }
   };
 
   return (
     <CommonSearchBarFilter
-      open={open}
-      setOpen={setOpen}
+      openInfo={openInfo}
+      setOpenInfo={setOpenInfo}
       type="search"
       renderComponent={() => (
         <form
@@ -40,7 +41,9 @@ const SearchBarFilter = ({ open, setOpen }: SearchBarFilter) => {
             inputRef={inputRef}
             onFocus={() => setIsFocus(true)}
             onBlur={() => setIsFocus(false)}
-            className={isFocus ? 'border-opacity-main-1' : ''}
+            setOpenInfo={setOpenInfo}
+            openInfo={openInfo}
+            className={isFocus ? 'border-opacity-main-1 text-black-2' : ''}
             placeholder="검색어를 두 글자 이상 입력해 주세요."
           />
         </form>
