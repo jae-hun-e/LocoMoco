@@ -20,7 +20,7 @@ const Home = () => {
 
   const { data } = useMGCTotalList({
     search: searchValue.search,
-    searchType: 'LOCATION',
+    searchType: 'location',
     tags: searchValue.tags,
   });
 
