@@ -11,6 +11,7 @@ import SearchIcon from '../../../public/search-icon.svg';
 
 const Navbar = () => {
   const pathname = usePathname();
+  const css = 'flex flex-col items-center gap-3pxr';
 
   return (
     <div
@@ -19,28 +20,28 @@ const Navbar = () => {
     >
       <Link
         href={routes.home}
-        className={cn('flex flex-col gap-3pxr', pathname === routes.home && 'text-main-1')}
+        className={cn(css, pathname === routes.home && 'text-main-1')}
       >
         <MapIcon />
         <span className="text-xs">주변</span>
       </Link>
       <Link
         href={routes.search}
-        className={cn('flex flex-col gap-3pxr', pathname === routes.search && 'text-main-1')}
+        className={cn(css, pathname === routes.search && 'text-main-1')}
       >
         <SearchIcon />
         <span className="text-xs">검색</span>
       </Link>
       <Link
         href={routes.chat}
-        className={cn('flex flex-col gap-3pxr', pathname === routes.chat && 'text-main-1')}
+        className={cn(css, pathname === routes.chat && 'text-main-1')}
       >
         <ChatIcon />
         <span className="text-xs">채팅</span>
       </Link>
       <Link
         href={routes.mypage}
-        className={cn('flex flex-col gap-3pxr', pathname === routes.mypage && 'text-main-1')}
+        className={cn(css, pathname === routes.mypage && 'text-main-1')}
       >
         <MypageIcon />
         <span className="text-xs">MY</span>
