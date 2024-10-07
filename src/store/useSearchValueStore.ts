@@ -9,6 +9,7 @@ interface SearchValueStore {
 export interface Position {
   search?: string;
   tags?: number[];
+  searchType?: '제목+내용' | '닉네임' | '장소';
 }
 
 export const useSearchValueStore = create<SearchValueStore>()(
