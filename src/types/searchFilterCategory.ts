@@ -7,4 +7,5 @@ export interface SelectedCategoryData {
   mgcType: TagInfo[];
   language: TagInfo[];
   area: TagInfo[];
+  searchType: TagInfo[];
 }
