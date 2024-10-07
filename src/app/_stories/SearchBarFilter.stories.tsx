@@ -4,6 +4,12 @@ import type { Meta } from '@storybook/react';
 import AddressList from '../(home)/_components/AddressList';
 import SearchBar from '../_components/SearchBar';
 import SearchBarFilter, { SearchBarFilterProps } from '../_components/SearchBarFilter';
+import { OpenInfo } from '../search/page';
+
+const openInfoDummy: OpenInfo = {
+  isOpen: false,
+  triggerType: 'category',
+};
 
 const meta: Meta<typeof SearchBarFilter> = {
   title: 'Components/SearchBarFilter',
@@ -23,10 +29,10 @@ const meta: Meta<typeof SearchBarFilter> = {
     renderComponent: {
       description: '렌더될 인풋 컴포넌트',
     },
-    open: {
-      description: '필터의 오픈 여부',
+    openInfo: {
+      description: '필터가 열렸는지 여부와 어떤 요소에 의해 열렸는지를 나타내는 속성',
     },
-    setOpen: {
+    setOpenInfo: {
       description: '필터 오픈 상태를 변경하는 함수',
     },
   },
@@ -36,15 +42,15 @@ export default meta;
 
 export const 지도_페이지_서치바_필터 = (args: SearchBarFilterProps) => {
   const [show, setShow] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openInfo, setOpenInfo] = useState(openInfoDummy);
   const inputRef = useRef(null);
   const clickAwayRef = useClickAway<HTMLDivElement>(() => setShow(false));
 
   return (
     <SearchBarFilter
       {...args}
-      open={open}
-      setOpen={setOpen}
+      openInfo={openInfo}
+      setOpenInfo={setOpenInfo}
       renderComponent={() => (
         <div
           className="relative"
@@ -75,17 +81,17 @@ export const 지도_페이지_서치바_필터 = (args: SearchBarFilterProps) =>
 
 export const 검색_페이지_서치바_필터 = (args: SearchBarFilterProps) => {
   const [isFocus, setIsFocus] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openInfo, setOpenInfo] = useState(openInfoDummy);
   const inputRef = useRef(null);
 
   return (
     <SearchBarFilter
       {...args}
-      open={open}
-      setOpen={setOpen}
+      openInfo={openInfo}
+      setOpenInfo={setOpenInfo}
       renderComponent={() => (
         <form
-          onSubmit={() => setOpen(false)}
+          onSubmit={() => setOpenInfo({ ...openInfo, isOpen: false })}
           className="relative mb-8pxr"
         >
           <SearchBar
