@@ -53,7 +53,7 @@ const SearchMGC = () => {
         className="pt-120pxr"
         style={{ paddingTop: `${paddingTop}rem` }}
       >
-        <div className="fixed bottom-50pxr right-24pxr z-30">
+        <div className="fixed bottom-79pxr right-24pxr z-30">
           <CreateBtn />
         </div>
         <MGCList data={data ?? []}></MGCList>
