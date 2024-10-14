@@ -37,7 +37,10 @@ export const metadata: Metadata = {
     url: process.env.NEXT_PUBLIC_SITE_BASE_URL,
     siteName: '로코모코',
   },
+  manifest: '/manifest.json',
   icons: {
+    icon: '/icon-192x192.png',
+    apple: '/icon-192x192.png',
     other: [
       {
         url: '/splashscreens/iphone5_splash.png',
@@ -123,14 +126,13 @@ const RootLayout = async ({
           src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_MAP_KEY}&autoload=false&libraries=clusterer,services`}
           strategy="beforeInteractive"
         />
-
         <Provider>
           <MapLoaderProvider>
-            <main className="h-[calc(100vh-50px)]">
+            <main className="body-height">
               <div className="overflow-y-auto px-20pxr scrollbar-hide">
                 <HydrationBoundary state={dehydratedState}>{children}</HydrationBoundary>
                 <PagePathRecorder />
-                <div className="mb-50pxr" />
+                <div className="mb-64pxr" />
               </div>
             </main>
             <Navbar />

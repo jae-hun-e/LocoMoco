@@ -1,4 +1,5 @@
 import client from '@/apis/core';
+import { getItem } from '@/utils/storage';
 import { useQuery } from '@tanstack/react-query';
 
 export interface UserInfoProps {
@@ -25,7 +26,13 @@ interface MypageInfoProps {
 
 const getMypageInfo = async ({ userId }: { userId: number }) => {
   try {
-    return await client.get<MypageInfoProps>({ url: `/users/${userId}` });
+    return await client.get<MypageInfoProps>({
+      url: `/users/${userId}`,
+      headers: {
+        Authorization: `Bearer ${getItem(localStorage, 'token')}`,
+        provider: getItem(localStorage, 'provider'),
+      },
+    });
   } catch (error) {
     console.error('마이페이지 정보를 불러오는데 실패했습니다.', error);
   }

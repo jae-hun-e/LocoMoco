@@ -36,8 +36,8 @@ const BottomSheet = ({ children, open, setOpen }: BottomSheetProps) => {
           목록보기
         </Button>
       </DrawerTrigger>
-      <DrawerContent className="none-overlay z-30 flex h-[70svh] flex-col gap-0 overflow-y-auto rounded-t-xl p-0 outline-none">
-        <div className="overflow-y-auto px-20pxr pb-50pxr scrollbar-hide">{children}</div>
+      <DrawerContent className="none-overlay z-10 flex h-[70svh] flex-col gap-0 overflow-y-auto rounded-t-xl p-0 outline-none">
+        <div className="overflow-y-auto px-20pxr pb-64pxr scrollbar-hide">{children}</div>
       </DrawerContent>
     </Drawer>
   );

@@ -1,5 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { LocationInfo } from '@/apis/mgc/queryFn';
+import useKakaoMapService from '@/libs/kakaoMapWrapper';
+import createdMarker from '../../../../../public/created-mgc-marker.png';
 
 interface Props {
   location: LocationInfo;
@@ -7,29 +9,29 @@ interface Props {
 
 const StaticMap = ({ location: { address, latitude, longitude } }: Props) => {
   const mapRef = useRef<HTMLDivElement>(null);
+  const mapService = useKakaoMapService();
 
   useEffect(() => {
-    window.kakao.maps.load(() => {
-      const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png';
-      const imageSize = new kakao.maps.Size(24, 35);
-      const markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize);
+    const imageSrc = createdMarker.src;
+    const imageSize = mapService.createSize(34, 39);
+    const markerImage = mapService.createMarkerImage(imageSrc, imageSize);
 
-      const position = new kakao.maps.LatLng(latitude, longitude);
-      const marker = new kakao.maps.Marker({ position, image: markerImage });
+    const position = mapService.createLatLng(latitude, longitude);
+    const marker = mapService.createMarker({ position, image: markerImage });
 
-      if (mapRef.current != null) {
-        const mapOption = {
-          center: position,
-          level: 3,
-          marker: { position },
-        };
+    if (mapRef.current != null) {
+      const mapOption = {
+        center: position,
+        level: 3,
+        marker: { position },
+      };
 
-        const staticMap = new window.kakao.maps.Map(mapRef.current, mapOption);
-        staticMap.setDraggable(false);
-        staticMap.setZoomable(false);
-        marker.setMap(staticMap);
-      }
-    });
+      const staticMap = mapService.createMap(mapRef.current, mapOption);
+      staticMap.setDraggable(false);
+      staticMap.setZoomable(false);
+      marker.setMap(staticMap);
+    }
+    // });
   }, [mapRef]);
 
   return (

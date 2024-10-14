@@ -14,7 +14,7 @@ const myId = typeof window !== 'undefined' ? getItem(localStorage, 'userId') : n
 
 const Messages = ({ talks }: Props) => {
   return (
-    <div className="flex h-[calc(100vh-288px)] flex-col gap-1">
+    <div className="flex h-[calc(100vh-292px)] flex-col gap-1">
       <NotMessage>
         {talks && talks?.length !== 0 && format(talks[0].createdAt, 'yyyy-MM-dd-E', { locale: ko })}
       </NotMessage>

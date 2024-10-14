@@ -9,6 +9,7 @@ import useCreatedPositionInfo from '@/store/useCreatedPositionInfo';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import createPositionMarker from '../../../../public/create-position-marker.png';
+import currentLocationMarker from '../../../../public/current-location-marker.png';
 import MGCCreateBottomSheet from './MGCCreateBottomSheet';
 import SearchBarFilter from './SearchBarFilter';
 import ThunderModal from './ThunderModal/ThunderModal';
@@ -69,7 +70,7 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
   }, [changeCenter, location.coordinates, location.loaded, updateSearchValueAddress]);
   return (
     <>
-      <section className="absolute z-20 flex w-full flex-col items-center">
+      <section className="absolute z-40 flex w-full flex-col items-center">
         <SearchBarFilter />
       </section>
       <ClustererProvider>
@@ -82,6 +83,8 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
       <Marker
         latitude={currentCoordinates.latitude}
         longitude={currentCoordinates.longitude}
+        markerSrc={currentLocationMarker.src}
+        markerSize={{ width: 40, height: 40 }}
       />
       <Marker
         latitude={createdPositionInfo.latitude}
