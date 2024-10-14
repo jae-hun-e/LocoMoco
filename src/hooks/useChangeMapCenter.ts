@@ -7,10 +7,14 @@ const useChangeMapCenter = () => {
   const mapService = useKakaoMapService();
 
   const changeCenter = useCallback(
-    (latitude: number, longitude: number) => {
+    (latitude: number, longitude: number, mode?: 'smooth' | 'default') => {
       if (map) {
         const movePosition = mapService.createLatLng(latitude, longitude);
-        map.setCenter(movePosition);
+        if (mode === 'smooth') {
+          map.panTo(movePosition);
+        } else {
+          map.setCenter(movePosition);
+        }
       }
     },
     [map],
