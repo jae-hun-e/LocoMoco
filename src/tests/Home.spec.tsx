@@ -112,7 +112,7 @@ const setup = async (geocodeAddress: string) => {
 
   const { user } = await setupRender(<Home />);
 
-  const textInput = screen.getByPlaceholderText('동명(읍, 면)으로 검색(ex. 서초동).');
+  const textInput = screen.getByPlaceholderText('동명(읍, 면)으로 검색(ex. 서초동)');
   const ListShowButton = screen.getByText('목록보기');
 
   return {
@@ -179,7 +179,7 @@ describe('Home컴포넌트', () => {
 
   it('해당 지역에 있는 모각코 리스트가 나타난다.', async () => {
     const currentAddress = '서울특별시 서초구 서초1동';
-    mockuseSearchValueStore({ searchValue: { address: currentAddress, tags: undefined } });
+    mockuseSearchValueStore({ searchValue: { search: currentAddress, tags: undefined } });
 
     const { user, ListShowButton } = await setup('서울특별시 서초구 서초1동');
 
