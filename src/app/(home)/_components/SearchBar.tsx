@@ -50,7 +50,7 @@ const SearchBar = () => {
 
     setSearchValue({
       ...searchValue,
-      address: newRegionCode.hCity?.split(' ').slice(0, len).join(' '),
+      search: newRegionCode.hCity?.split(' ').slice(0, len).join(' '),
     });
   };
 

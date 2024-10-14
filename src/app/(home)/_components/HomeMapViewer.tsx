@@ -1,7 +1,6 @@
 import {
   ForwardedRef,
   MutableRefObject,
-  ReactNode,
   forwardRef,
   useCallback,
   useContext,
@@ -20,11 +19,10 @@ type Location = { latitude: number; longitude: number };
 interface HomeMapViewerProps {
   timerRef: MutableRefObject<NodeJS.Timeout | null>;
   onMouseUp: () => void;
-  children: ReactNode;
 }
 
 const HomeMapViewer = forwardRef(
-  ({ timerRef, onMouseUp, children }: HomeMapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
+  ({ timerRef, onMouseUp }: HomeMapViewerProps, mapRef: ForwardedRef<HTMLDivElement>) => {
     const map = useContext(MapContext);
     const mapService = useKakaoMapService();
 
@@ -126,7 +124,12 @@ const HomeMapViewer = forwardRef(
       };
     }, [handleMouseDown, onMouseUp, handleTouchStart, map, findAllSvgElements]);
 
-    return <MapViewer ref={mapRef}>{children}</MapViewer>;
+    return (
+      <MapViewer
+        ref={mapRef}
+        topGap="large"
+      />
+    );
   },
 );
 
