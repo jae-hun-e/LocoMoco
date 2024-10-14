@@ -84,12 +84,12 @@ const Markers = ({ mapMGCData, onMarkerClick, onClustererClick }: MarkersProps) 
   }, [map, onMarkerClick, setMarker]);
 
   useEffect(() => {
-    if (clusterer) {
+    if (clusterer && onClustererClick) {
       renderMarkerInCluseter();
-    } else if (map) {
+    } else if (map && !onClustererClick) {
       renderMarkerInMap();
     }
-  }, [clusterer, map, renderMarkerInCluseter, renderMarkerInMap]);
+  }, [clusterer, map, onClustererClick, renderMarkerInCluseter, renderMarkerInMap]);
 
   return null;
 };

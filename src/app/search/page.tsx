@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
+import ThunderModal from '../(home)/_components/ThunderModal/ThunderModal';
 import CreateBtn from '../_components/CreateBtn';
 import SearchBarFilter from './_components/SearchBarFilter';
 
@@ -52,11 +53,12 @@ const SearchMGC = () => {
         className="pt-120pxr"
         style={{ paddingTop: `${paddingTop}rem` }}
       >
-        <div className="fixed bottom-50pxr right-24pxr z-30">
+        <div className="fixed bottom-79pxr right-24pxr z-30">
           <CreateBtn />
         </div>
         <MGCList data={data ?? []}></MGCList>
       </div>
+      <ThunderModal />
     </>
   );
 };
