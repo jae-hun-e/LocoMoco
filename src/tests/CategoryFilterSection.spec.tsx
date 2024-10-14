@@ -1,6 +1,7 @@
 import React, { ReactNode } from 'react';
 import { FormProvider, useForm } from 'react-hook-form';
-import CategoryFilter from '@/app/(home)/_components/CategoryFilter';
+import CategoryFilterSection from '@/app/_components/SearchBarFilter/CategoryFilterSection';
+import { OpenInfo } from '@/app/search/page';
 import setupRender from '@/libs/test/render';
 import useSearchValueStore from '@/store/useSearchValueStore';
 import { SelectedCategoryData } from '@/types/searchFilterCategory';
@@ -25,12 +26,13 @@ const Wrapper = ({ children }: { children: ReactNode }) => {
   return <FormProvider {...formMethods}>{children}</FormProvider>;
 };
 
-const setup = async ({ open }: { open: boolean }) => {
+const setup = async ({ openInfo, type }: { openInfo: OpenInfo; type: 'map' | 'search' }) => {
   const { user } = await setupRender(
     <Wrapper>
-      <CategoryFilter
-        open={open}
-        setOpen={vi.fn()}
+      <CategoryFilterSection
+        openInfo={openInfo}
+        setOpenInfo={vi.fn()}
+        type={type}
       />
     </Wrapper>,
   );
@@ -46,9 +48,13 @@ const setup = async ({ open }: { open: boolean }) => {
   };
 };
 
-describe('CategoryFilter컴포넌트 테스트', () => {
+describe('CategoryFilterSection컴포넌트 테스트', () => {
   it('카테고리 버튼을 클릭하지 않으면 필터 카테고리가 나타나지 않는다.', async () => {
-    await setup({ open: false });
+    const openInfo: OpenInfo = {
+      isOpen: false,
+      triggerType: 'category',
+    };
+    await setup({ openInfo: openInfo, type: 'map' });
 
     expect(screen.queryByLabelText('filter content')).not.toBeInTheDocument();
   });
@@ -58,11 +64,15 @@ describe('CategoryFilter컴포넌트 테스트', () => {
       .filter((e) => e.category_name === '모각코 유형')
       .flatMap((category) => category.tags);
 
-    const { user, mgcTypeBtn } = await setup({ open: true });
+    const openInfo: OpenInfo = {
+      isOpen: true,
+      triggerType: 'category',
+    };
+
+    const { user, mgcTypeBtn } = await setup({ openInfo: openInfo, type: 'map' });
 
     await user.click(mgcTypeBtn);
 
-    screen.debug(await screen.findByText('전체'));
     for (const tag of categoryTags) {
       expect(await screen.findByText(tag.tag_name)).toBeInTheDocument();
     }
@@ -73,7 +83,12 @@ describe('CategoryFilter컴포넌트 테스트', () => {
       .filter((e) => e.category_name === '개발 언어')
       .flatMap((category) => category.tags);
 
-    const { user, languageTypeBtn } = await setup({ open: true });
+    const openInfo: OpenInfo = {
+      isOpen: true,
+      triggerType: 'category',
+    };
+
+    const { user, languageTypeBtn } = await setup({ openInfo: openInfo, type: 'map' });
 
     await user.click(languageTypeBtn);
 
@@ -87,7 +102,12 @@ describe('CategoryFilter컴포넌트 테스트', () => {
       .filter((e) => e.category_name === '개발 유형')
       .flatMap((category) => category.tags);
 
-    const { user, areaTypeBtn } = await setup({ open: true });
+    const openInfo: OpenInfo = {
+      isOpen: true,
+      triggerType: 'category',
+    };
+
+    const { user, areaTypeBtn } = await setup({ openInfo: openInfo, type: 'map' });
 
     await user.click(areaTypeBtn);
 
@@ -110,7 +130,15 @@ describe('CategoryFilter컴포넌트 테스트', () => {
         .filter((tag) => selectedCategory.includes(tag.tag_name))
         .map((x) => x.tag_id);
 
-      const { user, mgcTypeBtn, languageTypeBtn, areaTypeBtn } = await setup({ open: true });
+      const openInfo: OpenInfo = {
+        isOpen: true,
+        triggerType: 'category',
+      };
+
+      const { user, mgcTypeBtn, languageTypeBtn, areaTypeBtn } = await setup({
+        openInfo: openInfo,
+        type: 'map',
+      });
 
       await user.click(mgcTypeBtn);
       if (selectedMgcType) await user.click(await screen.findByText(selectedMgcType));

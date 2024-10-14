@@ -6,7 +6,6 @@ import useSearchValueStore from '@/store/useSearchValueStore';
 import { MGCSummary } from '@/types/MGCList';
 import GeocoderProvider from '../_components/Map/GeocoderProvider';
 import MapProvider from '../_components/Map/MapProvider';
-import MapCustomControl from '../_components/MapCustomControl';
 import HomeMapContent from './_components/HomeMapContent';
 import HomeMapFooter from './_components/HomeMapFooter ';
 import HomeMapViewer from './_components/HomeMapViewer';
@@ -20,8 +19,8 @@ const Home = () => {
   const { searchValue } = useSearchValueStore();
 
   const { data } = useMGCTotalList({
-    search: searchValue.address,
-    searchType: 'LOCATION',
+    search: searchValue.search,
+    searchType: 'location',
     tags: searchValue.tags,
   });
 
@@ -78,9 +77,7 @@ const Home = () => {
             ref={mapRef}
             timerRef={timerRef}
             onMouseUp={handleMouseUp}
-          >
-            <MapCustomControl topGap="large" />
-          </HomeMapViewer>
+          />
         </GeocoderProvider>
       </MapProvider>
 

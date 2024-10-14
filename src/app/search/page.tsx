@@ -1,71 +1,65 @@
 'use client';
 
-import { useEffect } from 'react';
-import { SubmitHandler, useForm } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
-import { Search } from 'lucide-react';
 import ThunderModal from '../(home)/_components/ThunderModal/ThunderModal';
 import CreateBtn from '../_components/CreateBtn';
-import Filter from '../_components/filter/Filter';
+import SearchBarFilter from './_components/SearchBarFilter';
 
-type SearchForm = {
-  search: string;
-};
+export interface OpenInfo {
+  isOpen: boolean;
+  triggerType: 'category' | 'searchType';
+}
 
 const SearchMGC = () => {
+  const [openInfo, setOpenInfo] = useState<OpenInfo>({ isOpen: false, triggerType: 'category' });
+  const [paddingTop, setPaddingTop] = useState(7.5); // 기본 값
+
   const { searchValue, setSearchValue } = useSearchInputValueStore();
-  useEffect(() => {
-    setSearchValue({ ...searchValue, address: '', tags: [] });
-  }, []);
 
   const { data } = useMGCTotalList({
-    search: searchValue.address,
-    searchType: 'TITLE_CONTENT',
+    search: searchValue.search,
+    searchType: searchValue.searchType,
     tags: searchValue.tags,
   });
 
-  const { register, handleSubmit } = useForm<SearchForm>();
+  useEffect(() => {
+    setSearchValue({ ...searchValue, search: '' });
+  }, [setSearchValue]);
 
-  const onSubmit: SubmitHandler<SearchForm> = ({ search }) => {
-    console.log(search);
-    setSearchValue({ ...searchValue, address: search });
-  };
+  useEffect(() => {
+    if (openInfo.isOpen && window.scrollY < 126) {
+      if (openInfo.triggerType === 'category') {
+        setPaddingTop((260 + window.scrollY) / 16);
+      } else {
+        setPaddingTop((220 + window.scrollY) / 16);
+      }
+    } else {
+      setPaddingTop(7.5);
+    }
+  }, [openInfo.isOpen, openInfo.triggerType]);
 
   return (
-    <div className="pt-20pxr">
-      <div
-        id="input-wrap"
-        className="flex h-50pxr flex-row items-center rounded-lg border"
-      >
-        <Search
-          width={20}
-          height={20}
-          color="gray"
-          className="m-10pxr"
+    <>
+      <section className="fixed left-0 z-40 flex w-full flex-col items-center">
+        <SearchBarFilter
+          openInfo={openInfo}
+          setOpenInfo={setOpenInfo}
         />
-        <form
-          className="w-full"
-          onSubmit={handleSubmit(onSubmit)}
-        >
-          <input
-            placeholder="검색어를 두 글자 이상 입력해 주세요."
-            className="h-10 w-full text-sm focus:outline-none"
-            {...register('search', {
-              required: true,
-              minLength: 2,
-            })}
-          />
-        </form>
+      </section>
+      <div
+        className="pt-120pxr"
+        style={{ paddingTop: `${paddingTop}rem` }}
+      >
+        <div className="fixed bottom-50pxr right-24pxr z-30">
+          <CreateBtn />
+        </div>
+        <MGCList data={data ?? []}></MGCList>
       </div>
-      <Filter />
-      <div className="fixed bottom-64pxr right-24pxr z-30">
-        <CreateBtn />
-      </div>
-      <MGCList data={data ?? []}></MGCList>
       <ThunderModal />
-    </div>
+    </>
   );
 };
 
