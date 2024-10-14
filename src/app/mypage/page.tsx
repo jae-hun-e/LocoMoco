@@ -140,7 +140,7 @@ const MyPage = () => {
           </div>
         </section>
       ) : (
-        <div className="flex h-svh w-full items-center justify-center">
+        <div className="flex w-full items-center justify-center body-height">
           <Link href={routes.signin}>
             <Button onClick={() => clearItem(localStorage)}>
               회원가입 시에만 사용할 수 있습니다.

@@ -16,7 +16,7 @@ const ChatInput = forwardRef(({ sendMessage }: Props, inputRef: Ref<HTMLTextArea
   };
 
   return (
-    <div className="fixed bottom-50pxr z-50 flex w-[calc(100%-2.5rem)] flex-col justify-between gap-1 bg-layer-1">
+    <div className="fixed bottom-64pxr z-50 flex w-[calc(100%-2.5rem)] flex-col justify-between gap-1 bg-layer-1">
       <Textarea
         ref={inputRef}
         onKeyDown={handleNewLine}

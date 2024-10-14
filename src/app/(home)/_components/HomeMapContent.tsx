@@ -13,6 +13,7 @@ import { MGCSummary } from '@/types/MGCList';
 import { Separator } from '@radix-ui/react-separator';
 import { X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import currentLocationMarker from '../../../../public/current-location-marker.png';
 import HomeSearchBarFilter from './HomeSearchBarFilter';
 import ThunderModal from './ThunderModal/ThunderModal';
 
@@ -73,6 +74,8 @@ const HomeMapContent = ({ data, handleMarkerClick, openBottomSheetAndUpdate }: H
       <Marker
         latitude={currentCoordinates.latitude}
         longitude={currentCoordinates.longitude}
+        markerSrc={currentLocationMarker.src}
+        markerSize={{ width: 40, height: 40 }}
       />
       <InfoWindow
         show={infoWindowPosition.latitude !== 0 && infoWindowPosition.longitude !== 0}

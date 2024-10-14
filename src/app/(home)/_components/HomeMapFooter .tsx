@@ -14,7 +14,7 @@ const HomeMapFooter = ({ open, setOpen, MGCDataList }: HomeMapFooterProps) => {
     <>
       <div
         id="mgc-create-btn"
-        className="absolute bottom-0 right-24pxr z-30"
+        className="absolute bottom-15pxr right-24pxr z-30"
       >
         <CreateBtn />
       </div>
