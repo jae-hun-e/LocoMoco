@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
@@ -16,8 +16,9 @@ const CreateBtn = () => {
 
   const router = useRouter();
   const [isCreateBtnOpen, setIsCreateBtnOpen] = useState(false);
-  const { toggleModal } = useThunderModalStore();
+  const { isOpen, toggleModal } = useThunderModalStore();
   const { installApp } = useA2HS();
+
   const clickAwayRef = useClickAway<HTMLDivElement>(() => setIsCreateBtnOpen(false));
 
   const handleCreateClick = (type: 'thunder' | 'normal') => {
@@ -29,12 +30,17 @@ const CreateBtn = () => {
   };
 
   const handleButtonClick = () => {
-    setIsCreateBtnOpen(true);
+    setIsCreateBtnOpen(isCreateBtnOpen ? false : true);
     if (token === undefined) {
       router.push('/signin');
     }
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      setIsCreateBtnOpen(false);
+    }
+  }, [isOpen]);
   return (
     <div ref={clickAwayRef}>
       <Popover open={isCreateBtnOpen}>
