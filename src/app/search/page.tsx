@@ -6,6 +6,7 @@ import useMGCTotalList from '@/apis/mgcList/useMGCTotalList';
 import MGCList from '@/app/_components/MGCList/MGCList';
 import useSearchInputValueStore from '@/store/useSearchValueStore';
 import { Search } from 'lucide-react';
+import ThunderModal from '../(home)/_components/ThunderModal/ThunderModal';
 import CreateBtn from '../_components/CreateBtn';
 import Filter from '../_components/filter/Filter';
 
@@ -63,6 +64,7 @@ const SearchMGC = () => {
         <CreateBtn />
       </div>
       <MGCList data={data ?? []}></MGCList>
+      <ThunderModal />
     </div>
   );
 };
