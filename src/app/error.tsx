@@ -13,7 +13,7 @@ const Error = () => {
         src={'/error.png'}
         height={80}
         width={80}
-        alt="bad"
+        alt="error page image"
       />
       <div className="flex flex-col items-center justify-center">
         <p className="font-bold">오류가 발생했습니다.</p>
