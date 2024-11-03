@@ -29,7 +29,7 @@ const Filter = () => {
             className="p-0 hover:no-underline"
             aria-label="accordion trigger"
           >
-            <div className="flex w-full flex-row justify-between gap-1.5">
+            <div className="z-50 flex w-full flex-row justify-between gap-1.5">
               <span>모각코 종류</span>
               <span>개발 언어</span>
               <span>공부 분야</span>

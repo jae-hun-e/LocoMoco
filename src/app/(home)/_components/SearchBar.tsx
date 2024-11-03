@@ -81,7 +81,7 @@ const SearchBar = () => {
           onFocus={() => setShow(true)}
           onChange={handleKeywordChange}
           placeholder="동명(읍, 면)으로 검색(ex. 서초동)."
-          className="h-10 w-full rounded-[30px] text-sm focus:outline-none"
+          className="z-50 h-10 w-full rounded-[30px] text-sm focus:outline-none"
         />
       </div>
       {show && (
