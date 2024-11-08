@@ -75,7 +75,7 @@ const CategorySelectBtnGroup = ({
       onMouseMove={throttle(handleDragMove, 100)}
       onMouseUp={handleDragEnd}
       onMouseLeave={handleDragEnd}
-      className="flex flex-row justify-start gap-10pxr overflow-x-scroll whitespace-nowrap py-8pxr scrollbar-hide"
+      className="z-50 flex flex-row justify-start gap-10pxr overflow-x-scroll whitespace-nowrap py-8pxr scrollbar-hide"
     >
       {isSubmit ? (
         <button

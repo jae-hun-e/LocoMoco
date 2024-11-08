@@ -70,7 +70,6 @@ const CreateBtn = () => {
         </PopoverTrigger>
         {token && (
           <PopoverContent className="w-auto border-0 bg-transparent p-10pxr text-sm shadow-none">
-            {/* TODO: 추후 디자인 논의 후 변경 [24/02/12] */}
             <div className="flex flex-col gap-2 text-right">
               <Button
                 className="cursor-pointer"
