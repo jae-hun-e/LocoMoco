@@ -1,5 +1,6 @@
 import Home from '@/app/(home)/page';
 import { geocodeAddressConversion } from '@/constants/geocodeAddressConversion';
+import { mockGeolocation, mockPermissions, mockScrollTo } from '@/libs/test/mockWindowUtils';
 import { mockUseKakaoMapLoadStore, mockuseSearchValueStore } from '@/libs/test/mockZustandStore';
 import setupRender from '@/libs/test/render';
 import { screen, waitFor } from '@testing-library/react';
@@ -22,42 +23,6 @@ vi.mock('next/navigation', async () => {
       push: vi.fn(),
     }),
   };
-});
-
-Object.defineProperty(window.navigator, 'geolocation', {
-  value: {
-    getCurrentPosition: vi.fn().mockImplementation((success) =>
-      Promise.resolve(
-        success({
-          coords: {
-            latitude: 0,
-            longitude: 0,
-          },
-        }),
-      ),
-    ),
-  },
-  writable: true,
-});
-
-Object.defineProperty(window.navigator, 'permissions', {
-  value: {
-    query: vi.fn(() =>
-      Promise.resolve({
-        name: 'geolocation',
-        state: 'granted',
-        onchange: null,
-        addEventListener: vi.fn(),
-        removeEventListener: vi.fn(),
-      }),
-    ),
-  },
-  writable: true,
-});
-
-Object.defineProperty(window, 'scrollTo', {
-  value: vi.fn(),
-  writable: true,
 });
 
 const mockCoord2RegionCode = vi.fn();
@@ -127,6 +92,12 @@ global.ResizeObserver = class MockedResizeObserver {
   unobserve = vi.fn();
   disconnect = vi.fn();
 };
+
+beforeAll(() => {
+  mockGeolocation();
+  mockPermissions();
+  mockScrollTo();
+});
 
 describe('Home컴포넌트', () => {
   it('검색어 입력 후 주소를 선택하고 필터를 선택하면 해당하는 마커가 나타난다.', async () => {
