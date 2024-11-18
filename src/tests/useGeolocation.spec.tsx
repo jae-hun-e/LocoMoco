@@ -1,10 +1,6 @@
 import { toast } from '@/components/ui/use-toast';
-import useGeolocation, { LocationType } from '@/hooks/useGeolocation';
+import useGeolocation from '@/hooks/useGeolocation';
 import { act, renderHook } from '@testing-library/react';
-
-interface HookResult {
-  current: LocationType;
-}
 
 const mockPush = vi.fn();
 
@@ -60,25 +56,28 @@ const mockGeolocationPermission = (state: string) => {
   });
 };
 
-describe('위치 접근 권한을 허용한 경우', () => {
-  let hookResult: HookResult = {} as HookResult;
+const setup = async (state: 'granted' | 'denied') => {
+  mockGeolocationPermission(state);
 
-  beforeEach(async () => {
-    mockGeolocationPermission('granted');
+  return await act(async () => {
+    const { result } = renderHook(() => useGeolocation());
 
-    await act(async () => {
-      const { result } = renderHook(() => useGeolocation());
-      hookResult = result;
-    });
+    return { result };
   });
+};
 
-  it('toast메시지가 나타나지 않는다.', () => {
+describe('위치 접근 권한을 허용한 경우', () => {
+  it('toast메시지가 나타나지 않는다.', async () => {
+    await setup('granted');
+
     expect(toast).not.toBeCalled();
   });
 
-  it('현재 위치 좌표와 loaded값을 담은 객체를 반환한다.', () => {
-    expect(hookResult.current.loaded).toEqual(true);
-    expect(hookResult.current.coordinates).toEqual({
+  it('현재 위치 좌표와 loaded값을 담은 객체를 반환한다.', async () => {
+    const { result } = await setup('granted');
+
+    expect(result.current.loaded).toEqual(true);
+    expect(result.current.coordinates).toEqual({
       lat: mockCoords.latitude,
       lng: mockCoords.longitude,
     });
@@ -87,11 +86,7 @@ describe('위치 접근 권한을 허용한 경우', () => {
 
 describe('위치 접근 권한을 허용하지 않은 경우', () => {
   it("'💡 위치정보를 허용하지 않으면 현재 위치가 표시되지 않습니다!'문구의 toast메시지가 나타난다.", async () => {
-    mockGeolocationPermission('denied');
-
-    await act(async () => {
-      renderHook(() => useGeolocation());
-    });
+    await setup('denied');
 
     expect(toast).toBeCalledWith({
       description: '💡 위치정보를 허용하지 않으면 현재 위치가 표시되지 않습니다!',
