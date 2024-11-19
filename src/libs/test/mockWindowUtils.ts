@@ -63,11 +63,3 @@ export const mockPermissions = {
 export const mockScrollTo = () => {
   Object.defineProperty(window, 'scrollTo', { value: vi.fn(), writable: true });
 };
-
-export const mockResizeObserver = () => {
-  global.ResizeObserver = class MockedResizeObserver {
-    observe = vi.fn();
-    unobserve = vi.fn();
-    disconnect = vi.fn();
-  };
-};
