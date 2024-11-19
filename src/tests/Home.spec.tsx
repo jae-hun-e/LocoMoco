@@ -93,9 +93,14 @@ global.ResizeObserver = class MockedResizeObserver {
   disconnect = vi.fn();
 };
 
+const mockCoords = {
+  latitude: 0,
+  longitude: 0,
+};
+
 beforeAll(() => {
-  mockGeolocation();
-  mockPermissions();
+  mockPermissions['granted']();
+  mockGeolocation['granted'](mockCoords);
   mockScrollTo();
 });
 

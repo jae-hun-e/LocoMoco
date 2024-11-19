@@ -1,5 +1,6 @@
 import { toast } from '@/components/ui/use-toast';
 import useGeolocation from '@/hooks/useGeolocation';
+import { mockGeolocation, mockPermissions } from '@/libs/test/mockWindowUtils';
 import { act, renderHook } from '@testing-library/react';
 
 const mockPush = vi.fn();
@@ -24,40 +25,9 @@ const mockCoords = {
   longitude: 10,
 };
 
-const mockGeolocationPermission = (state: string) => {
-  Object.defineProperty(window.navigator, 'geolocation', {
-    value: {
-      getCurrentPosition: vi.fn().mockImplementation((success, error) =>
-        Promise.resolve(
-          state === 'granted'
-            ? success({
-                coords: mockCoords,
-              })
-            : error(),
-        ),
-      ),
-    },
-    writable: true,
-  });
-
-  Object.defineProperty(window.navigator, 'permissions', {
-    value: {
-      query: vi.fn(() =>
-        Promise.resolve({
-          name: 'geolocation',
-          state: state,
-          onchange: null,
-          addEventListener: vi.fn(),
-          removeEventListener: vi.fn(),
-        }),
-      ),
-    },
-    writable: true,
-  });
-};
-
 const setup = async (state: 'granted' | 'denied') => {
-  mockGeolocationPermission(state);
+  mockPermissions[state]();
+  mockGeolocation[state](mockCoords);
 
   return await act(async () => {
     const { result } = renderHook(() => useGeolocation());
