@@ -13,7 +13,9 @@ axiosInstance.interceptors.request.use(
   (config) => {
     if (typeof window !== 'undefined' && !config.headers['Authorization']) {
       const token = getItem<string>(localStorage, 'token');
+      const provider = getItem<string>(localStorage, 'provider');
       if (token) config.headers['Authorization'] = `Bearer ${token}`;
+      config.headers['provider'] = provider ?? '';
     }
     return config;
   },
