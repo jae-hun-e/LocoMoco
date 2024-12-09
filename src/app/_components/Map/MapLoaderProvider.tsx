@@ -8,13 +8,15 @@ const MapLoaderProvider = ({
 }: Readonly<{
   children: ReactNode;
 }>) => {
-  const { setIsLoad } = useKakaoMapLoad();
+  const { isLoad, setIsLoad } = useKakaoMapLoad();
 
   useEffect(() => {
-    window.kakao.maps.load(function () {
-      setIsLoad(true);
-    });
-  }, [setIsLoad]);
+    if (!isLoad) {
+      window.kakao.maps.load(() => {
+        setIsLoad(true);
+      });
+    }
+  }, [isLoad, setIsLoad]);
 
   return <>{children}</>;
 };
