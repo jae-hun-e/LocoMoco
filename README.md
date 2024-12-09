@@ -21,16 +21,15 @@ _`위치`를 기반으로 `편리하게` 모각코를 생성, 참여할 수는 �
 ## ✨ 주요 기능
 
 ### 🗺 지도
+<img src="https://github.com/user-attachments/assets/b353fa6a-311f-42fa-ad07-320f60ff712b" alt="이미지 설명" width="1000" height="500" />
 
-![image](https://github.com/kimyou1102/alarm-app/assets/66080362/b5bc9c2a-3902-4be1-aba2-6c29e00b7199)
-
-- 모각코 위치별로 확인
+- 지도에서 꾹눌러 모각코 생성
 - 마커 클릭 시 모각코 정보 확인
+- 모각코 위치별로 확인
 - 주소 검색 및 필터링으로 원하는 모각코만 확인 가능
 
 ### 🌀 모각코 생성하기
-
-![image](https://github.com/kimyou1102/alarm-app/assets/66080362/4ffba89f-ad20-4213-bcd4-f882f7e06803)
+<img src="https://github.com/user-attachments/assets/b5ee3946-7021-45e3-ae27-47d8446c5842" alt="이미지 설명" width="500" height="500" />
 
 - 번개 모각코/ 일반 모각코 생성하기
 - 현재 위치 혹은 지도에서 표시한 위치를 기반으로 모각코 생성
