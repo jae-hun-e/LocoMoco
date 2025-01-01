@@ -44,19 +44,25 @@ const Redirect = ({ params: { method } }: { params: { method: string } }) => {
       .get<ResponseType>({
         url: `users/login/${method}/callback?code=${code}`,
       })
-      .then(({ tokenResponseDto: { access_token }, userInfoDto: { nickname, userId } }) => {
-        if (!nickname) {
-          setItem(sessionStorage, 'token', access_token);
-          setItem(sessionStorage, 'userId', userId.toString());
+      .then(
+        ({
+          tokenResponseDto: { access_token, refresh_token },
+          userInfoDto: { nickname, userId },
+        }) => {
+          if (!nickname) {
+            setItem(sessionStorage, 'token', access_token);
+            setItem(sessionStorage, 'userId', userId.toString());
 
-          router.replace(`/signup/${method}`);
-        } else {
-          setItem(localStorage, 'token', access_token);
-          setItem(localStorage, `userId`, userId.toString());
-          setItem(localStorage, 'provider', method.toUpperCase());
-          router.replace('/');
-        }
-      });
+            router.replace(`/signup/${method}`);
+          } else {
+            setItem(localStorage, 'token', access_token);
+            setItem(localStorage, 'userId', userId.toString());
+            setItem(localStorage, 'provider', method.toUpperCase());
+            setItem(localStorage, 'refreshToken', refresh_token);
+            router.replace('/');
+          }
+        },
+      );
   }, [code, method, router]);
 
   return (

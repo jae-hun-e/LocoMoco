@@ -19,6 +19,7 @@ interface ChatRoomInfo {
   updatedAt: string;
   lastMessage: ChatType;
   participantCnt: number;
+  unReadMsgCnt: number;
 }
 
 const ChatList = () => {
@@ -40,14 +41,15 @@ const ChatList = () => {
     }
   };
 
-  const fetchChats = async ({ pageParam }: { pageParam: number }) => {
+  const fetchChats = async ({ pageParam }: { pageParam: string }) => {
     const data = await client.get<ChatRoomInfo[]>({
-      url: `/chats/rooms/${userId}?${pageParam === 0 ? '' : `cursor=${pageParam}&`}pageSize=10`,
+      url: `/chats/rooms/${userId}?${pageParam === '0' ? '' : `cursor=${pageParam}&`}pageSize=10`,
       headers: {
         Authorization: `Bearer ${getItem(localStorage, 'token')}`,
         provider: getItem(localStorage, 'provider'),
       },
     });
+    console.log(data);
     setChatRooms([...chatRooms, ...data]);
     if (data.length < 10) setStop(true);
     return data;
@@ -56,14 +58,13 @@ const ChatList = () => {
   const { hasNextPage, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
     queryKey: ['moreChatList'],
     queryFn: fetchChats,
-    initialPageParam: 0,
+    initialPageParam: '0',
     getNextPageParam: () => {
       if (stop || chatRooms.length === 0) return undefined;
-      return chatRooms[chatRooms.length - 1].roomId;
+      return chatRooms[chatRooms.length - 1].updatedAt;
     },
     enabled: !!userId,
   });
-  console.log(hasNextPage);
 
   useEffect(() => {
     if (!getItem(localStorage, 'token')) router.replace('/signin');
@@ -72,10 +73,10 @@ const ChatList = () => {
   return (
     <ul className="flex flex-col gap-2">
       {chatRooms?.length !== 0
-        ? chatRooms?.map(({ mogakkoId, lastMessage, name, updatedAt }) => (
+        ? chatRooms?.map(({ mogakkoId, lastMessage, name, updatedAt, unReadMsgCnt }) => (
             <li
-              key={mogakkoId}
               className="flex cursor-pointer items-center justify-between gap-2"
+              key={mogakkoId}
               onClick={() => router.push(`chat/${mogakkoId}`)}
             >
               <Image
@@ -86,10 +87,15 @@ const ChatList = () => {
                 className="h-12 w-12 rounded-xl"
                 priority
               />
-              <div className="flex w-48 grow flex-col">
+              <div className="flex grow flex-col">
                 <p className="text-lg">{name}</p>
                 <p className="text-gray-500">{lastMessage.message}</p>
               </div>
+              {unReadMsgCnt > 0 && (
+                <p className="flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-sm text-white">
+                  {unReadMsgCnt}
+                </p>
+              )}
               <p className="text-sm text-gray-500">{handleDate(updatedAt)}</p>
             </li>
           ))

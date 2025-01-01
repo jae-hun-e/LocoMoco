@@ -2,7 +2,7 @@
 
 import { ReactNode } from 'react';
 import client from '@/apis/core';
-import { clearItem, setItem } from '@/utils/storage';
+import { clearItem, getItem, setItem } from '@/utils/storage';
 import { initializeApp } from '@firebase/app';
 import { QueryCache, QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -30,7 +30,12 @@ const Provider = ({
             clearItem(localStorage);
           } else if (error.response?.status === 1401) {
             client
-              .get<RefreshTokenResponse>({ url: '/users/refresh/kakao' })
+              .get<RefreshTokenResponse>({
+                url: '/users/refresh/kakao',
+                headers: {
+                  refreshToken: getItem(localStorage, 'refreshToken'),
+                },
+              })
               .then((res) => setItem(localStorage, 'token', res.access_token));
           }
         }
