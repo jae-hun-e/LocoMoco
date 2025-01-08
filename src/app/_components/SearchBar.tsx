@@ -49,7 +49,7 @@ const SearchBar = ({
         className,
       )}
     >
-      <div className={cn('mr-15pxr', type === 'radius' && 'ml-15pxr')}>
+      <div className={cn('ml-1 mr-10pxr', type === 'radius' && 'ml-15pxr')}>
         <Search />
       </div>
       {type === 'flat' && searchValue.searchType ? (

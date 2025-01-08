@@ -34,7 +34,7 @@ const SearchBarFilter = ({ openInfo, setOpenInfo }: SearchBarFilter) => {
       renderComponent={() => (
         <form
           onSubmit={handleSubmit}
-          className="relative mb-8pxr"
+          className="relative"
         >
           <SearchBar
             type="flat"
@@ -43,7 +43,7 @@ const SearchBarFilter = ({ openInfo, setOpenInfo }: SearchBarFilter) => {
             onBlur={() => setIsFocus(false)}
             setOpenInfo={setOpenInfo}
             openInfo={openInfo}
-            className={isFocus ? 'border-opacity-main-1 text-black-2' : ''}
+            className={isFocus ? 'border-opacity-main-1 text-black-2' : '' + 'rounded-xl'}
             placeholder="검색어를 두 글자 이상 입력해 주세요."
           />
         </form>

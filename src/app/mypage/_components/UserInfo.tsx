@@ -1,52 +1,42 @@
 'use client';
 
 import MainStyleButton from '@/components/MainStyleButton';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Avatar, AvatarImage } from '@/components/ui/avatar';
 import { routes } from '@/constants/routeURL';
 import { useTagMapping } from '@/hooks/useTagMapping';
-import Image from 'next/image';
 import Link from 'next/link';
 import { UserInfoProps } from '../_hooks/useMypageInfo';
-
-// import { UserInfoProps } from '../page';
 
 const UserInfo = ({ myInfo }: { myInfo: UserInfoProps }) => {
   const tagMapping = useTagMapping();
 
   return (
-    <section className="my-5">
+    <section className="rounded-xl bg-layer-1 p-4 pb-0 shadow-lg">
       <div className="flex gap-4">
-        <Avatar className="h-100pxr w-100pxr rounded-full">
+        <Avatar className="h-80pxr w-80pxr rounded-full">
           <AvatarImage
             src={myInfo.profileImage ? myInfo.profileImage.path : '/oh.png'}
             alt="유저 이미지"
           />
-          <AvatarFallback>
-            <Image
-              src={'/oh.png'}
-              alt={'cn'}
-              width={100}
-              height={100}
-            />
-          </AvatarFallback>
         </Avatar>
-        <div className="flex flex-grow flex-col justify-center gap-2">
-          <div className="mx-auto flex flex-col justify-center">
-            <p>닉네임 : {myInfo.nickname}</p>
-            <div className="flex gap-6">
-              <p>성별 : {myInfo.gender === 'MALE' ? '남성' : '여성'}</p>
-              <p>나이 : {new Date().getFullYear() - Number(myInfo.birth.split('-')[0])}세</p>
-            </div>
-            <p>직업 : {tagMapping.get(myInfo.jobId)?.tagName}</p>
-            <p>온도 : {myInfo.temperature}</p>
+        <div className="flex flex-grow flex-col justify-center gap-1">
+          <div className="flex items-center gap-1">
+            <p className="font-bold">{myInfo.nickname}</p>
+            <p className="rounded-md bg-temp-bg p-1 text-sm text-temp-text">{myInfo.temperature}</p>
+          </div>
+          <div className="flex text-black-4">
+            <p>{tagMapping.get(myInfo.jobId)?.tagName}|</p>
+            <p>{myInfo.gender === 'MALE' ? '남성' : '여성'}|</p>
+            <p>{new Date().getFullYear() - Number(myInfo.birth.split('-')[0])}세</p>
           </div>
         </div>
       </div>
 
       <Link href={routes.changeMyInfo}>
         <MainStyleButton
-          content="개인정보 수정하기"
-          layout="h-33pxr"
+          content="프로필 수정"
+          layout="p-1"
+          className="bg-gray-200 text-black"
         />
       </Link>
     </section>
