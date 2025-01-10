@@ -12,7 +12,7 @@ interface Props {
 const MainStyleButton = ({ layout, content, className, children, onClick, disabled }: Props) => {
   return (
     <div
-      className={cn('my-10pxr flex h-50pxr items-center gap-18pxr', layout)}
+      className={cn('my-10pxr flex h-48pxr items-center gap-18pxr', layout)}
       onClick={onClick}
     >
       <button

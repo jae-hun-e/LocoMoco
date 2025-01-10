@@ -91,6 +91,10 @@ const config = {
         'main-4': '#C2EAD8',
         'main-5': '#E0F6EB',
         'main-6': '#F0FAF5',
+        'main-7': '#EDF4F1',
+        'temp-bg': '#F2F3F9',
+        'temp-text': '#7C88FF',
+
         hover: '#39A776',
 
         'red-1': '#FF5A5A',

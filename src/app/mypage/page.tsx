@@ -3,7 +3,6 @@
 import client from '@/apis/core';
 import UserInfo from '@/app/mypage/_components/UserInfo';
 import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
 import { routes } from '@/constants/routeURL';
 import { useRequestPermission } from '@/hooks/useRequestPermission';
 import { clearItem, getItem } from '@/utils/storage';
@@ -84,10 +83,11 @@ const MyPage = () => {
   return (
     <>
       {myInfo ? (
-        <section>
+        <section className="flex h-full flex-col justify-evenly">
+          <div className="flex w-full text-xl font-bold">마이페이지</div>
           <UserInfo myInfo={myInfo.userInfo} />
-          <div className="mb-10 flex flex-col gap-4 font-bold">
-            <p className="text-xl text-main-1">나의 활동</p>
+          <div className="flex flex-col gap-4 rounded-xl bg-layer-1 p-4 font-bold shadow-xl">
+            <p className="text-lg text-main-1">나의 활동</p>
             {myActivities.map(({ link, title, count }) => (
               <div
                 key={link}
@@ -98,44 +98,40 @@ const MyPage = () => {
                     {title} {count ?? ''}
                   </p>
                   <Link href={link}>
-                    <ChevronRightIcon />
+                    <ChevronRightIcon className="cursor-pointer text-black-5" />
                   </Link>
                 </div>
-                <Separator />
               </div>
             ))}
           </div>
-          <div className="mb-10 flex flex-col gap-4 font-bold">
-            <p className="text-xl text-main-1">내 정보 관리</p>
+          <div className="flex flex-col gap-4 rounded-xl bg-layer-1 p-4 font-bold shadow-xl">
+            <p className="text-lg text-main-1">내 정보 관리</p>
             <div className="flex flex-col gap-3 text-sm">
               <div className="flex justify-between">
                 <p>알림 허용</p>
                 <ChevronRightIcon
-                  className="cursor-pointer "
+                  className="cursor-pointer text-black-5 "
                   onClick={handleAlert}
                 />
               </div>
-              <Separator />
             </div>
             <div className="flex flex-col gap-3 text-sm">
               <div className="flex justify-between">
                 <p>로그아웃</p>
                 <ChevronRightIcon
-                  className="cursor-pointer"
+                  className="cursor-pointer text-black-5 "
                   onClick={handleLogout}
                 />
               </div>
-              <Separator />
             </div>
             <div className="flex flex-col gap-3 text-sm">
               <div className="flex justify-between transition-all duration-500 hover:text-red-500">
                 <p>회원탈퇴</p>
                 <ChevronRightIcon
-                  className="cursor-pointer "
+                  className="cursor-pointer text-black-5 "
                   onClick={handleDeleteAccount}
                 />
               </div>
-              <Separator />
             </div>
           </div>
         </section>
