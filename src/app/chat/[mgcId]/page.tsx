@@ -77,7 +77,14 @@ const ChatRoom = ({ params: { mgcId } }: { params: { mgcId: string } }) => {
 
     const connect = () => {
       stomp.current = new Client({
-        webSocketFactory: () => new SockJS(`${process.env.NEXT_PUBLIC_BASE_URL}/stomp/chat`),
+        webSocketFactory: () =>
+          new SockJS(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/stomp/chat?accessToken=Bearer ${getItem<string>(localStorage, 'token')}&provider=${getItem<string>(localStorage, 'provider') || ''}`,
+          ),
+        // connectHeaders: {
+        //   Authorization: `Bearer ${getItem<string>(localStorage, 'token')}`,
+        //   provider: getItem<string>(localStorage, 'provider') || '',
+        // },
         onConnect: () => {
           console.log('===== Connected =====');
           subscribe();
